@@ -1,5 +1,5 @@
 use bookstore;
-
+-- Yasseen
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS books;
 DROP TABLE IF EXISTS genres;
@@ -14,6 +14,12 @@ DROP TABLE IF EXISTS book_files;
 DROP TABLE IF EXISTS file_formats;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS bookorder;
+
+DROP TABLE IF EXISTS ads;
+DROP TABLE IF EXISTS taxes;
+DROP TABLE IF EXISTS survey_questions;
+DROP TABLE IF EXISTS survey_responses;
+DROP TABLE IF EXISTS rss_feeds;
 SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE books(
@@ -161,5 +167,45 @@ CREATE TABLE bookorder(
     constraint both_taxes_not_there check (HST_TAX IS NULL OR (GST_TAX IS NULL AND PST_TAX IS NULL))
 	);
 
+-- Jeff
 
+CREATE TABLE ads(
+	id bigint NOT NULL auto_increment PRIMARY KEY,
+    file_location varchar(200),
+    url varchar(2048) NOT NULL,
+    enabled boolean DEFAULT true,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE taxes(
+	id bigint NOT NULL auto_increment PRIMARY KEY,
+    tax_name varchar(200),
+    province char(2) NOT NULL,
+    tax_percentage decimal(8,6) CHECK (tax_percentage > 0),
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE survey_questions(
+	id bigint NOT NULL auto_increment PRIMARY KEY,
+    question varchar(1024),
+    enabled boolean DEFAULT true,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE survey_responses(
+	id bigint NOT NULL auto_increment PRIMARY KEY,
+    survey_question_id bigint NOT NULL, 
+    response varchar(1024),
+    enabled boolean DEFAULT true,
+    count int DEFAULT 0 CHECK (count > 0),
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (survey_question_id) REFERENCES survey_questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE rss_feeds(
+	id bigint NOT NULL auto_increment PRIMARY KEY,
+    url varchar(2048),
+    enabled boolean DEFAULT true,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 

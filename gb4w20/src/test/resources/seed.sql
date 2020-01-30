@@ -8,6 +8,11 @@ DELETE FROM reviews;
 DELETE FROM book_files;
 DELETE FROM file_formats;
 DELETE FROM books;
+DELETE FROM ads;
+DELETE FROM taxes;
+DELETE FROM survey_questions;
+DELETE FROM survey_responses;
+DELETE FROM rss_feeds;
 DELETE FROM users;
 
 insert into genres(genre_id, genre) VALUES(1, "Fantasy");
@@ -839,3 +844,29 @@ insert into reviews(user_id, isbn, rating, review) VALUES( 2, 9780000000011, 1, 
 insert into reviews(user_id, isbn, rating, review) VALUES( 2, 9780316251303, 4, 'The Burning White: test review' );
 insert into reviews(user_id, isbn, rating, review) VALUES( 2, 9780385333849, 4, 'Slaughterhouse-Five: test review' );
 
+-- Ads 
+INSERT INTO ads(file_location, url) VALUES('christmas_ad.png', 'https://google.ca');
+INSERT INTO ads(file_location, url) VALUES('school_ad.png', 'https://www.dawsoncollege.qc.ca/');
+INSERT INTO ads(file_location, url) VALUES('summer_ad.png', 'https://www.dawsoncollege.qc.ca/credit/summer/');
+
+-- Taxes
+-- TODO since not sure how to structure data
+
+-- Survey Questions
+INSERT INTO survey_questions(id, question) VALUES (1,'What is your favorite colour?'); 
+INSERT INTO survey_questions(id, question) VALUES (2,'Do you prefer Mooses or Deer?'); 
+INSERT INTO survey_questions(id, question) VALUES (3,'Do you e-books or physical books?'); 
+ALTER TABLE survey_questions AUTO_INCREMENT=4;
+-- Survey Responses 
+INSERT INTO survey_responses(survey_question_id, response, count) VALUES (1, 'Blue', 5); 
+INSERT INTO survey_responses(survey_question_id, response, count) VALUES (1, 'Green', 500);
+INSERT INTO survey_responses(survey_question_id, response, count) VALUES (1, 'Yellow', 1);
+
+INSERT INTO survey_responses(survey_question_id, response, count) VALUES (2, 'Moose', 15);
+INSERT INTO survey_responses(survey_question_id, response, count) VALUES (2, 'Deer', 12);
+INSERT INTO survey_responses(survey_question_id, response, count) VALUES (1, 'Neither', 999);
+
+INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'E-books', 500);
+INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'Physical Books', 500);
+INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'Neither', 250);  
+INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'I do not read', 1024);  
