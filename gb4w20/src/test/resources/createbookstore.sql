@@ -1,3 +1,5 @@
+-- create database bookstore;
+
 use bookstore;
 -- Yasseen
 SET FOREIGN_KEY_CHECKS = 0;

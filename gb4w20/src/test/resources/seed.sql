@@ -862,6 +862,14 @@ INSERT INTO ads(file_location, url) VALUES('summer_ad.png', 'https://www.dawsonc
 -- Taxes
 -- TODO since not sure how to structure data
 
+-- TODO bookpublisher and publisher. For now, it's just test data
+-- Book Publisher
+INSERT INTO bookpublisher(publisher_id, isbn) VALUES(1, 9781612620244);
+INSERT INTO bookpublisher(publisher_id, isbn) VALUES(1, 9780316251303);
+-- Publishers
+INSERT INTO publishers(publisher_id, name) VALUES(1, 'test pub');
+
+
 -- Survey Questions
 INSERT INTO survey_questions(id, question) VALUES (1,'What is your favorite colour?'); 
 INSERT INTO survey_questions(id, question) VALUES (2,'Do you prefer Mooses or Deer?'); 
