@@ -1,3 +1,140 @@
+-- Jasmar's queries
+
+-- Total Sales
+/*
+Within the defined date range this report displays 
+the total sales for all items
+@author Jasmar Badion
+*/
+SELECT SUM(bo.amount_paid_pretax) AS total_sales 
+FROM bookstore.orders o
+JOIN bookstore.bookorder bo ON o.order_id = bo.order_id 
+-- Enter desired timestamps here
+WHERE o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01'; 
+
+/*
+Within the defined date range this report displays
+a list of every item sold ordered by date in addition to the totals
+@author Jasmar Badion
+*/
+SELECT bo.isbn, b.title, SUM(bo.amount_paid_pretax) AS total_sales 
+FROM bookstore.bookorder bo
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.books b ON bo.isbn = b.isbn
+-- Enter desired timestamps here
+WHERE o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01'
+GROUP BY bo.isbn, b.title 
+ORDER BY o.timestamp DESC;
+
+-- Sales by Client
+/* 
+For a chosen client and within the defined date range 
+this report displays the total sales 
+@author Jasmar Badion
+*/
+SELECT SUM(bo.amount_paid_pretax) AS total_sales 
+FROM bookstore.bookorder bo 
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.users u ON o.user_id = u.user_id
+-- Enter desired timestamps and client here
+WHERE u.user_id = 1 AND o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01' 
+GROUP BY u.user_id;
+
+/*
+For a chosen client and within the defined date range 
+this report displays a list of ordered by date of every item
+purchased in addition of the totals
+@author Jasmar Badion
+*/
+SELECT bo.isbn, b.title, SUM(bo.amount_paid_pretax) AS total_sales 
+FROM bookstore.bookorder bo 
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.users u ON o.user_id = u.user_id
+JOIN bookstore.books b ON b.isbn = bo.isbn
+-- Enter desired timestamps and client here
+WHERE u.user_id = 1 AND o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01'
+GROUP BY u.user_id, bo.isbn, b.title
+ORDER BY o.timestamp DESC;
+
+-- Sales by Author
+/*
+For a chosen author and within the defined date range 
+this report displays the total sales for all items
+@author Jasmar Badion
+*/
+SELECT SUM(bo.amount_paid_pretax) AS total_sales 
+FROM bookstore.bookorder bo 
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.books b ON bo.isbn = b.isbn 
+JOIN bookstore.bookauthor ba ON b.isbn = ba.isbn 
+JOIN bookstore.authors a ON ba.author_id = a.author_id
+-- Enter desired timestamps and author here
+WHERE a.author_id = 4 AND o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01' 
+GROUP BY a.author_id;
+
+/*
+For a chosen author and within the defined date range 
+this report displays a list of every item sold in addition to the totals
+@author Jasmar Badion
+*/
+SELECT bo.isbn, b.title, SUM(bo.amout_paid_pretax) AS total_sales 
+FROM bookstore.bookorder bo 
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.books b ON bo.isbn = b.isbn 
+JOIN bookstore.bookauthor ba ON b.isbn = ba.isbn 
+JOIN bookstore.authors a ON ba.author_id = a.author_id
+-- Enter desired timestamps and author here
+WHERE a.author_id = 4 AND o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01'
+GROUP BY a.author_id, bo.isbn, b.title;
+
+-- Sales by Publisher
+/*
+For a chosen publisher and within the defined date range 
+this report displays the total sales
+@author Jasmar Badion
+*/
+SELECT SUM(bo.amount_paid_pretax) AS total_sales 
+FROM bookstore.bookorder bo 
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.books b ON bo.isbn = b.isbn 
+JOIN bookstore.bookpublisher bp ON b.isbn = bp.isbn 
+JOIN bookstore.publishers p ON bp.publisher_id = p.publisher_id
+-- Enter desired timestamps and publisher here
+WHERE p.publisher_id = 1 AND o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01'
+GROUP BY p.publisher_id;
+/*
+For a chosen publisher and within the defined date range 
+this report displays a list ordered by date of every purchase 
+in addition to the totals
+@author Jasmar Badion
+*/
+SELECT bo.isbn, b.title, SUM(bo.amount_paid_pretax) AS total_sales 
+FROM bookstore.bookorder bo 
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.books b ON bo.isbn = b.isbn 
+JOIN bookstore.bookpublisher bp ON b.isbn = bp.isbn 
+JOIN bookstore.publishers p ON bp.publisher_id = p.publisher_id
+-- Enter desired timestamps and publisher here
+WHERE p.publisher_id = 1 AND o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01'
+GROUP BY p.publisher_id, bo.isbn, b.title
+ORDER BY o.timestamp DESC;
+
+-- Top Sellers
+/*
+Within the defined date range this report displays the inventory in order of total sales, 
+items that have never been sold are not included
+@author Jasmar Badion
+*/
+SELECT bo.isbn, b.title, SUM(bo.amount_paid_pretax) AS total_sales 
+FROM bookstore.books b JOIN bookstore.bookorder bo ON b.isbn = bo.isbn 
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+-- Enter timestamp here
+WHERE o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01'
+GROUP BY bo.isbn, b.title 
+ORDER BY total_sales DESC;
+
+
+-- Jeff's queries
 /*
     Top clients in the defined date range ordered of value of total sales.
     Clients who never made a purchase are not included. 
