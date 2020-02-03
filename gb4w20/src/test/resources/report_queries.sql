@@ -3,14 +3,28 @@
 --Total Sales
 /*
 Within the defined date range this report displays 
-either the total sales for all items
+the total sales for all items
 @author Jasmar Badion
 */
 SELECT SUM(bo.amount_paid_pretax) AS total_sales 
 FROM bookstore.bookorder bo
 JOIN bookstore.orders o ON bo.order_id = o.order_id 
 --Enter desired timestamps here
-WHERE o.timestamp BETWEEN ‘2020-01-27 00:00:01’ AND ‘2020-01-31 00:00:01’;
+WHERE o.timestamp BETWEEN '2020-01-27 00:00:01' AND '2020-01-31 00:00:01';
+
+/*
+Within the defined date range this report displays
+a list of every item sold ordered by date in addition to the totals
+@author Jasmar Badion
+*/
+SELECT bo.isbn, b.titlle, SUM(bo.amount_paid_pretax) AS total_sales 
+FROM bookstore.bookorder bo
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.books b ON b.b.isbn = bo.isbn
+--Enter desired timestamps here
+WHERE o.timestamp BETWEEN '2020-01-27 00:00:01' AND '2020-01-31 00:00:01'
+GROUP BY bo.isbn, b.titlle 
+ORDER BY o.timestamp DESC;
 
 --Sales by Client
 /* 
@@ -20,9 +34,27 @@ this report displays the total sales
 */
 SELECT SUM(bo.amout_paid_pretax) AS total_sales 
 FROM bookstore.bookorder bo 
-JOIN bookstore.orders o ON bo.order_id = o.order_id JOIN bookstore.users u ON o.user_id = u.user_id
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.users u ON o.user_id = u.user_id
 --Enter desired timestamps and client here
-WHERE u.user_id = 1 AND o.timestamp BETWEEN ‘2020-01-27 00:00:01’ AND ‘2020-01-31 00:00:01’ GROUP BY u.user_id;
+WHERE u.user_id = 1 AND o.timestamp BETWEEN '2020-01-27 00:00:01' AND '2020-01-31 00:00:01' 
+GROUP BY u.user_id;
+
+/*
+For a chosen client and within the defined date range 
+this report displays a list of ordered by date of every item
+purchased in addition of the totals
+@author Jasmar Badion
+*/
+SELECT bo.isbn, b.title, SUM(bo.amout_paid_pretax) AS total_sales 
+FROM bookstore.bookorder bo 
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.users u ON o.user_id = u.user_id
+JOIN bookstore.books b ON b.isbn = bo.isbn
+--Enter desired timestamps and client here
+WHERE u.user_id = 1 AND o.timestamp BETWEEN '2020-01-27 00:00:01' AND '2020-01-31 00:00:01'
+GROUP BY u.user_id, bo.isbn, b.title
+ORDER BY o.timestamp DESC;
 
 --Sales by Author
 /*
@@ -37,21 +69,56 @@ JOIN bookstore.books b ON bo.isbn = b.isbn
 JOIN bookstore.bookauthor ba ON b.isbn = ba.isbn 
 JOIN bookstore.authors a ON ba.author_id = a.author_id
 --Enter desired timestamps and author here
-WHERE a.author_id = 1 AND o.timestamp BETWEEN ‘2020-01-27 00:00:01’ AND ‘2020-01-31 00:00:01’ GROUP BY a.author_id;
+WHERE a.author_id = 1 AND o.timestamp BETWEEN ‘2020-01-27 00:00:01’ AND ‘2020-01-31 00:00:01’ 
+GROUP BY a.author_id;
+
+/*
+For a chosen author and within the defined date range 
+this report displays a list of every item sold in addition to the totals
+@author Jasmar Badion
+*/
+SELECT bo.isbn, b.title, SUM(bo.amout_paid_pretax) AS total_sales 
+FROM bookstore.bookorder bo 
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.books b ON bo.isbn = b.isbn 
+JOIN bookstore.bookauthor ba ON b.isbn = ba.isbn 
+JOIN bookstore.authors a ON ba.author_id = a.author_id
+--Enter desired timestamps and author here
+WHERE a.author_id = 1 AND o.timestamp BETWEEN '2020-01-27 00:00:01' AND '2020-01-31 00:00:01'
+GROUP BY a.author_id, bo.isbn, b.title;
 
 --Sales by Publisher
 /*
 For a chosen publisher and within the defined date range 
-this report displays either the total sales
+this report displays the total sales
 @author Jasmar Badion
 */
 SELECT SUM(bo.amout_paid_pretax) AS total_sales 
-FROM bookstore.bookorder bo JOIN bookstore.orders o ON bo.order_id = o.order_id 
+FROM bookstore.bookorder bo 
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
 JOIN bookstore.books b ON bo.isbn = b.isbn 
 JOIN bookstore.bookpublisher bp ON b.isbn = bp.isbn 
 JOIN bookstore.publishers p ON bp.publisher_id = p.publisher_id
---Enter desired timestamps and author here
-WHERE p.publisher_id = 1 AND o.timestamp BETWEEN ‘2020-01-27 00:00:01’ AND ‘2020-01-31 00:00:01’ GROUP BY p.publisher_id;
+--Enter desired timestamps and publisher here
+WHERE p.publisher_id = 1 AND o.timestamp BETWEEN ‘2020-01-27 00:00:01’ AND ‘2020-01-31 00:00:01’ 
+GROUP BY p.publisher_id;
+
+/*
+For a chosen publisher and within the defined date range 
+this report displays a list ordered by date of every purchase 
+in addition to the totals
+@author Jasmar Badion
+*/
+SELECT bo.isbn, b.title, SUM(bo.amout_paid_pretax) AS total_sales 
+FROM bookstore.bookorder bo 
+JOIN bookstore.orders o ON bo.order_id = o.order_id 
+JOIN bookstore.books b ON bo.isbn = b.isbn 
+JOIN bookstore.bookpublisher bp ON b.isbn = bp.isbn 
+JOIN bookstore.publishers p ON bp.publisher_id = p.publisher_id
+--Enter desired timestamps and client here
+WHERE p.publisher_id = 1 AND o.timestamp BETWEEN '2020-01-27 00:00:01' AND '2020-01-31 00:00:01'
+GROUP BY p.publisher_id, bo.isbn, b.title
+ORDER BY o.timestamp DESC;
 
 --Top Sellers
 /*
@@ -63,8 +130,9 @@ SELECT bo.isbn, b.title, SUM(bo.amount_paid_pretax) AS total_sales
 FROM bookstore.books b JOIN bookstore.bookorder bo ON b.isbn = bo.isbn 
 JOIN bookstore.orders o ON bo.order_id = o.order_id 
 --Enter timestamp here
-WHERE o.timestamp BETWEEN ‘2020-01-27 00:00:01’ AND ‘2020-01-31 00:00:01’
-GROUP BY bo.isbn, b.title ORDER BY total_sales DESC;
+WHERE o.timestamp BETWEEN '2020-01-27 00:00:01' AND '2020-01-31 00:00:01'
+GROUP BY bo.isbn, b.title 
+ORDER BY total_sales DESC;
 
 
 --Jeff's queries
