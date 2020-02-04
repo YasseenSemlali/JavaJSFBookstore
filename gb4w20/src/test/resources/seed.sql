@@ -860,10 +860,27 @@ INSERT INTO ads(file_location, url) VALUES('school_ad.png', 'https://www.dawsonc
 INSERT INTO ads(file_location, url) VALUES('summer_ad.png', 'https://www.dawsoncollege.qc.ca/credit/summer/');
 
 -- Taxes
--- TODO since not sure how to structure data
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('GST', 'AB', 0.05); 
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('GST', 'BC', 0.05); 
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('PST', 'BC', 0.07); 
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('PST', 'MA', 0.07); 
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('GST', 'MA', 0.05); 
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('HST', 'NB', 0.15); 
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('GST', 'NT', 0.05); 
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('HST', 'NS', 0.15); 
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('GST', 'NU', 0.05);
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('HST', 'ON', 0.13);
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('HST', 'PE', 0.15);
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('GST', 'QC', 0.05);
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('QST', 'QC', 0.09975);
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('GST', 'SK', 0.05);
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('PST', 'SK', 0.06);
+INSERT INTO taxes(tax_name, province, tax_percentage) VALUES('GST', 'YT', 0.05);
+
 
 -- TODO bookpublisher and publisher. For now, it's just test data
 -- Book Publisher
+
 INSERT INTO bookpublisher(publisher_id, isbn) VALUES(1, 9781612620244);
 INSERT INTO bookpublisher(publisher_id, isbn) VALUES(1, 9780316251303);
 -- Publishers
