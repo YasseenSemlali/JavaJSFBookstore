@@ -156,17 +156,17 @@ CREATE TABLE bookorder(
 	order_id bigint NOT NULL,
     isbn bigint NOT NULL,
     amount_paid_pretax DECIMAL(15,2) NOT NULL,
-    HST_TAX DECIMAL(5,3) DEFAULT NULL,
-    GST_TAX DECIMAL(5,3) DEFAULT NULL,
-    PST_TAX DECIMAL(5,3) DEFAULT NULL,
+    HST_TAX DECIMAL(8,6) DEFAULT NULL CHECK (HST_TAX > 0),
+    GST_TAX DECIMAL(8,6) DEFAULT NULL CHECK (GST_TAX > 0),
+    PST_TAX DECIMAL(8,6) DEFAULT NULL CHECK (PST_TAX > 0),
     enabled BOOLEAN default true,
 
     PRIMARY KEY(bookorder_id),
     foreign key(order_id) REFERENCES orders(order_id),
     foreign key(isbn) REFERENCES books(isbn),
     
-	constraint taxes_are_not_null check (HST_TAX IS NOT NULL OR (GST_TAX IS NOT NULL AND PST_TAX IS NOT NULL)),
-    constraint both_taxes_not_there check (HST_TAX IS NULL OR (GST_TAX IS NULL AND PST_TAX IS NULL))
+	constraint bookorder_taxes_are_not_null check (HST_TAX IS NOT NULL OR GST_TAX IS NOT NULL),
+    constraint bookorder_both_taxes_not_there check (HST_TAX IS NULL OR (GST_TAX IS NULL AND PST_TAX IS NULL))
 	);
 
 -- Jeff
@@ -179,12 +179,16 @@ CREATE TABLE ads(
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- PST can be null even if there is a GST
 CREATE TABLE taxes(
-	id bigint NOT NULL auto_increment PRIMARY KEY,
-    tax_name varchar(200),
-    province char(2) NOT NULL,
-    tax_percentage decimal(8,6) CHECK (tax_percentage > 0),
-    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    province char(2) NOT NULL PRIMARY KEY,
+    HST_percentage decimal(8,6) CHECK (HST_percentage > 0),
+    GST_percentage decimal(8,6) CHECK (GST_percentage > 0),
+    PST_percentage decimal(8,6) CHECK (PST_percentage > 0),
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+	constraint taxes_are_not_null check (HST_percentage IS NOT NULL OR GST_percentage IS NOT NULL),
+    constraint both_taxes_not_there check (HST_percentage IS NULL OR (GST_percentage IS NULL AND PST_percentage IS NULL))
 );
 
 CREATE TABLE survey_questions(
@@ -210,4 +214,5 @@ CREATE TABLE rss_feeds(
     enabled boolean DEFAULT true,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
 

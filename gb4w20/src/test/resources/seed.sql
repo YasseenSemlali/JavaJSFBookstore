@@ -1028,13 +1028,25 @@ insert into reviews(user_id, isbn, rating, review) VALUES( 2, 9780000000011, 1, 
 insert into reviews(user_id, isbn, rating, review) VALUES( 2, 9780316251303, 4, 'The Burning White: test review' );
 insert into reviews(user_id, isbn, rating, review) VALUES( 2, 9780385333849, 4, 'Slaughterhouse-Five: test review' );
 
+
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'AB', null, 0.05, null );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'BC', null, 0.05, 0.07 );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'MA', null, 0.05, 7 );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'NB', 0.15, null, null );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'NL', 15, null, null );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'NT', null, 0.05, null );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'NS', 0.15, null, null );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'NU', null, 0.05, null );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'ON', 0.13, null, null );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'PE', 0.15, null, null );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'QC', null, 0.05, 0.09975 );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'SK', null, 0.05, 0.06 );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'YT', null, 0.05, null );
 -- Ads 
 INSERT INTO ads(file_location, url) VALUES('christmas_ad.png', 'https://google.ca');
 INSERT INTO ads(file_location, url) VALUES('school_ad.png', 'https://www.dawsoncollege.qc.ca/');
 INSERT INTO ads(file_location, url) VALUES('summer_ad.png', 'https://www.dawsoncollege.qc.ca/credit/summer/');
 
--- Taxes
--- TODO since not sure how to structure data
 
 -- Survey Questions
 INSERT INTO survey_questions(id, question) VALUES (1,'What is your favorite colour?'); 
