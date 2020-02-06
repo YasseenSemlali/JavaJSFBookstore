@@ -1,15 +1,35 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!-- This file contains items that cannot be identified with an annotation -->
-<!-- Use NetBeans auto-complete feature to see all the possible options -->
-<faces-config version="2.2"
-              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+<!-- 
+     Required configuration file for JSF. If using Jakarat/Java EE 8 the version 
+     is 2.3.
+-->
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+        http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd"
+              version="2.3">
+    <!-- 
+         A string returned by an action is looked up in this file to determine 
+         which page to call next.
+    -->     
+    <navigation-rule>
+        <from-view-id>/join_email.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/display_email.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <!-- Internationalization -->
     <application>
-        <!-- Referencing bundles is on important item in this file -->
+        <locale-config>
+            <default-locale>en_CA</default-locale>
+            <supported-locale>en_CA</supported-locale>
+            <supported-locale>fr_CA</supported-locale>
+        </locale-config>
         <resource-bundle>
-            <base-name>com.kfwebstandard.bundles.messages</base-name>
+            <base-name>com.gb4w20.gb4w20.bundles.messages</base-name>
             <var>msgs</var>
         </resource-bundle>
     </application>
+
 </faces-config>
