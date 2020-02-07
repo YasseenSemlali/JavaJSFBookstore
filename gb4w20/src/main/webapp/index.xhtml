@@ -7,14 +7,25 @@ Java Server Faces page that displays the frontpage of the app
 @version 1.0
 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <h:outputStylesheet library="css" name="global.css" />
-        <h:outputStylesheet library="css" name="bootstrap/bootstrap.css" />
-        <title>Welcome To Bookify</title>
+        <title>Front page</title>
     </h:head>
     <h:body>
-        <p>${msgs.firstName}</p>
+        <ui:composition template="/templates/defaultTemplate.xhtml">
+            <ui:define name="content">
+                <b:container>
+                    <b:row>
+                        <b:column>
+                            <h1>Book test</h1>
+                        </b:column>
+                    </b:row>
+                </b:container>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
