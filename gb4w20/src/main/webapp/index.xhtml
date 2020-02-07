@@ -2,17 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>Front page</title>
     </h:head>
     <h:body>
-        <b:container>
-            <b:row>
-                <b:column>
-                    <h1>Book test</h1>
-                </b:column>
-            </b:row>
-        </b:container>
+        <ui:composition template="/templates/defaultTemplate.xhtml">
+            <ui:define name="content">
+                <b:container>
+                    <b:row>
+                        <b:column>
+                            <h1>Book test</h1>
+                        </b:column>
+                    </b:row>
+                </b:container>
+            </ui:define>
+        </ui:composition>
+
     </h:body>
 </html>
