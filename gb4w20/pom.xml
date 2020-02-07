@@ -19,15 +19,6 @@
         <name>Dawson College</name>
     </organization>
     
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <failOnMissingWebXml>false</failOnMissingWebXml>
-        <jakartaee>8.0</jakartaee>
-    </properties>
-    
     <!-- All of the sample code shares the same dependencies and build         -->
     <!-- The parent project named web_project_dependencies must be loaded into -->
     <!-- the IDE and you must Run Maven with a goal of install:install         -->
@@ -44,8 +35,20 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
-            <version>${jakartaee}</version>
+            <version>8.0</version>
             <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>net.bootsfaces</groupId>
+            <artifactId>bootsfaces</artifactId>
+            <version>1.4.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>7.0</version>
         </dependency>
     </dependencies>
     
