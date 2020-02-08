@@ -31,7 +31,7 @@
                           validate-atmost-once-period-in-seconds="0" 
                           wrap-jdbc-objects="false">
         <property name="URL" value="jdbc:mysql://localhost:3306/bookstore?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
-        <property name="User" value="root"/>
+        <property name="User" value="demo"/>
         <property name="Password" value="password"/>
     </jdbc-connection-pool>
 </resources>
