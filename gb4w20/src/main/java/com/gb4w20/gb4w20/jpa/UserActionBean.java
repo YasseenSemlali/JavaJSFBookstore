@@ -33,23 +33,24 @@ import org.slf4j.LoggerFactory;
 public class UserActionBean implements Serializable {
     
     private final static Logger LOG = LoggerFactory.getLogger(UserActionBean.class);
-
+/*
     @Resource
     private UserTransaction userTransaction;
 
-    @PersistenceContext(unitName = "usersPU")
+    @PersistenceContext(unitName = "BookPU")
     private EntityManager entityManager;
     
     public UserActionBean(){
         //Left empty to comply with frameworks. 
     }
-    
+    */
     /**
      * Used to create a user in the database. 
      * 
      * @param user given to be create in the user's table. 
      * @throws RollbackFailureException when a rollback error occurs. 
      */
+    /*
     public void create(User user) throws RollbackFailureException {
         
         try {
@@ -68,5 +69,5 @@ public class UserActionBean implements Serializable {
             
         }
     }
-    
+    */
 }
