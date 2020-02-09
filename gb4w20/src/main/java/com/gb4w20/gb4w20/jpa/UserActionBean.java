@@ -117,7 +117,7 @@ public class UserActionBean implements Serializable {
      * @param firstName of the user
      * @return collection of users who have that name or similar
      */
-    public Collection<Users> findUser(String firstName){
+    public List<Users> findUser(String firstName){
 
           CriteriaBuilder cb = entityManager.getCriteriaBuilder();
           CriteriaQuery<Users> cq = cb.createQuery(Users.class);
