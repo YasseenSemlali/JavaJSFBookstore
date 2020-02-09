@@ -5,6 +5,8 @@ Java Server Faces page that displays the frontpage of the app
 
 @author Yasseen Semlali
 -->
+
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -12,6 +14,7 @@ Java Server Faces page that displays the frontpage of the app
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
+        <h:outputStylesheet library="css" name="carousel.css" />
         <title>Front page</title>
     </h:head>
     <h:body>
@@ -27,10 +30,10 @@ Java Server Faces page that displays the frontpage of the app
                     </b:container>
                 </b:jumbotron>
 
-                <p:carousel numVisible="5" value="#{bookActionBean.getBooksOnSale()}" headerText="On sale" var="book" itemStyle="text-align:center" responsive="true" >
+                <p:carousel numVisible="5" value="#{bookActionBean.getAllBooks()}" headerText="On sale" var="book" itemStyle="text-align:center" responsive="true" >
                     <h:graphicImage library="img" name = "covers/#{book.getCover()}" height="200px"/> 
                 </p:carousel>
-                
+
                 <b:container>
                     <b:row>
                         <b:column col-md="4">
@@ -38,11 +41,11 @@ Java Server Faces page that displays the frontpage of the app
                         </b:column>
                         <b:column col-md="4">
                             <h2>Survey</h2>
-                            
+
                             <h3>Test question?</h3>
                             <b:form>
-                                
-                                 <b:commandButton value="Submit" action="#" look="primary" update="@form" />
+
+                                <b:commandButton value="Submit" action="#" look="primary" update="@form" />
                             </b:form>
                         </b:column>
                         <b:column col-md="4">

@@ -1,8 +1,12 @@
 package com.gb4w20.gb4w20.jpa;
 
+import com.gb4w20.gb4w20.entities.Bookorder;
 import com.gb4w20.gb4w20.entities.Books;
+import com.gb4w20.gb4w20.entities.Orders;
+import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
+import com.mysql.cj.xdevapi.Client;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
@@ -14,6 +18,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 import javax.transaction.HeuristicMixedException;
@@ -137,12 +144,34 @@ public class BookActionBean implements Serializable {
         
         CriteriaBuilder cb = em.getCriteriaBuilder();        
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
-        Root<Books> b = cq.from(Books.class);
         
-        cq.select(b).where(cb.gt(b.get("salePrice"), 0));
+        Root<Books> book = cq.from(Books.class);
+        
+        cq.select(book).where(cb.gt(book.get("salePrice"), 0));
         
         Query query = em.createQuery(cq);
         
+        return query.getResultList();
+    }
+    
+    public List<Books> getRecentBooks(int maxResults) {
+        LOG.info("getting " + maxResults + " recent books");
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();        
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+        
+        Root<Books> book = cq.from(Books.class);
+        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
+        Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
+        Join<Orders, Users> user = order.join("userId", JoinType.INNER);
+        
+        // TODO get email from session
+        cq.select(book).where(cb.equal(user.get("email"), "cst.send@gmail.com"));
+        cq.orderBy(cb.desc(order.get("timestamp")));
+        
+        Query query = em.createQuery(cq);      
+        query.setMaxResults(maxResults);
+            
         return query.getResultList();
     }
     
