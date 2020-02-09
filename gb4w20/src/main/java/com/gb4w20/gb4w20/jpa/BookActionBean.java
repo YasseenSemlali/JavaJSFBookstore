@@ -12,7 +12,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -117,10 +119,10 @@ public class BookActionBean implements Serializable {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Books.class));
         Query q = em.createQuery(cq);
-        if (firstResult != -1) {
+        if (maxResults != -1) {
             q.setMaxResults(maxResults);
         }
-        if (maxResults != -1) {
+        if (firstResult != -1) {
             q.setFirstResult(firstResult);
         }
         return q.getResultList();
@@ -130,6 +132,20 @@ public class BookActionBean implements Serializable {
         return em.find(Books.class, isbn);
     }
 
+    public List<Books> getBooksOnSale() {
+        LOG.info("getting books on sale");
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();        
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+        Root<Books> b = cq.from(Books.class);
+        
+        cq.select(b).where(cb.gt(b.get("salePrice"), 0));
+        
+        Query query = em.createQuery(cq);
+        
+        return query.getResultList();
+    }
+    
     public int getFishCount() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         Root<Books> rt = cq.from(Books.class);
