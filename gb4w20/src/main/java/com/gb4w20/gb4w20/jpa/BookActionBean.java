@@ -47,10 +47,10 @@ public class BookActionBean implements Serializable {
 
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
-    
+
     public BookActionBean() {
     }
-    
+
     public void create(Books book) throws RollbackFailureException {
         try {
             utx.begin();
@@ -68,6 +68,11 @@ public class BookActionBean implements Serializable {
         }
     }
 
+    public void setEnabled(long isbn, boolean enabled) {
+        Books book = this.findBook(isbn);
+        book.setActive(enabled);
+    }
+    
     public void edit(Books book) throws NonexistentEntityException, RollbackFailureException, Exception {
         try {
             utx.begin();
@@ -89,8 +94,10 @@ public class BookActionBean implements Serializable {
             throw ex;
         }
     }
+    
 
-    public void destroy(Long isbn) throws NonexistentEntityException, RollbackFailureException, Exception {
+    /*
+    private void destroy(Long isbn) throws NonexistentEntityException, RollbackFailureException, Exception {
         try {
             utx.begin();
             Books book;
@@ -111,18 +118,19 @@ public class BookActionBean implements Serializable {
             throw ex;
         }
     }
+    //*/
     
-    public List<Books> getAllBooks(){
+    public List<Books> getAllBooks() {
         return getAllBooks(-1, -1);
     }
-    
+
     public List<Books> getAllBooks(int maxResults) {
         return getAllBooks(maxResults, -1);
     }
 
     public List<Books> getAllBooks(int maxResults, int firstResult) {
         LOG.info("getting all books");
-        
+
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Books.class));
         Query q = em.createQuery(cq);
@@ -140,42 +148,49 @@ public class BookActionBean implements Serializable {
     }
 
     public List<Books> getBooksOnSale() {
+        return this.getBooksOnSale(-1);
+    }
+
+    public List<Books> getBooksOnSale(int maxResults) {
         LOG.info("getting books on sale");
-        
-        CriteriaBuilder cb = em.getCriteriaBuilder();        
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
-        
+
         Root<Books> book = cq.from(Books.class);
-        
+
         cq.select(book).where(cb.gt(book.get("salePrice"), 0));
-        
+
         Query query = em.createQuery(cq);
-        
+        if (maxResults != -1) {
+            query.setMaxResults(maxResults);
+        }
+
         return query.getResultList();
     }
-    
-    public List<Books> getRecentBooks(int maxResults) {
+
+    public List<Books> getRecentlyBoughtBooks(int maxResults) {
         LOG.info("getting " + maxResults + " recent books");
-        
-        CriteriaBuilder cb = em.getCriteriaBuilder();        
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
-        
+
         Root<Books> book = cq.from(Books.class);
         Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
         Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
         Join<Orders, Users> user = order.join("userId", JoinType.INNER);
-        
+
         // TODO get email from session
         cq.select(book).where(cb.equal(user.get("email"), "cst.send@gmail.com"));
         cq.orderBy(cb.desc(order.get("timestamp")));
-        
-        Query query = em.createQuery(cq);      
+
+        Query query = em.createQuery(cq);
         query.setMaxResults(maxResults);
-            
+
         return query.getResultList();
     }
-    
-    public int getFishCount() {
+
+    public int getBookCount() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         Root<Books> rt = cq.from(Books.class);
         cq.select(em.getCriteriaBuilder().count(rt));
