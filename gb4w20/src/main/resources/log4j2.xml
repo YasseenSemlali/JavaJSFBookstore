@@ -26,7 +26,7 @@
     the pre-defined logger. Here is where you can define
     the level of message you wish to log -->
     <Loggers>
-        <Root level="trace">
+        <Root level="debug">
             <appender-ref ref="Servlet" />
         </Root>
     </Loggers>

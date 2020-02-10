@@ -68,7 +68,7 @@ public class UserActionBeanTests {
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Users.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/glassfish-resources.xml"), "glassfish-resources.xml")
+                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
                 .addAsResource(new File("src/main/resources/log4j2.xml"), "log4j2.xml")
                 .addAsResource("createbookstore.sql")
@@ -96,6 +96,7 @@ public class UserActionBeanTests {
      * @throws Exception 
      * @author Jeffrey Boisvert
      */
+
     @Test
     public void testCreate() throws RollbackFailureException, IllegalStateException, Exception {
         
@@ -117,7 +118,11 @@ public class UserActionBeanTests {
     @Before
     public void seedDatabase() {
         final String seedDataScript = loadAsString("createbookstore.sql");
-
+        
+        if (dataSource == null){
+            System.out.println("Datasource is null");
+        }
+        
         try (Connection connection = dataSource.getConnection()) {
             for (String statement : splitStatements(new StringReader(
                     seedDataScript), ";")) {

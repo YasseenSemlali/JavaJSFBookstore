@@ -2,6 +2,8 @@
 <persistence version="2.2" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
   <!-- Define Persistence Unit -->
   <persistence-unit name="BookPU" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>java:app/jdbc/bookstore</jta-data-source>
     <class>com.gb4w20.gb4w20.entities.Ads</class>
     <class>com.gb4w20.gb4w20.entities.Authors</class>
     <class>com.gb4w20.gb4w20.entities.BookFiles</class>
@@ -17,13 +19,10 @@
     <class>com.gb4w20.gb4w20.entities.SurveyResponses</class>
     <class>com.gb4w20.gb4w20.entities.Taxes</class>
     <class>com.gb4w20.gb4w20.entities.Users</class>
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>java:app/jdbc/bookstore</jta-data-source>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
-    
     <properties>
             <property name="eclipselink.logging.level.sql" value="FINE"/>
             <property name="eclipselink.logging.parameters" value="true"/>
-        </properties>
+    </properties>
   </persistence-unit>
 </persistence>
