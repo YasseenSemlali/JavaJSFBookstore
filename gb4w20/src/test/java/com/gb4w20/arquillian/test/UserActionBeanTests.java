@@ -98,12 +98,12 @@ public class UserActionBeanTests {
      */
     @Test
     public void testCreate() throws RollbackFailureException, IllegalStateException, Exception {
+        
         Users user = createTestUser();
 
         userActionBean.create(user);
 
         Users returnedUser = userActionBean.findUser(user.getUserId());
-
         assertEquals("The made user and the created user in the database do not match.", returnedUser, user);
 
     }
