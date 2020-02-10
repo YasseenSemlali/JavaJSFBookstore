@@ -1,33 +1,26 @@
 
 package com.gb4w20.gb4w20.jpa;
 
-import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.entities.Users_;
 import java.io.Serializable;
 import com.gb4w20.gb4w20.exceptions.*;
-import java.util.Collection;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.MapAttribute;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import javax.xml.registry.infomodel.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
