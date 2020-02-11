@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Manager - Inventory</title>
+    </h:head>
+    <h:body>
+        <h:outputStylesheet library="css" name="global.css"  />
+        <div>
+            <ui:insert name="topMenuBar">
+                <ui:include src="/templates/topMenuManager.xhtml"></ui:include>
+            </ui:insert>
+        </div>
+
+        <b:container style="margin-top: 5%; margin-bottom:5%;">
+            <p:tabView style="text-align: center;" >
+                <p:tab title="${msgs.add}" id="addTab">
+                     <p:panel style="width: 100%; text-align: right;">
+                     <h:panelGrid columns="2" styleClass="card">    
+                         
+                         <p:outputLabel value="${msgs.title}:" styleClass="formComponent" style="margin-top: 40px"/>
+                         <p:inputText id="title" value="" styleClass="formComponent" style="margin-top: 40px" /> 
+                        
+                         <p:outputLabel value="${msgs.isbn}" styleClass="formComponent"/>
+                         <p:inputText id="isbn" value="" styleClass="formComponent"/>
+
+                        <p:outputLabel value="${msgs.synopsis}:" styleClass="formComponent"/>
+                        <p:inputText id="synopsis" value="" styleClass="formComponent"/>
+
+                        <p:outputLabel value="${msgs.author}:" styleClass="formComponent"/>
+                        <p:inputText id="author" value="" styleClass="formComponent"/>
+                        
+                        <p:outputLabel value="${msgs.pubdate}:" styleClass="formComponent" />
+                        <p:calendar id="pubdate" styleClass="formComponent" />
+
+                        <p:outputLabel value="${msgs.num_pages}:" styleClass="formComponent" />
+                        <p:inputNumber id="numpages" styleClass="formComponent" />
+                        
+                        <p:outputLabel value="${msgs.whole_price}:" styleClass="formComponent" />
+                        <p:inputNumber id="wholeprice" styleClass="formComponent" />
+                        
+                        <p:outputLabel value="${msgs.list_price}:" styleClass="formComponent" />
+                        <p:inputNumber id="listprice" styleClass="formComponent" />
+
+                        <p:outputLabel value="" styleClass="formComponent" style="margin-bottom: 40px"/>
+                        <p:commandButton value="Register" styleClass="formComponent" style="margin-bottom: 40px"/>
+                       </h:panelGrid>
+                         </p:panel>
+                </p:tab>
+                <p:tab title="|" disabled="true"></p:tab>
+                <p:tab title="${msgs.edit}">
+                     <p:panel style="width: 100%; text-align: center;">
+                     <h:panelGrid columns="2" styleClass="card">    
+                         <p:outputLabel value="Username22:" styleClass="formComponent" style="margin-top: 40px"/>
+                        <p:inputText id="userName" value="" label="UserName" styleClass="formComponent" style="margin-top: 40px"/> 
+                        
+                        <p:outputLabel value="Password:" styleClass="formComponent"/>
+                        <p:password id="password" value="" label="Password" styleClass="formComponent"/>
+
+                        <p:outputLabel value="FirstName:" styleClass="formComponent"/>
+                        <p:inputText id="firstName" value="" label="FirstName" styleClass="formComponent"/>
+
+                        <p:outputLabel value="LastName:" styleClass="formComponent"/>
+                        <p:inputText id="lastName" value="" styleClass="formComponent"/>
+
+                        <p:outputLabel value="Email:" styleClass="formComponent"/>
+                        <p:inputText id="email" value="" styleClass="formComponent"/>
+
+                        <p:outputLabel value="" styleClass="formComponent" style="margin-bottom: 40px"/>
+                        <p:commandButton value="Register" styleClass="formComponent" style="margin-bottom: 40px"/>
+                       </h:panelGrid>
+                         </p:panel>
+                </p:tab>
+             </p:tabView>
+        </b:container>
+                                
+        <div>
+            <ui:insert name="footer">
+                <ui:include src="/templates/footer.xhtml"></ui:include>
+            </ui:insert>
+        </div>
+    </h:body>
+</html>

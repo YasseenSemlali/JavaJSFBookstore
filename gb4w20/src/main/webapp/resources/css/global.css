@@ -1,8 +1,96 @@
 /* 
-<<<<<<< HEAD
     Created on : Feb. 6, 2020, 1:09:53 p.m.
     Author     : jeanrobatto
 
     Global CSS file for styles shared across the entire web application
 */
+
+/* GENERAL */
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    margin: auto;
+    background-color: #eee;
+    max-width: 40%;
+    border-radius: 15px;
+    box-shadow: #bbb 6px 6px 12px;
+}
+
+/* TOP MENU */
+.topMenuBar {
+    background-color: #303030;
+    border: none;
+    color: white;
+    vertical-align: middle;
+}
+
+.topMenuBar .menuitem {
+    color: rgb(200,200,200);
+    height: 100%;
+    margin-top: 15px;
+}
+
+.topMenuBar .menuitem:hover {
+    color: white;
+}
+
+.topMenuBar .logomenuitem {
+    background-image: url("#{resource['images/temp_logo.png']}") !important;
+    width: 60px;
+    height: 60px;
+    margin-right: 8px;
+    background-size:     cover;                  
+    background-repeat:   no-repeat;
+    background-position: center center;       
+}
+
+/* MANAGER DASHBOARD */
+
+.menutile {
+    text-align: center;
+    padding: 8%;
+    width: 100%;
+    border: 1px solid white;
+}
+
+.menutile:hover {
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    background-color: #303030;
+    color:rgb(200,200,200);
+    margin: 0;
+    bottom: 0px;
+    width: 100%;
+    padding: 6%;
+}
+
+/* FORMS */
+.form {
+    padding: 5%;
+}
+
+.formComponent {
+    margin: 10px 20px;
+}
+
+.ui-tabs-nav {
+    font-size: 1.5em;
+    letter-spacing: 0.4vw;
+}
+
+.ui-tabs-nav a {
+    color: #545b62;
+}
+
+
+
+
 

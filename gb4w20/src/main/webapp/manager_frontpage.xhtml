@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Manager</title>
+    </h:head>
+    <h:body>
+        <h:outputStylesheet library="css" name="global.css"  />
+        <div>
+            <ui:insert name="topMenuBar">
+                <ui:include src="/templates/topMenuManager.xhtml"></ui:include>
+            </ui:insert>
+        </div>
+
+        <b:container style="margin-top: 5%; margin-bottom:5%">
+        <div class="ui-g"  >
+            <div class="ui-g-4">
+                <div class="menutile">
+                    <p:graphicImage name="images/inventory_icon.png" style="width: 33%; height: 33%" />
+                    <br />
+                    <h4>${msgs.inventory}</h4>
+                </div>
+            </div>
+            <div class="ui-g-4">
+                <div class="menutile">
+                    <p:graphicImage name="images/sales_icon.png" style="width: 33%; height: 33%" />
+                    <br />
+                    <h4>${msgs.sales}</h4>
+                </div>
+            </div>
+            <div class="ui-g-4">
+                <div class="menutile">
+                    <p:graphicImage name="images/clients_icon.png" style="width: 33%; height: 33%" />
+                    <br />
+                    <h4>${msgs.clients}</h4>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ui-g">
+            <div class="ui-g-4">
+                <div class="menutile">
+                    <p:graphicImage name="images/orders_icon.png" style="width: 33%; height: 33%" />
+                    <br />
+                    <h4>${msgs.orders}</h4>
+                </div>
+            </div>
+            <div class="ui-g-4">
+                <div class="menutile">
+                    <p:graphicImage name="images/reviews_icon.png" style="width: 33%; height: 33%" />
+                    <br />
+                    <h4>${msgs.reviews}</h4>
+                </div>
+            </div>
+            <div class="ui-g-4">
+                <div class="menutile">
+                    <p:graphicImage name="images/report_icon.png" style="width: 33%; height: 33%" />
+                    <br />
+                    <h4>${msgs.reports}</h4>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ui-g">
+            <div class="ui-g-4">
+                <div class="menutile">
+                    <p:graphicImage name="images/news_icon.png" style="width: 33%; height: 33%" />
+                    <br />
+                    <h4>${msgs.news}</h4>
+                </div>
+            </div>
+            <div class="ui-g-4">
+                <div class="menutile">
+                    <p:graphicImage name="images/survey_icon.png" style="width: 33%; height: 33%" />
+                    <br />
+                    <h4>${msgs.surveys}</h4>
+                </div>
+            </div>
+            <div class="ui-g-4">
+                <div class="menutile">
+                    <p:graphicImage name="images/ad_icon.png" style="width: 33%; height: 33%" />
+                    <br />
+                    <h4>${msgs.ads}</h4>
+                </div>
+            </div>
+        </div>
+        </b:container>
+                                
+        <div>
+            <ui:insert name="footer">
+                <ui:include src="/templates/footer.xhtml"></ui:include>
+            </ui:insert>
+        </div>
+    </h:body>
+</html>
