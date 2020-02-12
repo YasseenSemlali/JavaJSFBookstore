@@ -28,6 +28,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,7 +74,7 @@ public class UserActionBeanTests {
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
                 .addAsResource(new File("src/main/resources/log4j2.xml"), "log4j2.xml")
-                .addAsResource("createandseedbookstore.sql")
+                .addAsResource("createbookstore.sql")
                 .addAsLibraries(dependencies);
 
         return webArchive;
@@ -90,17 +91,14 @@ public class UserActionBeanTests {
 
     @Resource
     private UserTransaction userTransaction;
-
+    
     /**
      * Used to test if a User can be successful created. 
      * @throws RollbackFailureException
-     * @throws IllegalStateException
-     * @throws Exception 
      * @author Jeffrey Boisvert
      */
-
     @Test
-    public void testCreate() throws RollbackFailureException, IllegalStateException, Exception {
+    public void testCreate() throws RollbackFailureException {
         
         Users user = createTestUser();
 
@@ -108,6 +106,29 @@ public class UserActionBeanTests {
 
         Users returnedUser = userActionBean.findUser(user.getUserId());
         assertEquals("The made user and the created user in the database do not match.", returnedUser, user);
+
+    }
+    
+    /**
+     * Used to test if a User can be edited correctly.  
+     * @throws RollbackFailureException
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testEditWithName() throws RollbackFailureException, Exception {
+        
+        String testName = "ThisIsATestName"; 
+        
+        Users user = createTestUser();
+        userActionBean.create(user);
+        
+        String originalName = user.getFirstName();
+        user.setFirstName(testName);
+        
+        userActionBean.edit(user);
+
+        Users returnedUser = userActionBean.findUser(user.getUserId());
+        assertNotEquals("The user's name was not changed correctly", returnedUser.getFirstName(), originalName);
 
     }
 
@@ -119,7 +140,7 @@ public class UserActionBeanTests {
      */
     @Before
     public void seedDatabase() {
-        final String seedDataScript = loadAsString("createandseedbookstore.sql");
+        final String seedDataScript = loadAsString("createbookstore.sql");
         
         if (dataSource == null){
             System.out.println("Datasource is null");
