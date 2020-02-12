@@ -131,6 +131,149 @@ public class UserActionBeanTests {
         assertNotEquals("The user's name was not changed correctly", returnedUser.getFirstName(), originalName);
 
     }
+    
+    /**
+     * Used to test if a User can be edited correctly.  
+     * @throws RollbackFailureException
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testEditWithAddress() throws RollbackFailureException, Exception {
+        
+        String testAddress = "ThisIsATestAddress"; 
+        
+        Users user = createTestUser();
+        userActionBean.create(user);
+        
+        String originalAddress = user.getFirstName();
+        user.setAddress1(testAddress);
+        
+        userActionBean.edit(user);
+
+        Users returnedUser = userActionBean.findUser(user.getUserId());
+        assertNotEquals("The user's address was not changed correctly", returnedUser.getAddress1(), originalAddress);
+
+    }
+    
+    /**
+     * Used to test if a User just added can be found with id
+     * @throws RollbackFailureException
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testFindUserById() throws RollbackFailureException, Exception {
+        
+        Users user = createTestUser();
+        
+        userActionBean.create(user);
+
+        Users returnedUser = userActionBean.findUser(1l);
+        assertEquals("Did not find the user with id 1 in the database.", user, returnedUser);
+
+    }
+    
+    /**
+     * Used to test if a User just added can be found with id that is not just the first
+     * @throws RollbackFailureException
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testFindUserByIdSecondCreated() throws RollbackFailureException, Exception {
+        
+        Users user = createTestUser();
+        userActionBean.create(user);
+        
+        Users secondUser = createTestUser();
+        userActionBean.create(secondUser);
+
+        Users returnedUser = userActionBean.findUser(2l);
+        assertEquals("Did not find the user with id 1 in the database.", secondUser, returnedUser);
+
+    }
+    
+    /**
+     * Used to test if able to find users with a firstname given. 
+     * @throws RollbackFailureException
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testFindUsersByFirstName() throws RollbackFailureException, Exception {
+        
+        int expectedSize = 2; 
+        
+        Users user = createTestUser();
+        userActionBean.create(user);
+        
+        Users secondUser = createTestUser();
+        userActionBean.create(secondUser);
+
+        List<Users> returnedUser = userActionBean.findUsersByFirstName("Test");
+        assertEquals("Did not find all the users with the first name similar to Test", returnedUser.size(), expectedSize);
+
+    }
+    
+    /**
+     * Used to test if correct behaviour if not users have a similar first name
+     * @throws RollbackFailureException
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testFindUsersByFirstNameNoResult() throws RollbackFailureException, Exception {
+        
+        int expectedSize = 0; 
+        
+        Users user = createTestUser();
+        userActionBean.create(user);
+        
+        Users secondUser = createTestUser();
+        userActionBean.create(secondUser);
+
+        List<Users> returnedUser = userActionBean.findUsersByFirstName("I am not a real name");
+        assertEquals("Found results even though there should be none", returnedUser.size(), expectedSize);
+
+    }
+    
+    /**
+     * Used to test if able to find users with a last name given. 
+     * @throws RollbackFailureException
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testFindUsersByLastName() throws RollbackFailureException, Exception {
+        
+        int expectedSize = 2; 
+        
+        Users user = createTestUser();
+        userActionBean.create(user);
+        
+        Users secondUser = createTestUser();
+        userActionBean.create(secondUser);
+
+        List<Users> returnedUser = userActionBean.findUsersByLastName("Test");
+        assertEquals("Did not find all the users with the last name similar to Test", returnedUser.size(), expectedSize);
+
+    }
+    
+    /**
+     * Used to test if correct behaviour if not users have a similar last name
+     * @throws RollbackFailureException
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testFindUsersByLastNameNoResult() throws RollbackFailureException, Exception {
+        
+        int expectedSize = 0; 
+        
+        Users user = createTestUser();
+        userActionBean.create(user);
+        
+        Users secondUser = createTestUser();
+        userActionBean.create(secondUser);
+
+        List<Users> returnedUser = userActionBean.findUsersByLastName("I am not a real name");
+        assertEquals("Found results even though there should be none", returnedUser.size(), expectedSize);
+
+    }
 
     /**
      * Restore the database to a known state before testing. This is important

@@ -110,7 +110,7 @@ public class UserActionBean implements Serializable {
      * @param firstName of the user
      * @return collection of users who have that name or similar
      */
-    public List<Users> findUser(String firstName){
+    public List<Users> findUsersByFirstName(String firstName){
 
           CriteriaBuilder cb = entityManager.getCriteriaBuilder();
           CriteriaQuery<Users> cq = cb.createQuery(Users.class);
@@ -119,6 +119,26 @@ public class UserActionBean implements Serializable {
           cq.select(user);
           cq.where(cb.like(user.get(Users_.firstName), "%" + firstName + "%"));
           cq.orderBy(cb.asc(user.get((Users_.firstName))));
+          
+          TypedQuery<Users> query = entityManager.createQuery(cq);
+          return query.getResultList();
+          
+    }
+    
+    /**
+     * Used to return a list of all the users who match the given last name
+     * @param lastName of the user
+     * @return collection of users who have that name or similar
+     */
+    public List<Users> findUsersByLastName(String lastName){
+
+          CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+          CriteriaQuery<Users> cq = cb.createQuery(Users.class);
+          Root<Users> user = cq.from(Users.class);
+          
+          cq.select(user);
+          cq.where(cb.like(user.get(Users_.lastName), "%" + lastName + "%"));
+          cq.orderBy(cb.asc(user.get((Users_.lastName))));
           
           TypedQuery<Users> query = entityManager.createQuery(cq);
           return query.getResultList();

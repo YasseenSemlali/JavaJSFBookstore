@@ -7,4 +7,15 @@
                 <goal>test</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-Run Without Tests</actionName>
+            <displayName>Build Without Tests</displayName>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-Build</actionName>
+            <displayName>Build</displayName>
+        </action>
     </actions>
