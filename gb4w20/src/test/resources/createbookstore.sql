@@ -1,6 +1,6 @@
 -- create database bookstore;
 
-use bookstore;
+use gb4w20;
 -- Yasseen
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS books;
@@ -38,7 +38,10 @@ CREATE TABLE books(
   timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   active BOOLEAN NOT NULL DEFAULT true,
   
-  PRIMARY KEY (isbn)
+  PRIMARY KEY (isbn), 
+
+    constraint list_price_valid check (list_price > wholesale_price),
+    constraint sale_price_valid check ((list_price - sale_price) > wholesale_price)
 );
 
 CREATE TABLE genres(
