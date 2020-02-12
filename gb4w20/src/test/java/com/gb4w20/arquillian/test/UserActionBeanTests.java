@@ -21,8 +21,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import javax.transaction.UserTransaction;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -30,6 +30,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +41,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jeffrey Boisvert
  */
+@RunWith(Arquillian.class)
 public class UserActionBeanTests {
     
     private final static Logger LOG = LoggerFactory.getLogger(UserActionBeanTests.class);
@@ -71,7 +73,7 @@ public class UserActionBeanTests {
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
                 .addAsResource(new File("src/main/resources/log4j2.xml"), "log4j2.xml")
-                .addAsResource("createbookstore.sql")
+                .addAsResource("createandseedbookstore.sql")
                 .addAsLibraries(dependencies);
 
         return webArchive;
@@ -117,7 +119,7 @@ public class UserActionBeanTests {
      */
     @Before
     public void seedDatabase() {
-        final String seedDataScript = loadAsString("createbookstore.sql");
+        final String seedDataScript = loadAsString("createandseedbookstore.sql");
         
         if (dataSource == null){
             System.out.println("Datasource is null");
