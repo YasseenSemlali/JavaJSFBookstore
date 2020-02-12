@@ -12,11 +12,12 @@ Java Server Faces page that displays the frontpage of the app
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
         <title>Front page</title>
     </ui:define>
-    
+
     <ui:define name="content">
         <b:jumbotron>
             <b:container>
@@ -27,11 +28,27 @@ Java Server Faces page that displays the frontpage of the app
                 </p>
             </b:container>
         </b:jumbotron>
+        
+        <div class="card">
+            <div class="card-header">
+                <h1 >Browse by genre</h1>
+            </div>
+            <div class="card-body">
+                <b:panelGrid columns="4">
+                    <c:forEach items="#{genreActionBean.getAllGenres()}" var="genre">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h2 class="card-title">#{genre.getGenre()}</h2>
+                                <a href="#" class="btn btn-primary">Browse</a>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </b:panelGrid>
+            </div>
+        </div>
+
 
         <p:carousel numVisible="5" value="#{bookActionBean.getBooksOnSale()}" headerText="On sale" var="book" itemStyle="text-align:center" responsive="true" >
-            <h:graphicImage library="img" name = "covers/#{book.getCover()}" height="200px"/> 
-            <p class="h5"><strong>#{book.getTitle()}</strong></p>
-            <p class="h4"> <span class="crossed-out">$#{book.getListPrice()}</span> <strong>$#{book.getListPrice() - book.getSalePrice()}</strong></p>
             <ui:decorate template="/templates/book.xhtml">
                 <ui:param name="book" value="#{book}"></ui:param>
                 <ui:param name="showPrice" value="true"></ui:param>
@@ -43,14 +60,17 @@ Java Server Faces page that displays the frontpage of the app
             <b:row>
                 <b:column col-md="4">
                     <h2>You recently bought</h2>
+                    <c:forEach items="#{genreActionBean.getAllGenres()}" var="genre">
+                        #{genre.getGenre()}
+                    </c:forEach>
                 </b:column>
                 <b:column col-md="4">
                     <h2>Survey</h2>
 
-                    <h3>Test question?</h3>
+                    <h3>#{surveyQuestionsActionBean.getActiveQuestion().getQuestion()}</h3>
                     <b:form>
-                        <ui:repeat value="#" var="question">
-                            <b:radiobutton></b:radiobutton>
+                        <ui:repeat value="#{surveyQuestionsActionBean.getActiveQuestion().getSurveyResponsesCollection()}" var="response">
+                            <b:radiobutton value="#{response.getId()}" item-label="#{response.getResponse()}"></b:radiobutton>
                         </ui:repeat>
                         <b:commandButton value="Submit" action="#" look="primary" update="@form" />
                     </b:form>

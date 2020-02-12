@@ -1244,9 +1244,9 @@ INSERT INTO ads(file_location, url) VALUES('summer_ad.png', 'https://www.dawsonc
 
 
 -- Survey Questions
-INSERT INTO survey_questions(id, question) VALUES (1,'What is your favorite colour?'); 
-INSERT INTO survey_questions(id, question) VALUES (2,'Do you prefer Mooses or Deer?'); 
-INSERT INTO survey_questions(id, question) VALUES (3,'Do you e-books or physical books?'); 
+INSERT INTO survey_questions(id, question, enabled) VALUES (1,'What is your favorite colour?', true); 
+INSERT INTO survey_questions(id, question, enabled) VALUES (2,'Do you prefer Moose or Deer?', false); 
+INSERT INTO survey_questions(id, question, enabled) VALUES (3,'Do you e-books or physical books?', false); 
 ALTER TABLE survey_questions AUTO_INCREMENT=4;
 -- Survey Responses 
 INSERT INTO survey_responses(survey_question_id, response, count) VALUES (1, 'Blue', 5); 
@@ -1255,7 +1255,7 @@ INSERT INTO survey_responses(survey_question_id, response, count) VALUES (1, 'Ye
 
 INSERT INTO survey_responses(survey_question_id, response, count) VALUES (2, 'Moose', 15);
 INSERT INTO survey_responses(survey_question_id, response, count) VALUES (2, 'Deer', 12);
-INSERT INTO survey_responses(survey_question_id, response, count) VALUES (1, 'Neither', 999);
+INSERT INTO survey_responses(survey_question_id, response, count) VALUES (2, 'Neither', 999);
 
 INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'E-books', 500);
 INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'Physical Books', 500);
