@@ -3,7 +3,7 @@ package com.gb4w20.arquillian.test;
 
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
-import com.gb4w20.gb4w20.jpa.UserActionBean;
+import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -43,9 +43,9 @@ import org.slf4j.LoggerFactory;
  * @author Jeffrey Boisvert
  */
 @RunWith(Arquillian.class)
-public class UserActionBeanTests {
+public class UserJpaControllerTests {
     
-    private final static Logger LOG = LoggerFactory.getLogger(UserActionBeanTests.class);
+    private final static Logger LOG = LoggerFactory.getLogger(UserJpaControllerTests.class);
 
     @Deployment
     public static WebArchive deploy() {
@@ -67,7 +67,7 @@ public class UserActionBeanTests {
         // The SQL script to create the database is in src/test/resources
         final WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war")
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
-                .addPackage(UserActionBean.class.getPackage())
+                .addPackage(UsersJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Users.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -81,7 +81,7 @@ public class UserActionBeanTests {
     }
 
     @Inject
-    private UserActionBean userActionBean;
+    private UsersJpaController userController;
 
     @Resource(lookup = "java:app/jdbc/bookstore")
     private DataSource dataSource;
@@ -102,9 +102,9 @@ public class UserActionBeanTests {
         
         Users user = createTestUser();
 
-        userActionBean.create(user);
+        userController.create(user);
 
-        Users returnedUser = userActionBean.findUser(user.getUserId());
+        Users returnedUser = userController.findUsers(user.getUserId());
         assertEquals("The made user and the created user in the database do not match.", returnedUser, user);
 
     }
@@ -120,14 +120,14 @@ public class UserActionBeanTests {
         String testName = "ThisIsATestName"; 
         
         Users user = createTestUser();
-        userActionBean.create(user);
+        userController.create(user);
         
         String originalName = user.getFirstName();
         user.setFirstName(testName);
         
-        userActionBean.edit(user);
+        userController.edit(user);
 
-        Users returnedUser = userActionBean.findUser(user.getUserId());
+        Users returnedUser = userController.findUsers(user.getUserId());
         assertNotEquals("The user's name was not changed correctly", returnedUser.getFirstName(), originalName);
 
     }
@@ -143,14 +143,14 @@ public class UserActionBeanTests {
         String testAddress = "ThisIsATestAddress"; 
         
         Users user = createTestUser();
-        userActionBean.create(user);
+        userController.create(user);
         
         String originalAddress = user.getFirstName();
         user.setAddress1(testAddress);
         
-        userActionBean.edit(user);
+        userController.edit(user);
 
-        Users returnedUser = userActionBean.findUser(user.getUserId());
+        Users returnedUser = userController.findUsers(user.getUserId());
         assertNotEquals("The user's address was not changed correctly", returnedUser.getAddress1(), originalAddress);
 
     }
@@ -165,9 +165,9 @@ public class UserActionBeanTests {
         
         Users user = createTestUser();
         
-        userActionBean.create(user);
+        userController.create(user);
 
-        Users returnedUser = userActionBean.findUser(1l);
+        Users returnedUser = userController.findUsers(1l);
         assertEquals("Did not find the user with id 1 in the database.", user, returnedUser);
 
     }
@@ -181,12 +181,12 @@ public class UserActionBeanTests {
     public void testFindUserByIdSecondCreated() throws RollbackFailureException, Exception {
         
         Users user = createTestUser();
-        userActionBean.create(user);
+        userController.create(user);
         
         Users secondUser = createTestUser();
-        userActionBean.create(secondUser);
+        userController.create(secondUser);
 
-        Users returnedUser = userActionBean.findUser(2l);
+        Users returnedUser = userController.findUsers(2l);
         assertEquals("Did not find the user with id 1 in the database.", secondUser, returnedUser);
 
     }
@@ -202,12 +202,12 @@ public class UserActionBeanTests {
         int expectedSize = 2; 
         
         Users user = createTestUser();
-        userActionBean.create(user);
+        userController.create(user);
         
         Users secondUser = createTestUser();
-        userActionBean.create(secondUser);
+        userController.create(secondUser);
 
-        List<Users> returnedUser = userActionBean.findUsersByFirstName("Test");
+        List<Users> returnedUser = userController.findUsersByFirstName("Test");
         assertEquals("Did not find all the users with the first name similar to Test", returnedUser.size(), expectedSize);
 
     }
@@ -223,12 +223,12 @@ public class UserActionBeanTests {
         int expectedSize = 0; 
         
         Users user = createTestUser();
-        userActionBean.create(user);
+        userController.create(user);
         
         Users secondUser = createTestUser();
-        userActionBean.create(secondUser);
+        userController.create(secondUser);
 
-        List<Users> returnedUser = userActionBean.findUsersByFirstName("I am not a real name");
+        List<Users> returnedUser = userController.findUsersByFirstName("I am not a real name");
         assertEquals("Found results even though there should be none", returnedUser.size(), expectedSize);
 
     }
@@ -244,12 +244,12 @@ public class UserActionBeanTests {
         int expectedSize = 2; 
         
         Users user = createTestUser();
-        userActionBean.create(user);
+        userController.create(user);
         
         Users secondUser = createTestUser();
-        userActionBean.create(secondUser);
+        userController.create(secondUser);
 
-        List<Users> returnedUser = userActionBean.findUsersByLastName("Test");
+        List<Users> returnedUser = userController.findUsersByLastName("Test");
         assertEquals("Did not find all the users with the last name similar to Test", returnedUser.size(), expectedSize);
 
     }
@@ -265,12 +265,12 @@ public class UserActionBeanTests {
         int expectedSize = 0; 
         
         Users user = createTestUser();
-        userActionBean.create(user);
+        userController.create(user);
         
         Users secondUser = createTestUser();
-        userActionBean.create(secondUser);
+        userController.create(secondUser);
 
-        List<Users> returnedUser = userActionBean.findUsersByLastName("I am not a real name");
+        List<Users> returnedUser = userController.findUsersByLastName("I am not a real name");
         assertEquals("Found results even though there should be none", returnedUser.size(), expectedSize);
 
     }
