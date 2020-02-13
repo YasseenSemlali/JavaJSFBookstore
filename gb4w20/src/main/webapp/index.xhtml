@@ -37,7 +37,7 @@ Java Server Faces page that displays the frontpage of the app
                 </div>
                 <div class="card-body">
                     <b:panelGrid columns="4">
-                        <c:forEach items="#{genreActionBean.getAllGenres()}" var="genre">
+                        <c:forEach items="#{genresJpaController.findGenresEntities()}" var="genre">
                             <div class="card text-center">
                                 <div class="card-body">
                                     <h2 class="card-title">#{genre.getGenre()}</h2>
@@ -50,7 +50,7 @@ Java Server Faces page that displays the frontpage of the app
             </div>
 
            <!--https://stackoverflow.com/questions/37837623/primefaces-carousel-next-and-prev-methods-are-not-working-in-version-5-3-and-->
-            <p:carousel numVisible="5" value="#{bookActionBean.getBooksOnSale()}" headerText="On sale" var="book" itemStyle="text-align:center" responsive="true" >
+            <p:carousel numVisible="5" value="#{booksJpaController.getBooksOnSale()}" headerText="On sale" var="book" itemStyle="text-align:center" responsive="true" >
                 
                 <ui:decorate template="/templates/book.xhtml">
                     <ui:param name="book" value="#{book}"></ui:param>
@@ -64,7 +64,7 @@ Java Server Faces page that displays the frontpage of the app
                 <b:column col-md="4">
                     <h2>You recently bought</h2>
                     <b:panelGrid columns="2">
-                        <c:forEach items="#{bookActionBean.getRecentlyBoughtBooks(3)}" var="book">
+                        <c:forEach items="#{booksJpaController.getRecentlyBoughtBooks(3)}" var="book">
                             <ui:decorate template="/templates/book.xhtml">
                                 <ui:param name="book" value="#{book}"></ui:param>
                             </ui:decorate>
@@ -74,9 +74,9 @@ Java Server Faces page that displays the frontpage of the app
                 <b:column col-md="4">
                     <h2>Survey</h2>
 
-                    <h3>#{surveyQuestionsActionBean.getActiveQuestion().getQuestion()}</h3>
+                    <h3>#{surveyQuestionsJpaController.getActiveQuestion().getQuestion()}</h3>
                     <b:form>
-                        <ui:repeat value="#{surveyQuestionsActionBean.getActiveQuestion().getSurveyResponsesCollection()}" var="response">
+                        <ui:repeat value="#{surveyQuestionsJpaController.getActiveQuestion().getSurveyResponsesCollection()}" var="response">
                             <b:radiobutton value="#{response.getId()}" item-label="#{response.getResponse()}"></b:radiobutton>
                         </ui:repeat>
                         <b:commandButton value="Submit" action="#" look="primary" update="@form" />
