@@ -9,12 +9,20 @@
     </h:head>
     <h:body>
         <ui:composition>
-            <h:graphicImage library="img" name = "covers/#{book.getCover()}" height="200px"/> 
-            <p class="h5"><strong>#{book.getTitle()}</strong></p>
-            
-            <h:panelGroup  rendered="#{showPrice}">
-                <p class="h4"> <h:panelGroup rendered="#{showOldPrice == null || showOldPrice == true}"><span class="crossed-out">$#{book.getListPrice()}</span></h:panelGroup> <strong>$#{book.getListPrice() - book.getSalePrice()}</strong></p>
-            </h:panelGroup>
+            <h:outputStylesheet library="css" name="book.css" />
+            <h:link outcome="index">
+                <div>
+                <h:graphicImage library="img" name = "covers/#{book.getCover()}" height="200px"/> 
+                <p class="h5"><strong>#{book.getTitle()}</strong></p>
+
+                <h:panelGroup  rendered="#{showPrice}">
+                    <p class="h4"> 
+                        <h:panelGroup rendered="#{showOldPrice == null || showOldPrice == true}"><span class="crossed-out">$#{book.getListPrice()}</span></h:panelGroup> 
+                        <strong>$#{book.getListPrice() - book.getSalePrice()}</strong></p>
+                </h:panelGroup>
+                </div>
+            </h:link>
+
         </ui:composition>
     </h:body>
 </html>
