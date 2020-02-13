@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.Bookorder;
@@ -15,28 +11,31 @@ import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.transaction.UserTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Used to interact with the book order table in the database. 
+ * 
  * @author Jeffrey Boisvert
  */
 public class BookorderJpaController implements Serializable {
 
-    public BookorderJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    private final static Logger LOG = LoggerFactory.getLogger(BookorderJpaController.class);
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+
+    @PersistenceContext(unitName = "BookPU")
+    private EntityManager em;
 
     public void create(Bookorder bookorder) {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Books isbn = bookorder.getIsbn();
             if (isbn != null) {
@@ -66,9 +65,7 @@ public class BookorderJpaController implements Serializable {
     }
 
     public void edit(Bookorder bookorder) throws NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Bookorder persistentBookorder = em.find(Bookorder.class, bookorder.getBookorderId());
             Books isbnOld = persistentBookorder.getIsbn();
@@ -118,9 +115,7 @@ public class BookorderJpaController implements Serializable {
     }
 
     public void destroy(Long id) throws NonexistentEntityException {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Bookorder bookorder;
             try {
@@ -157,7 +152,6 @@ public class BookorderJpaController implements Serializable {
     }
 
     private List<Bookorder> findBookorderEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Bookorder.class));
@@ -173,7 +167,6 @@ public class BookorderJpaController implements Serializable {
     }
 
     public Bookorder findBookorder(Long id) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(Bookorder.class, id);
         } finally {
@@ -182,7 +175,6 @@ public class BookorderJpaController implements Serializable {
     }
 
     public int getBookorderCount() {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<Bookorder> rt = cq.from(Bookorder.class);

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import java.io.Serializable;
@@ -15,28 +11,30 @@ import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.transaction.UserTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Used to interact with the reviews table in the database. 
  * @author Jeffrey Boisvert
  */
 public class ReviewsJpaController implements Serializable {
 
-    public ReviewsJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    private final static Logger LOG = LoggerFactory.getLogger(ReviewsJpaController.class);
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+
+    @PersistenceContext(unitName = "BookPU")
+    private EntityManager em;
 
     public void create(Reviews reviews) {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Books isbn = reviews.getIsbn();
             if (isbn != null) {
@@ -66,9 +64,7 @@ public class ReviewsJpaController implements Serializable {
     }
 
     public void edit(Reviews reviews) throws NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Reviews persistentReviews = em.find(Reviews.class, reviews.getReviewId());
             Books isbnOld = persistentReviews.getIsbn();
@@ -118,9 +114,7 @@ public class ReviewsJpaController implements Serializable {
     }
 
     public void destroy(Long id) throws NonexistentEntityException {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Reviews reviews;
             try {
@@ -157,7 +151,6 @@ public class ReviewsJpaController implements Serializable {
     }
 
     private List<Reviews> findReviewsEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Reviews.class));
@@ -173,7 +166,6 @@ public class ReviewsJpaController implements Serializable {
     }
 
     public Reviews findReviews(Long id) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(Reviews.class, id);
         } finally {
@@ -182,7 +174,6 @@ public class ReviewsJpaController implements Serializable {
     }
 
     public int getReviewsCount() {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<Reviews> rt = cq.from(Reviews.class);

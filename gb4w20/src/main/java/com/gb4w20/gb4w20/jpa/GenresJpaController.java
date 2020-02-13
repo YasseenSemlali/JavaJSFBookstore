@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import java.io.Serializable;
@@ -16,8 +12,12 @@ import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.transaction.UserTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -25,22 +25,19 @@ import javax.persistence.EntityManagerFactory;
  */
 public class GenresJpaController implements Serializable {
 
-    public GenresJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    private final static Logger LOG = LoggerFactory.getLogger(GenresJpaController.class);
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+
+    @PersistenceContext(unitName = "BookPU")
+    private EntityManager em;
 
     public void create(Genres genres) {
         if (genres.getBooksCollection() == null) {
             genres.setBooksCollection(new ArrayList<Books>());
         }
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Collection<Books> attachedBooksCollection = new ArrayList<Books>();
             for (Books booksCollectionBooksToAttach : genres.getBooksCollection()) {
@@ -62,9 +59,7 @@ public class GenresJpaController implements Serializable {
     }
 
     public void edit(Genres genres) throws NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Genres persistentGenres = em.find(Genres.class, genres.getGenreId());
             Collection<Books> booksCollectionOld = persistentGenres.getBooksCollection();
@@ -107,9 +102,7 @@ public class GenresJpaController implements Serializable {
     }
 
     public void destroy(Long id) throws NonexistentEntityException {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Genres genres;
             try {
@@ -141,7 +134,6 @@ public class GenresJpaController implements Serializable {
     }
 
     private List<Genres> findGenresEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Genres.class));
@@ -157,7 +149,6 @@ public class GenresJpaController implements Serializable {
     }
 
     public Genres findGenres(Long id) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(Genres.class, id);
         } finally {
@@ -166,7 +157,6 @@ public class GenresJpaController implements Serializable {
     }
 
     public int getGenresCount() {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<Genres> rt = cq.from(Genres.class);

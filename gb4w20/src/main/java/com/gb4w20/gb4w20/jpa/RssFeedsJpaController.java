@@ -1,40 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.RssFeeds;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.transaction.UserTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Used to interact with the rssfeeds table in the database. 
+ * 
  * @author Jeffrey Boisvert
  */
 public class RssFeedsJpaController implements Serializable {
 
-    public RssFeedsJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    private final static Logger LOG = LoggerFactory.getLogger(RssFeedsJpaController.class);
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+
+    @PersistenceContext(unitName = "BookPU")
+    private EntityManager em;
 
     public void create(RssFeeds rssFeeds) {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             em.persist(rssFeeds);
             em.getTransaction().commit();
@@ -46,9 +45,7 @@ public class RssFeedsJpaController implements Serializable {
     }
 
     public void edit(RssFeeds rssFeeds) throws NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             rssFeeds = em.merge(rssFeeds);
             em.getTransaction().commit();
@@ -69,9 +66,7 @@ public class RssFeedsJpaController implements Serializable {
     }
 
     public void destroy(Long id) throws NonexistentEntityException {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             RssFeeds rssFeeds;
             try {
@@ -98,7 +93,6 @@ public class RssFeedsJpaController implements Serializable {
     }
 
     private List<RssFeeds> findRssFeedsEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(RssFeeds.class));
@@ -114,7 +108,6 @@ public class RssFeedsJpaController implements Serializable {
     }
 
     public RssFeeds findRssFeeds(Long id) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(RssFeeds.class, id);
         } finally {
@@ -123,7 +116,6 @@ public class RssFeedsJpaController implements Serializable {
     }
 
     public int getRssFeedsCount() {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<RssFeeds> rt = cq.from(RssFeeds.class);

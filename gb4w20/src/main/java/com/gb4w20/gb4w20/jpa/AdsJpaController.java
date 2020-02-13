@@ -1,40 +1,38 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.Ads;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.transaction.UserTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- *
+/** 
+ * Used to interact with the ads table. 
+ * 
  * @author Jeffrey Boisvert
  */
 public class AdsJpaController implements Serializable {
 
-    public AdsJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    private final static Logger LOG = LoggerFactory.getLogger(AuthorsJpaController.class);
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+
+    @PersistenceContext(unitName = "BookPU")
+    private EntityManager em;
 
     public void create(Ads ads) {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             em.persist(ads);
             em.getTransaction().commit();
@@ -46,9 +44,7 @@ public class AdsJpaController implements Serializable {
     }
 
     public void edit(Ads ads) throws NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             ads = em.merge(ads);
             em.getTransaction().commit();
@@ -69,9 +65,7 @@ public class AdsJpaController implements Serializable {
     }
 
     public void destroy(Long id) throws NonexistentEntityException {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Ads ads;
             try {
@@ -98,7 +92,6 @@ public class AdsJpaController implements Serializable {
     }
 
     private List<Ads> findAdsEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Ads.class));
@@ -114,7 +107,6 @@ public class AdsJpaController implements Serializable {
     }
 
     public Ads findAds(Long id) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(Ads.class, id);
         } finally {
@@ -123,7 +115,6 @@ public class AdsJpaController implements Serializable {
     }
 
     public int getAdsCount() {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<Ads> rt = cq.from(Ads.class);

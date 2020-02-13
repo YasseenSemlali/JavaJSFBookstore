@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TaxesJpaController implements Serializable {
 
-    private final static Logger LOG = LoggerFactory.getLogger(UsersJpaController.class);
+    private final static Logger LOG = LoggerFactory.getLogger(TaxesJpaController.class);
 
     @Resource
     private UserTransaction utx;

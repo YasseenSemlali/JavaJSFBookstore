@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.BookFiles;
@@ -15,28 +11,31 @@ import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.FileFormats;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.transaction.UserTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Used to interact with the book files table. 
+ * 
  * @author Jeffrey Boisvert
  */
 public class BookFilesJpaController implements Serializable {
 
-    public BookFilesJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    private final static Logger LOG = LoggerFactory.getLogger(BookFilesJpaController.class);
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+
+    @PersistenceContext(unitName = "BookPU")
+    private EntityManager em;
 
     public void create(BookFiles bookFiles) {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Books isbn = bookFiles.getIsbn();
             if (isbn != null) {
@@ -66,9 +65,7 @@ public class BookFilesJpaController implements Serializable {
     }
 
     public void edit(BookFiles bookFiles) throws NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             BookFiles persistentBookFiles = em.find(BookFiles.class, bookFiles.getBookFileId());
             Books isbnOld = persistentBookFiles.getIsbn();
@@ -118,9 +115,7 @@ public class BookFilesJpaController implements Serializable {
     }
 
     public void destroy(Long id) throws NonexistentEntityException {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             BookFiles bookFiles;
             try {
@@ -157,7 +152,6 @@ public class BookFilesJpaController implements Serializable {
     }
 
     private List<BookFiles> findBookFilesEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(BookFiles.class));
@@ -173,7 +167,6 @@ public class BookFilesJpaController implements Serializable {
     }
 
     public BookFiles findBookFiles(Long id) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(BookFiles.class, id);
         } finally {
@@ -181,17 +174,4 @@ public class BookFilesJpaController implements Serializable {
         }
     }
 
-    public int getBookFilesCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<BookFiles> rt = cq.from(BookFiles.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-    }
-    
 }

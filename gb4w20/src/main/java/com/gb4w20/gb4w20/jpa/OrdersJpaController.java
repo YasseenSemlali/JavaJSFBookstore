@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import java.io.Serializable;
@@ -18,31 +14,34 @@ import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.transaction.UserTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Used to interact with the orders table in the database. 
+ * 
  * @author Jeffrey Boisvert
  */
 public class OrdersJpaController implements Serializable {
 
-    public OrdersJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    private final static Logger LOG = LoggerFactory.getLogger(OrdersJpaController.class);
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+
+    @PersistenceContext(unitName = "BookPU")
+    private EntityManager em;
 
     public void create(Orders orders) {
         if (orders.getBookorderCollection() == null) {
             orders.setBookorderCollection(new ArrayList<Bookorder>());
         }
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Users userId = orders.getUserId();
             if (userId != null) {
@@ -78,9 +77,7 @@ public class OrdersJpaController implements Serializable {
     }
 
     public void edit(Orders orders) throws IllegalOrphanException, NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Orders persistentOrders = em.find(Orders.class, orders.getOrderId());
             Users userIdOld = persistentOrders.getUserId();
@@ -148,9 +145,7 @@ public class OrdersJpaController implements Serializable {
     }
 
     public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Orders orders;
             try {
@@ -193,7 +188,6 @@ public class OrdersJpaController implements Serializable {
     }
 
     private List<Orders> findOrdersEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Orders.class));
@@ -209,7 +203,6 @@ public class OrdersJpaController implements Serializable {
     }
 
     public Orders findOrders(Long id) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(Orders.class, id);
         } finally {
@@ -218,7 +211,6 @@ public class OrdersJpaController implements Serializable {
     }
 
     public int getOrdersCount() {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<Orders> rt = cq.from(Orders.class);

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.Authors;
@@ -16,31 +12,34 @@ import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.transaction.UserTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Used to interact with the authors table. 
+ * 
  * @author Jeffrey Boisvert
  */
 public class AuthorsJpaController implements Serializable {
 
-    public AuthorsJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    private final static Logger LOG = LoggerFactory.getLogger(AuthorsJpaController.class);
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
+
+    @PersistenceContext(unitName = "BookPU")
+    private EntityManager em;
 
     public void create(Authors authors) {
         if (authors.getBooksCollection() == null) {
             authors.setBooksCollection(new ArrayList<Books>());
         }
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Collection<Books> attachedBooksCollection = new ArrayList<Books>();
             for (Books booksCollectionBooksToAttach : authors.getBooksCollection()) {
@@ -62,9 +61,7 @@ public class AuthorsJpaController implements Serializable {
     }
 
     public void edit(Authors authors) throws NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Authors persistentAuthors = em.find(Authors.class, authors.getAuthorId());
             Collection<Books> booksCollectionOld = persistentAuthors.getBooksCollection();
@@ -107,9 +104,7 @@ public class AuthorsJpaController implements Serializable {
     }
 
     public void destroy(Long id) throws NonexistentEntityException {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Authors authors;
             try {
@@ -141,7 +136,6 @@ public class AuthorsJpaController implements Serializable {
     }
 
     private List<Authors> findAuthorsEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Authors.class));
@@ -157,7 +151,6 @@ public class AuthorsJpaController implements Serializable {
     }
 
     public Authors findAuthors(Long id) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(Authors.class, id);
         } finally {
@@ -166,7 +159,6 @@ public class AuthorsJpaController implements Serializable {
     }
 
     public int getAuthorsCount() {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<Authors> rt = cq.from(Authors.class);
