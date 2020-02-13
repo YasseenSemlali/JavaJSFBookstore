@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import java.io.Serializable;
@@ -14,28 +10,35 @@ import com.gb4w20.gb4w20.entities.SurveyQuestions;
 import com.gb4w20.gb4w20.entities.SurveyResponses;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.transaction.UserTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Used as a data access object between taxes entities.
+ * 
  * @author Jeffrey Boisvert
  */
 public class SurveyResponsesJpaController implements Serializable {
 
-    public SurveyResponsesJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    private final static Logger LOG = LoggerFactory.getLogger(SurveyResponsesJpaController.class);
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
 
+    @PersistenceContext(unitName = "BookPU")
+    private EntityManager em;
+    
+    /**
+     * Used to create a survey response object in the database.
+     * 
+     * @param surveyResponses 
+     */
     public void create(SurveyResponses surveyResponses) {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             SurveyQuestions surveyQuestionId = surveyResponses.getSurveyQuestionId();
             if (surveyQuestionId != null) {
@@ -54,11 +57,15 @@ public class SurveyResponsesJpaController implements Serializable {
             }
         }
     }
-
+    
+    /**
+     * Allows to update a survey response in the database. 
+     * @param surveyResponses
+     * @throws NonexistentEntityException
+     * @throws Exception 
+     */
     public void edit(SurveyResponses surveyResponses) throws NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             SurveyResponses persistentSurveyResponses = em.find(SurveyResponses.class, surveyResponses.getId());
             SurveyQuestions surveyQuestionIdOld = persistentSurveyResponses.getSurveyQuestionId();
@@ -92,11 +99,14 @@ public class SurveyResponsesJpaController implements Serializable {
             }
         }
     }
-
+    
+    /**
+     * Used to delete a survey response from the database. 
+     * @param id
+     * @throws NonexistentEntityException 
+     */
     public void destroy(Long id) throws NonexistentEntityException {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             SurveyResponses surveyResponses;
             try {
@@ -118,17 +128,35 @@ public class SurveyResponsesJpaController implements Serializable {
             }
         }
     }
-
+    
+    /**
+     * Returns a list of all the available survey responses. 
+     * @return a list of survey responses. 
+     */
     public List<SurveyResponses> findSurveyResponsesEntities() {
         return findSurveyResponsesEntities(true, -1, -1);
     }
-
+    
+    /**
+     * Used to get a list of survey responses given the max results and where to start for
+     * paging purposes. 
+     * @param maxResults
+     * @param firstResult
+     * @return a list of survey reponses. 
+     */
     public List<SurveyResponses> findSurveyResponsesEntities(int maxResults, int firstResult) {
         return findSurveyResponsesEntities(false, maxResults, firstResult);
     }
-
+    
+    /**
+     * Used to get a certain number of survey responses which allows paging. 
+     * 
+     * @param all true to return all results false otherwise. 
+     * @param maxResults
+     * @param firstResult
+     * @return 
+     */
     private List<SurveyResponses> findSurveyResponsesEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(SurveyResponses.class));
@@ -142,24 +170,16 @@ public class SurveyResponsesJpaController implements Serializable {
             em.close();
         }
     }
-
+    
+    /**
+     * Used to find a survey response that matches the given id. 
+     * 
+     * @param id
+     * @return SurveyResponses of the given survey. 
+     */
     public SurveyResponses findSurveyResponses(Long id) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(SurveyResponses.class, id);
-        } finally {
-            em.close();
-        }
-    }
-
-    public int getSurveyResponsesCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<SurveyResponses> rt = cq.from(SurveyResponses.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
         } finally {
             em.close();
         }

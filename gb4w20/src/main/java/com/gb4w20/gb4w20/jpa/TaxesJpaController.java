@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.Taxes;
@@ -10,32 +6,40 @@ import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.jpa.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.transaction.UserTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Used as a data access object between taxes entities.
+ * 
  * @author Jeffrey Boisvert
  */
 public class TaxesJpaController implements Serializable {
 
-    public TaxesJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    private final static Logger LOG = LoggerFactory.getLogger(UsersJpaController.class);
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
 
+    @PersistenceContext(unitName = "BookPU")
+    private EntityManager em;
+    
+    /**
+     * Used to insert a taxes object into the database. 
+     * 
+     * @param taxes to be inserted
+     * @throws PreexistingEntityException
+     * @throws Exception 
+     */
     public void create(Taxes taxes) throws PreexistingEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             em.persist(taxes);
             em.getTransaction().commit();
@@ -50,11 +54,16 @@ public class TaxesJpaController implements Serializable {
             }
         }
     }
-
+    
+    /**
+     * Used to edit a taxes object in the database.
+     * 
+     * @param taxes
+     * @throws NonexistentEntityException
+     * @throws Exception 
+     */
     public void edit(Taxes taxes) throws NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             taxes = em.merge(taxes);
             em.getTransaction().commit();
@@ -73,11 +82,16 @@ public class TaxesJpaController implements Serializable {
             }
         }
     }
-
+    
+    /**
+     * Used to delete taxes from the table. 
+     * 
+     * @param id
+     * @throws NonexistentEntityException 
+     */
     public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Taxes taxes;
             try {
@@ -94,17 +108,36 @@ public class TaxesJpaController implements Serializable {
             }
         }
     }
-
+    
+    /**
+     * Used to find all taxes in the table.
+     * 
+     * @return a list of all the taxes. 
+     */
     public List<Taxes> findTaxesEntities() {
         return findTaxesEntities(true, -1, -1);
     }
-
+    
+    /**
+     * Used to get a certain number of taxes which allows paging. 
+     * 
+     * @param maxResults
+     * @param firstResult
+     * @return 
+     */
     public List<Taxes> findTaxesEntities(int maxResults, int firstResult) {
         return findTaxesEntities(false, maxResults, firstResult);
     }
-
+    
+    /**
+     * Used to get a certain number of taxes which allows paging. 
+     * 
+     * @param all true to return all results false otherwise. 
+     * @param maxResults
+     * @param firstResult
+     * @return 
+     */
     private List<Taxes> findTaxesEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Taxes.class));
@@ -118,24 +151,15 @@ public class TaxesJpaController implements Serializable {
             em.close();
         }
     }
-
+    
+    /**
+     * Used to find taxes with a particular id.
+     * @param id
+     * @return 
+     */
     public Taxes findTaxes(String id) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(Taxes.class, id);
-        } finally {
-            em.close();
-        }
-    }
-
-    public int getTaxesCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Taxes> rt = cq.from(Taxes.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
         } finally {
             em.close();
         }
