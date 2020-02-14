@@ -1,6 +1,8 @@
 
 package com.gb4w20.gb4w20.jpa;
 
+import com.gb4w20.gb4w20.entities.Bookorder;
+import com.gb4w20.gb4w20.entities.Books;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -12,15 +14,20 @@ import java.util.Collection;
 import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.entities.Users_;
-import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
-import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
+import com.gb4w20.gb4w20.exceptions.IllegalOrphanException;
+import com.gb4w20.gb4w20.exceptions.NonexistentEntityException;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +37,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jeffrey Boisvert
  */
+@Named
+@SessionScoped
 public class UsersJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(UsersJpaController.class);
@@ -270,11 +279,37 @@ public class UsersJpaController implements Serializable {
      * @return user object of that id. 
      */
     public Users findUsers(Long id) {
-        try {
-            return em.find(Users.class, id);
-        } finally {
-            em.close();
-        }
+        
+        return em.find(Users.class, id);
+        
+    }
+    
+    /**
+     * Used to get the total sales of a client between a given start 
+     * and end date. 
+     * @param id of the user
+     * @param startDate in format YYYY-MM-DD
+     * @param endDate in format YYYY-MM-DD
+     * @return total of sales
+     */
+    public double getUsersTotalSales(Long id, String startDate, String endDate){
+
+        LOG.info("Looking for user with id " + id);
+        
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        
+        Root<Orders> orders = cq.from(Orders.class);
+        Join<Orders, Bookorder> bookorder = orders.join("bookorderCollection", JoinType.INNER);
+        Join<Orders, Users> user = orders.join("userId", JoinType.INNER);
+        
+        //TODO filter by date
+        cq.select(em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+                .where(cb.equal(user.get("userId"), id));
+
+        Query query = em.createQuery(cq);
+        return ((BigDecimal) query.getSingleResult()).doubleValue();
+        
     }
     
      /**

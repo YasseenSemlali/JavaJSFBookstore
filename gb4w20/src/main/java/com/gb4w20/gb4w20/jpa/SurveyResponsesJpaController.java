@@ -11,6 +11,8 @@ import com.gb4w20.gb4w20.entities.SurveyResponses;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
@@ -22,6 +24,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jeffrey Boisvert
  */
+@Named
+@SessionScoped
 public class SurveyResponsesJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(SurveyResponsesJpaController.class);

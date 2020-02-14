@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
@@ -25,6 +27,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jeffrey Boisvert
  */
+@Named
+@SessionScoped
 public class PublishersJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(PublishersJpaController.class);

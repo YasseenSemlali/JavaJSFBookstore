@@ -21,16 +21,22 @@ the manager to be able to select.
         <ui:insert name="header">
             <ui:include src="/templates/header.xhtml"></ui:include>
         </ui:insert>
-        <div>
+        <ui:insert name="content">
+            #{usersJpaController.getUsersTotalSales(1, "test", "test")}
+        </ui:insert>
+        <!-- <div>
         <h:form id="form">
-        <p:dataList value="#{userActionBean.findUser('Jane')}" var="user" type="unordered" itemType="none" paginator="true" rows="10" styleClass="paginated">
+        <p:dataList value="#{usersJpaController.findUser('Jane')}" var="user" type="unordered" itemType="none" paginator="true" rows="10" styleClass="paginated">
                 <f:facet name="header">
                 #{msgs.clientsTitle}
                 </f:facet>
                 <h:outputText value="#{user.firstName}, #{user.lastName}" style="display:inline-block"/>
             </p:dataList>
         </h:form>
-        </div>
+        </div>-->
+        <p>
+            #{usersJpaController.getUsersTotalSales(1, "test", "test")}
+        </p>
         <ui:insert name="footer">
             <ui:include src="/templates/footer.xhtml"></ui:include>
         </ui:insert>
