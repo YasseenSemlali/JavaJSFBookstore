@@ -108,172 +108,172 @@ public class UserJpaControllerTests {
         assertEquals("The made user and the created user in the database do not match.", returnedUser, user);
 
     }
-    
-    /**
-     * Used to test if a User can be edited correctly.  
-     * @throws RollbackFailureException
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void testEditWithName() throws RollbackFailureException, Exception {
-        
-        String testName = "ThisIsATestName"; 
-        
-        Users user = createTestUser();
-        userController.create(user);
-        
-        String originalName = user.getFirstName();
-        user.setFirstName(testName);
-        
-        userController.edit(user);
-
-        Users returnedUser = userController.findUsers(user.getUserId());
-        assertNotEquals("The user's name was not changed correctly", returnedUser.getFirstName(), originalName);
-
-    }
-    
-    /**
-     * Used to test if a User can be edited correctly.  
-     * @throws RollbackFailureException
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void testEditWithAddress() throws RollbackFailureException, Exception {
-        
-        String testAddress = "ThisIsATestAddress"; 
-        
-        Users user = createTestUser();
-        userController.create(user);
-        
-        String originalAddress = user.getFirstName();
-        user.setAddress1(testAddress);
-        
-        userController.edit(user);
-
-        Users returnedUser = userController.findUsers(user.getUserId());
-        assertNotEquals("The user's address was not changed correctly", returnedUser.getAddress1(), originalAddress);
-
-    }
-    
-    /**
-     * Used to test if a User just added can be found with id
-     * @throws RollbackFailureException
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void testFindUserById() throws RollbackFailureException, Exception {
-        
-        Users user = createTestUser();
-        
-        userController.create(user);
-
-        Users returnedUser = userController.findUsers(1l);
-        assertEquals("Did not find the user with id 1 in the database.", user, returnedUser);
-
-    }
-    
-    /**
-     * Used to test if a User just added can be found with id that is not just the first
-     * @throws RollbackFailureException
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void testFindUserByIdSecondCreated() throws RollbackFailureException, Exception {
-        
-        Users user = createTestUser();
-        userController.create(user);
-        
-        Users secondUser = createTestUser();
-        userController.create(secondUser);
-
-        Users returnedUser = userController.findUsers(2l);
-        assertEquals("Did not find the user with id 1 in the database.", secondUser, returnedUser);
-
-    }
-    
-    /**
-     * Used to test if able to find users with a firstname given. 
-     * @throws RollbackFailureException
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void testFindUsersByFirstName() throws RollbackFailureException, Exception {
-        
-        int expectedSize = 2; 
-        
-        Users user = createTestUser();
-        userController.create(user);
-        
-        Users secondUser = createTestUser();
-        userController.create(secondUser);
-
-        List<Users> returnedUser = userController.findUsersByFirstName("Test");
-        assertEquals("Did not find all the users with the first name similar to Test", returnedUser.size(), expectedSize);
-
-    }
-    
-    /**
-     * Used to test if correct behaviour if not users have a similar first name
-     * @throws RollbackFailureException
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void testFindUsersByFirstNameNoResult() throws RollbackFailureException, Exception {
-        
-        int expectedSize = 0; 
-        
-        Users user = createTestUser();
-        userController.create(user);
-        
-        Users secondUser = createTestUser();
-        userController.create(secondUser);
-
-        List<Users> returnedUser = userController.findUsersByFirstName("I am not a real name");
-        assertEquals("Found results even though there should be none", returnedUser.size(), expectedSize);
-
-    }
-    
-    /**
-     * Used to test if able to find users with a last name given. 
-     * @throws RollbackFailureException
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void testFindUsersByLastName() throws RollbackFailureException, Exception {
-        
-        int expectedSize = 2; 
-        
-        Users user = createTestUser();
-        userController.create(user);
-        
-        Users secondUser = createTestUser();
-        userController.create(secondUser);
-
-        List<Users> returnedUser = userController.findUsersByLastName("Test");
-        assertEquals("Did not find all the users with the last name similar to Test", returnedUser.size(), expectedSize);
-
-    }
-    
-    /**
-     * Used to test if correct behaviour if not users have a similar last name
-     * @throws RollbackFailureException
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void testFindUsersByLastNameNoResult() throws RollbackFailureException, Exception {
-        
-        int expectedSize = 0; 
-        
-        Users user = createTestUser();
-        userController.create(user);
-        
-        Users secondUser = createTestUser();
-        userController.create(secondUser);
-
-        List<Users> returnedUser = userController.findUsersByLastName("I am not a real name");
-        assertEquals("Found results even though there should be none", returnedUser.size(), expectedSize);
-
-    }
+//    
+//    /**
+//     * Used to test if a User can be edited correctly.  
+//     * @throws RollbackFailureException
+//     * @author Jeffrey Boisvert
+//     */
+//    @Test
+//    public void testEditWithName() throws RollbackFailureException, Exception {
+//        
+//        String testName = "ThisIsATestName"; 
+//        
+//        Users user = createTestUser();
+//        userController.create(user);
+//        
+//        String originalName = user.getFirstName();
+//        user.setFirstName(testName);
+//        
+//        userController.edit(user);
+//
+//        Users returnedUser = userController.findUsers(user.getUserId());
+//        assertNotEquals("The user's name was not changed correctly", returnedUser.getFirstName(), originalName);
+//
+//    }
+//    
+//    /**
+//     * Used to test if a User can be edited correctly.  
+//     * @throws RollbackFailureException
+//     * @author Jeffrey Boisvert
+//     */
+//    @Test
+//    public void testEditWithAddress() throws RollbackFailureException, Exception {
+//        
+//        String testAddress = "ThisIsATestAddress"; 
+//        
+//        Users user = createTestUser();
+//        userController.create(user);
+//        
+//        String originalAddress = user.getFirstName();
+//        user.setAddress1(testAddress);
+//        
+//        userController.edit(user);
+//
+//        Users returnedUser = userController.findUsers(user.getUserId());
+//        assertNotEquals("The user's address was not changed correctly", returnedUser.getAddress1(), originalAddress);
+//
+//    }
+//    
+//    /**
+//     * Used to test if a User just added can be found with id
+//     * @throws RollbackFailureException
+//     * @author Jeffrey Boisvert
+//     */
+//    @Test
+//    public void testFindUserById() throws RollbackFailureException, Exception {
+//        
+//        Users user = createTestUser();
+//        
+//        userController.create(user);
+//
+//        Users returnedUser = userController.findUsers(1l);
+//        assertEquals("Did not find the user with id 1 in the database.", user, returnedUser);
+//
+//    }
+//    
+//    /**
+//     * Used to test if a User just added can be found with id that is not just the first
+//     * @throws RollbackFailureException
+//     * @author Jeffrey Boisvert
+//     */
+//    @Test
+//    public void testFindUserByIdSecondCreated() throws RollbackFailureException, Exception {
+//        
+//        Users user = createTestUser();
+//        userController.create(user);
+//        
+//        Users secondUser = createTestUser();
+//        userController.create(secondUser);
+//
+//        Users returnedUser = userController.findUsers(2l);
+//        assertEquals("Did not find the user with id 1 in the database.", secondUser, returnedUser);
+//
+//    }
+//    
+//    /**
+//     * Used to test if able to find users with a firstname given. 
+//     * @throws RollbackFailureException
+//     * @author Jeffrey Boisvert
+//     */
+//    @Test
+//    public void testFindUsersByFirstName() throws RollbackFailureException, Exception {
+//        
+//        int expectedSize = 2; 
+//        
+//        Users user = createTestUser();
+//        userController.create(user);
+//        
+//        Users secondUser = createTestUser();
+//        userController.create(secondUser);
+//
+//        List<Users> returnedUser = userController.findUsersByFirstName("Test");
+//        assertEquals("Did not find all the users with the first name similar to Test", returnedUser.size(), expectedSize);
+//
+//    }
+//    
+//    /**
+//     * Used to test if correct behaviour if not users have a similar first name
+//     * @throws RollbackFailureException
+//     * @author Jeffrey Boisvert
+//     */
+//    @Test
+//    public void testFindUsersByFirstNameNoResult() throws RollbackFailureException, Exception {
+//        
+//        int expectedSize = 0; 
+//        
+//        Users user = createTestUser();
+//        userController.create(user);
+//        
+//        Users secondUser = createTestUser();
+//        userController.create(secondUser);
+//
+//        List<Users> returnedUser = userController.findUsersByFirstName("I am not a real name");
+//        assertEquals("Found results even though there should be none", returnedUser.size(), expectedSize);
+//
+//    }
+//    
+//    /**
+//     * Used to test if able to find users with a last name given. 
+//     * @throws RollbackFailureException
+//     * @author Jeffrey Boisvert
+//     */
+//    @Test
+//    public void testFindUsersByLastName() throws RollbackFailureException, Exception {
+//        
+//        int expectedSize = 2; 
+//        
+//        Users user = createTestUser();
+//        userController.create(user);
+//        
+//        Users secondUser = createTestUser();
+//        userController.create(secondUser);
+//
+//        List<Users> returnedUser = userController.findUsersByLastName("Test");
+//        assertEquals("Did not find all the users with the last name similar to Test", returnedUser.size(), expectedSize);
+//
+//    }
+//    
+//    /**
+//     * Used to test if correct behaviour if not users have a similar last name
+//     * @throws RollbackFailureException
+//     * @author Jeffrey Boisvert
+//     */
+//    @Test
+//    public void testFindUsersByLastNameNoResult() throws RollbackFailureException, Exception {
+//        
+//        int expectedSize = 0; 
+//        
+//        Users user = createTestUser();
+//        userController.create(user);
+//        
+//        Users secondUser = createTestUser();
+//        userController.create(secondUser);
+//
+//        List<Users> returnedUser = userController.findUsersByLastName("I am not a real name");
+//        assertEquals("Found results even though there should be none", returnedUser.size(), expectedSize);
+//
+//    }
 
     /**
      * Restore the database to a known state before testing. This is important

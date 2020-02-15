@@ -18,6 +18,7 @@ import com.gb4w20.gb4w20.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.exceptions.NonexistentEntityException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -28,6 +29,11 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,14 +60,15 @@ public class UsersJpaController implements Serializable {
      * @param users 
      */
     public void create(Users users) {
-        if (users.getReviewsCollection() == null) {
-            users.setReviewsCollection(new ArrayList<Reviews>());
-        }
-        if (users.getOrdersCollection() == null) {
-            users.setOrdersCollection(new ArrayList<Orders>());
-        }
         try {
-            em.getTransaction().begin();
+            if (users.getReviewsCollection() == null) {
+                users.setReviewsCollection(new ArrayList<Reviews>());
+            }
+            if (users.getOrdersCollection() == null) {
+                users.setOrdersCollection(new ArrayList<Orders>());
+            }
+            
+            utx.begin();
             Collection<Reviews> attachedReviewsCollection = new ArrayList<Reviews>();
             for (Reviews reviewsCollectionReviewsToAttach : users.getReviewsCollection()) {
                 reviewsCollectionReviewsToAttach = em.getReference(reviewsCollectionReviewsToAttach.getClass(), reviewsCollectionReviewsToAttach.getReviewId());
@@ -93,13 +100,13 @@ public class UsersJpaController implements Serializable {
                     oldUserIdOfOrdersCollectionOrders = em.merge(oldUserIdOfOrdersCollectionOrders);
                 }
             }
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            utx.commit();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            java.util.logging.Logger.getLogger(UsersJpaController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+        
+        }
+    
     
     /**
      * Used to update a record for a user in the database. 
@@ -305,10 +312,18 @@ public class UsersJpaController implements Serializable {
         
         //TODO filter by date
         cq.select(em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
-                .where(cb.equal(user.get("userId"), id));
+                .where(cb.and(
+                        cb.equal(user.get("userId"), id),
+                        cb.between(orders.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
+                ));
+        
+        /*
+        criteriaBuilder.and(criteriaBuilder.equal(from.get("personName"), "'vivek'"),
+      criteriaBuilder.between((Expression) from.get("age"), 10, 20))
+        */
 
         Query query = em.createQuery(cq);
-        return ((BigDecimal) query.getSingleResult()).doubleValue();
+        return query.getSingleResult() != null ? ((BigDecimal) query.getSingleResult()).doubleValue() : 0.00;
         
     }
     
