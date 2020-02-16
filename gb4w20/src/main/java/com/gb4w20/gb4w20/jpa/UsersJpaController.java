@@ -3,6 +3,7 @@ package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.Bookorder;
 import com.gb4w20.gb4w20.entities.Books;
+import com.gb4w20.gb4w20.entities.Books_;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -16,6 +17,7 @@ import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.entities.Users_;
 import com.gb4w20.gb4w20.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.exceptions.NonexistentEntityException;
+import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
@@ -301,7 +303,7 @@ public class UsersJpaController implements Serializable {
      */
     public double getUsersTotalSales(Long id, String startDate, String endDate){
 
-        LOG.info("Looking for user with id " + id);
+        LOG.info("Looking for total sales for user with id " + id);
         
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -309,22 +311,52 @@ public class UsersJpaController implements Serializable {
         Root<Orders> orders = cq.from(Orders.class);
         Join<Orders, Bookorder> bookorder = orders.join("bookorderCollection", JoinType.INNER);
         Join<Orders, Users> user = orders.join("userId", JoinType.INNER);
-        
-        //TODO filter by date
+
         cq.select(em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
                 .where(cb.and(
                         cb.equal(user.get("userId"), id),
                         cb.between(orders.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
                 ));
-        
-        /*
-        criteriaBuilder.and(criteriaBuilder.equal(from.get("personName"), "'vivek'"),
-      criteriaBuilder.between((Expression) from.get("age"), 10, 20))
-        */
 
         Query query = em.createQuery(cq);
         return query.getSingleResult() != null ? ((BigDecimal) query.getSingleResult()).doubleValue() : 0.00;
         
+    }
+    
+    public List<NameAndNumberBean> getUserPurchasedBooks(){
+        
+        return getUserPurchasedBooks(1l, "2020-01-01", "2020-02-22");
+    }
+    
+    /**
+     * Used to get all the books purchased by a user and the totals. 
+     * This includes if a user ordered an item more than once in theory. 
+     * 
+     * @param id of the user
+     * @param startDate in format YYYY-MM-DD
+     * @param endDate in format YYYY-MM-DD
+     * @return list of all the items and their totals. 
+     */
+    public List<NameAndNumberBean> getUserPurchasedBooks(Long id, String startDate, String endDate){
+        
+        LOG.info("Looking for books bought by user with id " + id);
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameAndNumberBean.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        
+        Root<Books> book = cq.from(Books.class);
+        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
+        Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
+        Join<Orders, Users> user = order.join("userId", JoinType.INNER);
+        
+        cq.multiselect(book.get(Books_.title), em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+                .groupBy(book.get(Books_.title))
+                .where(cb.and(
+                        cb.equal(user.get("userId"), id),
+                        cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
+                ));
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();
     }
     
      /**

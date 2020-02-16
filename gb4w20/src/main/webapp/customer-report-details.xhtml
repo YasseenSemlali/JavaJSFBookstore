@@ -20,8 +20,29 @@ This will display the total sales of the user along with the totals of each item
     </ui:define>
 
     <ui:define name="content">
-             <ui:decorate template="/templates/customer-report.xhtml">
+        <h1>#{msgs.clientReport}</h1>
+        <h:form id="jsfExerciseForm" >
+            <h:panelGrid columns="3" cellpadding="1" border="0" cellspacing="10"
+                         title="#{msgs.clientReport}">
+                
+                <f:facet name="header">
+                    <h:outputText value="#{msgs.clientReportInstructions}" />
+                </f:facet>
+                <h:outputLabel for="name" value="#{msgs.clientName}"/>
+
+                <h:selectOneMenu value="userId">
+                    <f:selectItems value="#{usersJpaController.findUsersEntities}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
+                </h:selectOneMenu>
+
+                <h:message for="name" style="color:red" />
+
+            </h:panelGrid>
+            <h:commandButton id="runReport" value="#{msgs.runReport}"
+                             action="#" />
+
+        </h:form>
+        <ui:decorate template="/templates/customer-report.xhtml">
                     <!--<ui:param name="client" value="#{book}"></ui:param>-->
-             </ui:decorate>
+        </ui:decorate>
     </ui:define>
 </ui:composition>
