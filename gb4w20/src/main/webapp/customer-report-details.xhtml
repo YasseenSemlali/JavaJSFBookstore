@@ -60,7 +60,7 @@ The user can select which user they would like to view via a drop down.
              <h4>Total Sales: #{clientReportBackingBean.totalSales == null ? "No sales" : clientReportBackingBean.totalSales}</h4>
         </div>
         <div class="jumbotron">
-              <h3>#{msgs.itemsPurchasedByClient}</h3>
+              <h3>#{msgs.itemsPurchased}</h3>
               <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty clientReportBackingBean.purchasedProducts}">
                   <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
                   <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
