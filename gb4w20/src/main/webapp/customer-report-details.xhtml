@@ -25,40 +25,46 @@ This will display the total sales of the user along with the totals of each item
     
     <ui:define name="content">
         <h1>#{msgs.clientReport}</h1>
-        <h:form id="jsfExerciseForm" >
+        <h:form id="clientReportForm" >
             <h:panelGrid columns="3" cellpadding="1" border="0" cellspacing="10"
                          title="#{msgs.clientReport}">
                 
                 <f:facet name="header">
                     <h:outputText value="#{msgs.clientReportInstructions}" />
                 </f:facet>
-                <h:outputLabel for="name" value="#{msgs.clientName}"/>
-
+                <h:outputLabel value="#{msgs.clientName}"/>
                 <h:selectOneMenu value = "#{clientReportBackingBean.userId}">
                     <f:selectItems value="#{clientReportBackingBean.users}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
                 </h:selectOneMenu>
-
-                <h:message for="name" style="color:red" />
-
+                
+                <div>
+                    <h:outputLabel value="#{msgs.startDate}"/>
+                    <p:datePicker value="#{clientReportBackingBean.startDate}" pattern="yyyy-MM-dd"></p:datePicker>
+                </div>
+                <div>
+                    <h:outputLabel value="#{msgs.endDate}"/>
+                    <p:datePicker value="#{clientReportBackingBean.endDate}" pattern="yyyy-MM-dd"></p:datePicker>
+                </div>
             </h:panelGrid>
             <h:commandButton id="runReport" value="#{msgs.runReport}"
-                             action="#{clientReportBackingBean.runReport}">
-                	<!--<f:param name="action" value="delete" />-->
-            </h:commandButton>
+                             action="#{clientReportBackingBean.runReport}"/>
             
 
         </h:form>
-               <div>
-                    <p class="h3">Total Sales:</p>
-                    <p class="h5" rendered="#{not empty clientReportBackingBean.totalSales}">$#{clientReportBackingBean.totalSales}</p>
-                </div>
+        <!-- Report --> 
+        <div>
+             <h4>Total Sales: #{clientReportBackingBean.totalSales == null ? "No sales" : clientReportBackingBean.totalSales}</h4>
+        </div>
+        <div >
+              <h3>#{msgs.itemsPurchasedByClient}</h3>
               <h:panelGrid columns="2" border="1" rendered="#{not empty clientReportBackingBean.purchasedProducts}">
                         <h:panelGroup>Item Name</h:panelGroup>
                         <h:panelGroup>Sale</h:panelGroup>
                         <c:forEach items="#{clientReportBackingBean.purchasedProducts}" var="sales">
                             <h:panelGroup>#{sales.name}</h:panelGroup>
-                            <h:panelGroup>#{sales.amount}</h:panelGroup>
+                            <h:panelGroup>$#{sales.amount}</h:panelGroup>
                         </c:forEach>
             </h:panelGrid>
+        </div>
     </ui:define>
 </ui:composition>

@@ -350,7 +350,8 @@ public class UsersJpaController implements Serializable {
                 .where(cb.and(
                         cb.equal(user.get("userId"), id),
                         cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
-                ));
+                ))
+                .orderBy(cb.asc((book.get(Books_.title))));
 
         Query query = em.createQuery(cq);
         return query.getResultList();

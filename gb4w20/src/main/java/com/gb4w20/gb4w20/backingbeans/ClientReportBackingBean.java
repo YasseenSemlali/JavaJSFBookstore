@@ -28,6 +28,10 @@ public class ClientReportBackingBean implements Serializable {
     
     private Long userId; 
     
+    private String startDate;
+    
+    private String endDate; 
+    
     private List<Users> users; 
     
     private Double totalSales; 
@@ -100,6 +104,22 @@ public class ClientReportBackingBean implements Serializable {
      */
     public Double getTotalSales() {
         return totalSales;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
     
 }
