@@ -62,8 +62,8 @@ The user can select which user they would like to view via a drop down.
         <div class="jumbotron">
               <h3>#{msgs.itemsPurchasedByClient}</h3>
               <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty clientReportBackingBean.purchasedProducts}">
-                        <h:panelGroup styleClass="columnheader">Item Name</h:panelGroup>
-                        <h:panelGroup styleClass="columnheader">Sale</h:panelGroup>
+                        <h:panelGroup class="column-header">Item Name</h:panelGroup>
+                        <h:panelGroup class="column-header">Sale</h:panelGroup>
                         <c:forEach items="#{clientReportBackingBean.purchasedProducts}" var="sales">
                             <h:panelGroup>#{sales.name}</h:panelGroup>
                             <h:panelGroup>$#{sales.amount}</h:panelGroup>
