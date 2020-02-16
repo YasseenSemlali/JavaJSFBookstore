@@ -1,8 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-Java Server Faces page that displays the report overview of a customer report. 
+Java Server Faces page that displays the customer report. 
 This will display the total sales of the user along with the totals of each item sold. 
+The user can select which user they would like to view via a drop down. 
 
 @author Jeffrey Boisvert
 -->
@@ -39,11 +40,16 @@ This will display the total sales of the user along with the totals of each item
                 
                 <div>
                     <h:outputLabel value="#{msgs.startDate}"/>
-                    <p:datePicker value="#{clientReportBackingBean.startDate}" pattern="yyyy-MM-dd"></p:datePicker>
+                    <p:calendar value="#{clientReportBackingBean.startDate}"
+                        id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
+                    </p:calendar>
                 </div>
                 <div>
                     <h:outputLabel value="#{msgs.endDate}"/>
-                    <p:datePicker value="#{clientReportBackingBean.endDate}" pattern="yyyy-MM-dd"></p:datePicker>
+                    <p:calendar value="#{clientReportBackingBean.endDate}"
+                        id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
+                        <f:convertDateTime type="String"  dateStyle="short" pattern="yyyy-MM-dd" />
+                    </p:calendar>
                 </div>
             </h:panelGrid>
             <h:commandButton id="runReport" value="#{msgs.runReport}"

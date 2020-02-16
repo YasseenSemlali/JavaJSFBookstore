@@ -28,9 +28,9 @@ public class ClientReportBackingBean implements Serializable {
     
     private Long userId; 
     
-    private String startDate;
+    private java.util.Date startDate;
     
-    private String endDate; 
+    private java.util.Date endDate; 
     
     private List<Users> users; 
     
@@ -79,7 +79,7 @@ public class ClientReportBackingBean implements Serializable {
      * @param id of the user in question. 
      */
     private void setTotalSales(Long id){
-        this.totalSales = this.usersJpaController.getUsersTotalSales(id, "2020-01-01", "2020-02-22");
+        this.totalSales = this.usersJpaController.getUsersTotalSales(id, sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
     }
     
     /**
@@ -87,7 +87,7 @@ public class ClientReportBackingBean implements Serializable {
      * @param id of the user in question. 
      */
     private void setPurchasedProducts(Long id) {
-        this.purchasedProducts = this.usersJpaController.getUserPurchasedBooks(id, "2020-01-01", "2020-02-22");
+        this.purchasedProducts = this.usersJpaController.getUserPurchasedBooks(id, sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
     }
     
     /**
@@ -105,21 +105,49 @@ public class ClientReportBackingBean implements Serializable {
     public Double getTotalSales() {
         return totalSales;
     }
-
-    public String getStartDate() {
+    
+    /**
+     * Used to get the set start date. 
+     * @return 
+     */
+    public java.util.Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    /**
+     * Used to set the start date of the report. 
+     * @param startDate 
+     */
+    public void setStartDate(java.util.Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    /**
+     * Used to get the set end date. 
+     * @return 
+     */
+    public java.util.Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    /**
+     * Used to set the wanted end date of the report. 
+     * @param endDate 
+     */
+    public void setEndDate(java.util.Date endDate) {
         this.endDate = endDate;
+    }
+    
+    /**
+     * This solution is to help with the fact that primefaces cannot map to sql date correctly. 
+     * Credit to Matt Handy in post: https://stackoverflow.com/questions/10244164/primefaces-calendar-component-date-conversions 
+     * for the idea to the solution. 
+     * 
+     * @param date Given
+     * @return sql version of the date. 
+     */
+    private java.sql.Date sqlDate(java.util.Date date){
+        return new java.sql.Date(date.getTime());
     }
     
 }
