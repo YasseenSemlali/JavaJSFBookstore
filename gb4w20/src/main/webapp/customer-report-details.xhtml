@@ -31,7 +31,7 @@ This will display the total sales of the user along with the totals of each item
                 <h:outputLabel for="name" value="#{msgs.clientName}"/>
 
                 <h:selectOneMenu value="userId">
-                    <f:selectItems value="#{usersJpaController.findUsersEntities}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
+                    <f:selectItems value="#{clientReportBackingBean.users}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
                 </h:selectOneMenu>
 
                 <h:message for="name" style="color:red" />

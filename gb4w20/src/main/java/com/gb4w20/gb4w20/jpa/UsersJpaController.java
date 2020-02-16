@@ -268,7 +268,7 @@ public class UsersJpaController implements Serializable {
      * @return 
      */
     private List<Users> findUsersEntities(boolean all, int maxResults, int firstResult) {
-        try {
+
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Users.class));
             Query q = em.createQuery(cq);
@@ -277,9 +277,6 @@ public class UsersJpaController implements Serializable {
                 q.setFirstResult(firstResult);
             }
             return q.getResultList();
-        } finally {
-            em.close();
-        }
     }
     
     /**
