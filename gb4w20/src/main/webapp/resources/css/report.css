@@ -1,0 +1,18 @@
+
+/* 
+    Created on : Feb. 16, 2020, 6:05:37 p.m.
+    Author     : Jeffrey Boisvert
+    Used for report pages to keep a consistent look. 
+*/
+.datepicker{
+    display: block;
+}
+
+.run-report-button{
+    margin-top: 1em;
+}
+
+.report-title{
+    margin-bottom: 1em;
+}
+

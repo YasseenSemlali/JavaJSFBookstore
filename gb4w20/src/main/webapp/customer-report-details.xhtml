@@ -16,8 +16,10 @@ The user can select which user they would like to view via a drop down.
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
-        <title>Customer report</title>
-            <h:outputStylesheet library="css" name="carousel.css" />
+        <title>#{msgs.clientReport}</title>
+        <h:outputStylesheet library="css" name="report.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
+
     </ui:define>
     
     <f:metadata>
@@ -25,47 +27,43 @@ The user can select which user they would like to view via a drop down.
     </f:metadata>
     
     <ui:define name="content">
-        <h1>#{msgs.clientReport}</h1>
+        <div class="jumbotron">
+        <h1 class="report-title">#{msgs.clientReport}</h1>
         <h:form id="clientReportForm" >
-            <h:panelGrid columns="3" cellpadding="1" border="0" cellspacing="10"
-                         title="#{msgs.clientReport}">
                 
-                <f:facet name="header">
-                    <h:outputText value="#{msgs.clientReportInstructions}" />
-                </f:facet>
-                <h:outputLabel value="#{msgs.clientName}"/>
-                <h:selectOneMenu value = "#{clientReportBackingBean.userId}">
+            <div class="form-control">
+                
+                <h:outputLabel for="userSelect" value="#{msgs.clientName}"/>
+                <h:selectOneMenu id="userSelect" class="custom-select" value = "#{clientReportBackingBean.userId}">
                     <f:selectItems value="#{clientReportBackingBean.users}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
                 </h:selectOneMenu>
-                
-                <div>
-                    <h:outputLabel value="#{msgs.startDate}"/>
-                    <p:calendar value="#{clientReportBackingBean.startDate}"
+            </div>
+            <div class="form-control">
+                    <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
+                    <p:calendar class="datepicker" value="#{clientReportBackingBean.startDate}"
                         id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
                 </div>
-                <div>
-                    <h:outputLabel value="#{msgs.endDate}"/>
-                    <p:calendar value="#{clientReportBackingBean.endDate}"
+            <div class="form-control">
+                    <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
+                    <p:calendar class="datepicker" value="#{clientReportBackingBean.endDate}"
                         id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
-                        <f:convertDateTime type="String"  dateStyle="short" pattern="yyyy-MM-dd" />
                     </p:calendar>
                 </div>
-            </h:panelGrid>
-            <h:commandButton id="runReport" value="#{msgs.runReport}"
+            <h:commandButton class="btn btn-primary run-report-button" value="#{msgs.runReport}"
                              action="#{clientReportBackingBean.runReport}"/>
-            
 
         </h:form>
+        </div>
         <!-- Report --> 
-        <div>
+        <div class="jumbotron">
              <h4>Total Sales: #{clientReportBackingBean.totalSales == null ? "No sales" : clientReportBackingBean.totalSales}</h4>
         </div>
-        <div >
+        <div class="jumbotron">
               <h3>#{msgs.itemsPurchasedByClient}</h3>
-              <h:panelGrid columns="2" border="1" rendered="#{not empty clientReportBackingBean.purchasedProducts}">
-                        <h:panelGroup>Item Name</h:panelGroup>
-                        <h:panelGroup>Sale</h:panelGroup>
+              <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty clientReportBackingBean.purchasedProducts}">
+                        <h:panelGroup styleClass="columnheader">Item Name</h:panelGroup>
+                        <h:panelGroup styleClass="columnheader">Sale</h:panelGroup>
                         <c:forEach items="#{clientReportBackingBean.purchasedProducts}" var="sales">
                             <h:panelGroup>#{sales.name}</h:panelGroup>
                             <h:panelGroup>$#{sales.amount}</h:panelGroup>
