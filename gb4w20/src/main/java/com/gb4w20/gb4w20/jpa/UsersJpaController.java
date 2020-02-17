@@ -338,7 +338,7 @@ public class UsersJpaController implements Serializable {
                         cb.equal(user.get("userId"), id),
                         cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
                 ))
-                .orderBy(cb.asc((book.get(Books_.title))));
+                .orderBy(cb.asc(em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax"))));
 
         Query query = em.createQuery(cq);
         return query.getResultList();
