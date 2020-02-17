@@ -15,6 +15,11 @@
         <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
         <param-value>0</param-value>
     </context-param>
+    <!-- Blank styling for prime faces while maintaining the functionality -->
+    <context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>none</param-value>
+</context-param>
     <!-- set the default timezone -->
     <context-param>
         <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
@@ -30,6 +35,7 @@
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>publisher-report-details.xhtml</welcome-file>
+        <welcome-file>manager_inventory.xhtml</welcome-file>
+        <welcome-file>clients-management.xhtml</welcome-file>
     </welcome-file-list>
 </web-app>
