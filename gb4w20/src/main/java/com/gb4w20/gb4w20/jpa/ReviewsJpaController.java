@@ -12,6 +12,8 @@ import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
@@ -23,6 +25,8 @@ import org.slf4j.LoggerFactory;
  * Used to interact with the reviews table in the database. 
  * @author Jeffrey Boisvert
  */
+@Named
+@SessionScoped
 public class ReviewsJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(ReviewsJpaController.class);

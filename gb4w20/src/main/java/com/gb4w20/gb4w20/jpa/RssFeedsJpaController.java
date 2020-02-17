@@ -6,6 +6,8 @@ import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -22,6 +24,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jeffrey Boisvert
  */
+@Named
+@SessionScoped
 public class RssFeedsJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(RssFeedsJpaController.class);

@@ -169,7 +169,9 @@ public class BookActionBean implements Serializable {
         return query.getResultList();
     }
 
+    
     public List<Books> getRecentlyBoughtBooks(int maxResults) {
+        
         LOG.info("getting " + maxResults + " recent books");
 
         CriteriaBuilder cb = em.getCriteriaBuilder();

@@ -1,6 +1,9 @@
 
 package com.gb4w20.gb4w20.jpa;
 
+import com.gb4w20.gb4w20.entities.Bookorder;
+import com.gb4w20.gb4w20.entities.Books;
+import com.gb4w20.gb4w20.entities.Books_;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -12,15 +15,27 @@ import java.util.Collection;
 import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.entities.Users_;
-import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
-import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
+import com.gb4w20.gb4w20.exceptions.IllegalOrphanException;
+import com.gb4w20.gb4w20.exceptions.NonexistentEntityException;
+import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +45,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jeffrey Boisvert
  */
+@Named
+@SessionScoped
 public class UsersJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(UsersJpaController.class);
@@ -45,14 +62,15 @@ public class UsersJpaController implements Serializable {
      * @param users 
      */
     public void create(Users users) {
-        if (users.getReviewsCollection() == null) {
-            users.setReviewsCollection(new ArrayList<Reviews>());
-        }
-        if (users.getOrdersCollection() == null) {
-            users.setOrdersCollection(new ArrayList<Orders>());
-        }
         try {
-            em.getTransaction().begin();
+            if (users.getReviewsCollection() == null) {
+                users.setReviewsCollection(new ArrayList<Reviews>());
+            }
+            if (users.getOrdersCollection() == null) {
+                users.setOrdersCollection(new ArrayList<Orders>());
+            }
+            
+            utx.begin();
             Collection<Reviews> attachedReviewsCollection = new ArrayList<Reviews>();
             for (Reviews reviewsCollectionReviewsToAttach : users.getReviewsCollection()) {
                 reviewsCollectionReviewsToAttach = em.getReference(reviewsCollectionReviewsToAttach.getClass(), reviewsCollectionReviewsToAttach.getReviewId());
@@ -84,13 +102,13 @@ public class UsersJpaController implements Serializable {
                     oldUserIdOfOrdersCollectionOrders = em.merge(oldUserIdOfOrdersCollectionOrders);
                 }
             }
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            utx.commit();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with create in user controller method.");
         }
+        
     }
+    
     
     /**
      * Used to update a record for a user in the database. 
@@ -101,7 +119,7 @@ public class UsersJpaController implements Serializable {
      */
     public void edit(Users users) throws IllegalOrphanException, NonexistentEntityException, Exception {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Users persistentUsers = em.find(Users.class, users.getUserId());
             Collection<Reviews> reviewsCollectionOld = persistentUsers.getReviewsCollection();
             Collection<Reviews> reviewsCollectionNew = users.getReviewsCollection();
@@ -164,21 +182,10 @@ public class UsersJpaController implements Serializable {
                     }
                 }
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            String msg = ex.getLocalizedMessage();
-            if (msg == null || msg.length() == 0) {
-                Long id = users.getUserId();
-                if (findUsers(id) == null) {
-                    throw new NonexistentEntityException("The users with id " + id + " no longer exists.");
-                }
-            }
-            throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with edit in users controller method.", ex);
+        } 
     }
     
     /**
@@ -189,7 +196,7 @@ public class UsersJpaController implements Serializable {
      */
     public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Users users;
             try {
                 users = em.getReference(Users.class, id);
@@ -216,12 +223,10 @@ public class UsersJpaController implements Serializable {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             em.remove(users);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with delete in users controller method.", ex);
+        } 
     }
     
     /**
@@ -250,18 +255,18 @@ public class UsersJpaController implements Serializable {
      * @return 
      */
     private List<Users> findUsersEntities(boolean all, int maxResults, int firstResult) {
-        try {
+
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Users.class));
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            
+            Root<Users> users = cq.from(Users.class);
+            cq.select(users).orderBy(cb.asc((users.get(Users_.firstName))));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
             }
             return q.getResultList();
-        } finally {
-            em.close();
-        }
     }
     
     /**
@@ -270,17 +275,80 @@ public class UsersJpaController implements Serializable {
      * @return user object of that id. 
      */
     public Users findUsers(Long id) {
-        try {
-            return em.find(Users.class, id);
-        } finally {
-            em.close();
-        }
+        
+        return em.find(Users.class, id);
+        
+    }
+    
+    /**
+     * Used to get the total sales of a client between a given start 
+     * and end date. 
+     * @param id of the user
+     * @param startDate in format YYYY-MM-DD
+     * @param endDate in format YYYY-MM-DD
+     * @return total of sales
+     * @author Jeffrey Boisvert
+     */
+    public double getUsersTotalSales(Long id, String startDate, String endDate){
+
+        LOG.info("Looking for total sales for user with id " + id);
+        
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        
+        Root<Orders> orders = cq.from(Orders.class);
+        Join<Orders, Bookorder> bookorder = orders.join("bookorderCollection", JoinType.INNER);
+        Join<Orders, Users> user = orders.join("userId", JoinType.INNER);
+
+        cq.select(em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+                .where(cb.and(
+                        cb.equal(user.get("userId"), id),
+                        cb.between(orders.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
+                ));
+
+        Query query = em.createQuery(cq);
+        return query.getSingleResult() != null ? ((BigDecimal) query.getSingleResult()).doubleValue() : 0.00;
+        
+    }
+    
+    /**
+     * Used to get all the books purchased by a user and the totals. 
+     * This includes if a user ordered an item more than once in theory. 
+     * 
+     * @param id of the user
+     * @param startDate in format YYYY-MM-DD
+     * @param endDate in format YYYY-MM-DD
+     * @return list of all the items and their totals. 
+     * @author Jeffrey Boisvert
+     */
+    public List<NameAndNumberBean> getUserPurchasedBooks(Long id, String startDate, String endDate){
+        
+        LOG.info("Looking for books bought by user with id " + id);
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameAndNumberBean.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        
+        Root<Books> book = cq.from(Books.class);
+        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
+        Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
+        Join<Orders, Users> user = order.join("userId", JoinType.INNER);
+        
+        cq.multiselect(book.get(Books_.title), em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+                .groupBy(book.get(Books_.title))
+                .where(cb.and(
+                        cb.equal(user.get("userId"), id),
+                        cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
+                ))
+                .orderBy(cb.asc((book.get(Books_.title))));
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();
     }
     
      /**
      * Used to return a list of all the users who match the given firs name
      * @param firstName of the user
      * @return collection of users who have that name or similar
+     * @author Jeffrey Boisvert
      */
     public List<Users> findUsersByFirstName(String firstName){
 
@@ -301,6 +369,7 @@ public class UsersJpaController implements Serializable {
      * Used to return a list of all the users who match the given last name
      * @param lastName of the user
      * @return collection of users who have that name or similar
+     * @author Jeffrey Boisvert
      */
     public List<Users> findUsersByLastName(String lastName){
 

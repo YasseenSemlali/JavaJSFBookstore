@@ -18,11 +18,11 @@
                 <h:panelGroup  rendered="#{showPrice}">
                     <p class="h4"> 
                         <h:panelGroup rendered="#{showOldPrice == null || showOldPrice == true}"><span class="crossed-out">$#{book.getListPrice()}</span></h:panelGroup> 
-                        <strong>$#{book.getListPrice() - book.getSalePrice()}</strong></p>
+                        <strong>$#{book.getListPrice() - book.getSalePrice()}</strong>
+                    </p>
                 </h:panelGroup>
                 </div>
             </h:link>
-
         </ui:composition>
     </h:body>
 </html>
