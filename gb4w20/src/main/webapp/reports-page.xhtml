@@ -10,12 +10,18 @@
     </h:head>
     <h:body>
         <h:outputStylesheet library="css" name="global.css"  />
+        <h:outputStylesheet library="css" name="reports-page.css"  />
         <div>
             <ui:insert name="topMenuBar">
                 <ui:include src="/templates/topMenuManager.xhtml"></ui:include>
             </ui:insert>
         </div>
-
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="manager_frontpage.xhtml">#{msgs.dashboard}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">#{msgs.reportsLower}</li>
+          </ol>
+        </nav>
         <b:container style="margin-top: 5%; margin-bottom:5%">
         <div class="ui-g"  >
             <div class="ui-g-4">
