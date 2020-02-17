@@ -60,7 +60,7 @@
                 <p:tab title="|" disabled="true"></p:tab>
                 <p:tab id="editBookTab" title="${msgs.edit}">
                      <h:form>
-                         <p:dataTable var="book" value="#{bookActionBean.getAllBooks()}" widgetVar="bookSearch"
+                         <p:dataTable var="book" value="#{}" widgetVar="bookSearch"
                                       emptyMessage="No books found. Click 'Add' to add a new book!">
 
                              <p:column filterBy="#{book.isbn}" headerText="${msgs.isbn}" filterMatchMode="contains">
