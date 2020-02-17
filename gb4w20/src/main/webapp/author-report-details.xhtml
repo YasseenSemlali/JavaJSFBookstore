@@ -23,48 +23,48 @@ The user can select which author they would like to view via a drop down.
     </ui:define>
     
     <f:metadata>
-        <f:viewParam id="authorId" name="authorId" value="#{clientReportBackingBean.userId}" />
+        <f:viewParam id="authorId" name="authorId" value="#{authorReportBackingBean.authorId}" />
     </f:metadata>
     
     <ui:define name="content">
         <div class="jumbotron">
             <h1 class="report-title">#{msgs.authorReport}</h1>
-        <h:form id="clientReportForm" >
+        <h:form id="authorReportForm" >
                 
             <div class="form-control">
                 
-                <h:outputLabel for="userSelect" value="#{msgs.authorLabel}"/>
-                <h:selectOneMenu id="userSelect" class="custom-select" value = "#{clientReportBackingBean.userId}">
-                    <f:selectItems value="#{clientReportBackingBean.users}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
+                <h:outputLabel for="authorSelect" value="#{msgs.authorLabel}"/>
+                <h:selectOneMenu id="authorSelect" class="custom-select" value = "#{authorReportBackingBean.authorId}">
+                    <f:selectItems value="#{authorReportBackingBean.authors}" var="author" itemValue="#{author.authorId}" itemLabel="#{author.firstName} #{author.lastName}"/>
                 </h:selectOneMenu>
             </div>
             <div class="form-control">
                     <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
-                    <p:calendar class="datepicker" value="#{clientReportBackingBean.startDate}"
+                    <p:calendar class="datepicker" value="#{authorReportBackingBean.startDate}"
                         id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
                 </div>
             <div class="form-control">
                     <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
-                    <p:calendar class="datepicker" value="#{clientReportBackingBean.endDate}"
+                    <p:calendar class="datepicker" value="#{authorReportBackingBean.endDate}"
                         id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
                 </div>
             <h:commandButton class="btn btn-primary run-report-button" value="#{msgs.runReport}"
-                             action="#{clientReportBackingBean.runReport}"/>
+                             action="#{authorReportBackingBean.runReport}"/>
 
         </h:form>
         </div>
         <!-- Report --> 
         <div class="jumbotron">
-             <h4>Total Sales: #{clientReportBackingBean.totalSales == null || clientReportBackingBean.totalSales <= 0  ? "No sales" : clientReportBackingBean.totalSales}</h4>
+             <h4>Total Sales: #{authorReportBackingBean.totalSales == null ? "No sales" : authorReportBackingBean.totalSales}</h4>
         </div>
         <div class="jumbotron">
               <h3>#{msgs.itemsPurchased}</h3>
-              <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty clientReportBackingBean.purchasedProducts}">
+              <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty authorReportBackingBean.purchasedProducts}">
                   <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
                   <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
-                        <c:forEach items="#{clientReportBackingBean.purchasedProducts}" var="sales">
+                        <c:forEach items="#{authorReportBackingBean.purchasedProducts}" var="sales">
                             <h:panelGroup>#{sales.name}</h:panelGroup>
                             <h:panelGroup>$#{sales.amount}</h:panelGroup>
                         </c:forEach>

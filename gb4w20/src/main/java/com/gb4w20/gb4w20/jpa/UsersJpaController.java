@@ -270,7 +270,10 @@ public class UsersJpaController implements Serializable {
     private List<Users> findUsersEntities(boolean all, int maxResults, int firstResult) {
 
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Users.class));
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            
+            Root<Users> users = cq.from(Users.class);
+            cq.select(users).orderBy(cb.asc((users.get(Users_.firstName))));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
