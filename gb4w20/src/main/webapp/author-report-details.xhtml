@@ -57,7 +57,7 @@ The user can select which author they would like to view via a drop down.
         </div>
         <!-- Report --> 
         <div class="jumbotron">
-             <h4>Total Sales: #{authorReportBackingBean.totalSales == null ? "No sales" : authorReportBackingBean.totalSales}</h4>
+             <h4>#{msgs.totalSalesLabel} #{authorReportBackingBean.totalSales == null ? 0.00 : authorReportBackingBean.totalSales}</h4>
         </div>
         <div class="jumbotron">
               <h3>#{msgs.itemsPurchased}</h3>
