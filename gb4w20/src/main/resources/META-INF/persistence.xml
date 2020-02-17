@@ -19,10 +19,6 @@
     <class>com.gb4w20.gb4w20.entities.SurveyResponses</class>
     <class>com.gb4w20.gb4w20.entities.Taxes</class>
     <class>com.gb4w20.gb4w20.entities.Users</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
-    <properties>
-            <property name="eclipselink.logging.level.sql" value="FINE"/>
-            <property name="eclipselink.logging.parameters" value="true"/>
-    </properties>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
   </persistence-unit>
 </persistence>

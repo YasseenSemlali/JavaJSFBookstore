@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>Manager - Inventory</title>
+    </h:head>
+    <h:body>
+        <h:outputStylesheet library="css" name="global.css"  />
+        <div>
+            <ui:insert name="topMenuBar">
+                <ui:include src="/templates/topMenuManager.xhtml"></ui:include>
+            </ui:insert>
+        </div>
+
+        <b:container style="margin-top: 5%; margin-bottom:5%;">
+            <p:tabView style="text-align: center;" >
+                <p:tab title="${msgs.add}" id="addTab">
+                    <h:form id="addBookForm">
+                     <p:panel id="addBookPanel" style="width: 100%; text-align: right;">
+                         <h:panelGrid columns="2" styleClass="card" > 
+                         
+                         <p:outputLabel value="${msgs.title}:" styleClass="formComponent" style="margin-top: 40px"/>
+                         <p:inputText id="title" value="#{managerInventory.title}" styleClass="formComponent" style="margin-top: 40px" /> 
+
+                        <p:outputLabel value="${msgs.synopsis}:" styleClass="formComponent"/>
+                        <p:inputText id="synopsis" value="#{managerInventory.synopsis}" styleClass="formComponent"/>
+
+                        <p:outputLabel value="${msgs.author}:" styleClass="formComponent"/>
+                        <p:inputText id="author" styleClass="formComponent"/>
+                        
+                        <p:outputLabel value="${msgs.cover}" styleClass="formComponent"/>
+                        <p:inputText id="cover" value="#{managerInventory.cover}" styleClass="formComponent"/>
+                        
+                        <p:outputLabel value="${msgs.pubdate}:" styleClass="formComponent" />
+                        <p:calendar id="pubdate" pattern="dd/MM/yyyy" style="background-color: white" value="#{managerInventory.dateOfPublication}" styleClass="formComponent" />
+
+                        <p:outputLabel value="${msgs.num_pages}:" styleClass="formComponent" />
+                        <p:inputNumber id="numpages" value="#{managerInventory.pages}" styleClass="formComponent" />
+                        
+                        <p:outputLabel value="${msgs.whole_price}:" styleClass="formComponent" />
+                        <p:inputNumber id="wholeprice" value="#{managerInventory.wholesalePrice}" styleClass="formComponent" />
+                        
+                        <p:outputLabel value="${msgs.list_price}:" styleClass="formComponent" />
+                        <p:inputNumber id="listprice" value="#{managerInventory.listPrice}" styleClass="formComponent" />
+                        
+                        <p:outputLabel value="${msgs.active}:" styleClass="formComponent" />
+                        <p:inputSwitch id="active" value="#{managerInventory.active}" styleClass="formComponent" />
+
+                        <p:outputLabel />
+                        <p:commandButton value="#{msgs.add}" action="#{bookActionBean.create(managerInventory.getBook())}" styleClass="formComponent" style="margin-bottom: 40px"/>
+                       </h:panelGrid>
+                         </p:panel>
+                        </h:form>
+                </p:tab>
+                <p:tab title="|" disabled="true"></p:tab>
+                <p:tab id="editBookTab" title="${msgs.edit}">
+                     <h:form>
+                         <p:dataTable var="book" value="#{bookActionBean.getAllBooks()}" widgetVar="bookSearch"
+                                      emptyMessage="No books found. Click 'Add' to add a new book!">
+
+                             <p:column filterBy="#{book.isbn}" headerText="${msgs.isbn}" filterMatchMode="contains">
+                                <h:outputText value="#{book.isbn}" />
+                            </p:column>
+                             
+                              <p:column filterBy="#{book.title}" headerText="${msgs.title}" filterMatchMode="contains">
+                                <h:outputText value="#{book.title}" />
+                            </p:column>
+                             
+                             <p:column filterBy="#{book.dateOfPublication}" headerText="${msgs.pubdate}" filterMatchMode="contains">
+                                 <h:outputText value="#{book.dateOfPublication}" />
+                            </p:column>
+                             
+                             <p:column filterBy="#{book.active}" headerText="${msgs.active}" filterMatchMode="contains">
+                                <h:outputText value="#{book.active}" />
+                            </p:column>
+                             
+                             <p:dialog header="Edit Book" height="100" modal="true" widgetVar="editBook"  >
+                                 <p:outputLabel value="YOYOY" />
+                            </p:dialog>
+                             
+                            <p:column>
+                                <p:commandButton value="#{msgs.edit}" type="button" onclick="PF('editBook').show()" />
+                            </p:column>
+                             
+                        </p:dataTable>
+                    </h:form>
+                </p:tab>
+             </p:tabView>
+        </b:container>
+                                
+        <div>
+            <ui:insert name="footer">
+                <ui:include src="/templates/footer.xhtml"></ui:include>
+            </ui:insert>
+        </div>
+    </h:body>
+</html>
