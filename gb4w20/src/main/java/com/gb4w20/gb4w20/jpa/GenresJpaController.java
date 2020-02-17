@@ -1,6 +1,6 @@
-
 package com.gb4w20.gb4w20.jpa;
 
+import com.gb4w20.gb4w20.entities.Bookorder;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -8,21 +8,30 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Genres;
+import com.gb4w20.gb4w20.entities.Orders;
+import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Jeffrey Boisvert
+ * @author Jeffrey Boisvert, Yasseen Semlali
  */
+@Named
+@SessionScoped
 public class GenresJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(GenresJpaController.class);
@@ -37,25 +46,19 @@ public class GenresJpaController implements Serializable {
         if (genres.getBooksCollection() == null) {
             genres.setBooksCollection(new ArrayList<Books>());
         }
-        try {
-            em.getTransaction().begin();
-            Collection<Books> attachedBooksCollection = new ArrayList<Books>();
-            for (Books booksCollectionBooksToAttach : genres.getBooksCollection()) {
-                booksCollectionBooksToAttach = em.getReference(booksCollectionBooksToAttach.getClass(), booksCollectionBooksToAttach.getIsbn());
-                attachedBooksCollection.add(booksCollectionBooksToAttach);
-            }
-            genres.setBooksCollection(attachedBooksCollection);
-            em.persist(genres);
-            for (Books booksCollectionBooks : genres.getBooksCollection()) {
-                booksCollectionBooks.getGenresCollection().add(genres);
-                booksCollectionBooks = em.merge(booksCollectionBooks);
-            }
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+        em.getTransaction().begin();
+        Collection<Books> attachedBooksCollection = new ArrayList<Books>();
+        for (Books booksCollectionBooksToAttach : genres.getBooksCollection()) {
+            booksCollectionBooksToAttach = em.getReference(booksCollectionBooksToAttach.getClass(), booksCollectionBooksToAttach.getIsbn());
+            attachedBooksCollection.add(booksCollectionBooksToAttach);
         }
+        genres.setBooksCollection(attachedBooksCollection);
+        em.persist(genres);
+        for (Books booksCollectionBooks : genres.getBooksCollection()) {
+            booksCollectionBooks.getGenresCollection().add(genres);
+            booksCollectionBooks = em.merge(booksCollectionBooks);
+        }
+        em.getTransaction().commit();
     }
 
     public void edit(Genres genres) throws NonexistentEntityException, Exception {
@@ -94,35 +97,25 @@ public class GenresJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
     public void destroy(Long id) throws NonexistentEntityException {
+        em.getTransaction().begin();
+        Genres genres;
         try {
-            em.getTransaction().begin();
-            Genres genres;
-            try {
-                genres = em.getReference(Genres.class, id);
-                genres.getGenreId();
-            } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The genres with id " + id + " no longer exists.", enfe);
-            }
-            Collection<Books> booksCollection = genres.getBooksCollection();
-            for (Books booksCollectionBooks : booksCollection) {
-                booksCollectionBooks.getGenresCollection().remove(genres);
-                booksCollectionBooks = em.merge(booksCollectionBooks);
-            }
-            em.remove(genres);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            genres = em.getReference(Genres.class, id);
+            genres.getGenreId();
+        } catch (EntityNotFoundException enfe) {
+            throw new NonexistentEntityException("The genres with id " + id + " no longer exists.", enfe);
         }
+        Collection<Books> booksCollection = genres.getBooksCollection();
+        for (Books booksCollectionBooks : booksCollection) {
+            booksCollectionBooks.getGenresCollection().remove(genres);
+            booksCollectionBooks = em.merge(booksCollectionBooks);
+        }
+        em.remove(genres);
+        em.getTransaction().commit();
     }
 
     public List<Genres> findGenresEntities() {
@@ -134,38 +127,53 @@ public class GenresJpaController implements Serializable {
     }
 
     private List<Genres> findGenresEntities(boolean all, int maxResults, int firstResult) {
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Genres.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Genres.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
         }
+        return q.getResultList();
     }
 
     public Genres findGenres(Long id) {
-        try {
-            return em.find(Genres.class, id);
-        } finally {
-            em.close();
-        }
+        return em.find(Genres.class, id);
     }
 
     public int getGenresCount() {
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Genres> rt = cq.from(Genres.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<Genres> rt = cq.from(Genres.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+    }
+
+    
+    
+    public List<Books> getTopSelling(int maxResults) {
+        return this.getTopSellingForGenre(-1, maxResults);
     }
     
+    public List<Books> getTopSellingForGenre(long genreId, int maxResults) {
+        LOG.info("getting " + maxResults + " top selling books for genre " + genreId);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+
+        Root<Books> book = cq.from(Books.class);
+        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
+
+        cq.select(book);
+        if(genreId != -1){
+            cq.where(cb.equal(book.get("genreId"), genreId));
+        }
+        cq.groupBy(book.get("isbn"));   
+        cq.orderBy(cb.desc(cb.count(bookorder)));
+
+        Query query = em.createQuery(cq);
+        query.setMaxResults(maxResults);
+
+        return query.getResultList();
+    }
 }

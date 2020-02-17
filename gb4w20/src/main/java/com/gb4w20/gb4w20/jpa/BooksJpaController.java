@@ -19,29 +19,51 @@ import com.gb4w20.gb4w20.entities.BookFiles;
 import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.entities.Bookorder;
 import com.gb4w20.gb4w20.entities.Books;
+import com.gb4w20.gb4w20.entities.Orders;
+import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.jpa.exceptions.PreexistingEntityException;
+import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Jeffrey Boisvert
+ * @author Yasseen Semlali
  */
+@Named
+@SessionScoped
 public class BooksJpaController implements Serializable {
 
-    public BooksJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    private final static Logger LOG = LoggerFactory.getLogger(BooksJpaController.class);
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    @Resource
+    private UserTransaction utx;
 
-    public void create(Books books) throws PreexistingEntityException, Exception {
+    @PersistenceContext(unitName = "BookPU")
+    private EntityManager em;
+
+    public void create(Books books) throws RollbackFailureException {
         if (books.getGenresCollection() == null) {
             books.setGenresCollection(new ArrayList<Genres>());
         }
@@ -60,10 +82,8 @@ public class BooksJpaController implements Serializable {
         if (books.getBookorderCollection() == null) {
             books.setBookorderCollection(new ArrayList<Bookorder>());
         }
-        EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            utx.begin();
             Collection<Genres> attachedGenresCollection = new ArrayList<Genres>();
             for (Genres genresCollectionGenresToAttach : books.getGenresCollection()) {
                 genresCollectionGenresToAttach = em.getReference(genresCollectionGenresToAttach.getClass(), genresCollectionGenresToAttach.getGenreId());
@@ -140,24 +160,22 @@ public class BooksJpaController implements Serializable {
                     oldIsbnOfBookorderCollectionBookorder = em.merge(oldIsbnOfBookorderCollectionBookorder);
                 }
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findBooks(books.getIsbn()) != null) {
-                throw new PreexistingEntityException("Books " + books + " already exists.", ex);
-            }
-            throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
+            utx.commit();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            try {
+                utx.rollback();
+                LOG.error("Rollback");
+            } catch (IllegalStateException | SecurityException | SystemException re) {
+                LOG.error("Rollback2");
+
+                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
         }
     }
 
     public void edit(Books books) throws IllegalOrphanException, NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            utx.begin();
             Books persistentBooks = em.find(Books.class, books.getIsbn());
             Collection<Genres> genresCollectionOld = persistentBooks.getGenresCollection();
             Collection<Genres> genresCollectionNew = books.getGenresCollection();
@@ -311,28 +329,31 @@ public class BooksJpaController implements Serializable {
                     }
                 }
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
+            utx.commit();
+        } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
+            try {
+                utx.rollback();
+            } catch (IllegalStateException | SecurityException | SystemException re) {
+                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+            }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = books.getIsbn();
-                if (findBooks(id) == null) {
-                    throw new NonexistentEntityException("The books with id " + id + " no longer exists.");
+                Long isbn = books.getIsbn();
+                if (findBooks(isbn) == null) {
+                    throw new NonexistentEntityException("The book with isbn " + isbn + " no longer exists.");
                 }
             }
             throw ex;
         } finally {
             if (em != null) {
-                em.close();
+
             }
         }
     }
 
-    public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
-        EntityManager em = null;
+    public void destroy(Long id) throws NonexistentEntityException, RollbackFailureException, Exception {
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            utx.begin();
             Books books;
             try {
                 books = em.getReference(Books.class, id);
@@ -381,58 +402,91 @@ public class BooksJpaController implements Serializable {
                 authorsCollectionAuthors = em.merge(authorsCollectionAuthors);
             }
             em.remove(books);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
+            utx.commit();
+        } catch (NonexistentEntityException | IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
+            try {
+                utx.rollback();
+            } catch (IllegalStateException | SecurityException | SystemException re) {
+                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
+            throw ex;
         }
     }
 
     public List<Books> findBooksEntities() {
-        return findBooksEntities(true, -1, -1);
+        return findBooksEntities(-1, -1);
     }
 
-    public List<Books> findBooksEntities(int maxResults, int firstResult) {
-        return findBooksEntities(false, maxResults, firstResult);
+    public List<Books> findBooksEntities(int maxResults) {
+        return findBooksEntities(maxResults, -1);
     }
 
-    private List<Books> findBooksEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Books.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
+    private List<Books> findBooksEntities(int maxResults, int firstResult) {
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Books.class));
+        Query q = em.createQuery(cq);
+        if (maxResults != -1) {
+            q.setMaxResults(maxResults);
         }
+        if (firstResult != -1) {
+            q.setFirstResult(firstResult);
+        }
+        return q.getResultList();
     }
 
     public Books findBooks(Long id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(Books.class, id);
-        } finally {
-            em.close();
-        }
+        return em.find(Books.class, id);
     }
 
-    public int getBooksCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Books> rt = cq.from(Books.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
+    public List<Books> getBooksOnSale() {
+        return this.getBooksOnSale(-1);
+    }
+
+    public List<Books> getBooksOnSale(int maxResults) {
+        LOG.info("getting books on sale");
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+
+        Root<Books> book = cq.from(Books.class);
+
+        cq.select(book).where(cb.gt(book.get("salePrice"), 0));
+
+        Query query = em.createQuery(cq);
+        if (maxResults != -1) {
+            query.setMaxResults(maxResults);
         }
+
+        return query.getResultList();
+    }
+
+    public List<Books> getRecentlyBoughtBooks(int maxResults) {
+        LOG.info("getting " + maxResults + " recent books");
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+
+        Root<Books> book = cq.from(Books.class);
+        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
+        Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
+        Join<Orders, Users> user = order.join("userId", JoinType.INNER);
+
+        // TODO get email from session
+        cq.select(book).where(cb.equal(user.get("email"), "cst.send@gmail.com"));
+        cq.orderBy(cb.desc(order.get("timestamp")));
+
+        Query query = em.createQuery(cq);
+        query.setMaxResults(maxResults);
+
+        return query.getResultList();
     }
     
+    public int getBooksCount() {
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<Books> rt = cq.from(Books.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+    }
+
 }

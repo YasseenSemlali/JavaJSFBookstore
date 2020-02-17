@@ -7,6 +7,8 @@ import com.gb4w20.gb4w20.jpa.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -21,6 +23,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jeffrey Boisvert
  */
+@Named
+@SessionScoped
 public class TaxesJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(TaxesJpaController.class);
