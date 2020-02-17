@@ -104,10 +104,10 @@ public class UsersJpaController implements Serializable {
             }
             utx.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
-            java.util.logging.Logger.getLogger(UsersJpaController.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.error("Error with create in user controller method.");
         }
         
-        }
+    }
     
     
     /**
@@ -119,7 +119,7 @@ public class UsersJpaController implements Serializable {
      */
     public void edit(Users users) throws IllegalOrphanException, NonexistentEntityException, Exception {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Users persistentUsers = em.find(Users.class, users.getUserId());
             Collection<Reviews> reviewsCollectionOld = persistentUsers.getReviewsCollection();
             Collection<Reviews> reviewsCollectionNew = users.getReviewsCollection();
@@ -182,21 +182,10 @@ public class UsersJpaController implements Serializable {
                     }
                 }
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            String msg = ex.getLocalizedMessage();
-            if (msg == null || msg.length() == 0) {
-                Long id = users.getUserId();
-                if (findUsers(id) == null) {
-                    throw new NonexistentEntityException("The users with id " + id + " no longer exists.");
-                }
-            }
-            throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with edit in users controller method.", ex);
+        } 
     }
     
     /**
@@ -207,7 +196,7 @@ public class UsersJpaController implements Serializable {
      */
     public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Users users;
             try {
                 users = em.getReference(Users.class, id);
@@ -234,12 +223,10 @@ public class UsersJpaController implements Serializable {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             em.remove(users);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with delete in users controller method.", ex);
+        } 
     }
     
     /**
@@ -300,6 +287,7 @@ public class UsersJpaController implements Serializable {
      * @param startDate in format YYYY-MM-DD
      * @param endDate in format YYYY-MM-DD
      * @return total of sales
+     * @author Jeffrey Boisvert
      */
     public double getUsersTotalSales(Long id, String startDate, String endDate){
 
@@ -323,11 +311,6 @@ public class UsersJpaController implements Serializable {
         
     }
     
-    public List<NameAndNumberBean> getUserPurchasedBooks(){
-        
-        return getUserPurchasedBooks(1l, "2020-01-01", "2020-02-22");
-    }
-    
     /**
      * Used to get all the books purchased by a user and the totals. 
      * This includes if a user ordered an item more than once in theory. 
@@ -336,6 +319,7 @@ public class UsersJpaController implements Serializable {
      * @param startDate in format YYYY-MM-DD
      * @param endDate in format YYYY-MM-DD
      * @return list of all the items and their totals. 
+     * @author Jeffrey Boisvert
      */
     public List<NameAndNumberBean> getUserPurchasedBooks(Long id, String startDate, String endDate){
         
@@ -364,6 +348,7 @@ public class UsersJpaController implements Serializable {
      * Used to return a list of all the users who match the given firs name
      * @param firstName of the user
      * @return collection of users who have that name or similar
+     * @author Jeffrey Boisvert
      */
     public List<Users> findUsersByFirstName(String firstName){
 
@@ -384,6 +369,7 @@ public class UsersJpaController implements Serializable {
      * Used to return a list of all the users who match the given last name
      * @param lastName of the user
      * @return collection of users who have that name or similar
+     * @author Jeffrey Boisvert
      */
     public List<Users> findUsersByLastName(String lastName){
 

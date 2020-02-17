@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -29,6 +30,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +61,7 @@ public class AuthorsJpaController implements Serializable {
             authors.setBooksCollection(new ArrayList<Books>());
         }
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Collection<Books> attachedBooksCollection = new ArrayList<Books>();
             for (Books booksCollectionBooksToAttach : authors.getBooksCollection()) {
                 booksCollectionBooksToAttach = em.getReference(booksCollectionBooksToAttach.getClass(), booksCollectionBooksToAttach.getIsbn());
@@ -67,17 +73,15 @@ public class AuthorsJpaController implements Serializable {
                 booksCollectionBooks.getAuthorsCollection().add(authors);
                 booksCollectionBooks = em.merge(booksCollectionBooks);
             }
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with create in authors controller method.", ex);
+        } 
     }
 
     public void edit(Authors authors) throws NonexistentEntityException, Exception {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Authors persistentAuthors = em.find(Authors.class, authors.getAuthorId());
             Collection<Books> booksCollectionOld = persistentAuthors.getBooksCollection();
             Collection<Books> booksCollectionNew = authors.getBooksCollection();
@@ -101,25 +105,15 @@ public class AuthorsJpaController implements Serializable {
                     booksCollectionNewBooks = em.merge(booksCollectionNewBooks);
                 }
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            String msg = ex.getLocalizedMessage();
-            if (msg == null || msg.length() == 0) {
-                Long id = authors.getAuthorId();
-                if (findAuthors(id) == null) {
-                    throw new NonexistentEntityException("The authors with id " + id + " no longer exists.");
-                }
-            }
-            throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with edit in authors controller method.", ex);
+        } 
     }
 
     public void destroy(Long id) throws NonexistentEntityException {
-            em.getTransaction().begin();
+        try{
+            utx.begin();
             Authors authors;
             try {
                 authors = em.getReference(Authors.class, id);
@@ -133,7 +127,10 @@ public class AuthorsJpaController implements Serializable {
                 booksCollectionBooks = em.merge(booksCollectionBooks);
             }
             em.remove(authors);
-            em.getTransaction().commit();
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with delete in authors controller method.", ex);
+        } 
     }
 
     public List<Authors> findAuthorsEntities() {
@@ -143,7 +140,7 @@ public class AuthorsJpaController implements Serializable {
     public List<Authors> findAuthorsEntities(int maxResults, int firstResult) {
         return findAuthorsEntities(false, maxResults, firstResult);
     }
-
+    
     private List<Authors> findAuthorsEntities(boolean all, int maxResults, int firstResult) {
         
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -158,11 +155,20 @@ public class AuthorsJpaController implements Serializable {
             }
             return q.getResultList();
     }
-
+    
+    /**
+     * Find a particular author based on id. 
+     * @param id
+     * @return author matching id
+     */
     public Authors findAuthors(Long id) {
         return em.find(Authors.class, id);
     }
-
+    
+    /**
+     * Used to get the count of the authors.
+     * @return count of authors in database. 
+     */
     public int getAuthorsCount() {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<Authors> rt = cq.from(Authors.class);
@@ -177,6 +183,7 @@ public class AuthorsJpaController implements Serializable {
      * @param startDate of the report
      * @param endDate of the report
      * @return total sales
+     * @author Jeffrey Boisvert
      */
     public double getAuthorsTotalSales(long id, String startDate, String endDate){
         LOG.info("Looking for total sales for author with id " + id);
@@ -204,6 +211,7 @@ public class AuthorsJpaController implements Serializable {
      * @param startDate to search for
      * @param endDate to search for
      * @return a list of the book titles and total sales. 
+     * @author Jeffrey Boisvert
      */
     public List<NameAndNumberBean> getPurchasedBooksByAuthor(long id, String startDate, String endDate){
         LOG.info("Looking for books bought by author with id " + id);

@@ -70,24 +70,24 @@ public class ClientReportBackingBean implements Serializable {
      * This will set the properties of the bean of total sales and purchased items. 
      */
     public void runReport(){
-        setTotalSales(this.userId);
-        setPurchasedProducts(this.userId);
+        setTotalSales();
+        setPurchasedProducts();
     }
     
     /**
      * Helper method to set the total sales from the controller. 
      * @param id of the user in question. 
      */
-    private void setTotalSales(Long id){
-        this.totalSales = this.usersJpaController.getUsersTotalSales(id, sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
+    private void setTotalSales(){
+        this.totalSales = this.usersJpaController.getUsersTotalSales(this.userId, sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
     }
     
     /**
      * Helper method to set the list of purchased products of the user in question. 
      * @param id of the user in question. 
      */
-    private void setPurchasedProducts(Long id) {
-        this.purchasedProducts = this.usersJpaController.getUserPurchasedBooks(id, sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
+    private void setPurchasedProducts() {
+        this.purchasedProducts = this.usersJpaController.getUserPurchasedBooks(this.userId, sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
     }
     
     /**

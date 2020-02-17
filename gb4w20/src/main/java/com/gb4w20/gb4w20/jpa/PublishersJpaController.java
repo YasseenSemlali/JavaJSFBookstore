@@ -27,6 +27,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +58,7 @@ public class PublishersJpaController implements Serializable {
             publishers.setBooksCollection(new ArrayList<Books>());
         }
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Collection<Books> attachedBooksCollection = new ArrayList<Books>();
             for (Books booksCollectionBooksToAttach : publishers.getBooksCollection()) {
                 booksCollectionBooksToAttach = em.getReference(booksCollectionBooksToAttach.getClass(), booksCollectionBooksToAttach.getIsbn());
@@ -65,17 +70,15 @@ public class PublishersJpaController implements Serializable {
                 booksCollectionBooks.getPublishersCollection().add(publishers);
                 booksCollectionBooks = em.merge(booksCollectionBooks);
             }
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with create in publishers controller method.", ex);
+        } 
     }
 
     public void edit(Publishers publishers) throws NonexistentEntityException, Exception {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Publishers persistentPublishers = em.find(Publishers.class, publishers.getPublisherId());
             Collection<Books> booksCollectionOld = persistentPublishers.getBooksCollection();
             Collection<Books> booksCollectionNew = publishers.getBooksCollection();
@@ -99,25 +102,15 @@ public class PublishersJpaController implements Serializable {
                     booksCollectionNewBooks = em.merge(booksCollectionNewBooks);
                 }
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            String msg = ex.getLocalizedMessage();
-            if (msg == null || msg.length() == 0) {
-                Long id = publishers.getPublisherId();
-                if (findPublishers(id) == null) {
-                    throw new NonexistentEntityException("The publishers with id " + id + " no longer exists.");
-                }
-            }
-            throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with edit in publishers controller method.", ex);
+        } 
     }
 
     public void destroy(Long id) throws NonexistentEntityException {
         try {
+            utx.begin();
             Publishers publishers;
             try {
                 publishers = em.getReference(Publishers.class, id);
@@ -131,12 +124,10 @@ public class PublishersJpaController implements Serializable {
                 booksCollectionBooks = em.merge(booksCollectionBooks);
             }
             em.remove(publishers);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with delete in publishers controller method.", ex);
+        } 
     }
 
     public List<Publishers> findPublishersEntities() {
@@ -176,6 +167,7 @@ public class PublishersJpaController implements Serializable {
      * @param startDate of the report
      * @param endDate of the report
      * @return total sales
+     * @author Jeffrey Boisvert
      */
     public double getPublisherTotalSales(long id, String startDate, String endDate){
         LOG.info("Looking for total sales for publisher with id " + id);
@@ -203,6 +195,7 @@ public class PublishersJpaController implements Serializable {
      * @param startDate to search for
      * @param endDate to search for
      * @return a list of the book titles and total sales. 
+     * @author Jeffrey Boisvert
      */
     public List<NameAndNumberBean> getPurchasedBooksByPublisher(long id, String startDate, String endDate){
         LOG.info("Looking for books bought by publisher with id " + id);
