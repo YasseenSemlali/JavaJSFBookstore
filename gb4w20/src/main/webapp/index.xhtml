@@ -41,7 +41,7 @@ Java Server Faces page that displays the frontpage of the app
                             <div class="card text-center">
                                 <div class="card-body">
                                     <h2 class="card-title">#{genre.getGenre()}</h2>
-                                    <a href="#" class="btn btn-primary">Browse</a>
+                                    <a href="genre.xhtml?id=#{genre.getGenreId()}" class="btn btn-primary">Browse</a>
                                 </div>
                             </div>
                         </c:forEach>

@@ -1,5 +1,6 @@
 package com.gb4w20.gb4w20.jpa;
 
+import com.gb4w20.gb4w20.entities.Bookorder;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -7,6 +8,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Genres;
+import com.gb4w20.gb4w20.entities.Orders;
+import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +19,9 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,4 +149,31 @@ public class GenresJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
     }
 
+    
+    
+    public List<Books> getTopSelling(int maxResults) {
+        return this.getTopSellingForGenre(-1, maxResults);
+    }
+    
+    public List<Books> getTopSellingForGenre(long genreId, int maxResults) {
+        LOG.info("getting " + maxResults + " top selling books for genre " + genreId);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+
+        Root<Books> book = cq.from(Books.class);
+        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
+
+        cq.select(book);
+        if(genreId != -1){
+            cq.where(cb.equal(book.get("genreId"), genreId));
+        }
+        cq.groupBy(book.get("isbn"));   
+        cq.orderBy(cb.desc(cb.count(bookorder)));
+
+        Query query = em.createQuery(cq);
+        query.setMaxResults(maxResults);
+
+        return query.getResultList();
+    }
 }

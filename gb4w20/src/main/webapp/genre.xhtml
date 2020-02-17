@@ -25,6 +25,9 @@ Java Server Faces page that displays the frontpage of the app
             <c:choose>
                 <c:when test="#{param['id'] != null}">
                     <c:set var="genre" value="#{genresJpaController.findGenres(param['id'])}"/>
+                    <div class="pb-2 mt-4 mb-2 border-bottom">
+                        Page header
+                    </div>
                     #{genre.getGenre()}
                 </c:when>
 
