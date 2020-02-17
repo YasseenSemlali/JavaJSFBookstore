@@ -29,6 +29,9 @@ Java Server Faces page that displays the frontpage of the app
                         Page header
                     </div>
                     #{genre.getGenre()}
+                    <c:forEach items="#{genresJpaController.getTopSellingForGenre(1,2)}" var="genre">
+                    
+                    </c:forEach>
                 </c:when>
 
                 <c:otherwise>
