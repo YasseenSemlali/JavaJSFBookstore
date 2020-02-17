@@ -21,6 +21,8 @@ Java Server Faces page that displays the frontpage of the app
 
     <ui:define name="content">
         <b:container fluid="true">
+            #{usersJpaController.getUsersTotalSales(1, "test", "test")}
+            test
             <b:jumbotron>
                 <b:container>
                     <h1>Bookify</h1>
