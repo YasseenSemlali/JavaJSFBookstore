@@ -25,7 +25,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author jeanrobatto
+ * @author Yasseen Semlali
  */
 @Entity
 @Table(name = "survey_responses")

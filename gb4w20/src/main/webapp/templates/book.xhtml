@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <h:outputStylesheet library="css" name="book.css" />
+            <h:link outcome="index">
+                <div>
+                <h:graphicImage library="img" name="covers/#{book.getCover()}" height="200px"/> 
+                <p class="h5"><strong>#{book.getTitle()}</strong></p>
+
+                <h:panelGroup  rendered="#{showPrice}">
+                    <p class="h4"> 
+                        <h:panelGroup rendered="#{showOldPrice == null || showOldPrice == true}"><span class="crossed-out">$#{book.getListPrice()}</span></h:panelGroup> 
+                        <strong>$#{book.getListPrice() - book.getSalePrice()}</strong></p>
+                </h:panelGroup>
+                </div>
+            </h:link>
+
+        </ui:composition>
+    </h:body>
+</html>
