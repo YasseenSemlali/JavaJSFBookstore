@@ -391,7 +391,8 @@ public class UsersJpaController implements Serializable {
      * given start and end dates. 
      * @param startDate of the report 
      * @param endDate of the report
-     * @return 
+     * @return the report of top sellers of the names of the users and their total sales
+     * @author Jeffrey Boisvert
      */
     public List<NameAndNumberBean> findTopUsersBySales(String startDate, String endDate){
         

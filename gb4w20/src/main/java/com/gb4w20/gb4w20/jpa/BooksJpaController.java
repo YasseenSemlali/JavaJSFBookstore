@@ -19,12 +19,14 @@ import com.gb4w20.gb4w20.entities.BookFiles;
 import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.entities.Bookorder;
 import com.gb4w20.gb4w20.entities.Books;
+import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.jpa.exceptions.PreexistingEntityException;
+import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
@@ -487,6 +489,38 @@ public class BooksJpaController implements Serializable {
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
+    }
+    
+    /**
+     * Used to find the books that were top sellers in the specified date range
+     * and returns their titles and totals. 
+     * @param startDate of the report
+     * @param endDate of the report
+     * @return the report of book titles and total sales of the book. 
+     * @author Jeffrey Boisvert
+     */
+    public List<NameAndNumberBean> findTopSellers(String startDate, String endDate){
+        
+        LOG.info("Looking for top sellering books between " + startDate + " and " + endDate);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery(NameAndNumberBean.class);
+        
+        Root<Books> book = cq.from(Books.class);
+        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
+        Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
+        
+        cq.multiselect(
+                    book.get(Books_.title), 
+                    em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax"))
+                 )
+                .groupBy(book.get(Books_.title))
+                .where(
+                        cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
+                 )
+                .orderBy(cb.desc(cb.sum(bookorder.get("amountPaidPretax"))));
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();
     }
 
 }
