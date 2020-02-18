@@ -530,7 +530,7 @@ public class BooksJpaController implements Serializable {
      * @return books that were never sold. 
      * @author Jeffrey Boisvert
      */
-    public List<NameAndNumberBean> findBooksThatWereNeverSold(String startDate, String endDate){
+    public List<Books> findBooksThatWereNeverSold(String startDate, String endDate){
         
         LOG.info("Looking for books that were never sold between " + startDate + " and " + endDate);
         CriteriaBuilder cb = em.getCriteriaBuilder();
