@@ -398,14 +398,17 @@ public class UsersJpaController implements Serializable {
         LOG.info("Looking for top users by sales between " + startDate + " and " + endDate);
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameAndNumberBean.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        
-        Root<Users> user = cq.from(Users.class);
-        Join<Users, Orders> bookorder = user.join("userId", JoinType.INNER);
-        Join<Orders, Bookorder> order = bookorder.join("orderId", JoinType.INNER);
+
+        Root<Users> bookorder = cq.from(Bookorder.class);
+        Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
+        Join<Orders, Users> user = order.join("userId", JoinType.INNER);
         
         cq.multiselect(
-                    cb.concat(user.get(Users_.firstName) + " ", user.get(Users_.lastName)), 
-                    cb.sum(bookorder.get("amountPaidPretax")))
+                cb.concat(
+                        cb.concat(user.get(Users_.firstName), " "),
+                            user.get(Users_.lastName)
+                    ), 
+                cb.sum(bookorder.get("amountPaidPretax")))
                 .groupBy(user.get(Users_.userId))
                 .where(
                         cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
