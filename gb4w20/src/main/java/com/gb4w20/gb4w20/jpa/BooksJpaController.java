@@ -561,4 +561,36 @@ public class BooksJpaController implements Serializable {
         return booksNotSoldQuery.getResultList();
     }
 
+    /**
+     * Used to get all active books in the database. 
+     * @return a list of all the books. 
+     * @author Jeffrey Boisvert
+     */
+    public List<Books> getActiveBooks() {
+        return this.getBooksOnSale(-1);
+    }
+
+    /**
+     * Used to get a certain number of active books. 
+     * @param maxResults 
+     * @return a list of active books
+     * @author Jeffrey Boisvert
+     */
+    public List<Books> getActiveBooks(int maxResults) {
+        LOG.info("Getting all active books");
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+
+        Root<Books> book = cq.from(Books.class);
+        cq.select(book).where(cb.isTrue(book.get("active")));
+        Query query = em.createQuery(cq);
+        
+        if (maxResults != -1) {
+            query.setMaxResults(maxResults);
+        }
+
+        return query.getResultList();
+    }
+
 }

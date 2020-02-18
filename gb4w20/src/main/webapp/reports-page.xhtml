@@ -85,7 +85,30 @@
             </div>
         </div>
         </b:container>
-                                
+        
+        <b:container style="margin-top: 5%; margin-bottom:5%">
+        <div class="ui-g"  >
+            <div class="ui-g-4">
+                <a href="manager-reports/top-clients-report-details.xhtml" style="color: black">
+                    <div class="menutile">
+                        <p:graphicImage name="images/inventory_icon.png" style="width: 33%; height: 33%" />
+                        <br />
+                        <h4>${msgs.stock}</h4>
+                    </div>
+                </a>
+            </div>
+            <div class="ui-g-4">
+                <a href="manager-reports/top-sellers-report-details.xhtml" style="color: black">
+                    <div class="menutile">
+                        <p:graphicImage name="images/sales_icon.png" style="width: 33%; height: 33%" />
+                        <br />
+                        <h4>${msgs.totalSales}</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
+        </b:container>
+        
         <div>
             <ui:insert name="footer">
                 <ui:include src="/templates/footer.xhtml"></ui:include>
