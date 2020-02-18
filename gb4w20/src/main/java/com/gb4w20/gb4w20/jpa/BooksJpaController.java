@@ -522,5 +522,32 @@ public class BooksJpaController implements Serializable {
         Query query = em.createQuery(cq);
         return query.getResultList();
     }
+    
+    /**
+     * Used to find the books that were never sold. 
+     * @param startDate of the report
+     * @param endDate of the report
+     * @return books that were never sold. 
+     * @author Jeffrey Boisvert
+     */
+    public List<NameAndNumberBean> findBooksThatWereNeverSold(String startDate, String endDate){
+        
+        LOG.info("Looking for books that were never sold between " + startDate + " and " + endDate);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery(NameAndNumberBean.class);
+        
+        //Need to test and validate results. 
+        //Will use not in if just easier
+        Root<Books> book = cq.from(Books.class);
+        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.LEFT);
+        Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.LEFT);
+        
+        cq.select(book)
+                .where(cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59"))
+                .orderBy(cb.asc((book.get("title"))));
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();
+    }
 
 }
