@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays the top clients report. 
+This will list the clients based on sales along with the total amount of purchases. 
+
+@author Jeffrey Boisvert
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.publisherReport}</title>
+        <h:outputStylesheet library="css" name="report.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
+    </ui:define>
+    <ui:define name="content">
+    <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="../manager_frontpage.xhtml">#{msgs.dashboard}</a></li>
+             <li class="breadcrumb-item"><a href="../reports-page.xhtml">#{msgs.reportsLower}</a></li>
+             <li class="breadcrumb-item active" aria-current="page">#{msgs.topClientsReport}</li>
+          </ol>
+    </nav>
+        <div class="jumbotron">
+            <h1 class="report-title">#{msgs.topClientsReport}</h1>
+        <h:form id="topClientsForm" >
+            <div class="form-control">
+                    <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
+                    <p:calendar class="datepicker" value="#{topClientsReportBackingBean.startDate}"
+                        id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
+                    </p:calendar>
+                </div>
+            <div class="form-control">
+                    <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
+                    <p:calendar class="datepicker" value="#{topClientsReportBackingBean.endDate}"
+                        id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
+                    </p:calendar>
+                </div>
+            <h:commandButton class="btn btn-primary run-report-button" value="#{msgs.runReport}"
+                             action="#{topClientsReportBackingBean.runReport}"/>
+
+        </h:form>
+        </div>
+        <!-- Report --> 
+        <div class="jumbotron">
+            <h3>#{msgs.topClients}</h3>
+              <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty publisherReportBackingBean.topClientsReportBackingBean}">
+                  <h:panelGroup class="column-header">#{msgs.clientName}</h:panelGroup>
+                  <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
+                  <c:forEach items="#{topClientsReportBackingBean.clientsSales}" var="clientSales">
+                            <h:panelGroup>#{clientSales.name}</h:panelGroup>
+                            <h:panelGroup>$#{clientSales.amount}</h:panelGroup>
+                        </c:forEach>
+            </h:panelGrid>
+        </div>
+    </ui:define>
+</ui:composition>

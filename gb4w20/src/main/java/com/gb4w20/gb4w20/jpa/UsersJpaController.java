@@ -389,12 +389,11 @@ public class UsersJpaController implements Serializable {
     /**
      * Used to the top clients (based on sales) within the 
      * given start and end dates. 
-     * 
      * @param startDate of the report 
      * @param endDate of the report
      * @return 
      */
-    public List<Users> findTopUsersBySales(String startDate, String endDate){
+    public List<NameAndNumberBean> findTopUsersBySales(String startDate, String endDate){
         
         LOG.info("Looking for top users by sales between " + startDate + " and " + endDate);
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameAndNumberBean.class);
