@@ -40,6 +40,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -534,20 +535,30 @@ public class BooksJpaController implements Serializable {
         
         LOG.info("Looking for books that were never sold between " + startDate + " and " + endDate);
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery cq = cb.createQuery(NameAndNumberBean.class);
+        CriteriaQuery booksSoldCriteraQuery = cb.createQuery(Books.class);
         
-        //Need to test and validate results. 
-        //Will use not in if just easier
-        Root<Books> book = cq.from(Books.class);
-        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.LEFT);
-        Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.LEFT);
+        //Get all the books sold
+        Root<Books> bookSold = booksSoldCriteraQuery.from(Books.class);
+        Join<Books, Bookorder> bookorder = bookSold.join("bookorderCollection", JoinType.INNER);
+        Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
+       
+        booksSoldCriteraQuery.select(bookSold.get("isbn"))
+                .where(cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
+                );
+        Query booksSoldQuery = em.createQuery(booksSoldCriteraQuery);
         
-        cq.select(book)
-                .where(cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59"))
-                .orderBy(cb.asc((book.get("title"))));
-
-        Query query = em.createQuery(cq);
-        return query.getResultList();
+        //Find books not sold
+        CriteriaQuery booksNotSoldCriteraQuery = cb.createQuery(Books.class);
+        Root<Books> booksNotSold = booksNotSoldCriteraQuery.from(Books.class);
+        Predicate notSoldIsbns = booksNotSold.get(Books_.isbn).in(booksSoldQuery.getResultList()).not();
+        booksNotSoldCriteraQuery.select(booksNotSold)
+                .where(
+                   notSoldIsbns
+                )
+                .orderBy(cb.asc(booksNotSold.get("title")));
+        Query booksNotSoldQuery = em.createQuery(booksNotSoldCriteraQuery);
+        
+        return booksNotSoldQuery.getResultList();
     }
 
 }
