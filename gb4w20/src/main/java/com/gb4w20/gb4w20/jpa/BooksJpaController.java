@@ -573,7 +573,7 @@ public class BooksJpaController implements Serializable {
     /**
      * Used to get a certain number of active books. 
      * @param maxResults 
-     * @return a list of active books
+     * @return a list of active books sorted by title
      * @author Jeffrey Boisvert
      */
     public List<Books> getActiveBooks(int maxResults) {
@@ -583,7 +583,9 @@ public class BooksJpaController implements Serializable {
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
 
         Root<Books> book = cq.from(Books.class);
-        cq.select(book).where(cb.isTrue(book.get("active")));
+        cq.select(book)
+                .where(cb.isTrue(book.get("active")))
+                .orderBy(cb.asc(book.get("title")));
         Query query = em.createQuery(cq);
         
         if (maxResults != -1) {
