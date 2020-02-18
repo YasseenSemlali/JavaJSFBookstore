@@ -386,4 +386,35 @@ public class UsersJpaController implements Serializable {
           
     }
     
+    /**
+     * Used to the top clients (based on sales) within the 
+     * given start and end dates. 
+     * 
+     * @param startDate of the report 
+     * @param endDate of the report
+     * @return 
+     */
+    public List<Users> findTopUsersBySales(String startDate, String endDate){
+        
+        LOG.info("Looking for top users by sales between " + startDate + " and " + endDate);
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameAndNumberBean.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        
+        Root<Users> user = cq.from(Users.class);
+        Join<Users, Orders> bookorder = user.join("userId", JoinType.INNER);
+        Join<Orders, Bookorder> order = bookorder.join("orderId", JoinType.INNER);
+        
+        cq.multiselect(
+                    cb.concat(user.get(Users_.firstName) + " ", user.get(Users_.lastName)), 
+                    cb.sum(bookorder.get("amountPaidPretax")))
+                .groupBy(user.get(Users_.userId))
+                .where(
+                        cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
+                )
+                .orderBy(cb.desc(cb.sum(bookorder.get("amountPaidPretax"))));
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();
+    }
+    
 }

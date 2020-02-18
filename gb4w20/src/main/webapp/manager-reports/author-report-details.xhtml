@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-Java Server Faces page that displays the publisher report. 
-This will display the total sales of the publisher along with the totals of each item sold. 
+Java Server Faces page that displays the author report. 
+This will display the total sales of the author along with the totals of each item sold. 
 The user can select which author they would like to view via a drop down. 
 
 @author Jeffrey Boisvert
@@ -16,61 +16,62 @@ The user can select which author they would like to view via a drop down.
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
-        <title>#{msgs.publisherReport}</title>
+        <title>#{msgs.authorReport}</title>
         <h:outputStylesheet library="css" name="report.css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
 
     </ui:define>
     
     <f:metadata>
-        <f:viewParam id="authorId" name="publisherId" value="#{publisherReportBackingBean.publisherId}" />
+        <f:viewParam id="authorId" name="authorId" value="#{authorReportBackingBean.authorId}" />
     </f:metadata>
+    
     <ui:define name="content">
-    <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="manager_frontpage.xhtml">#{msgs.dashboard}</a></li>
-            <li class="breadcrumb-item"><a href="reports-page.xhtml">#{msgs.reportsLower}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">#{msgs.publisherReport}</li>
-          </ol>
-    </nav>
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="../manager_frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item"><a href="../reports-page.xhtml">#{msgs.reportsLower}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.authorReport}</li>
+              </ol>
+        </nav>
         <div class="jumbotron">
-            <h1 class="report-title">#{msgs.publisherReport}</h1>
-        <h:form id="publisherReportForm" >
+            <h1 class="report-title">#{msgs.authorReport}</h1>
+        <h:form id="authorReportForm" >
                 
             <div class="form-control">
                 
-                <h:outputLabel for="publisherSelect" value="#{msgs.publisherLabel}"/>
-                <h:selectOneMenu id="publisherSelect" class="custom-select" value = "#{publisherReportBackingBean.publisherId}">
-                    <f:selectItems value="#{publisherReportBackingBean.publishers}" var="publisher" itemValue="#{publisher.publisherId}" itemLabel="#{publisher.name}"/>
+                <h:outputLabel for="authorSelect" value="#{msgs.authorLabel}"/>
+                <h:selectOneMenu id="authorSelect" class="custom-select" value = "#{authorReportBackingBean.authorId}">
+                    <f:selectItems value="#{authorReportBackingBean.authors}" var="author" itemValue="#{author.authorId}" itemLabel="#{author.firstName} #{author.lastName}"/>
                 </h:selectOneMenu>
             </div>
             <div class="form-control">
                     <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
-                    <p:calendar class="datepicker" value="#{publisherReportBackingBean.startDate}"
+                    <p:calendar class="datepicker" value="#{authorReportBackingBean.startDate}"
                         id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
                 </div>
             <div class="form-control">
                     <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
-                    <p:calendar class="datepicker" value="#{publisherReportBackingBean.endDate}"
+                    <p:calendar class="datepicker" value="#{authorReportBackingBean.endDate}"
                         id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
                 </div>
             <h:commandButton class="btn btn-primary run-report-button" value="#{msgs.runReport}"
-                             action="#{publisherReportBackingBean.runReport}"/>
+                             action="#{authorReportBackingBean.runReport}"/>
 
         </h:form>
         </div>
         <!-- Report --> 
         <div class="jumbotron">
-             <h4>#{msgs.totalSalesLabel} $#{publisherReportBackingBean.totalSales == null ? 0.00 : publisherReportBackingBean.totalSales}</h4>
+             <h4>#{msgs.totalSalesLabel} #{authorReportBackingBean.totalSales == null ? 0.00 : authorReportBackingBean.totalSales}</h4>
         </div>
         <div class="jumbotron">
               <h3>#{msgs.itemsPurchased}</h3>
-              <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty publisherReportBackingBean.purchasedProducts}">
+              <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty authorReportBackingBean.purchasedProducts}">
                   <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
                   <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
-                        <c:forEach items="#{publisherReportBackingBean.purchasedProducts}" var="sales">
+                        <c:forEach items="#{authorReportBackingBean.purchasedProducts}" var="sales">
                             <h:panelGroup>#{sales.name}</h:panelGroup>
                             <h:panelGroup>$#{sales.amount}</h:panelGroup>
                         </c:forEach>
