@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-Java Server Faces page that displays the customer report. 
-This will display the total sales of the user along with the totals of each item sold. 
-The user can select which user they would like to view via a drop down. 
+Java Server Faces page that displays the publisher report. 
+This will display the total sales of the publisher along with the totals of each item sold. 
+The user can select which author they would like to view via a drop down. 
 
 @author Jeffrey Boisvert
 -->
@@ -16,55 +16,49 @@ The user can select which user they would like to view via a drop down.
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
-        <title>#{msgs.clientReport}</title>
+        <title>#{msgs.totalSalesReport}</title>
         <h:outputStylesheet library="css" name="report.css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
 
     </ui:define>
-    
-    <f:metadata>
-        <f:viewParam id="userId" name="userId" value="#{clientReportBackingBean.userId}" />
-    </f:metadata>
-    
     <ui:define name="content">
+    <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="../manager_frontpage.xhtml">#{msgs.dashboard}</a></li>
+             <li class="breadcrumb-item"><a href="../reports-page.xhtml">#{msgs.reportsLower}</a></li>
+             <li class="breadcrumb-item active" aria-current="page">#{msgs.totalSalesReport}</li>
+          </ol>
+    </nav>
         <div class="jumbotron">
-        <h1 class="report-title">#{msgs.clientReport}</h1>
-        <h:form id="clientReportForm" >
-                
-            <div class="form-control">
-                
-                <h:outputLabel for="userSelect" value="#{msgs.clientName}"/>
-                <h:selectOneMenu id="userSelect" class="custom-select" value = "#{clientReportBackingBean.userId}">
-                    <f:selectItems value="#{clientReportBackingBean.users}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
-                </h:selectOneMenu>
-            </div>
+            <h1 class="report-title">#{msgs.totalSalesReport}</h1>
+        <h:form id="totalSalesForm" >
             <div class="form-control">
                     <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
-                    <p:calendar class="datepicker" value="#{clientReportBackingBean.startDate}"
+                    <p:calendar class="datepicker" value="#{totalSalesReportBackingBean.startDate}"
                         id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
                 </div>
             <div class="form-control">
                     <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
-                    <p:calendar class="datepicker" value="#{clientReportBackingBean.endDate}"
+                    <p:calendar class="datepicker" value="#{totalSalesReportBackingBean.endDate}"
                         id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
                 </div>
             <h:commandButton class="btn btn-primary run-report-button" value="#{msgs.runReport}"
-                             action="#{clientReportBackingBean.runReport}"/>
+                             action="#{totalSalesReportBackingBean.runReport}"/>
 
         </h:form>
         </div>
         <!-- Report --> 
         <div class="jumbotron">
-             <h4>#{msgs.totalSalesLabel} $#{clientReportBackingBean.totalSales == null ? 0.00 : clientReportBackingBean.totalSales}</h4>
+             <h4>#{msgs.totalSalesLabel} $#{totalSalesReportBackingBean.totalSales == null ? 0.00 : totalSalesReportBackingBean.totalSales}</h4>
         </div>
         <div class="jumbotron">
               <h3>#{msgs.itemsPurchased}</h3>
-              <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty clientReportBackingBean.purchasedProducts}">
+              <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty totalSalesReportBackingBean.purchasedProducts}">
                   <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
                   <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
-                        <c:forEach items="#{clientReportBackingBean.purchasedProducts}" var="sales">
+                        <c:forEach items="#{totalSalesReportBackingBean.purchasedProducts}" var="sales">
                             <h:panelGroup>#{sales.name}</h:panelGroup>
                             <h:panelGroup>$#{sales.amount}</h:panelGroup>
                         </c:forEach>
