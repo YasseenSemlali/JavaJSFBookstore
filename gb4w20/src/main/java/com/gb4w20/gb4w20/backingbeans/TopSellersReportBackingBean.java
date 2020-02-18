@@ -1,9 +1,7 @@
 
 package com.gb4w20.gb4w20.backingbeans;
 
-import com.gb4w20.gb4w20.entities.Publishers;
-import com.gb4w20.gb4w20.entities.Users;
-import com.gb4w20.gb4w20.jpa.PublishersJpaController;
+import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import java.io.Serializable;
@@ -15,47 +13,47 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This is simply used as a backing bean for the top clients sales report. 
+ * This is simply used as a backing bean for the top sellers report. 
  * 
  * @author Jeffrey Boisvert
  */
 @Named
 @RequestScoped
-public class TopClientsReportBackingBean implements Serializable {
+public class TopSellersReportBackingBean implements Serializable {
     
-    private final static Logger LOG = LoggerFactory.getLogger(TopClientsReportBackingBean.class);
+    private final static Logger LOG = LoggerFactory.getLogger(TopSellersReportBackingBean.class);
 
     @Inject
-    private UsersJpaController usersJpaController;
+    private BooksJpaController booksJpaController;
     
     private java.util.Date startDate;
     
     private java.util.Date endDate; 
     
-    private List<NameAndNumberBean> clientsSales; 
+    private List<NameAndNumberBean> bookSales; 
     
     /**
-     * This will set the properties of the bean of for the clients sales based
+     * This will set the properties of the bean of for the book sales based
      * on the values set in startDate and endDate. 
      */
     public void runReport(){
-        setClientSales();
+        setBookSales();
     }
     
     
     /**
      * Helper method to set the list of clients and sales in a given date range.
      */
-    private void setClientSales() {
-        this.clientsSales = this.usersJpaController.findTopUsersBySales(sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
+    private void setBookSales() {
+        this.bookSales = this.booksJpaController.findTopSellers(sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
     }
     
     /**
      * Used to retrieve the list of clients and their sales.
      * @return the list of clients and sales. 
      */
-    public List<NameAndNumberBean> getClientsSales() {
-        return clientsSales;
+    public List<NameAndNumberBean> getBookSales() {
+        return bookSales;
     }
     
     /**
