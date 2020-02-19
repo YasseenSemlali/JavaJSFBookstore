@@ -24,15 +24,16 @@ add it to the shopping cart.
         <!--<ui:include src="/templates/header.xhtml"></ui:include>-->
     </ui:define>
 
-    <!--<h:body>
-        Hello from Facelets
-    </h:body>-->
     <ui:define name="content">
         <c:set var="book" value="#{booksJpaController.findBooks(param['isbn'])}"/>
+        <c:set var="authorbooks" value="#{book.getAuthorsCollection()}"/>
+        <c:set var="genrebooks" value="#{book.getGenresCollection()}"/>
+        
         <b:container>
             <b:jumbotron> 
-                <div class="ab">
+                <div class="a">
                     <h:graphicImage library="img" name = "covers/#{book.getCover()}" height="200px"/>
+                   
                     <!--<h:graphicImage library="img" name = "covers/1984.jpg" height="200px"/>--> 
                     <!--star ratings
                     <h:form>  
@@ -42,43 +43,94 @@ add it to the shopping cart.
                         </h:panelGrid>  
                     </h:form>  
                     -->
+                    
                 </div>
-                <div class="ab">
-                    Title: #{book.getTitle()} <!--1984-->
+                <div class="b">
+                    Title: #{book.getTitle()} 
                     <br></br>
-                    Author: <!--George Orwell-->
+                    Author:
+                    <c:forEach items="#{authorbooks}" var="auth">
+                        #{auth.getFirstName()} #{auth.getLastName()}
+                    </c:forEach>
+                    <br></br>
+                    Genre:
+                    <c:forEach items="#{genrebooks}" var="gen">
+                        #{gen.getGenre()}
+                    </c:forEach>
+                    <br></br>
+                    Rating: #{reviewsJpaController.getAverageRating(book.getIsbn())} stars
                     <br></br>
                     <a href="#" class="btn btn-lg btn-info">Add to cart</a>
                 </div>
             </b:jumbotron> 
         </b:container>
+        
         <b:container>
             <div class="">
                 <h2>Summary</h2>
                 <p>
                     #{book.getSynopsis()}
-                    <!--Among the seminal texts of the 20th century, Nineteen Eighty-Four is a rare work that grows more haunting as its futuristic purgatory becomes more real. 
-                    Published in 1949, the book offers political satirist George Orwell's nightmarish vision of a totalitarian, bureaucratic world and one poor stiff's attempt to find individuality. 
-                    The brilliance of the novel is Orwell's prescience of modern life—the ubiquity of television, the distortion of the language—and his ability to construct such a thorough version of hell. 
-                    Required reading for students since it was published, it ranks among the most terrifying novels ever written.
-                    -->
                 </p>
             </div>
         </b:container>
+        
         <b:container>
             <div class="">
                 <h2>Review</h2>
-                
+                <p>
+                    <c:forEach items="#{book.getReviewsCollection()}" var="review">
+                        #{review.getReview()}
+                        <br></br>
+                        Rating: #{review.getRating()} stars
+                    </c:forEach>
+                </p>
             </div>
         </b:container>
+        
         <b:container>
-            <b:jumbotron>
-                3 books by the same author
-            </b:jumbotron>
+            <h2>Recommendation</h2>
         </b:container>
         <b:container>
             <b:jumbotron>
-                3 books by the same genre
+                <c:forEach items="#{authorbooks}" var="auth">
+                    <h3>Other books by #{auth.getFirstName()} #{auth.getLastName()}</h3>
+                </c:forEach>
+                
+                <b:row>
+                    <b:column col-md="4">
+                        <b:panelGrid columns="3">
+                            <c:forEach items="#{authorbooks}" var="bookauts">
+                                <c:forEach items="#{bookauts.getBooksCollection()}" var="ba" begin="0" end="2">
+                                    <ui:decorate template="/templates/book.xhtml">
+                                        <ui:param name="book" value="#{ba}"></ui:param>
+                                    </ui:decorate>
+                                </c:forEach>
+                            </c:forEach>
+                        </b:panelGrid>
+                    </b:column>
+                </b:row>
+            </b:jumbotron>
+        </b:container>
+        
+        <b:container>
+            <b:jumbotron>
+                <c:forEach items="#{genrebooks}" var="gen">
+                    <h3>Other books of #{gen.getGenre()} genre</h3>
+                </c:forEach>
+                
+                <b:row>
+                    <b:column col-md="6">
+                        <b:panelGrid columns="3">
+                            <c:forEach items="#{genrebook}" var="bookgen">
+                                <c:forEach items="#{bookgen.getBooksCollection()}" var="bg" begin="0" end="2">
+                                    <ui:decorate template="/templates/book.xhtml">
+                                        <ui:param name="book" value="#{bg}"></ui:param>
+                                    </ui:decorate>
+                                </c:forEach>
+                            </c:forEach>
+                        </b:panelGrid>
+                    </b:column>
+                </b:row>
             </b:jumbotron>
         </b:container>
     </ui:define>
