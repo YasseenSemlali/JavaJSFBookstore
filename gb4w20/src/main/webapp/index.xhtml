@@ -16,7 +16,7 @@ Java Server Faces page that displays the frontpage of the app
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
         <title>Front page</title>
-            <h:outputStylesheet library="css" name="carousel.css" />
+        
     </ui:define>
 
     <ui:define name="content">
@@ -51,7 +51,7 @@ Java Server Faces page that displays the frontpage of the app
 
            <!--https://stackoverflow.com/questions/37837623/primefaces-carousel-next-and-prev-methods-are-not-working-in-version-5-3-and-->
             <p:carousel numVisible="5" value="#{booksJpaController.getBooksOnSale()}" headerText="On sale" var="book" itemStyle="text-align:center" responsive="true" >
-                
+               
                 <ui:decorate template="/templates/book.xhtml">
                     <ui:param name="book" value="#{book}"></ui:param>
                     <ui:param name="showPrice" value="true"></ui:param>

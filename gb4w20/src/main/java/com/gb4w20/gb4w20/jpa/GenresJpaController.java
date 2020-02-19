@@ -149,31 +149,4 @@ public class GenresJpaController implements Serializable {
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-
-    
-    
-    public List<Books> getTopSelling(int maxResults) {
-        return this.getTopSellingForGenre(-1l, maxResults);
-    }
-    
-    public List<Books> getTopSellingForGenre(Long genreId, int maxResults) {
-        LOG.info("getting " + maxResults + " top selling books for genre " + genreId);
-        
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
-
-        Root<Books> book = cq.from(Books.class);
-        //Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
-
-        cq.select(book);
-        if(genreId != -1){
-            cq.where(book.get(Books_.genresCollection).in(genreId));
-        }
-        cq.orderBy(cb.desc(cb.size(book.get(Books_.bookorderCollection))));
-
-        Query query = em.createQuery(cq);
-        query.setMaxResults(maxResults);
-
-        return query.getResultList();
-    }
 }
