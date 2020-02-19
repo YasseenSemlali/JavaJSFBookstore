@@ -492,54 +492,6 @@ public class BooksJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
     }
     
-    //getBooksBySameAuthor and getBooksBySameGenre NOT DONE
-    /**
-     * Getting three books from the same author that
-     * will be displayed in the book page
-     * 
-     * @param id
-     * @param maxResults
-     * @return 
-     * @author Jasmar
-     */
-    public List<Books> getBooksBySameAuthor(Authors author, int maxResults){
-        LOG.info("getting " + maxResults + " books from the same author");
-        
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
-        
-        Root<Books> book = cq.from(Books.class);
-        Join<Books, Authors> authors = book.join(Books_.authorsCollection, JoinType.INNER);
-        
-        /*cq.select(book);
-        if(id != -1){
-            cq.where(cb.equal(book.get("isbn"), id));
-        }*/
-        cq.select(book)
-                .where(cb.equal(authors.get("authorId"), author.getAuthorId()));
-        
-        Query query = em.createQuery(cq); 
-        query.setMaxResults(maxResults);
-        return query.getResultList();
-        
-    }
-    
-    /**
-     * Getting three books from the same genre that
-     * will be displayed in the book page
-     * 
-     * @param maxResults
-     * @return 
-     * @author Jasmar
-     */
-    public List<Books> getBooksBySameGenre(int maxResults){
-        LOG.info("getting " + maxResults + " books from the same genre");
-        
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
-        
-        return null;
-    } 
      /**   
      * Used to find the books that were top sellers in the specified date range
      * and returns their titles and totals. 

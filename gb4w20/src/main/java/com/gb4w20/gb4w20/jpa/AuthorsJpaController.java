@@ -236,24 +236,34 @@ public class AuthorsJpaController implements Serializable {
         return query.getResultList();
     }
 
-    public List<Books> getBooksBySameAuthor(Long isbn, int maxResults){
+    /**
+     * Get other books by the same author that will be displayed 
+     * in the book page
+     * 
+     * @param isbn
+     * @param authorId
+     * @param maxResults
+     * @return 
+     * @author Jasmar
+     */
+    public List<Books> getOtherBooksBySameAuthor(long isbn, long authorId, int maxResults){
         LOG.info("getting " + maxResults + " books from the same author");
         
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
         
         Root<Books> book = cq.from(Books.class);
-        Join<Books, Authors> authors = book.join(Books_.authorsCollection, JoinType.INNER);
+        Join author = book.join("authorsCollection");
         
-        /*cq.select(book);
-        if(id != -1){
-            cq.where(cb.equal(book.get("isbn"), id));
-        }*/
         cq.select(book)
-                .where(cb.equal(book.get("isbn"), isbn));
+                .where(cb.and(
+                        cb.notEqual(book.get("isbn"), isbn),
+                        cb.equal(author.get("authorId"), authorId)
+                ));
         
-        Query query = em.createQuery(cq); 
+        Query query = em.createQuery(cq);
         query.setMaxResults(maxResults);
+        
         return query.getResultList();
     }
 }

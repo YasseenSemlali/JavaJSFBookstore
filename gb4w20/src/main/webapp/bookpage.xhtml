@@ -29,13 +29,17 @@ add it to the shopping cart.
         <c:set var="authorbooks" value="#{book.getAuthorsCollection()}"/>
         <c:set var="genrebooks" value="#{book.getGenresCollection()}"/>
         
+        <!--BELOW WORKS
+        <c:set var="ges" value="#{book.getGenresCollection()[0]}"/>
+        -->
+        
         <c:forEach items="#{authorbooks}" var="auth">
             <c:set var="bauthors" value="#{auth}"/>
         </c:forEach>
         <c:forEach items="#{genrebooks}" var="gen">
             <c:set var="bgenres" value="#{gen}"/>
         </c:forEach>
-        
+        <h1>#{ges.getGenre()}</h1>
         <b:container>
             <b:jumbotron> 
                 <div class="a">
@@ -105,7 +109,7 @@ add it to the shopping cart.
                     <h3>Other books by #{auth.getFirstName()} #{auth.getLastName()}</h3>
                 </c:forEach>
                 
-                <b:row>
+                <!--<b:row>
                     <b:column col-md="6">
                         <b:panelGrid columns="3">
                             <c:forEach items="#{authorbooks}" var="bookauts">
@@ -114,6 +118,17 @@ add it to the shopping cart.
                                         <ui:param name="book" value="#{ba}"></ui:param>
                                     </ui:decorate>
                                 </c:forEach>
+                            </c:forEach>
+                        </b:panelGrid>
+                    </b:column>
+                </b:row>-->
+                <b:row>
+                    <b:column col-md="6">
+                        <b:panelGrid columns="3">
+                            <c:forEach items="#{authorsJpaController.getOtherBooksBySameAuthor(book.getIsbn(), bauthors.getAuthorId(), 3)}" var="sameauthor">
+                                    <ui:decorate template="/templates/book.xhtml">
+                                        <ui:param name="book" value="#{sameauthor}"></ui:param>
+                                    </ui:decorate>
                             </c:forEach>
                         </b:panelGrid>
                     </b:column>
@@ -159,6 +174,15 @@ add it to the shopping cart.
                         </b:panelGrid>
                     </b:column>
                 </b:row>
+            </b:jumbotron>
+        </b:container>
+        
+        <b:container>
+            <h3>Review this book: </h3>
+            <b:jumbotron>
+                <h:form>
+                    
+                </h:form>
             </b:jumbotron>
         </b:container>
     </ui:define>
