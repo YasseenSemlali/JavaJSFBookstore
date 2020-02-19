@@ -21,33 +21,65 @@ add it to the shopping cart.
         <title>#{book.getTitle()}</title> 
         <h:outputStylesheet library="css" name="bookpage.css" />
         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>-->
-        <ui:include src="/templates/header.xhtml"></ui:include>
+        <!--<ui:include src="/templates/header.xhtml"></ui:include>-->
     </ui:define>
 
     <!--<h:body>
         Hello from Facelets
     </h:body>-->
     <ui:define name="content">
-        <b:container fluid="true">
+        <c:set var="book" value="#{booksJpaController.findBooks(param['isbn'])}"/>
+        <b:container>
+            <b:jumbotron> 
+                <div class="ab">
+                    <h:graphicImage library="img" name = "covers/#{book.getCover()}" height="200px"/>
+                    <!--<h:graphicImage library="img" name = "covers/1984.jpg" height="200px"/>--> 
+                    <!--star ratings
+                    <h:form>  
+                        <h:panelGrid columns="2" cellpadding="5">  
+                            <h:outputText value="Rating: " />  
+                            <p:rating value="#{rating.rating}" />  
+                        </h:panelGrid>  
+                    </h:form>  
+                    -->
+                </div>
+                <div class="ab">
+                    Title: #{book.getTitle()} <!--1984-->
+                    <br></br>
+                    Author: <!--George Orwell-->
+                    <br></br>
+                    <a href="#" class="btn btn-lg btn-info">Add to cart</a>
+                </div>
+            </b:jumbotron> 
+        </b:container>
+        <b:container>
             <div class="">
-                <h:graphicImage library="img" name = "covers/#{book.getCover()}" height="200px"/> 
-                <!--star ratings
-                <h:form>  
-                    <h:panelGrid columns="2" cellpadding="5">  
-                        <h:outputText value="Rate this product: " />  
-                        <p:rating value="#{rating.rating}" />  
-                    </h:panelGrid>  
-                </h:form>  
-                -->
+                <h2>Summary</h2>
+                <p>
+                    #{book.getSynopsis()}
+                    <!--Among the seminal texts of the 20th century, Nineteen Eighty-Four is a rare work that grows more haunting as its futuristic purgatory becomes more real. 
+                    Published in 1949, the book offers political satirist George Orwell's nightmarish vision of a totalitarian, bureaucratic world and one poor stiff's attempt to find individuality. 
+                    The brilliance of the novel is Orwell's prescience of modern life—the ubiquity of television, the distortion of the language—and his ability to construct such a thorough version of hell. 
+                    Required reading for students since it was published, it ranks among the most terrifying novels ever written.
+                    -->
+                </p>
             </div>
+        </b:container>
+        <b:container>
             <div class="">
-                Title: 
-                <br></br>
-                Author:
-                <br></br>
+                <h2>Review</h2>
                 
             </div>
-                
+        </b:container>
+        <b:container>
+            <b:jumbotron>
+                3 books by the same author
+            </b:jumbotron>
+        </b:container>
+        <b:container>
+            <b:jumbotron>
+                3 books by the same genre
+            </b:jumbotron>
         </b:container>
     </ui:define>
     

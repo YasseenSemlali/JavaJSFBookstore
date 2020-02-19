@@ -19,6 +19,7 @@ import com.gb4w20.gb4w20.entities.BookFiles;
 import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.entities.Bookorder;
 import com.gb4w20.gb4w20.entities.Books;
+import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
@@ -487,6 +488,49 @@ public class BooksJpaController implements Serializable {
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
+    }
+    
+    /**
+     * Getting three books from the same author that
+     * will be displayed in the book page
+     * 
+     * @param isbn
+     * @param maxResults
+     * @return 
+     */
+    public List<Books> getBooksBySameAuthor(long isbn, int maxResults){
+        LOG.info("getting " + maxResults + " books from the same author");
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+        
+        Root<Books> book = cq.from(Books.class);
+        Join<Books, Authors> authors = book.join(Books_.authorsCollection, JoinType.INNER);
+        
+        cq.select(book);
+        if(isbn != -1){
+            cq.where(cb.equal(book.get("isbn"), isbn));
+        }
+        
+        Query query = em.createQuery(cq); 
+        
+        return query.getResultList();
+        
+    }
+    
+    /**
+     * Getting three books from the same genre that
+     * will be displayed in the book page
+     * 
+     * @param maxResults
+     * @return 
+     */
+    public List<Books> getBooksBySameGenre(int maxResults){
+        LOG.info("getting " + maxResults + " books from the same genre");
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+        
     }
 
 }

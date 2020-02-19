@@ -215,7 +215,6 @@ JOIN books b ON bo.isbn = b.isbn
 WHERE o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01'
 GROUP BY bo.isbn, b.title 
 ORDER BY o.timestamp DESC;
-
 -- Sales by Client
 /* 
 For a chosen client and within the defined date range 
