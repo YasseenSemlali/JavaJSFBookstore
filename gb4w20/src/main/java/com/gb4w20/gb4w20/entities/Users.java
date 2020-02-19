@@ -319,7 +319,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.Users[ userId=" + userId + " ]";
+        return this.userId +": " + this.firstName + " " + this.lastName;
     }
     
 }

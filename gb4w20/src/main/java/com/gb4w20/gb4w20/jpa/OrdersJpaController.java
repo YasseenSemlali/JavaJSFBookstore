@@ -8,9 +8,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.entities.Bookorder;
+import com.gb4w20.gb4w20.entities.Books;
+import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
+import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,6 +24,14 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +58,7 @@ public class OrdersJpaController implements Serializable {
             orders.setBookorderCollection(new ArrayList<Bookorder>());
         }
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Users userId = orders.getUserId();
             if (userId != null) {
                 userId = em.getReference(userId.getClass(), userId.getUserId());
@@ -72,17 +84,15 @@ public class OrdersJpaController implements Serializable {
                     oldOrderIdOfBookorderCollectionBookorder = em.merge(oldOrderIdOfBookorderCollectionBookorder);
                 }
             }
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            utx.commit();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with create in orders controller method.");
         }
     }
 
     public void edit(Orders orders) throws IllegalOrphanException, NonexistentEntityException, Exception {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Orders persistentOrders = em.find(Orders.class, orders.getOrderId());
             Users userIdOld = persistentOrders.getUserId();
             Users userIdNew = orders.getUserId();
@@ -131,26 +141,15 @@ public class OrdersJpaController implements Serializable {
                     }
                 }
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            String msg = ex.getLocalizedMessage();
-            if (msg == null || msg.length() == 0) {
-                Long id = orders.getOrderId();
-                if (findOrders(id) == null) {
-                    throw new NonexistentEntityException("The orders with id " + id + " no longer exists.");
-                }
-            }
-            throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            utx.commit();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with edit in orders controller method.");
         }
     }
 
     public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Orders orders;
             try {
                 orders = em.getReference(Orders.class, id);
@@ -175,11 +174,9 @@ public class OrdersJpaController implements Serializable {
                 userId = em.merge(userId);
             }
             em.remove(orders);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            utx.commit();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with delete in orders controller method.");
         }
     }
 
@@ -224,6 +221,59 @@ public class OrdersJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    /**
+     * Used to get the total sales between a start and end date
+     * @param startDate of the report
+     * @param endDate of the report. 
+     * @return total sales.
+     * @author Jeffrey Boisvert 
+     */
+    public double getTotalSales(String startDate, String endDate){
+        LOG.info("Looking for total sales for orders between " + startDate + " and " + endDate);
+        
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        
+        Root<Orders> orders = cq.from(Orders.class);
+        Join<Orders, Bookorder> bookorder = orders.join("bookorderCollection", JoinType.INNER);
+
+        cq.select(em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+                .where(
+                     cb.between(orders.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
+                );
+
+        Query query = em.createQuery(cq);
+        return query.getSingleResult() != null ? ((BigDecimal) query.getSingleResult()).doubleValue() : 0.00;
+    }
+    
+    /**
+     * Used to get all the books purchased in a date range and their totals. 
+     * @param startDate in format YYYY-MM-DD
+     * @param endDate in format YYYY-MM-DD
+     * @return list of all the items and their totals. 
+     * @author Jeffrey Boisvert
+     */
+    public List<NameAndNumberBean> getPurchasedBooks(String startDate, String endDate){
+        
+        LOG.info("Looking for books ordered between " + startDate + " and " + endDate);
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameAndNumberBean.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        
+        Root<Books> book = cq.from(Books.class);
+        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
+        Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
+        
+        cq.multiselect(book.get(Books_.title), em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+                .groupBy(book.get(Books_.title))
+                .where(
+                   cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
+                )
+                .orderBy(cb.asc((book.get(Books_.title))));
+
+        Query query = em.createQuery(cq);
+        return query.getResultList();
     }
     
 }
