@@ -19,6 +19,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
@@ -195,7 +196,9 @@ public class ReviewsJpaController implements Serializable {
     }
     
     /**
-     * Get average rating of a book
+     * Get average rating of a book and
+     * some books do not have any ratings yet so it returns 0 for those
+     * 
      * @author Jasmar
      * @param isbn
      * @return 
@@ -204,13 +207,19 @@ public class ReviewsJpaController implements Serializable {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery(Reviews.class);
         Root<Books> bookrating = cq.from(Books.class);
-        Join<Books, Reviews> rt = bookrating.join(Books_.reviewsCollection, JoinType.INNER);
+        Join rate = bookrating.join("reviewsCollection");
         
-        cq.select(cb.avg(rt.get("rating")))
+        cq.select(cb.avg(rate.get("rating")))
                 .where(cb.equal(bookrating.get("isbn"), isbn));
         
-        Query avgrating = em.createQuery(cq);
-        return avgrating.getFirstResult();
+        TypedQuery<Double> avgrating = em.createQuery(cq);
+        
+        if (avgrating.getSingleResult() != null){
+            return avgrating.getSingleResult();
+        }
+        else{
+            return 0.0;
+        }
     }
     
 }

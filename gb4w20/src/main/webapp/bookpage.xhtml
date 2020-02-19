@@ -29,6 +29,13 @@ add it to the shopping cart.
         <c:set var="authorbooks" value="#{book.getAuthorsCollection()}"/>
         <c:set var="genrebooks" value="#{book.getGenresCollection()}"/>
         
+        <c:forEach items="#{authorbooks}" var="auth">
+            <c:set var="bauthors" value="#{auth}"/>
+        </c:forEach>
+        <c:forEach items="#{genrebooks}" var="gen">
+            <c:set var="bgenres" value="#{gen}"/>
+        </c:forEach>
+        
         <b:container>
             <b:jumbotron> 
                 <div class="a">
@@ -51,11 +58,13 @@ add it to the shopping cart.
                     Author:
                     <c:forEach items="#{authorbooks}" var="auth">
                         #{auth.getFirstName()} #{auth.getLastName()}
+                        <br></br>
                     </c:forEach>
                     <br></br>
                     Genre:
                     <c:forEach items="#{genrebooks}" var="gen">
                         #{gen.getGenre()}
+                        <br></br>
                     </c:forEach>
                     <br></br>
                     Rating: #{reviewsJpaController.getAverageRating(book.getIsbn())} stars
@@ -97,7 +106,7 @@ add it to the shopping cart.
                 </c:forEach>
                 
                 <b:row>
-                    <b:column col-md="4">
+                    <b:column col-md="6">
                         <b:panelGrid columns="3">
                             <c:forEach items="#{authorbooks}" var="bookauts">
                                 <c:forEach items="#{bookauts.getBooksCollection()}" var="ba" begin="0" end="2">
@@ -112,7 +121,7 @@ add it to the shopping cart.
             </b:jumbotron>
         </b:container>
         
-        <b:container>
+        <!--<b:container>
             <b:jumbotron>
                 <c:forEach items="#{genrebooks}" var="gen">
                     <h3>Other books of #{gen.getGenre()} genre</h3>
@@ -127,6 +136,25 @@ add it to the shopping cart.
                                         <ui:param name="book" value="#{bg}"></ui:param>
                                     </ui:decorate>
                                 </c:forEach>
+                            </c:forEach>
+                        </b:panelGrid>
+                    </b:column>
+                </b:row>
+            </b:jumbotron>
+        </b:container>-->
+        <b:container>
+            <b:jumbotron>
+                <c:forEach items="#{genrebooks}" var="gen">
+                    <h3>Other books of #{gen.getGenre()} genre</h3>
+                </c:forEach>
+                
+                <b:row>
+                    <b:column col-md="6">
+                        <b:panelGrid columns="3">
+                            <c:forEach items="#{genresJpaController.getOtherBooksOfSameGenre(book.getIsbn(), bgenres.getGenreId(), bauthors.getAuthorId(), 3)}" var="samegenre">
+                                <ui:decorate template="/templates/book.xhtml">
+                                    <ui:param name="book" value="#{samegenre}"></ui:param>
+                                </ui:decorate>
                             </c:forEach>
                         </b:panelGrid>
                     </b:column>
