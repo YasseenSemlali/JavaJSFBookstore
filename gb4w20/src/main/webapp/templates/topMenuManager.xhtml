@@ -6,18 +6,17 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-   </h:head>
+    </h:head>
     <h:body>
-         <ui:composition>
-            <h:outputStylesheet name="css/global.css" />
-                <p:menubar styleClass="topMenuBar">
-                    <p:menuitem value="" url="www.google.com" styleClass="logomenuitem"/>
-                    <p:menuitem value="BOOKIFY Manager" url="none" style="text-size:1.5em; color:white;" styleClass="menuitem" />
-                    <p:menuitem value="FR" style="position: absolute; right:30px;" url="www.google.com" styleClass="menuitem" />
-                    <p:menuitem value="${msgs.logout}" style="position: absolute; right:80px;" url="index.xhtml" styleClass="menuitem" />
-                    <p:menuitem value="${msgs.profile}" style="position: absolute; right: 170px;" url="www.google.com" styleClass="menuitem" />
-                    <p:menuitem value="${msgs.dashboard}" style="position: absolute; right: 250px;" url="manager_frontpage.xhtml" styleClass="menuitem" />
-                </p:menubar>
+        <ui:composition>
+            <p:menubar styleClass="topMenuBar">
+                <p:menuitem value="" url="www.google.com" styleClass="logomenuitem"/>
+                <p:menuitem value="BOOKIFY Manager" url="none" style="text-size:1.5em; color:white;" styleClass="menuitem" />
+                <p:menuitem value="FR" style="position: absolute; right:30px;" url="www.google.com" styleClass="menuitem" />
+                <p:menuitem value="${msgs.logout}" style="position: absolute; right:80px;" url="index.xhtml" styleClass="menuitem" />
+                <p:menuitem value="${msgs.profile}" style="position: absolute; right: 170px;" url="www.google.com" styleClass="menuitem" />
+                <p:menuitem value="${msgs.dashboard}" style="position: absolute; right: 250px;" url="manager_frontpage.xhtml" styleClass="menuitem" />
+            </p:menubar>
         </ui:composition>
     </h:body>
 </html>

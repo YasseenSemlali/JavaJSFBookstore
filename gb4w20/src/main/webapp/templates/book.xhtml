@@ -17,7 +17,7 @@
 
                 <h:panelGroup  rendered="#{showPrice}">
                     <p class="h4"> 
-                        <h:panelGroup rendered="#{showOldPrice == null || showOldPrice == true}"><span class="crossed-out">$#{book.getListPrice()}</span></h:panelGroup> 
+                        <h:panelGroup rendered="#{(showOldPrice == null || showOldPrice == true) and  book.getSalePrice() > 0}"><span class="crossed-out">$#{book.getListPrice()}</span></h:panelGroup> 
                         <strong>$#{book.getListPrice() - book.getSalePrice()}</strong>
                     </p>
                 </h:panelGroup>

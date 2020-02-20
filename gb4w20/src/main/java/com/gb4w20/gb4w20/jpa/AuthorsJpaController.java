@@ -2,6 +2,7 @@
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.Authors;
+import com.gb4w20.gb4w20.entities.Authors;
 import com.gb4w20.gb4w20.entities.Authors_;
 import com.gb4w20.gb4w20.entities.Bookorder;
 import java.io.Serializable;
