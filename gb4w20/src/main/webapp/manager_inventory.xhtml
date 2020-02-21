@@ -37,7 +37,7 @@ necessary to manage inventory of our store.
                                             <p:ajax event="change" 
                                                     update="isbn title synopsis cover pubdate numpages wholeprice listprice saleprice active allauthors"
                                                     listener="#{managerInventory.bookChanged}" />
-                                            <f:selectItem itemLabel="New..." itemValue="#{-1}"/>
+                                            <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
                                             <f:selectItems value="#{booksJpaController.findBooksEntities()}" var="book" itemValue="#{book.isbn}" itemLabel="#{book.title}"/>
                                         </p:selectOneMenu>
                                     </div>
@@ -254,7 +254,7 @@ necessary to manage inventory of our store.
                                             style="width:30%;">
                                             <p:ajax event="change" update="author_firstname author_lastname"
                                                     listener="#{managerInventory.authorChanged}" />
-                                            <f:selectItem itemLabel="New..." itemValue="#{-1}"/>
+                                            <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
                                             <f:selectItems value="#{authorsJpaController.findAuthorsEntities()}" var="author" itemValue="#{author.authorId}" itemLabel="#{author.firstName} #{author.lastName}"/>
                                         </p:selectOneMenu>
                                     </div>
@@ -300,7 +300,7 @@ necessary to manage inventory of our store.
                                         <p:selectOneMenu id="selectpublisher" class="custom-select" value="#{managerInventory.publisherId}" style="width:30%;">
                                             <p:ajax event="change" update="publisher_name"
                                                     listener="#{managerInventory.publisherChanged}" />
-                                            <f:selectItem itemLabel="New..." itemValue="#{-1}"/>
+                                            <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
                                             <f:selectItems value="#{publishersJpaController.findPublishersEntities()}" var="publisher" itemValue="#{publisher.publisherId}" itemLabel="#{publisher.name}"/>
                                         </p:selectOneMenu>
                                     </div>
@@ -338,7 +338,7 @@ necessary to manage inventory of our store.
                                         <p:selectOneMenu id="selectgenre" class="custom-select" value="#{managerInventory.genreId}" style="width:30%;">
                                             <p:ajax event="change" update="genre"
                                                     listener="#{managerInventory.genreChanged}" />
-                                            <f:selectItem itemLabel="New..." itemValue="#{-1}"/>
+                                            <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
                                             <f:selectItems value="#{genresJpaController.findGenresEntities()}" var="genre" itemValue="#{genre.genreId}" itemLabel="#{genre.genre}"/>
                                         </p:selectOneMenu>
                                     </div>
