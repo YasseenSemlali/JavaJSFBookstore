@@ -117,6 +117,7 @@ JOIN publishers p ON bp.publisher_id = p.publisher_id
 -- Enter desired timestamps and publisher here
 WHERE p.publisher_id = 1 AND o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01'
 GROUP BY p.publisher_id;
+
 /*
 For a chosen publisher and within the defined date range 
 this report displays a list ordered by date of every purchase 

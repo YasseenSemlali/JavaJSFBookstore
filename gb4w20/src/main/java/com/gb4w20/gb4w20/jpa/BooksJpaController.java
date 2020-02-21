@@ -483,6 +483,72 @@ public class BooksJpaController implements Serializable {
 
         return query.getResultList();
     }
+        
+    public List<Books> getForGenre(Long genreId) {
+        return this.getTopSellingForGenre(genreId, -1);
+    }
+    
+    public List<Books> getTopSelling(int maxResults) {
+        return this.getTopSellingForGenre(-1l, maxResults);
+    }
+    
+    public List<Books> getAllBooksForGenre(Long genreId) {
+        return this.getTopSellingForGenre(genreId, -1);
+    }
+    
+    public List<Books> getTopSellingForGenre(Long genreId, int maxResults) {
+        LOG.info("getting " + maxResults + " top selling books for genre " + genreId);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+
+        Root<Books> book = cq.from(Books.class);
+        //Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
+
+        cq.select(book);
+        if(genreId != -1){
+            cq.where(book.get(Books_.genresCollection).in(genreId));
+        }
+        cq.orderBy(cb.desc(cb.size(book.get(Books_.bookorderCollection))));
+
+        Query query = em.createQuery(cq);
+        
+        if(maxResults != -1) {
+            query.setMaxResults(maxResults);
+        }
+
+        return query.getResultList();
+    }
+    
+    public List<Books> searchBook(Long isbn, String title, String author, String publisher) {
+        LOG.info("Searching books: isbn: " + isbn + " title: " + title + " author: " + author + " publisher: " + publisher);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+
+        Root<Books> book = cq.from(Books.class);
+        
+        cq.select(book);
+        
+        if(isbn != null) {
+            cq.where(cb.equal(book.get(Books_.isbn), isbn));
+        }
+        
+        if(title != null) {
+            cq.where(cb.equal(book.get(Books_.title), title));
+        }
+        
+        if(author != null) {
+            cq.where(book.get(Books_.authorsCollection).in(author));
+        }
+        
+        if(publisher != null) {
+            cq.where(book.get(Books_.publishersCollection).in(publisher));
+        }
+        
+        Query query = em.createQuery(cq);
+        return query.getResultList();
+    }
     
     public int getBooksCount() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
