@@ -58,18 +58,21 @@ public class PublishersJpaController implements Serializable {
             publishers.setBooksCollection(new ArrayList<Books>());
         }
         try {
+            LOG.info("1");
             utx.begin();
             Collection<Books> attachedBooksCollection = new ArrayList<Books>();
             for (Books booksCollectionBooksToAttach : publishers.getBooksCollection()) {
                 booksCollectionBooksToAttach = em.getReference(booksCollectionBooksToAttach.getClass(), booksCollectionBooksToAttach.getIsbn());
                 attachedBooksCollection.add(booksCollectionBooksToAttach);
             }
+            LOG.info("1");
             publishers.setBooksCollection(attachedBooksCollection);
             em.persist(publishers);
             for (Books booksCollectionBooks : publishers.getBooksCollection()) {
                 booksCollectionBooks.getPublishersCollection().add(publishers);
                 booksCollectionBooks = em.merge(booksCollectionBooks);
             }
+            LOG.info("1");
             utx.commit();
         } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with create in publishers controller method.", ex);

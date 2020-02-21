@@ -488,22 +488,5 @@ public class BooksJpaController implements Serializable {
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
-    /**
-     * @returns all the books in the database.
-     * @author Jean Robatto
-     */
-    public List<Books> getAllBooks() {
-        LOG.info("Getting all books");
-        
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
-
-        Root<Books> book = cq.from(Books.class);
-
-        Query query = em.createQuery(cq);
-
-        return query.getResultList();
-    }
 
 }

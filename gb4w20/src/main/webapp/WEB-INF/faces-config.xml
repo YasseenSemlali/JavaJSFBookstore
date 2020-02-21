@@ -30,10 +30,10 @@
     
     <!-- Rule for editing of book -->
     <navigation-rule>
-        <from-view-id>/join_email.xhtml</from-view-id>
+        <from-view-id>/manager_inventory.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>success</from-outcome>
-            <to-view-id>/display_email.xhtml</to-view-id>
+            <from-outcome>SUCCESS</from-outcome>
+            <to-view-id>/manager_inventory.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 

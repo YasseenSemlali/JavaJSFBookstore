@@ -22,6 +22,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,24 +51,28 @@ public class GenresJpaController implements Serializable {
         if (genres.getBooksCollection() == null) {
             genres.setBooksCollection(new ArrayList<Books>());
         }
-        em.getTransaction().begin();
-        Collection<Books> attachedBooksCollection = new ArrayList<Books>();
-        for (Books booksCollectionBooksToAttach : genres.getBooksCollection()) {
-            booksCollectionBooksToAttach = em.getReference(booksCollectionBooksToAttach.getClass(), booksCollectionBooksToAttach.getIsbn());
-            attachedBooksCollection.add(booksCollectionBooksToAttach);
-        }
-        genres.setBooksCollection(attachedBooksCollection);
-        em.persist(genres);
-        for (Books booksCollectionBooks : genres.getBooksCollection()) {
-            booksCollectionBooks.getGenresCollection().add(genres);
-            booksCollectionBooks = em.merge(booksCollectionBooks);
-        }
-        em.getTransaction().commit();
+        try {
+            utx.begin();
+            Collection<Books> attachedBooksCollection = new ArrayList<Books>();
+            for (Books booksCollectionBooksToAttach : genres.getBooksCollection()) {
+                booksCollectionBooksToAttach = em.getReference(booksCollectionBooksToAttach.getClass(), booksCollectionBooksToAttach.getIsbn());
+                attachedBooksCollection.add(booksCollectionBooksToAttach);
+            }
+            genres.setBooksCollection(attachedBooksCollection);
+            em.persist(genres);
+            for (Books booksCollectionBooks : genres.getBooksCollection()) {
+                booksCollectionBooks.getGenresCollection().add(genres);
+                booksCollectionBooks = em.merge(booksCollectionBooks);
+            }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with create in authors controller method.", ex);
+        } 
     }
 
     public void edit(Genres genres) throws NonexistentEntityException, Exception {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Genres persistentGenres = em.find(Genres.class, genres.getGenreId());
             Collection<Books> booksCollectionOld = persistentGenres.getBooksCollection();
             Collection<Books> booksCollectionNew = genres.getBooksCollection();
@@ -87,17 +96,10 @@ public class GenresJpaController implements Serializable {
                     booksCollectionNewBooks = em.merge(booksCollectionNewBooks);
                 }
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            String msg = ex.getLocalizedMessage();
-            if (msg == null || msg.length() == 0) {
-                Long id = genres.getGenreId();
-                if (findGenres(id) == null) {
-                    throw new NonexistentEntityException("The genres with id " + id + " no longer exists.");
-                }
-            }
-            throw ex;
-        }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with edit in authors controller method.", ex);
+        } 
     }
 
     public void destroy(Long id) throws NonexistentEntityException {

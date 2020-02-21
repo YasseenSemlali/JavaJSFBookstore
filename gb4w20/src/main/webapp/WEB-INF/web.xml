@@ -18,7 +18,7 @@
     <!-- Blank styling for prime faces while maintaining the functionality -->
     <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>none</param-value>
+    <param-value>admin</param-value>
 </context-param>
     <!-- set the default timezone -->
     <context-param>
