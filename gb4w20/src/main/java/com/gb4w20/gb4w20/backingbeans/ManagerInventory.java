@@ -5,6 +5,7 @@ import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Genres;
 import com.gb4w20.gb4w20.entities.Publishers;
 import com.gb4w20.gb4w20.jpa.AuthorsJpaController;
+import com.gb4w20.gb4w20.jpa.BookorderJpaController;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.GenresJpaController;
 import com.gb4w20.gb4w20.jpa.PublishersJpaController;
@@ -13,7 +14,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIOutput;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -45,6 +45,9 @@ public class ManagerInventory implements Serializable {
 
     @Inject
     private GenresJpaController genresController;
+    
+    @Inject
+    private BookorderJpaController bookorderController;
 
     //Private fields
     private boolean edit;
@@ -82,6 +85,9 @@ public class ManagerInventory implements Serializable {
     //Genre
     protected Long genreId;
     protected String genre;
+    
+    //Total sales
+    protected BigDecimal totalSales;
 
     //Cosntructor
     public ManagerInventory() {
@@ -109,9 +115,10 @@ public class ManagerInventory implements Serializable {
             this.salePrice = null;
             this.timestamp = null;
             this.active = true;
-            this.bookAuthor = null;
-            this.bookGenre = null;
-            this.bookPublisher = null;
+            this.bookAuthor = new ArrayList<>();
+            this.bookGenre = new ArrayList<>();
+            this.bookPublisher = new ArrayList<>();
+            this.totalSales = new BigDecimal(0);
         } else {
             this.edit = true;
             Books book = booksController.findBooks(isbn);
@@ -129,6 +136,7 @@ public class ManagerInventory implements Serializable {
             this.bookAuthor = book.getAuthorsCollection();
             this.bookGenre = book.getGenresCollection();
             this.bookPublisher = book.getPublishersCollection();
+            this.totalSales = bookorderController.getTotalSalesForBook(book);
         }
     }
 
@@ -390,7 +398,9 @@ public class ManagerInventory implements Serializable {
 
             return "success_inventory";
         } catch (Exception ex) {
-            return "failure_inventory";
+            LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            LOG.info(ex.getMessage());
+            return "failure_inventory?error=" + ex.getMessage();
         }
     }
 
@@ -611,6 +621,11 @@ public class ManagerInventory implements Serializable {
     public void setBookPublisher(Collection<Publishers> bookPublisher) {
         this.bookPublisher = bookPublisher;
     }
+
+    public void setTotalSales(BigDecimal totalSales) {
+        this.totalSales = totalSales;
+    }
+    
     
     
 
@@ -719,4 +734,9 @@ public class ManagerInventory implements Serializable {
         return bookPublisher;
     }
 
+    public BigDecimal getTotalSales() {
+        return totalSales;
+    }
+
+    
 }

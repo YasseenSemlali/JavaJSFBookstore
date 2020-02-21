@@ -23,7 +23,7 @@ a manager can perform.
     <ui:define name="content">
 
         <b:container style="margin-top: 5%; margin-bottom:5%">
-            <h1>FAILURE</h1>
+            <h1>FAILURE: #{request.getParameter("error")}</h1>
         </b:container>
          </ui:define>                
         </ui:composition>

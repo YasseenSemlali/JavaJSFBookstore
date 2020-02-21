@@ -35,7 +35,7 @@ necessary to manage inventory of our store.
                                     <div class="col-lg text-left">
                                         <p:selectOneMenu id="selectbook" class="custom-select" value="#{managerInventory.selectIsbn}" style="width:30%;">
                                             <p:ajax event="change" 
-                                                    update="isbn title synopsis cover pubdate numpages wholeprice listprice saleprice active allauthors"
+                                                    update="isbn title synopsis cover pubdate numpages wholeprice listprice saleprice active allauthors allgenres allpublishers totalsaleslabel"
                                                     listener="#{managerInventory.bookChanged}" />
                                             <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
                                             <f:selectItems value="#{booksJpaController.findBooksEntities()}" var="book" itemValue="#{book.isbn}" itemLabel="#{book.title}"/>
@@ -140,9 +140,9 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="#{msgs.allauthors}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg text-left">
-                                        <p:dataTable id="allauthors" value="#{managerInventory.bookAuthor}" var="author" style="width:50%; text-align: center">
+                                        <p:dataTable id="allauthors" value="#{managerInventory.bookAuthor}" emptyMessage="#{msgs.noresults}" var="author" style="width:50%; text-align: center">
                                             <p:column>
-                                                #{author.firstName}
+                                                #{author.firstName} #{author.lastName}
                                             </p:column>
                                         </p:dataTable>
                                     </div>
@@ -173,7 +173,7 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="#{msgs.allgenres}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg text-left">
-                                        <p:dataTable id="allgenres" value="#{managerInventory.bookGenre}" var="genre" style="width:50%; text-align: center">
+                                        <p:dataTable id="allgenres" emptyMessage="#{msgs.noresults}" value="#{managerInventory.bookGenre}" var="genre" style="width:50%; text-align: center">
                                             <p:column>
                                                 #{genre.genre}
                                             </p:column>
@@ -206,7 +206,7 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="#{msgs.allpubs}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg text-left">
-                                        <p:dataTable id="allpublishers" value="#{managerInventory.bookPublisher}" var="publisher" style="width:50%; text-align: center">
+                                        <p:dataTable id="allpublishers" emptyMessage="#{msgs.noresults}" value="#{managerInventory.bookPublisher}" var="publisher" style="width:50%; text-align: center">
                                             <p:column>
                                                 #{publisher.name}
                                             </p:column>
@@ -219,6 +219,14 @@ necessary to manage inventory of our store.
                                     </div>
                                     <div class="col-lg text-left">
                                         <p:commandButton value="#{msgs.clearpubs}" action="#{managerInventory.clearPublishers()}" update="allpublishers" styleClass="formComponent" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="#{msgs.totalsales}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:outputLabel value="#{managerInventory.totalSales} $" styleClass="formComponent" id="totalsaleslabel"/>
                                     </div>
                                 </div>
                                 <div class="row">
