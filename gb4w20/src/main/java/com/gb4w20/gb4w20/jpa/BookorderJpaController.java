@@ -48,7 +48,7 @@ public class BookorderJpaController implements Serializable {
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
 
-    public void create(Bookorder bookorder) throws RollbackFailureException {
+    public void create(Bookorder bookorder) {
         try {
             utx.begin();
             Books isbn = bookorder.getIsbn();
@@ -72,13 +72,7 @@ public class BookorderJpaController implements Serializable {
             }
             utx.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
-            try {
-                utx.rollback();
-                LOG.error("Rollback");
-            } catch (IllegalStateException | SecurityException | SystemException re) {
-                LOG.error("Rollback2");
-                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
-            }
+            LOG.error("Error with create in bookerde controller method.");
         }
     }
 
