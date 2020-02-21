@@ -66,6 +66,7 @@ public class ReviewsJpaController implements Serializable {
                 userId = em.merge(userId);
             }
             em.getTransaction().commit();
+            LOG.debug(reviews.getReview());
         } finally {
             if (em != null) {
                 em.close();

@@ -203,7 +203,7 @@ public class GenresJpaController implements Serializable {
                         cb.notEqual(book.get("isbn"), isbn),
                         cb.notEqual(author.get("authorId"), authorId),
                         cb.equal(genre.get("genreId"), genreId)
-                ));
+                )).distinct(true);
         
         Query query = em.createQuery(cq);
         query.setMaxResults(maxResults);
