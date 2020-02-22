@@ -365,9 +365,9 @@ public class ManagerInventory implements Serializable {
 
             booksController.create(newBook);
 
-            return "success_inventory";
+            return "success-inventory";
         } catch (Exception ex) {
-            return "failure_inventory";
+            return "failure-inventory";
 
         }
     }
@@ -396,11 +396,9 @@ public class ManagerInventory implements Serializable {
 
             booksController.edit(editBook);
 
-            return "success_inventory";
+            return "success-inventory";
         } catch (Exception ex) {
-            LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            LOG.info(ex.getMessage());
-            return "failure_inventory?error=" + ex.getMessage();
+            return "failure-inventory";
         }
     }
 
@@ -417,9 +415,9 @@ public class ManagerInventory implements Serializable {
 
             authorsController.create(newAuthor);
 
-            return "success_inventory";
+            return "success-inventory";
         } catch (Exception ex) {
-            return "failure_inventory";
+            return "failure-inventory";
         }
     }
 
@@ -436,9 +434,9 @@ public class ManagerInventory implements Serializable {
 
             authorsController.edit(editAuthor);
 
-            return "success_inventory";
+            return "success-inventory";
         } catch (Exception ex) {
-            return "failure_inventory";
+            return "failure-inventory";
         }
     }
 
@@ -448,16 +446,15 @@ public class ManagerInventory implements Serializable {
      * @return redirection
      */
     private String addGenre() {
-        LOG.info("GENRE CALLED ADD");
         try {
             Genres newGenre = new Genres();
             newGenre.setGenre(this.genre);
 
             genresController.create(newGenre);
 
-            return "success_inventory";
+            return "success-inventory";
         } catch (Exception ex) {
-            return "failure_inventory";
+            return "failure-inventory";
         }
     }
 
@@ -467,17 +464,15 @@ public class ManagerInventory implements Serializable {
      * @return redirection
      */
     private String editGenre() {
-        LOG.info("GENRE CALLED EDIT");
-        LOG.info(Long.toString(genreId));
         try {
             Genres editGenre = genresController.findGenres(this.genreId);
             editGenre.setGenre(this.genre);
 
             genresController.edit(editGenre);
 
-            return "success_inventory";
+            return "success-inventory";
         } catch (Exception ex) {
-            return "failure_inventory";
+            return "failure-inventory";
         }
     }
 
@@ -493,9 +488,9 @@ public class ManagerInventory implements Serializable {
 
             publishersController.create(newPublisher);
 
-            return "success_inventory";
+            return "success-inventory";
         } catch (Exception ex) {
-            return "failure_inventory";
+            return "failure-inventory";
         }
     }
 
@@ -511,9 +506,9 @@ public class ManagerInventory implements Serializable {
 
             publishersController.edit(editPulisher);
 
-            return "success_inventory";
+            return "success-inventory";
         } catch (Exception ex) {
-            return "failure_inventory";
+            return "failure-inventory";
         }
     }
 

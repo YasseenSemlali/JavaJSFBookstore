@@ -17,7 +17,10 @@ a manager can perform.
     <ui:define name="head">
         <title>#{msgs.inventory}</title>
         <h:outputStylesheet library="css" name="report.css" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
+        <link rel="stylesheet" 
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+              crossorigin="anonymous"></link>
 
     </ui:define>
     <ui:define name="content">
@@ -25,7 +28,7 @@ a manager can perform.
         <b:container style="margin-top: 5%; margin-bottom:5%">
         <div class="ui-g"  >
             <div class="ui-g-4">
-                <a href="manager_inventory.xhtml" style="color: black">
+                <a href="manager-inventory.xhtml" style="color: black">
                     <div class="menutile">
                         <p:graphicImage name="images/inventory_icon.png" style="width: 33%; height: 33%" />
                         <br />
@@ -52,9 +55,11 @@ a manager can perform.
         <div class="ui-g">
             <div class="ui-g-4">
                 <div class="menutile">
-                    <p:graphicImage name="images/orders_icon.png" style="width: 33%; height: 33%" />
-                    <br />
-                    <h4>${msgs.orders}</h4>
+                    <a href="manager-orders.xhtml" style="color: black">
+                        <p:graphicImage name="images/orders_icon.png" style="width: 33%; height: 33%" />
+                        <br />
+                        <h4>${msgs.orders}</h4>
+                    </a>
                 </div>
             </div>
             <div class="ui-g-4">

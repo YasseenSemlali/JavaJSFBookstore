@@ -170,7 +170,6 @@ public class BookorderJpaController implements Serializable {
     }
 
     private List<Bookorder> findBookorderEntities(boolean all, int maxResults, int firstResult) {
-        try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Bookorder.class));
             Query q = em.createQuery(cq);
@@ -179,17 +178,10 @@ public class BookorderJpaController implements Serializable {
                 q.setFirstResult(firstResult);
             }
             return q.getResultList();
-        } finally {
-            em.close();
-        }
     }
 
     public Bookorder findBookorder(Long id) {
-        try {
             return em.find(Bookorder.class, id);
-        } finally {
-            em.close();
-        }
     }
 
     public int getBookorderCount() {

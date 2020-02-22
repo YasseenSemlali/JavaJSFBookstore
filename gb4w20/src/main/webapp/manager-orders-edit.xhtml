@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays all the options
+a manager can perform.
+
+@author Jean Robatto
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.orders}</title>
+        <h:outputStylesheet library="css" name="report.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
+
+    </ui:define>
+    <ui:define name="content">
+
+        <b:container style="margin-top: 5%; margin-bottom:5%">
+            <c:set var="bookorder" value="#{bookorderJpaController.findBookorder(param['id'])}"/>
+            <div class="container">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-lg text-center">
+                            <h1>#{msgs.edit} Order</h1>
+                            <h2># #{bookorder.bookorderId}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h:form id="publisherForm">
+                      <div class="card">
+                            <div class="contaimer">
+                                <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="#{msgs.title}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:selectOneMenu id="book_title" class="custom-select" value="#{managerOrders.isbn}" style="width:30%;">
+                                            <f:selectItem itemValue="#{bookorder.isbn}" itemLabel="#{bookorder.isbn.title}"/>
+                                            <f:selectItems value="#{booksJpaController.findBooksEntities()}" var="book" itemValue="#{book.isbn}" itemLabel="#{book.title}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="#{msgs.client}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:selectOneMenu id="client" class="custom-select" value="#{managerOrders.client}" style="width:30%;">
+                                            <f:selectItem itemValue="#{bookorder.isbn.isbn}" itemLabel="#{bookorder.isbn.title}"/>
+                                            <f:selectItems value="#{booksJpaController.findBooksEntities()}" var="book" itemValue="#{book.isbn}" itemLabel="#{book.title}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="#{msgs.enabled}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:selectOneMenu id="enabled" class="custom-select" value="#{managerOrders.isbn}" style="width:30%;">
+                                            <f:selectItem itemValue="#{bookorder.isbn.isbn}" itemLabel="#{bookorder.isbn.title}"/>
+                                            <f:selectItems value="#{booksJpaController.findBooksEntities()}" var="book" itemValue="#{book.isbn}" itemLabel="#{book.title}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-right">
+                                        
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:commandButton value="#{msgs.submit}" action="#{managerInventory.submitPublisher()}" styleClass="formComponent"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </h:form>
+            
+        </b:container>
+         </ui:define>                
+        </ui:composition>
