@@ -22,23 +22,13 @@ body, html {
 
 /* TOP MENU */
 .topMenuBar {
-    background-color: #303030;
+    background-color: #303030 !important;
     border: none;
     color: white;
     vertical-align: middle;
 }
 
-.topMenuBar .menuitem {
-    color: rgb(200,200,200);
-    height: 100%;
-    margin-top: 15px;
-}
-
-.topMenuBar .menuitem:hover {
-    color: white;
-}
-
-.topMenuBar .logomenuitem {
+.topMenuBar .logomenuitem a{
     background-image: url("#{resource['images/temp_logo.png']}") !important;
     width: 60px;
     height: 60px;
@@ -46,6 +36,15 @@ body, html {
     background-size:     cover;                  
     background-repeat:   no-repeat;
     background-position: center center;       
+}
+
+.topMenuBar div {
+    margin-left: 0px;
+    width: 100%;
+}
+
+.topMenuBar div div{
+    padding-left: 0px;
 }
 
 /* MANAGER DASHBOARD */

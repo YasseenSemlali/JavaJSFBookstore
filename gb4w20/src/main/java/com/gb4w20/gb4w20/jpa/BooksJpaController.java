@@ -532,9 +532,10 @@ public class BooksJpaController implements Serializable {
         Root<Books> book = cq.from(Books.class);
 
         cq.select(book);
+        cq.distinct(true);
 
-        String titleSearch = useExact ? title : "%" + title + "%";
-        String publisherSearch = useExact ? publisher : "%" + publisher + "%";
+        String titleSearch = (useExact != null && useExact == true) ? title : "%" + title + "%";
+        String publisherSearch = (useExact != null && useExact == true) ? publisher : "%" + publisher + "%";
 
         List<Predicate> predicates = new ArrayList<Predicate>();
 
@@ -566,7 +567,7 @@ public class BooksJpaController implements Serializable {
             predicates.add(cb.isMember(publisher, publisherName));
         }
 
-        if (allTrue) {
+        if (allTrue != null && allTrue) {
             cq.where(cb.and(predicates.toArray(new Predicate[0])));
         } else {
             cq.where(cb.or(predicates.toArray(new Predicate[0])));
@@ -602,8 +603,7 @@ public class BooksJpaController implements Serializable {
         CriteriaQuery cq = cb.createQuery(NameAndNumberBean.class
         );
 
-        Root<Books> book = cq.from(Books.class
-        );
+        Root<Books> book = cq.from(Books.class );
         Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
         Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
 

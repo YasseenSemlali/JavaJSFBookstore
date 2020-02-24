@@ -20,9 +20,21 @@ Java Server Faces page that displays the frontpage of the app
 
     <ui:define name="content">
         <b:container fluid="true">
-
-            <b:panelGrid columns="6">
-                <c:forEach items="#{booksJpaController.searchBooks(param['isbn'],param['title'],param['author'],param['publisher'], true, false)}" var="book">
+            <c:set var="books" value="#{booksJpaController.searchBooks(param['isbn'],param['title'],param['author'],param['publisher'], param['allTrue'], param['useExact'])}"/>
+            
+            <c:choose>
+                <c:when test="#{books.size() == 0}">
+                     No results
+                </c:when>
+                
+                <c:when test="#{books.size() == 1}">
+                    <!--TODO redirect-->
+                    1 result TODO redirect
+                </c:when>
+                
+                <c:otherwise>
+                   <b:panelGrid columns="6">
+                <c:forEach items="#{books}" var="book">
                     <ui:decorate template="/templates/book.xhtml">
                         <ui:param name="book" value="#{book}"></ui:param>
                         <ui:param name="showPrice" value="true"></ui:param>
@@ -30,13 +42,6 @@ Java Server Faces page that displays the frontpage of the app
                     </ui:decorate>
                 </c:forEach>
             </b:panelGrid>
-            <c:choose>
-                <c:when test="#{param['id'] != null}">
-
-                </c:when>
-
-                <c:otherwise>
-                    No genre specified
                 </c:otherwise>
             </c:choose>
         </b:container>
