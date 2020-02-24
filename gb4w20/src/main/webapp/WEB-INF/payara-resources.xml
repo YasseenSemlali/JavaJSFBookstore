@@ -63,7 +63,7 @@
                           steady-pool-size="8" 
                           validate-atmost-once-period-in-seconds="0" 
                           wrap-jdbc-objects="false">
-        <property name="URL" value="jdbc:mysql://localhost:3306/gaXw20test?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/>
+        <property name="URL" value="jdbc:mysql://localhost:3306/gb4w20test?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/>
         <property name="User" value="gb4w20"/>
         <property name="Password" value="pencil3tuna"/>
 
