@@ -26,6 +26,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -278,6 +280,31 @@ public class UsersJpaController implements Serializable {
         
         return em.find(Users.class, id);
         
+    }
+    
+    /**
+     * Used to find the user entity that have the email and password. 
+     * @param email of the user
+     * @param password of the user
+     * @throws NoResultException if no result is found
+     * @throws NonUniqueResultException if more than one result is returned
+     * @return user entity with matching email and password
+     */
+    public Users findUserByEmailAndPassword(String email, String password) throws NoResultException, NonUniqueResultException{
+          
+          CriteriaBuilder cb = em.getCriteriaBuilder();
+          CriteriaQuery<Users> cq = cb.createQuery(Users.class);
+          Root<Users> user = cq.from(Users.class);
+          
+          cq.select(user);
+          cq.where(cb.and(
+                  cb.equal(user.get(Users_.email), email),
+                  cb.equal(user.get(Users_.password), password)
+            )
+          );
+          
+          TypedQuery<Users> query = em.createQuery(cq);
+          return query.getSingleResult();
     }
     
     /**

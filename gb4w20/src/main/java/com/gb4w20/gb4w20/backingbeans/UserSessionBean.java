@@ -3,10 +3,11 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
-import javax.ejb.Stateless;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,11 +38,39 @@ public class UserSessionBean {
     }
     
     /**
+     * Method to check whether the user is a manager or not
+     * @return true if logged in manager and false otherwise
+     * @author Jeffrey Boisvert
+     */
+    public boolean isLoggedInManager(){
+        return this.user != null && this.user.getIsManager(); 
+    }
+    
+    /**
      * Used to login the user. 
-     * @param 
+     * @param email passed to login
+     * @param password passed to login
+     * @return true if login was successful, false otherwise
      * @author Jeffrey Boisvert
      */
     public boolean loginUser(String email, String password){
+        
+        //Default is false
+        boolean result = false; 
+        
+        try {
+            this.user = this.usersJpaController.findUserByEmailAndPassword(email, password);
+            result = true; 
+        }
+        //No user with that username or password was found
+        catch(NoResultException e){
+            LOG.trace("Login attempt with email " + email + " and password " + password + " yielded no results");
+        }
+        catch(NonUniqueResultException e){
+            LOG.error("There is more than one user with email " + email + " and password " + password + "!");
+        }
+        
+        return result;
         
     }
     
