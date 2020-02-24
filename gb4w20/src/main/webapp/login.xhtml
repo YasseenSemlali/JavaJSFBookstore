@@ -11,13 +11,13 @@
                       style="font-style: italic; font-size: 1.5em"/>
         <h:form>
             <h:panelGrid columns="2">
-                <h:outputLabel value="#{msgs.namePrompt}" />
-                <h:inputText value="#{user.name}"/>
+                <h:outputLabel value="#{msgs.email}" />
+                <h:inputText value="#{loginBackingBean.emailInput}"/>
 
-                <h:outputLabel value="#{msgs.passwordPrompt}" />
-                <h:inputSecret value="#{user.password}"/>
+                <h:outputLabel value="#{msgs.password}" />
+                <h:inputSecret value="#{loginBackingBean.emailInput}"/>
             </h:panelGrid>
-            <h:commandButton value="#{msgs.submitPrompt}" action="thankYou"/>
+            <h:commandButton value="#{msgs.login}" action="#{loginBackingBean.login()}" />
         </h:form>
     </h:body>
 </html>

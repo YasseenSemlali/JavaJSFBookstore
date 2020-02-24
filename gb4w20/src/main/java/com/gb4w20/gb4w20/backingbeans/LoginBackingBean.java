@@ -2,16 +2,18 @@
 package com.gb4w20.gb4w20.backingbeans;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
 import org.slf4j.LoggerFactory;
 
 /**
  * Used as a backing bean for the login page. 
  * @author Jeffrey Boisvert
  */
+@Named
+@RequestScoped
 public class LoginBackingBean {
     
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(LoginBackingBean.class);
@@ -31,7 +33,7 @@ public class LoginBackingBean {
      */
     public String getEmailInput(){
         if (this.emailInput == null){
-            return ""; 
+            this.emailInput = ""; 
         }
         return this.emailInput; 
     }
@@ -51,10 +53,10 @@ public class LoginBackingBean {
      * @author Jeffrey Boisvert
      */
     public String getPasswordInput(){
-        if (this.emailInput == null){
-            return ""; 
+        if (this.passwordInput == null){
+            this.passwordInput = ""; 
         }
-        return this.emailInput; 
+        return this.passwordInput; 
     }
     
     /**
