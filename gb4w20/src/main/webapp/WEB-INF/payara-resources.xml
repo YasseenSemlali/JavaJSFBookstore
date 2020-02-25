@@ -3,8 +3,8 @@
 <resources>
     <jdbc-resource enabled="true" jndi-name="java:app/jdbc/bookstore" object-type="user" pool-name="connectionPool">
     </jdbc-resource>
-    <jdbc-resource enabled="true" jndi-name="java:app/jdbc/bookstore_test" object-type="user" pool-name="connectionPoolTest">
-    </jdbc-resource>
+<!--    <jdbc-resource enabled="true" jndi-name="java:app/jdbc/bookstore_test" object-type="user" pool-name="connectionPoolTest">
+    </jdbc-resource>-->
     <jdbc-connection-pool allow-non-component-callers="false" 
                           associate-with-thread="false" 
                           connection-creation-retry-attempts="0"
@@ -36,7 +36,7 @@
         <property name="Password" value="pencil3tuna"/>
 
     </jdbc-connection-pool>
-    <!-- For tests --> 
+<!--     For tests  
         <jdbc-connection-pool allow-non-component-callers="false" 
                           associate-with-thread="false" 
                           connection-creation-retry-attempts="0"
@@ -67,5 +67,5 @@
         <property name="User" value="gb4w20"/>
         <property name="Password" value="pencil3tuna"/>
 
-    </jdbc-connection-pool>
+    </jdbc-connection-pool>-->
 </resources>

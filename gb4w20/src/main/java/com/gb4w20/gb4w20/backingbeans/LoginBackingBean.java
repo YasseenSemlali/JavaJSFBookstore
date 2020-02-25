@@ -2,6 +2,7 @@
 package com.gb4w20.gb4w20.backingbeans;
 
 import java.io.IOException;
+import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -14,11 +15,11 @@ import org.slf4j.LoggerFactory;
  */
 @Named
 @RequestScoped
-public class LoginBackingBean {
+public class LoginBackingBean implements Serializable {
     
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(LoginBackingBean.class);
     private static final String CLIENT_PAGE = "index.xhtml";
-    private static final String MANAGER_PAGE = "manager_inventory.xhtml"; 
+    private static final String MANAGER_PAGE = "manager_frontpage.xhtml"; 
     
     @Inject
     UserSessionBean session; 
@@ -74,30 +75,24 @@ public class LoginBackingBean {
      * 1) If a manager redirected to to the manager page
      * 2) If a normal client redirect to the index.xhtml page
      * If login failed prompted with error
+     * @return A string of a uri of where to redirect to
      * @author Jeffrey Boisvert
      */
-    public void login(){
+    public String login(){
         
         //If not valid notify user
         if(areInputsNotValid()){
             //TODO notify user
-            return;
+            LOG.debug("Values not valid for " + this.emailInput + " with password " + this.passwordInput);
+            return "login.xhtml";
          }
         
         if(this.session.loginUser(this.emailInput, this.passwordInput)){
-            
-            String uriToRedirectTo = this.session.isLoggedInManager() ? MANAGER_PAGE : CLIENT_PAGE; 
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().dispatch(uriToRedirectTo);
-            } catch (IOException ex) {
-                LOG.error("Redirect not successful for " + uriToRedirectTo);
-            }
-            
+            LOG.debug("Login successful for " + this.emailInput + " with password " + this.passwordInput);
+            return this.session.isLoggedInManager() ? MANAGER_PAGE : CLIENT_PAGE;  
         }
-        else {
-            //Login not successful
-            //TODO notify user
-        }
+        
+        return "login.xhtml";
         
     }
     
@@ -107,29 +102,29 @@ public class LoginBackingBean {
      * @author Jeffrey Boisvert
      */
     private boolean areInputsNotValid() {
-        return isEmailValid() && isPasswordValid(); 
+        return isEmailNotValid() || isPasswordNotValid(); 
     }
     
     /**
      * Used to validate if the email is valid or not. 
-     * @return true if valid
+     * @return true if not valid
      * @author Jeffrey Boisvert
      */
-    private boolean isEmailValid(){
-       return !(this.emailInput == null || 
+    private boolean isEmailNotValid(){
+       return this.emailInput == null || 
               this.emailInput.isBlank() || 
-              this.emailInput.isEmpty()); 
+              this.emailInput.isEmpty(); 
     }
     
     /**
      * Used to valid if the password is valid or not
-     * @return true if valid
+     * @return true if not valid
      * @author Jeffrey Boisvert
      */
-    private boolean isPasswordValid(){
-       return !(this.passwordInput == null || 
+    private boolean isPasswordNotValid(){
+       return this.passwordInput == null || 
               this.passwordInput.isBlank() || 
-              this.passwordInput.isEmpty()); 
+              this.passwordInput.isEmpty(); 
     }
     
 }
