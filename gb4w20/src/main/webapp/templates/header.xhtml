@@ -21,15 +21,18 @@
                 </form>
 
                 <b:navbarLinks pull="right">
-                <c:when test="#{userSession.loggedIn}">
-                    <b:navLink value="${msgs.logout}" href="index.xhtml" actionListener="#{userSession.logout}" />
-                </c:when>
-                <c:otherwise>
-                    <b:navLink value="${msgs.login}" href="login.xhtml" />
-                </c:otherwise>
-                <c:when test="#{userSession.loggedInManager}">
-                    <b:navLink value="${msgs.dashboard}" href="manager_frontpage.xhtml"/>
-                </c:when>
+
+                    <c:choose>
+                        <c:when test="#{userSession.loggedIn}">
+                            <b:navLink value="${msgs.logout}" href="index.xhtml" actionListener="#{userSession.logout}" />
+                        </c:when>
+                        <c:otherwise>
+                            <b:navLink value="${msgs.login}" href="login.xhtml" />
+                        </c:otherwise>
+                    </c:choose>
+                    <h:panelGroup rendered="#{userSession.loggedInManager}">
+                        <b:navLink value="${msgs.dashboard}" href="manager_frontpage.xhtml"/>
+                    </h:panelGroup>
                     <b:navLink value="FR" href="www.google.com"/>
                 </b:navbarLinks>
             </b:navBar>
