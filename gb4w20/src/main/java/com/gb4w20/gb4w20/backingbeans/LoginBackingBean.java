@@ -3,6 +3,8 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -20,6 +22,9 @@ public class LoginBackingBean implements Serializable {
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(LoginBackingBean.class);
     private static final String CLIENT_PAGE = "index.xhtml";
     private static final String MANAGER_PAGE = "manager_frontpage.xhtml"; 
+    private static final String LOGIN_PAGE ="login.xhtml";
+    //Credit to https://stackoverflow.com/questions/8204680/java-regex-email Jason Buberel for regex pattern 
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     
     @Inject
     UserSessionBean session; 
@@ -83,16 +88,16 @@ public class LoginBackingBean implements Serializable {
         //If not valid notify user
         if(areInputsNotValid()){
             //TODO notify user
-            LOG.debug("Values not valid for " + this.emailInput + " with password " + this.passwordInput);
-            return "login.xhtml";
+            LOG.info("Values not valid for " + this.emailInput + " with password " + this.passwordInput);
+            return LOGIN_PAGE;
          }
         
         if(this.session.loginUser(this.emailInput, this.passwordInput)){
-            LOG.debug("Login successful for " + this.emailInput + " with password " + this.passwordInput);
+            LOG.info("Login successful for " + this.emailInput + " with password " + this.passwordInput);
             return this.session.isLoggedInManager() ? MANAGER_PAGE : CLIENT_PAGE;  
         }
         
-        return "login.xhtml";
+        return LOGIN_PAGE;
         
     }
     
@@ -111,9 +116,12 @@ public class LoginBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     private boolean isEmailNotValid(){
+       Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(this.emailInput);
+        
        return this.emailInput == null || 
               this.emailInput.isBlank() || 
-              this.emailInput.isEmpty(); 
+              this.emailInput.isEmpty() ||
+              (!matcher.find()); 
     }
     
     /**
