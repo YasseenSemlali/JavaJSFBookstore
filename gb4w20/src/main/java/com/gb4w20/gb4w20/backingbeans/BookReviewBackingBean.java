@@ -6,6 +6,7 @@ package com.gb4w20.gb4w20.backingbeans;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.ReviewsJpaController;
 import java.io.Serializable;
 import org.slf4j.Logger;
@@ -30,40 +31,30 @@ public class BookReviewBackingBean implements Serializable{
     
     private final static Logger LOG = LoggerFactory.getLogger(BookReviewBackingBean.class);
     
-    //private Reviews reviews;
-    protected String review;
-    protected short rating;
-    
     @Inject
     private ReviewsJpaController reviewsJpaController;
+    //@Inject 
+    //private BooksJpaController booksJpaController;
+
+    private String review;
+    private short rating;
+    //private Reviews reviews;
     
-    public BookReviewBackingBean(){}
-    /**
-     * Creates a review created by a logged in user to a specific book
-     * in the book page
-     * 
-     * @param book
-     * @param user
-     * @return 
-     */
-    public void getReview(Books book, Users user){
-        LOG.info("Review being created from the book page");
-        
-        /*if(this.reviews == null){
-            this.reviews = new Reviews();  
-            this.reviews.setIsbn(book);
-            this.reviews.setUserId(user);
-        }
-        return this.reviews; */
-        Reviews rev = new Reviews();
-        rev.setReview(review);
-        rev.setRating(rating);
-        rev.setUserId(user);
-        rev.setIsbn(book);
-        
-        reviewsJpaController.create(rev);
-        
+    public void makeReview(Books book, Users user){
+        Reviews reviews = new Reviews();
+        reviews.setReview(this.review);
+        reviews.setRating(this.rating); 
+        LOG.debug(book.getIsbn() + "");
+        reviews.setIsbn(book);
+        reviews.setUserId(user);
+        saveReview(reviews);
     }
+    
+    private void saveReview(Reviews reviews){
+        this.reviewsJpaController.create(reviews);
+        LOG.debug("<<<<<<<<<<<<<<<<SUCCESS>>>>>>>>>>>>>>>>>");
+    }
+  
     public String getReview(){
         return this.review;
     }
@@ -76,19 +67,4 @@ public class BookReviewBackingBean implements Serializable{
     public void setRating(short rating){
         this.rating = rating;
     }
-    /**
-     * Getter for reviews
-     * @return 
-     */
-    /*public Reviews getReviews(){
-        return this.reviews;
-    }*/
-    
-    /**
-     * Setter for reviews
-     * @param reviews 
-     */
-    /*public void setReviews(Reviews reviews){
-        this.reviews = reviews;
-    }*/
 }

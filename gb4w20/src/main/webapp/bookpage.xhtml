@@ -23,7 +23,7 @@ add it to the shopping cart.
         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>-->
         <!--<ui:include src="/templates/header.xhtml"></ui:include>-->
     </ui:define>
-
+    
     <ui:define name="content">
         <c:set var="book" value="#{booksJpaController.findBooks(param['isbn'])}"/>
         <c:set var="authorbooks" value="#{book.getAuthorsCollection()}"/>
@@ -100,7 +100,7 @@ add it to the shopping cart.
                     <h3>#{msgs.otherbooksby} #{auth.getFirstName()} #{auth.getLastName()}</h3>
                     <b:row>
                         <b:column col-md="6">
-                            <b:panelGrid columns="3">
+                            <b:panelGrid columns="3"> 
                                 <c:forEach items="#{authorsJpaController.getOtherBooksBySameAuthor(book.getIsbn(), auth.getAuthorId(), 3)}" var="sameauthor">
                                         <ui:decorate template="/templates/book.xhtml">
                                             <ui:param name="book" value="#{sameauthor}"></ui:param>
@@ -133,6 +133,7 @@ add it to the shopping cart.
                 </c:forEach>
             </b:jumbotron>
         </b:container>
+        <!--SUBMIT REVIEW-->
         <!--Still need to fix submit review-->
         <b:container>
             <h3>#{msgs.reviewthisbooks} : </h3>
@@ -142,7 +143,7 @@ add it to the shopping cart.
                     <br></br>
                     <p:inputTextarea value="#{bookReviewBackingBean.review}" rows="5" cols="40" maxlength="750" />
                     <p:rating value="#{bookReviewBackingBean.rating}" />
-                    <b:commandButton value="#{msgs.submit}" action="#{reviewsJpaController.create(bookReviewBackingBean.getReview(book, usersJpaController.findUsers(1)))}"/> <!-- user is 1 for now -->
+                    <b:commandButton value="#{msgs.submit}" action="#{bookReviewBackingBean.makeReview(book, usersJpaController.findUsers(1))}"/>  <!--user is 1 for now -->
                 </h:form>
             </b:jumbotron>
         </b:container>
