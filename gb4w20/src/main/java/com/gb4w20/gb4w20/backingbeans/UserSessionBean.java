@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jeffrey Boisvert
  */
-@Named("session")
+@Named("userSession")
 @RequestScoped
 public class UserSessionBean {
 
@@ -72,6 +72,23 @@ public class UserSessionBean {
         
         return result;
         
+    }
+    
+    /**
+     * Used to logout the user from the session
+     * @author Jeffrey Boisvert
+     */
+    public void logout(){
+        this.user = null; 
+        clearSessionState();
+    }
+    
+    /**
+     * Used to clear cart and any other values associated to login state. 
+     * @author Jeffrey Boisvert
+     */
+    private void clearSessionState() {
+        LOG.info("Currently clearing session state");
     }
     
     
