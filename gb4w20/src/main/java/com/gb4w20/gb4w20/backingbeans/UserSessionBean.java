@@ -34,7 +34,19 @@ public class UserSessionBean {
      * @author Jeffrey Boisvert
      */
     public boolean isLoggedIn(){
-        return this.user == null; 
+        return this.user != null; 
+    }
+    
+    /**
+     * Used to get the logged in user's name. 
+     * @return the name of the logged in user
+     * @author Jeffrey Boisvert
+     */
+    public String getLoggedInUserName(){
+        if(this.user == null){
+            return ""; 
+        }
+        return this.user.getFirstName(); 
     }
     
     /**
