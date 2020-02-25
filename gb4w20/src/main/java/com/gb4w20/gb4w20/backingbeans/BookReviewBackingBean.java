@@ -6,9 +6,13 @@ package com.gb4w20.gb4w20.backingbeans;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.ReviewsJpaController;
+import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.enterprise.context.RequestScoped;
@@ -33,24 +37,33 @@ public class BookReviewBackingBean implements Serializable{
     
     @Inject
     private ReviewsJpaController reviewsJpaController;
-    //@Inject 
-    //private BooksJpaController booksJpaController;
+    @Inject 
+    private BooksJpaController booksJpaController;
+    @Inject
+    private UsersJpaController usersJpaController;
 
     private String review;
     private short rating;
     //private Reviews reviews;
     
-    public void makeReview(Books book, Users user){
+    public void makeReview(Long book, Long user) throws RollbackFailureException{
         Reviews reviews = new Reviews();
         reviews.setReview(this.review);
         reviews.setRating(this.rating); 
-        LOG.debug(book.getIsbn() + "");
-        reviews.setIsbn(book);
-        reviews.setUserId(user);
+        reviews.setApprovedStatus(false);
+        
+        //Creating current timestamp 
+        Date date = new Date();
+        long time = date.getTime();
+        Timestamp timestamp = new Timestamp(time);
+        
+        reviews.setTimestamp(timestamp);
+        reviews.setIsbn(this.booksJpaController.findBooks(book));
+        reviews.setUserId(this.usersJpaController.findUsers(user));
         saveReview(reviews);
     }
     
-    private void saveReview(Reviews reviews){
+    private void saveReview(Reviews reviews) throws RollbackFailureException{
         this.reviewsJpaController.create(reviews);
         LOG.debug("<<<<<<<<<<<<<<<<SUCCESS>>>>>>>>>>>>>>>>>");
     }
