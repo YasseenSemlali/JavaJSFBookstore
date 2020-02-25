@@ -4,11 +4,35 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
     </h:head>
     <h:body>
-        <ui:composition>
+        <ui:composition>    
+            <b:navBar inverse="true" styleClass="topMenuBar">
+                <b:navbarLinks>
+                    <b:navLink value="" href="index.xhtml" styleClass="logomenuitem"/>
+                    <h1>#{userSession.loggedInUserName}</h1>
+                </b:navbarLinks>
+                <form class="navbar-form navbar-left " role="search" action="search.xhtml" name="test" method="GET">
+                    <input type="text" class="form-control" placeholder="Title" name="title"/>
+                    <button type="submit" class="btn btn-default">Search</button>
+                </form>
+
+                <b:navbarLinks pull="right">
+                <c:when test="#{userSession.loggedIn}">
+                    <b:navLink value="${msgs.logout}" href="index.xhtml" actionListener="#{userSession.logout}" />
+                </c:when>
+                <c:otherwise>
+                    <b:navLink value="${msgs.login}" href="login.xhtml" />
+                </c:otherwise>
+                <c:when test="#{userSession.loggedInManager}">
+                    <b:navLink value="${msgs.dashboard}" href="manager_frontpage.xhtml"/>
+                </c:when>
+                    <b:navLink value="FR" href="www.google.com"/>
+                </b:navbarLinks>
+            </b:navBar>
         </ui:composition>
     </h:body>
 </html>
