@@ -6,12 +6,15 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
+        <h:outputStylesheet library="css" name="styles.css" />
+        <h:outputStylesheet library="css" name="css/bootstrap-min.css" />
         <ui:insert name="head">
         </ui:insert>
     </h:head>
     <h:body>
         <!-- TODO Declaring this in the head messes up the image for some reason. Maybe a conflict with another CSS file somewhere-->
         <h:outputStylesheet library="css" name="global.css" />
+
         <div>
             <ui:insert name="header">
                 <ui:include src="/templates/header.xhtml"></ui:include>

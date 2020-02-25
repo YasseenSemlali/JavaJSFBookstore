@@ -2,6 +2,7 @@
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.Bookorder;
+import com.gb4w20.gb4w20.entities.Bookorder_;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -9,12 +10,23 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Orders;
+import com.gb4w20.gb4w20.entities.Users_;
+import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +36,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jeffrey Boisvert
  */
+@Named
+@SessionScoped
 public class BookorderJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(BookorderJpaController.class);
@@ -36,7 +50,7 @@ public class BookorderJpaController implements Serializable {
 
     public void create(Bookorder bookorder) {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Books isbn = bookorder.getIsbn();
             if (isbn != null) {
                 isbn = em.getReference(isbn.getClass(), isbn.getIsbn());
@@ -56,11 +70,9 @@ public class BookorderJpaController implements Serializable {
                 orderId.getBookorderCollection().add(bookorder);
                 orderId = em.merge(orderId);
             }
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            utx.commit();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with create in bookerde controller method.");
         }
     }
 
@@ -184,6 +196,27 @@ public class BookorderJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    public BigDecimal getTotalSalesForBook(Books isbn) {
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<BigDecimal> cq = cb.createQuery(BigDecimal.class);
+
+            Root<Bookorder> order = cq.from(Bookorder.class);
+            
+            cq.select(
+                cb.sum(order.get("amountPaidPretax")))
+                .groupBy(order.get(Bookorder_.isbn))
+                .where(cb.equal(order.get("isbn"), isbn));
+                
+            Query query = em.createQuery(cq);
+            
+            return (BigDecimal) query.getSingleResult();
+        } catch (Exception e) {
+            return new BigDecimal(0);
+        }
+
     }
     
 }

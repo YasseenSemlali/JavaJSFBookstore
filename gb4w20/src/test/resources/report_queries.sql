@@ -1,6 +1,20 @@
 USE gb4w20;
 -- Jasmar's queries
+/*SELECT g.genre FROM books b 
+JOIN bookgenre bg ON b.isbn = bg.isbn
+JOIN genres g ON bg.genre_id = g.genre_id
+WHERE b.isbn = '9780545010221';
 
+SELECT title FROM books WHERE isbn = '9780545010221';
+SELECT * FROM authors WHERE author_id = 4;
+
+SELECT DISTINCT b.title FROM books b  
+JOIN bookauthor ba ON b.isbn = ba.isbn 
+JOIN authors a ON ba.author_id = a.author_id
+JOIN bookgenre bg ON b.isbn = bg.isbn
+JOIN genres g ON bg.genre_id = g.genre_id
+WHERE (b.isbn != '9780545010221' AND a.author_id != 4) AND g.genre_id = 1;*/
+SELECT * FROM reviews;
 -- Total Sales
 /*
 Within the defined date range this report displays 
@@ -103,6 +117,7 @@ JOIN publishers p ON bp.publisher_id = p.publisher_id
 -- Enter desired timestamps and publisher here
 WHERE p.publisher_id = 1 AND o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01'
 GROUP BY p.publisher_id;
+
 /*
 For a chosen publisher and within the defined date range 
 this report displays a list ordered by date of every purchase 
@@ -215,7 +230,6 @@ JOIN books b ON bo.isbn = b.isbn
 WHERE o.timestamp BETWEEN '2020-02-01 00:00:01' AND '2020-02-05 00:00:01'
 GROUP BY bo.isbn, b.title 
 ORDER BY o.timestamp DESC;
-
 -- Sales by Client
 /* 
 For a chosen client and within the defined date range 
