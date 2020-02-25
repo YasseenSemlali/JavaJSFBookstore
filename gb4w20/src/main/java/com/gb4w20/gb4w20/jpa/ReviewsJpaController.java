@@ -7,7 +7,9 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.Books;
+import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Reviews;
+import com.gb4w20.gb4w20.entities.Reviews_;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
@@ -17,6 +19,10 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +66,7 @@ public class ReviewsJpaController implements Serializable {
                 userId = em.merge(userId);
             }
             em.getTransaction().commit();
+            LOG.debug(reviews.getReview());
         } finally {
             if (em != null) {
                 em.close();
@@ -186,6 +193,33 @@ public class ReviewsJpaController implements Serializable {
             return ((Long) q.getSingleResult()).intValue();
         } finally {
             em.close();
+        }
+    }
+    
+    /**
+     * Get average rating of a book and
+     * some books do not have any ratings yet so it returns 0 for those
+     * 
+     * @author Jasmar
+     * @param isbn
+     * @return 
+     */
+    public double getAverageRating(Long isbn){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery(Reviews.class);
+        Root<Books> bookrating = cq.from(Books.class);
+        Join rate = bookrating.join("reviewsCollection");
+        
+        cq.select(cb.avg(rate.get("rating")))
+                .where(cb.equal(bookrating.get("isbn"), isbn));
+        
+        TypedQuery<Double> avgrating = em.createQuery(cq);
+        
+        if (avgrating.getSingleResult() != null){
+            return avgrating.getSingleResult();
+        }
+        else{
+            return 0.0;
         }
     }
     

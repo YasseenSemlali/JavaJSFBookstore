@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+Java Server Faces page that displays a chosen book page by the
+user and displays that book's details and be able to rate it and 
+add it to the shopping cart. 
+
+@author Jasmar Badion
+-->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{booksJpaController.findBooks(param['isbn']).title}</title> 
+        <h:outputStylesheet library="css" name="bookpage.css" />
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>-->
+        <!--<ui:include src="/templates/header.xhtml"></ui:include>-->
+    </ui:define>
+    
+    <ui:define name="content">
+        <c:set var="book" value="#{booksJpaController.findBooks(param['isbn'])}"/>
+        <c:set var="authorbooks" value="#{book.getAuthorsCollection()}"/>
+        <c:set var="genrebooks" value="#{book.getGenresCollection()}"/>
+        
+        <!--BELOW WORKS
+        <c:set var="ges" value="#{book.getGenresCollection()[0]}"/>
+        -->
+        
+        <b:container>
+            <b:jumbotron>
+                <div class="">
+                    <ui:decorate template="/templates/book.xhtml">
+                        <ui:param name="book" value="#{book}"></ui:param>
+                        <ui:param name="showPrice" value="true"></ui:param>
+                        <ui:param name="showOldPrice" value="true"></ui:param>
+                    </ui:decorate>
+                    <br></br>
+                    <p:outputLabel>#{msgs.author} : </p:outputLabel>
+                    <br></br>
+                    <c:forEach items="#{authorbooks}" var="auth">
+                        #{auth.getFirstName()} #{auth.getLastName()}
+                        <br></br>
+                    </c:forEach>
+                    <br></br>
+                    <p:outputLabel>#{msgs.genre} : </p:outputLabel>
+                    <br></br>
+                    <c:forEach items="#{genrebooks}" var="gen">
+                        #{gen.getGenre()}
+                        <br></br>
+                    </c:forEach>
+                    <br></br>
+                    <p:outputLabel>#{msgs.rating} : </p:outputLabel>
+                    #{reviewsJpaController.getAverageRating(book.getIsbn())}
+                    <br></br>
+                    <a href="#" class="btn btn-lg btn-info">#{msgs.addToCart}</a>
+                </div>
+            </b:jumbotron> 
+        </b:container>
+        
+        <b:container>
+            <div class="">
+                <h2>#{msgs.summary}</h2>
+                <p>
+                    #{book.getSynopsis()}
+                </p>
+            </div>
+        </b:container>
+        
+        <b:container>
+            <div class="">
+                <h2>#{msgs.reviews}</h2>
+                <p>
+                    <c:forEach items="#{book.getReviewsCollection()}" var="review">
+                        <p>
+                            #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
+                        </p>
+                        <p>
+                            #{review.getReview()}
+                        </p>
+                        <br></br>
+                        #{msgs.rating} : #{review.getRating()}
+                    </c:forEach>
+                </p>
+            </div>
+        </b:container>
+        
+        <b:container>
+            <h2>#{msgs.recommendation}</h2>
+        </b:container>
+        <b:container>
+            <b:jumbotron>
+                <c:forEach items="#{authorbooks}" var="auth">
+                    <h3>#{msgs.otherbooksby} #{auth.getFirstName()} #{auth.getLastName()}</h3>
+                    <b:row>
+                        <b:column col-md="6">
+                            <b:panelGrid columns="3"> 
+                                <c:forEach items="#{authorsJpaController.getOtherBooksBySameAuthor(book.getIsbn(), auth.getAuthorId(), 3)}" var="sameauthor">
+                                        <ui:decorate template="/templates/book.xhtml">
+                                            <ui:param name="book" value="#{sameauthor}"></ui:param>
+                                        </ui:decorate>
+                                </c:forEach>
+                            </b:panelGrid>
+                        </b:column>
+                    </b:row>
+                </c:forEach>
+            </b:jumbotron>
+        </b:container>
+        <!--need to fix when showing same genre but different authorS-->
+        <b:container>
+            <b:jumbotron>
+                <c:forEach items="#{genrebooks}" var="gen">
+                    <c:forEach items="#{authorbooks}" var="auth">
+                        <h3>#{msgs.otherbooksof} #{gen.getGenre()} #{msgs.genre}</h3>
+                        <b:row>
+                            <b:column col-md="6">
+                                <b:panelGrid columns="3">
+                                    <c:forEach items="#{genresJpaController.getOtherBooksOfSameGenre(book.getIsbn(), gen.getGenreId(), auth.getAuthorId(), 3)}" var="samegenre">
+                                        <ui:decorate template="/templates/book.xhtml">
+                                            <ui:param name="book" value="#{samegenre}"></ui:param>
+                                        </ui:decorate>
+                                    </c:forEach>
+                                </b:panelGrid>
+                            </b:column>
+                        </b:row>
+                    </c:forEach>
+                </c:forEach>
+            </b:jumbotron>
+        </b:container>
+        <!--SUBMIT REVIEW-->
+        <!--Still need to fix submit review-->
+        <b:container>
+            <h3>#{msgs.reviewthisbooks} : </h3>
+            <b:jumbotron>
+                <h:form id="addBookReview">
+                    <p:outputLabel>#{msgs.writeyourreview} : </p:outputLabel>
+                    <br></br>
+                    <p:inputTextarea value="#{bookReviewBackingBean.review}" rows="5" cols="40" maxlength="750" />
+                    <p:rating value="#{bookReviewBackingBean.rating}" />
+                    <b:commandButton value="#{msgs.submit}" action="#{bookReviewBackingBean.makeReview(book, usersJpaController.findUsers(1))}"/>  <!--user is 1 for now -->
+                </h:form>
+            </b:jumbotron>
+        </b:container>
+    </ui:define>
+    
+    <ui:define name="footer">
+        <ui:include src="/templates/footer.xhtml"></ui:include>
+    </ui:define>
+</ui:composition>
+

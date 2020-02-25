@@ -558,7 +558,7 @@ public class BooksJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
     }
     
-    /**
+     /**   
      * Used to find the books that were top sellers in the specified date range
      * and returns their titles and totals. 
      * @param startDate of the report

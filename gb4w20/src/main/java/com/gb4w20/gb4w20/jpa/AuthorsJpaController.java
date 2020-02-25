@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
@@ -235,5 +236,48 @@ public class AuthorsJpaController implements Serializable {
         Query query = em.createQuery(cq);
         return query.getResultList();
     }
-    
+
+    /**
+     * Get other books by the same author that will be displayed 
+     * in the book page
+     * 
+     * @param isbn
+     * @param authorId
+     * @param maxResults
+     * @return 
+     * @author Jasmar
+     */
+    public List<Books> getOtherBooksBySameAuthor(long isbn, long authorId, int maxResults){
+        LOG.info("getting " + maxResults + " books from the same author");
+        
+        /*String countquery = "SELECT DISTINCT COUNT(*) FROM books b  \n" +
+                            "JOIN bookauthor ba ON b.isbn = ba.isbn \n" +
+                            "JOIN authors a ON ba.author_id = a.author_id \n" +
+                            "WHERE b.isbn != ?1 AND a.author_id = ?2";
+        Query countbooks = em.createNativeQuery(countquery);
+        countbooks.setParameter(1, isbn);
+        countbooks.setParameter(2, authorId);
+        long countb = (Long)countbooks.getSingleResult();
+        LOG.debug(countb + "RESULTS");*/
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+        Root<Books> book = cq.from(Books.class);
+        Join author = book.join("authorsCollection");
+        cq.select(book)
+                .where(cb.and(
+                        cb.notEqual(book.get("isbn"), isbn),
+                        cb.equal(author.get("authorId"), authorId)
+                ));
+        
+        Query query = em.createQuery(cq);
+        /*if (countb >= 3){
+             Random random = new Random();
+            int num = random.nextInt((int)countb);
+            query.setFirstResult(num);
+        }*/
+        query.setMaxResults(maxResults);
+        
+        return query.getResultList();
+    }
 }
