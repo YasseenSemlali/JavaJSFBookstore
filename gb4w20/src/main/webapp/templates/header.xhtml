@@ -8,7 +8,23 @@
     <h:head>
     </h:head>
     <h:body>
-        <ui:composition>
+        <ui:composition>    
+            <b:navBar inverse="true" styleClass="topMenuBar">
+                <b:navbarLinks>
+                    <b:navLink value="" href="index.xhtml" styleClass="logomenuitem"/>
+                </b:navbarLinks>
+                <form class="navbar-form navbar-left " role="search" action="search.xhtml" name="test" method="GET">
+                    <input type="text" class="form-control" placeholder="Title" name="title"/>
+                    <button type="submit" class="btn btn-default">Search</button>
+                </form>
+
+                <b:navbarLinks pull="right">
+                    <b:navLink value="${msgs.logout}" href="www.google.com" />
+                    <b:navLink value="${msgs.profile}" href="www.google.com"/>
+                    <b:navLink value="${msgs.dashboard}" href="manager_frontpage.xhtml"/>
+                    <b:navLink value="FR" href="www.google.com"/>
+                </b:navbarLinks>
+            </b:navBar>
         </ui:composition>
     </h:body>
 </html>

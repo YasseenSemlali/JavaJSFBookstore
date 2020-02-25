@@ -9,13 +9,13 @@
         <title>Manager</title>
     </h:head>
     <h:body>
-        <h:outputStylesheet library="css" name="global.css"  />
-        <h:outputStylesheet library="css" name="reports-page.css"  />
         <div>
             <ui:insert name="topMenuBar">
-                <ui:include src="/templates/topMenuManager.xhtml"></ui:include>
+                <ui:include src="/templates/header.xhtml"></ui:include>
             </ui:insert>
         </div>
+        <h:outputStylesheet library="css" name="global.css"  />
+        <h:outputStylesheet library="css" name="reports-page.css"  />
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="manager_frontpage.xhtml">#{msgs.dashboard}</a></li>
