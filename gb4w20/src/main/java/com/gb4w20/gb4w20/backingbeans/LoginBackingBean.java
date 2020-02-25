@@ -3,9 +3,12 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.annotation.ManagedProperty;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -30,7 +33,7 @@ public class LoginBackingBean implements Serializable {
     UserSessionBean session; 
     
     private String emailInput; 
-    private String passwordInput; 
+    private String passwordInput;
     
     /**
      * Used to get the email value inputted
@@ -87,9 +90,13 @@ public class LoginBackingBean implements Serializable {
         
         //If not valid notify user
         if(areInputsNotValid()){
-            //TODO notify user
             LOG.info("Values not valid for " + this.emailInput + " with password " + this.passwordInput);
-            return LOGIN_PAGE;
+            FacesContext context = FacesContext.getCurrentInstance();
+            ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msg");
+            //TODO i18n currently not working
+            context.addMessage(null, new FacesMessage("Invalid Parameters", "Please provide valid email and password"));
+            
+            return null;
          }
         
         if(this.session.loginUser(this.emailInput, this.passwordInput)){
@@ -97,7 +104,12 @@ public class LoginBackingBean implements Serializable {
             return this.session.isLoggedInManager() ? MANAGER_PAGE : CLIENT_PAGE;  
         }
         
-        return LOGIN_PAGE;
+         LOG.info("No user found for " + this.emailInput + " with password " + this.passwordInput);
+         FacesContext context = FacesContext.getCurrentInstance();
+         ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msgs");
+         context.addMessage(null, new FacesMessage("Invalid login", "Email and password provided did not match any of our records. Please try again"));
+            
+        return null;
         
     }
     
