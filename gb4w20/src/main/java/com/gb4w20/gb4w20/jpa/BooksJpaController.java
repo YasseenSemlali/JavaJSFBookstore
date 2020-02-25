@@ -542,7 +542,7 @@ public class BooksJpaController implements Serializable {
         if (isbn != null) {
             predicates.add(cb.equal(book.get(Books_.isbn), isbn));
         }
-
+        
         if (title != null && !title.isEmpty()) {
             predicates.add(cb.like(book.get(Books_.title), titleSearch));
         }
