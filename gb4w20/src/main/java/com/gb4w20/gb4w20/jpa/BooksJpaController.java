@@ -586,8 +586,8 @@ public class BooksJpaController implements Serializable {
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-
-    /**
+    
+     /**   
      * Used to find the books that were top sellers in the specified date range
      * and returns their titles and totals.
      *
