@@ -20,6 +20,11 @@ body, html {
     box-shadow: #bbb 6px 6px 12px;
 }
 
+/* Used to make mobile menu nicer */
+#j_idt7_inner{
+    padding: 2em;
+}
+
 /* TOP MENU */
 .topMenuBar {
     background-color: #303030 !important;
