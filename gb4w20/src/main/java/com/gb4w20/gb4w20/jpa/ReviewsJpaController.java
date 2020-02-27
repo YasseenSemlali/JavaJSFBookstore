@@ -219,10 +219,10 @@ public class ReviewsJpaController implements Serializable {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery(Reviews.class);
         Root<Books> bookrating = cq.from(Books.class);
-        Join rate = bookrating.join("reviewsCollection");
+        Join rate = bookrating.join(Books_.reviewsCollection);
         
-        cq.select(cb.avg(rate.get("rating")))
-                .where(cb.equal(bookrating.get("isbn"), isbn));
+        cq.select(cb.avg(rate.get(Reviews_.rating)))
+                .where(cb.equal(bookrating.get(Books_.isbn), isbn));
         
         TypedQuery<Double> avgrating = em.createQuery(cq);
         
@@ -232,6 +232,30 @@ public class ReviewsJpaController implements Serializable {
         else{
             return 0.0;
         }
+    }
+    
+    /**
+     * Getting only approved reviews by the manager from 
+     * a specific book that will be displayed in the 
+     * book page
+     * @param isbn
+     * @return
+     * @author Jasmar Badion
+     */
+    public List<Reviews> getApprovedReviews(Long isbn){
+        LOG.info("Getting approved reviews from a specific book");
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Reviews> cq = cb.createQuery(Reviews.class);
+        Root<Books> book = cq.from(Books.class);
+        Join review = book.join(Books_.reviewsCollection);
+        cq.select(review)
+                .where(cb.and(
+                    cb.equal(book.get(Books_.isbn), isbn),
+                    cb.equal(review.get(Reviews_.approvedStatus), true)
+                ));
+        Query query = em.createQuery(cq);
+        return query.getResultList();
     }
     
 }

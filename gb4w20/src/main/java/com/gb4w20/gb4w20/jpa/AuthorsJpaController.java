@@ -263,11 +263,11 @@ public class AuthorsJpaController implements Serializable {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
         Root<Books> book = cq.from(Books.class);
-        Join author = book.join("authorsCollection");
+        Join author = book.join(Books_.authorsCollection);
         cq.select(book)
                 .where(cb.and(
-                        cb.notEqual(book.get("isbn"), isbn),
-                        cb.equal(author.get("authorId"), authorId)
+                        cb.notEqual(book.get(Books_.isbn), isbn),
+                        cb.equal(author.get(Authors_.authorId), authorId)
                 ));
         
         Query query = em.createQuery(cq);

@@ -1,5 +1,6 @@
 USE gb4w20;
 -- Jasmar's queries
+--COMMENTED CODES BELOW ARE FOR TESTING PURPOSES
 /*SELECT g.genre FROM books b 
 JOIN bookgenre bg ON b.isbn = bg.isbn
 JOIN genres g ON bg.genre_id = g.genre_id
@@ -14,7 +15,7 @@ JOIN authors a ON ba.author_id = a.author_id
 JOIN bookgenre bg ON b.isbn = bg.isbn
 JOIN genres g ON bg.genre_id = g.genre_id
 WHERE (b.isbn != '9780545010221' AND a.author_id != 4) AND g.genre_id = 1;*/
-SELECT * FROM reviews;
+SELECT * FROM reviews; 
 -- Total Sales
 /*
 Within the defined date range this report displays 

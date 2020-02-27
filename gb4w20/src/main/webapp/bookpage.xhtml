@@ -77,20 +77,24 @@ add it to the shopping cart.
             <div class="">
                 <h2>#{msgs.reviews}</h2>
                 <p>
-                    <c:forEach items="#{book.getReviewsCollection()}" var="review"> <!-- CHANGE IT TO ONLY APPROVED REVIEWS -->
-                        <p>
-                            #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
-                        </p>
-                        <p>
-                            #{review.getReview()}
-                        </p>
-                        <br></br>
-                        #{msgs.rating} : #{review.getRating()}
+                    <!-- ONLY APPROVED REVIEWS -->
+                    <c:forEach items="#{reviewsJpaController.getApprovedReviews(book.getIsbn())}" var="review">
+                        <div id="">
+                            <p>
+                                #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
+                            </p>
+                            <p>
+                                #{review.getReview()}
+                            </p>
+                            <p>
+                                #{msgs.rating} : #{review.getRating()}
+                            </p>
+                        </div>
                     </c:forEach>
                 </p>
             </div>
         </b:container>
-        
+        <!--need to fix when showing recommended books when there are more than 1 author or genre-->
         <b:container>
             <h2>#{msgs.recommendation}</h2>
         </b:container>
@@ -112,7 +116,7 @@ add it to the shopping cart.
                 </c:forEach>
             </b:jumbotron>
         </b:container>
-        <!--need to fix when showing same genre but different authorS-->
+        
         <b:container>
             <b:jumbotron>
                 <c:forEach items="#{genrebooks}" var="gen">
@@ -144,6 +148,10 @@ add it to the shopping cart.
                     <p:inputTextarea value="#{bookReviewBackingBean.review}" rows="5" cols="40" maxlength="750" />
                     <p:rating value="#{bookReviewBackingBean.rating}" />
                     <p:commandButton value="#{msgs.submit}" action="#{bookReviewBackingBean.makeReview(param['isbn'], 1)}"/>  <!--user is 1 for now -->
+                    <!--need to alert user when submission was successful and reload the page-->
+                    <c:if test="">
+                        <b:alert severity="success" title="Review completed" closable="true"><strong>Thanks for submitting a review!</strong> Your review has been submitted </b:alert>
+                    </c:if>
                 </h:form> 
             </b:jumbotron>
         </b:container>

@@ -44,13 +44,20 @@ public class BookReviewBackingBean implements Serializable{
 
     private String review;
     private short rating;
-    //private Reviews reviews;
     
+    /**
+     * Makes a review setting up its instances depending 
+     * on the user inputs
+     * 
+     * @param book
+     * @param user
+     * @throws RollbackFailureException 
+     */
     public void makeReview(Long book, Long user) throws RollbackFailureException{
         Reviews reviews = new Reviews();
         reviews.setReview(this.review);
         reviews.setRating(this.rating); 
-        reviews.setApprovedStatus(false);
+        reviews.setApprovedStatus(false); //false for now until the manager approves it
         
         //Creating current timestamp 
         Date date = new Date();
@@ -63,20 +70,46 @@ public class BookReviewBackingBean implements Serializable{
         saveReview(reviews);
     }
     
+    /**
+     * This is called after making the review from the 
+     * book page to be able to save it 
+     * 
+     * @param reviews
+     * @throws RollbackFailureException 
+     */
     private void saveReview(Reviews reviews) throws RollbackFailureException{
         this.reviewsJpaController.create(reviews);
         LOG.debug("<<<<<<<<<<<<<<<<SUCCESS>>>>>>>>>>>>>>>>>");
     }
   
+    /**
+     * Getter for review
+     * @return 
+     */
     public String getReview(){
         return this.review;
     }
+    
+    /**
+     * Setter for review
+     * @param review 
+     */
     public void setReview(String review){
         this.review = review;
     }
+    
+    /**
+     * Getter for rating
+     * @return 
+     */
     public short getRating(){
         return this.rating;
     }
+    
+    /**
+     * Setter fir rating
+     * @param rating 
+     */
     public void setRating(short rating){
         this.rating = rating;
     }
