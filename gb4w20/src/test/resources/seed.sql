@@ -1234,6 +1234,7 @@ insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALU
 insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'QC', null, 0.05, 0.09975 );
 insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'SK', null, 0.05, 0.06 );
 insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'YT', null, 0.05, null );
+insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'TO', null, 0.05, null );
 -- Ads 
 INSERT INTO ads(file_location, url) VALUES('christmas_ad.png', 'https://google.ca');
 INSERT INTO ads(file_location, url) VALUES('school_ad.png', 'https://www.dawsoncollege.qc.ca/');

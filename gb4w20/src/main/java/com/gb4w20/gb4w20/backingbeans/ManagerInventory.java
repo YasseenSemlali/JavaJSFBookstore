@@ -89,16 +89,13 @@ public class ManagerInventory implements Serializable {
     //Total sales
     protected BigDecimal totalSales;
 
-    //Cosntructor
-    public ManagerInventory() {
-    }
-
     //LISTENERS
     /**
      * Whenever a book is changed, wither fills the form fields with the info
      * from the book, or, if the book is a new book, it empties the fields.
      *
      * @param e
+     * @author Jean Robatto
      */
     public void bookChanged(AjaxBehaviorEvent e) {
         Long isbn = (Long) ((UIOutput) e.getSource()).getValue();
@@ -146,6 +143,7 @@ public class ManagerInventory implements Serializable {
      * fields.
      *
      * @param e
+     * @author Jean Robatto
      */
     public void authorChanged(AjaxBehaviorEvent e) {
         Long authorId = (Long) ((UIOutput) e.getSource()).getValue();
@@ -167,6 +165,7 @@ public class ManagerInventory implements Serializable {
      * empties the fields.
      *
      * @param e
+     * @author Jean Robatto
      */
     public void publisherChanged(AjaxBehaviorEvent e) {
         Long publisherId = (Long) ((UIOutput) e.getSource()).getValue();
@@ -185,6 +184,7 @@ public class ManagerInventory implements Serializable {
      * from the genre, or, if the genre is a new genre, it empties the fields.
      *
      * @param e
+     * @author Jean Robatto
      */
     public void genreChanged(AjaxBehaviorEvent e) {
         Long genreId = (Long) ((UIOutput) e.getSource()).getValue();
@@ -203,6 +203,7 @@ public class ManagerInventory implements Serializable {
      * selected book.
      *
      * @param e
+     * @author Jean Robatto
      */
     public void addAuthorToCollection(AjaxBehaviorEvent e) {
         Long authorId = ((Long) ((UIOutput) e.getSource()).getValue());
@@ -217,10 +218,22 @@ public class ManagerInventory implements Serializable {
             };
         }
     }
+    
+    /**
+     * Removes an author from the collection 
+     * 
+     * @param author 
+     * @author Jean Robatto
+     */
+    public void removeAuthorFromCollection(Authors author) {
+        this.bookAuthor.remove(author);
+    }
 
     /**
      * Removed all authors from the collection of authors for the currently
      * selected book.
+     * 
+     * @author Jean Robatto
      */
     public void clearAuthors() {
         this.bookAuthor = new ArrayList<>();
@@ -231,6 +244,7 @@ public class ManagerInventory implements Serializable {
      * selected book.
      *
      * @param e
+     * @author Jean Robatto
      */
     public void addGenreToCollection(AjaxBehaviorEvent e) {
         Long genreId = ((Long) ((UIOutput) e.getSource()).getValue());
@@ -245,10 +259,22 @@ public class ManagerInventory implements Serializable {
             };
         }
     }
+    
+    /**
+     * Removes an genre from the collection 
+     * 
+     * @param genre 
+     * @author Jean Robatto
+     */
+    public void removeGenreFromCollection(Genres genre) {
+        this.bookGenre.remove(genre);
+    }
 
     /**
      * Removed all genres from the collection of genres for the currently
      * selected book.
+     * 
+     * @author Jean Robatto
      */
     public void clearGenres() {
         this.bookGenre = new ArrayList<>();
@@ -259,6 +285,7 @@ public class ManagerInventory implements Serializable {
      * selected book.
      *
      * @param e
+     * @author Jean Robatto
      */
     public void addPublisherToCollection(AjaxBehaviorEvent e) {
         Long publisherId = ((Long) ((UIOutput) e.getSource()).getValue());
@@ -273,10 +300,22 @@ public class ManagerInventory implements Serializable {
             };
         }
     }
+    
+    /**
+     * Removes a publisher from the collection 
+     * 
+     * @param publisher 
+     * @author Jean Robatto
+     */
+    public void removePublisherFromCollection(Publishers publisher) {
+        this.bookPublisher.remove(publisher);
+    }
 
     /**
      * Removed all publishers from the collection of publishers for the currently
      * selected book.
+     * 
+     * @author Jean Robatto
      */
     public void clearPublishers() {
         this.bookPublisher = new ArrayList<>();
@@ -288,6 +327,7 @@ public class ManagerInventory implements Serializable {
      * book, depending on the selected field.
      *
      * @return redirection
+     * @author Jean Robatto
      */
     public String submitBook() {
         if (this.edit) {
@@ -302,6 +342,7 @@ public class ManagerInventory implements Serializable {
      * new author, depending on the selected field.
      *
      * @return redirection
+     * @author Jean Robatto
      */
     public String submitAuthor() {
         if (this.edit) {
@@ -316,6 +357,7 @@ public class ManagerInventory implements Serializable {
      * genre, depending on the selected field.
      *
      * @return redirection
+     * @author Jean Robatto
      */
     public String submitGenre() {
         if (this.edit) {
@@ -330,6 +372,7 @@ public class ManagerInventory implements Serializable {
      * add a new publisher, depending on the selected field.
      *
      * @return redirection
+     * @author Jean Robatto
      */
     public String submitPublisher() {
         if (this.edit) {
@@ -344,6 +387,7 @@ public class ManagerInventory implements Serializable {
      * Method to add a book
      *
      * @return redirection
+     * @author Jean Robatto
      */
     private String addBook() {
         try {
@@ -365,9 +409,9 @@ public class ManagerInventory implements Serializable {
 
             booksController.create(newBook);
 
-            return "success-inventory";
+            return "/action-responses//action-responses/action-success";
         } catch (Exception ex) {
-            return "failure-inventory";
+            return "/action-responses/action-failure";
 
         }
     }
@@ -376,6 +420,7 @@ public class ManagerInventory implements Serializable {
      * Method to edit a book
      *
      * @return redirection
+     * @author Jean Robatto
      */
     private String editBook() {
         try {
@@ -396,9 +441,9 @@ public class ManagerInventory implements Serializable {
 
             booksController.edit(editBook);
 
-            return "success-inventory";
+            return "/action-responses/action-success";
         } catch (Exception ex) {
-            return "failure-inventory";
+            return "/action-responses/action-failure";
         }
     }
 
@@ -406,6 +451,7 @@ public class ManagerInventory implements Serializable {
      * Method to add an author
      *
      * @return redirection
+     * @author Jean Robatto
      */
     private String addAuthor() {
         try {
@@ -415,9 +461,9 @@ public class ManagerInventory implements Serializable {
 
             authorsController.create(newAuthor);
 
-            return "success-inventory";
+            return "/action-responses/action-success";
         } catch (Exception ex) {
-            return "failure-inventory";
+            return "/action-responses/action-failure";
         }
     }
 
@@ -425,6 +471,7 @@ public class ManagerInventory implements Serializable {
      * Method to edit an author
      *
      * @return redirection
+     * @author Jean Robatto
      */
     private String editAuthor() {
         try {
@@ -434,9 +481,9 @@ public class ManagerInventory implements Serializable {
 
             authorsController.edit(editAuthor);
 
-            return "success-inventory";
+            return "/action-responses/action-success";
         } catch (Exception ex) {
-            return "failure-inventory";
+            return "/action-responses/action-failure";
         }
     }
 
@@ -444,6 +491,7 @@ public class ManagerInventory implements Serializable {
      * Method to add a genre
      *
      * @return redirection
+     * @author Jean Robatto
      */
     private String addGenre() {
         try {
@@ -452,9 +500,9 @@ public class ManagerInventory implements Serializable {
 
             genresController.create(newGenre);
 
-            return "success-inventory";
+            return "/action-responses/action-success";
         } catch (Exception ex) {
-            return "failure-inventory";
+            return "/action-responses/action-failure";
         }
     }
 
@@ -462,6 +510,7 @@ public class ManagerInventory implements Serializable {
      * Method to edit a genre
      *
      * @return redirection
+     * @author Jean Robatto
      */
     private String editGenre() {
         try {
@@ -470,9 +519,9 @@ public class ManagerInventory implements Serializable {
 
             genresController.edit(editGenre);
 
-            return "success-inventory";
+            return "/action-responses/action-success";
         } catch (Exception ex) {
-            return "failure-inventory";
+            return "/action-responses/action-failure";
         }
     }
 
@@ -480,6 +529,7 @@ public class ManagerInventory implements Serializable {
      * Method to add a publisher
      *
      * @return redirection
+     * @author Jean Robatto
      */
     private String addPublisher() {
         try {
@@ -488,9 +538,9 @@ public class ManagerInventory implements Serializable {
 
             publishersController.create(newPublisher);
 
-            return "success-inventory";
+            return "/action-responses/action-success";
         } catch (Exception ex) {
-            return "failure-inventory";
+            return "/action-responses/action-failure";
         }
     }
 
@@ -498,6 +548,7 @@ public class ManagerInventory implements Serializable {
      * Method to edit a publisher
      *
      * @return redirection
+     * @author Jean Robatto
      */
     private String editPublisher() {
         try {
@@ -506,9 +557,9 @@ public class ManagerInventory implements Serializable {
 
             publishersController.edit(editPulisher);
 
-            return "success-inventory";
+            return "/action-responses/action-success";
         } catch (Exception ex) {
-            return "failure-inventory";
+            return "/action-responses/action-failure";
         }
     }
 

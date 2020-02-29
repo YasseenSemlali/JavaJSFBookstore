@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays all the options
+to edit orders.
+
+@author Jean Robatto
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.orders}</title>
+        <h:outputStylesheet library="css" name="report.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
+    </ui:define>
+    <ui:define name="content">
+        <b:container style="margin-top: 5%; margin-bottom:5%">
+            <h:form id="orderForm">
+            <c:set var="order" value="#{managerOrders.order}"/>
+                    <div class="row">
+                        <div class="col-lg text-center">
+                            <h1>#{msgs.edit} #{msgs.order}</h1>
+                            <h2># #{order.orderId}</h2>
+                        </div>
+                    </div>
+                <div class="card">
+                      <div class="contaimer">
+                          <div class="row">
+                                    <div class="col-lg text-right">
+                                         <p:outputLabel value="#{msgs.addIsbn}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:selectOneMenu id="order_book" class="custom-select" value="#{managerOrders.bookToAdd}" style="width:30%" styleClass="formComponent" >
+                                            <p:ajax event="change" 
+                                                    update="allbooks"
+                                                    listener="#{managerOrders.addBookToCollection}" />
+                                            <f:selectItems value="#{booksJpaController.findBooksEntities()}" var="book" itemValue="#{book.isbn}" itemLabel="#{book.title}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="#{msgs.allbooks}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:dataTable id="allbooks" value="#{managerOrders.bookOrders}" emptyMessage="#{msgs.noresults}" var="bookorder" style="width:50%; text-align: center">
+                                            <p:column>
+                                                #{bookorder.isbn.title}
+                                            </p:column>
+                                            <p:column>
+                                                <p:inputSwitch value="#{bookorder.enabled}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                           <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="${msgs.user}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:selectOneMenu id="user" class="custom-select" value="#{managerOrders.selectedUserId}" style="width:30%" styleClass="formComponent" >
+                                            <f:selectItems value="#{usersJpaController.findUsersEntities()}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                           <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="${msgs.address}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:inputText value="${managerOrders.address}" styleClass="formComponent" />
+                                    </div>
+                                </div>
+                           <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="${msgs.amount_pretax}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:outputLabel value="${managerOrders.pricePreTax} $" styleClass="formComponent"/>
+                                    </div>
+                                </div>
+                           <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="${msgs.gst_tax}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:outputLabel value="${managerOrders.gstTax} $" styleClass="formComponent"/>
+                                    </div>
+                             </div>
+                          <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="${msgs.pst_tax}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:outputLabel value="${managerOrders.pstTax} $" styleClass="formComponent"/>
+                                    </div>
+                             </div>
+                          <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="${msgs.hst_tax}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:outputLabel value="${managerOrders.hstTax} $" styleClass="formComponent"/>
+                                    </div>
+                             </div>
+                          <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="${msgs.total_tax}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:outputLabel value="${managerOrders.totalTax} $" styleClass="formComponent"/>
+                                    </div>
+                             </div>
+                          <div class="row">
+                                    <div class="col-lg text-right">
+                                        <p:outputLabel value="${msgs.total_price}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg text-left">
+                                        <p:outputLabel value="${managerOrders.totalPrice} $" styleClass="formComponent"/>
+                                    </div>
+                             </div>
+                          <div class="row">
+                              <div class="col-lg text-right">
+
+                              </div>
+                              <div class="col-lg text-left">
+                                  <p:commandButton value="#{msgs.submit}" action="#{managerOrders.editOrder()}" styleClass="formComponent"/>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+            </h:form>
+        </b:container>
+         </ui:define>                
+        </ui:composition>
