@@ -16,54 +16,57 @@ a manager can perform.
     <ui:define name="head">
         <title>Manager</title>
     </ui:define>
+
     <ui:define name="content">
-        <b:container style="margin-top: 5%; margin-bottom:5%">
-        <div class="ui-g"  >
-            <div class="ui-g-4">
-                <a href="manager-forms/manager-inventory.xhtml" style="color: black">
+        <h:outputStylesheet library="css" name="global.css"  />
+
+        <b:container style="margin-top: 5%; margin-bottom:5%" fluid="true">
+            <b:row>
+                <b:column  col-md="4">
+                    <a href="manager-forms/manager_inventory.xhtml" style="color: black">
                         <div class="menutile">
                             <p:graphicImage name="images/inventory_icon.png" style="width: 33%; height: 33%" />
                             <br />
                             <h4>${msgs.inventory}</h4>
                         </div>
                     </a>
+                </b:column>
+                <b:column  col-md="4">
+                    <div class="menutile">
+                        <p:graphicImage name="images/sales_icon.png" style="width: 33%; height: 33%" />
+                        <br />
+                        <h4>${msgs.sales}</h4>
                     </div>
-            <div class="ui-g-4">
-                <div class="menutile">
-                    <p:graphicImage name="images/sales_icon.png" style="width: 33%; height: 33%" />
-                    <br />
-                    <h4>${msgs.sales}</h4>
-                </div>
-            </div>
-            <div class="ui-g-4">
-                <div class="menutile">
-                    <p:graphicImage name="images/clients_icon.png" style="width: 33%; height: 33%" />
-                    <br />
-                    <h4>${msgs.clients}</h4>
-                </div>
-            </div>
-        </div>
-        
-        <div class="ui-g">
-            <div class="ui-g-4">
-                <div class="menutile">
-                    <a href="manager-forms/manager-orders.xhtml" style="color: black">
+                </b:column>
+                <b:column  col-md="4">
+                    <div class="menutile">
+                        <p:graphicImage name="images/clients_icon.png" style="width: 33%; height: 33%" />
+                        <br />
+                        <h4>${msgs.clients}</h4>
+                    </div>
+                </b:column>
+            </b:row>
+            <b:row>
+                <b:column  col-md="4">
+                     <a href="manager-forms/manager_orders.xhtml" style="color: black">
+                    <div class="menutile">
                         <p:graphicImage name="images/orders_icon.png" style="width: 33%; height: 33%" />
                         <br />
                         <h4>${msgs.orders}</h4>
-                    </a>
-                </div>
-            </div>
-            <div class="ui-g-4">
-                <div class="menutile">
-                    <p:graphicImage name="images/reviews_icon.png" style="width: 33%; height: 33%" />
-                    <br />
-                    <h4>${msgs.reviews}</h4>
-                </div>
-            </div>
-            <div class="ui-g-4">
-                <a href="reports-page.xhtml" style="color: black">
+                    </div>
+                     </a>
+                </b:column>
+                <b:column  col-md="4">
+
                     <div class="menutile">
+                        <p:graphicImage name="images/reviews_icon.png" style="width: 33%; height: 33%" />
+                        <br />
+                        <h4>${msgs.reviews}</h4>
+                    </div>
+                </b:column>
+                <b:column  col-md="4">
+                    <a href="reports-page.xhtml" style="color: black">
+                        <div class="menutile">
                             <p:graphicImage name="images/report_icon.png" style="width: 33%; height: 33%" />
                             <br />
                             <h4>${msgs.reports}</h4>
@@ -94,6 +97,8 @@ a manager can perform.
                     </div>
                 </b:column>
             </b:row>
+
+
         </b:container>
     </ui:define>
 </ui:composition>
