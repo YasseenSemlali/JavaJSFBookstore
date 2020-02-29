@@ -11,6 +11,7 @@ import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.entities.Reviews_;
 import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.annotation.Resource;
@@ -23,6 +24,11 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +49,9 @@ public class ReviewsJpaController implements Serializable {
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
 
-    public void create(Reviews reviews) {
+    public void create(Reviews reviews) throws RollbackFailureException {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Books isbn = reviews.getIsbn();
             if (isbn != null) {
                 isbn = em.getReference(isbn.getClass(), isbn.getIsbn());
@@ -65,11 +71,16 @@ public class ReviewsJpaController implements Serializable {
                 userId.getReviewsCollection().add(reviews);
                 userId = em.merge(userId);
             }
-            em.getTransaction().commit();
+            utx.commit();
             LOG.debug(reviews.getReview());
-        } finally {
-            if (em != null) {
-                em.close();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            try {
+                utx.rollback();
+                LOG.error("Rollback");
+            } catch (IllegalStateException | SecurityException | SystemException re) {
+                LOG.error("Rollback2");
+
+                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
         }
     }
@@ -208,10 +219,10 @@ public class ReviewsJpaController implements Serializable {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery(Reviews.class);
         Root<Books> bookrating = cq.from(Books.class);
-        Join rate = bookrating.join("reviewsCollection");
+        Join rate = bookrating.join(Books_.reviewsCollection);
         
-        cq.select(cb.avg(rate.get("rating")))
-                .where(cb.equal(bookrating.get("isbn"), isbn));
+        cq.select(cb.avg(rate.get(Reviews_.rating)))
+                .where(cb.equal(bookrating.get(Books_.isbn), isbn));
         
         TypedQuery<Double> avgrating = em.createQuery(cq);
         
@@ -221,6 +232,30 @@ public class ReviewsJpaController implements Serializable {
         else{
             return 0.0;
         }
+    }
+    
+    /**
+     * Getting only approved reviews by the manager from 
+     * a specific book that will be displayed in the 
+     * book page
+     * @param isbn
+     * @return
+     * @author Jasmar Badion
+     */
+    public List<Reviews> getApprovedReviews(Long isbn){
+        LOG.info("Getting approved reviews from a specific book");
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Reviews> cq = cb.createQuery(Reviews.class);
+        Root<Books> book = cq.from(Books.class);
+        Join review = book.join(Books_.reviewsCollection);
+        cq.select(review)
+                .where(cb.and(
+                    cb.equal(book.get(Books_.isbn), isbn),
+                    cb.equal(review.get(Reviews_.approvedStatus), true)
+                ));
+        Query query = em.createQuery(cq);
+        return query.getResultList();
     }
     
 }
