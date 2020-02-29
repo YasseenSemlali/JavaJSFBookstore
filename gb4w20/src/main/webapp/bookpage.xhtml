@@ -28,87 +28,77 @@ add it to the shopping cart.
         <c:set var="book" value="#{booksJpaController.findBooks(param['isbn'])}"/>
         <c:set var="authorbooks" value="#{book.getAuthorsCollection()}"/>
         <c:set var="genrebooks" value="#{book.getGenresCollection()}"/>
-        
-        <!--BELOW WORKS
-        <c:set var="ges" value="#{book.getGenresCollection()[0]}"/>
-        -->
-        
+
         <b:container>
             <b:jumbotron>
-                <div class="">
-                    <ui:decorate template="/templates/book.xhtml">
-                        <ui:param name="book" value="#{book}"></ui:param>
-                        <ui:param name="showPrice" value="true"></ui:param>
-                        <ui:param name="showOldPrice" value="true"></ui:param>
-                    </ui:decorate>
+                <ui:decorate template="/templates/book.xhtml">
+                    <ui:param name="book" value="#{book}"></ui:param>
+                    <ui:param name="showPrice" value="true"></ui:param>
+                    <ui:param name="showOldPrice" value="true"></ui:param>
+                </ui:decorate>
+                <br></br>
+                <p:outputLabel>#{msgs.author} : </p:outputLabel>
+                <br></br>
+                <c:forEach items="#{authorbooks}" var="auth">
+                    #{auth.getFirstName()} #{auth.getLastName()}
                     <br></br>
-                    <p:outputLabel>#{msgs.author} : </p:outputLabel>
+                </c:forEach>
+                <br></br>
+                <p:outputLabel>#{msgs.genre} : </p:outputLabel>
+                <br></br>
+                <c:forEach items="#{genrebooks}" var="gen">
+                    #{gen.getGenre()}
                     <br></br>
-                    <c:forEach items="#{authorbooks}" var="auth">
-                        #{auth.getFirstName()} #{auth.getLastName()}
-                        <br></br>
-                    </c:forEach>
-                    <br></br>
-                    <p:outputLabel>#{msgs.genre} : </p:outputLabel>
-                    <br></br>
-                    <c:forEach items="#{genrebooks}" var="gen">
-                        #{gen.getGenre()}
-                        <br></br>
-                    </c:forEach>
-                    <br></br>
-                    <p:outputLabel>#{msgs.rating} : </p:outputLabel>
+                </c:forEach>
+                <br></br>
+                <p:outputLabel>#{msgs.rating} : </p:outputLabel>
                     #{reviewsJpaController.getAverageRating(book.getIsbn())}
-                    <br></br>
-                    <a href="#" class="btn btn-lg btn-info">#{msgs.addToCart}</a>
-                </div>
+                <br></br>
+                <a href="#" class="btn btn-lg btn-info">#{msgs.addToCart}</a>
             </b:jumbotron> 
         </b:container>
-        
+
         <b:container>
-            <div class="">
-                <h2>#{msgs.summary}</h2>
-                <p>
-                    #{book.getSynopsis()}
-                </p>
-            </div>
+            <h2>#{msgs.summary}</h2>
+            <p>
+                #{book.getSynopsis()}
+            </p>
         </b:container>
-        
+
         <b:container>
-            <div class="">
-                <h2>#{msgs.reviews}</h2>
-                <p>
-                    <!-- ONLY APPROVED REVIEWS -->
-                    <c:forEach items="#{reviewsJpaController.getApprovedReviews(book.getIsbn())}" var="review">
-                        <div id="">
-                            <p>
-                                #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
-                            </p>
-                            <p>
-                                #{review.getReview()}
-                            </p>
-                            <p>
-                                #{msgs.rating} : #{review.getRating()}
-                            </p>
-                        </div>
-                    </c:forEach>
-                </p>
-            </div>
+            <h2>#{msgs.reviews}</h2>
+            <p>
+                <!-- APPROVED REVIEWS -->
+                <c:forEach items="#{reviewsJpaController.getApprovedReviews(book.getIsbn())}" var="review">
+                    <div id="">
+                        <p>
+                            #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
+                        </p>
+                        <p>
+                            #{review.getReview()}
+                        </p>
+                        <p>
+                            #{msgs.rating} : #{review.getRating()}
+                        </p>
+                    </div>
+                </c:forEach>
+            </p>
         </b:container>
-        <!--need to fix when showing recommended books when there are more than 1 author or genre-->
+        <!--fix small issue showing recommended books when there are more than 1 author or genre-->
         <b:container>
             <h2>#{msgs.recommendation}</h2>
         </b:container>
         <b:container>
-            <b:jumbotron>
+            <b:jumbotron> 
                 <c:forEach items="#{authorbooks}" var="auth">
                     <h3>#{msgs.otherbooksby} #{auth.getFirstName()} #{auth.getLastName()}</h3>
-                    <b:row>
+                    <b:row> 
                         <b:column col-md="6">
                             <b:panelGrid columns="3"> 
                                 <c:forEach items="#{authorsJpaController.getOtherBooksBySameAuthor(book.getIsbn(), auth.getAuthorId(), 3)}" var="sameauthor">
-                                        <ui:decorate template="/templates/book.xhtml">
-                                            <ui:param name="book" value="#{sameauthor}"></ui:param>
-                                        </ui:decorate>
+                                    <ui:decorate template="/templates/book.xhtml">
+                                        <ui:param name="book" value="#{sameauthor}"></ui:param>
+                                    </ui:decorate>
                                 </c:forEach>
                             </b:panelGrid>
                         </b:column>
@@ -116,7 +106,7 @@ add it to the shopping cart.
                 </c:forEach>
             </b:jumbotron>
         </b:container>
-        
+
         <b:container>
             <b:jumbotron>
                 <c:forEach items="#{genrebooks}" var="gen">
@@ -149,14 +139,12 @@ add it to the shopping cart.
                     <p:rating value="#{bookReviewBackingBean.rating}" />
                     <p:commandButton value="#{msgs.submit}" action="#{bookReviewBackingBean.makeReview(param['isbn'], 1)}"/>  <!--user is 1 for now -->
                     <!--need to alert user when submission was successful and reload the page-->
-                    <c:if test="">
-                        <b:alert severity="success" title="Review completed" closable="true"><strong>Thanks for submitting a review!</strong> Your review has been submitted </b:alert>
-                    </c:if>
+                    <!--<b:alert severity="success" title="Review completed" closable="true"><strong>Thanks for submitting a review!</strong> Your review has been submitted </b:alert>-->
                 </h:form> 
             </b:jumbotron>
         </b:container>
     </ui:define>
-    
+
     <ui:define name="footer">
         <ui:include src="/templates/footer.xhtml"></ui:include>
     </ui:define>

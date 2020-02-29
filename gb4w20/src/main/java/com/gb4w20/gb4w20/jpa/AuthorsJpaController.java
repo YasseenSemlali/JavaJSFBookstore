@@ -250,16 +250,6 @@ public class AuthorsJpaController implements Serializable {
     public List<Books> getOtherBooksBySameAuthor(long isbn, long authorId, int maxResults){
         LOG.info("getting " + maxResults + " books from the same author");
         
-        /*String countquery = "SELECT DISTINCT COUNT(*) FROM books b  \n" +
-                            "JOIN bookauthor ba ON b.isbn = ba.isbn \n" +
-                            "JOIN authors a ON ba.author_id = a.author_id \n" +
-                            "WHERE b.isbn != ?1 AND a.author_id = ?2";
-        Query countbooks = em.createNativeQuery(countquery);
-        countbooks.setParameter(1, isbn);
-        countbooks.setParameter(2, authorId);
-        long countb = (Long)countbooks.getSingleResult();
-        LOG.debug(countb + "RESULTS");*/
-        
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
         Root<Books> book = cq.from(Books.class);
@@ -271,11 +261,6 @@ public class AuthorsJpaController implements Serializable {
                 ));
         
         Query query = em.createQuery(cq);
-        /*if (countb >= 3){
-             Random random = new Random();
-            int num = random.nextInt((int)countb);
-            query.setFirstResult(num);
-        }*/
         query.setMaxResults(maxResults);
         
         return query.getResultList();

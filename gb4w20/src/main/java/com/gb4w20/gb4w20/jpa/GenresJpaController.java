@@ -195,18 +195,6 @@ public class GenresJpaController implements Serializable {
     public List<Books> getOtherBooksOfSameGenre(long isbn, long genreId, long authorId, int maxResults){
         LOG.info("getting " + maxResults + " other books of same genre and different author");
         
-        /*String countquery = "SELECT DISTINCT COUNT(*) FROM books b  \n" +
-                            "JOIN bookauthor ba ON b.isbn = ba.isbn \n" +
-                            "JOIN authors a ON ba.author_id = a.author_id\n" +
-                            "JOIN bookgenre bg ON b.isbn = bg.isbn\n" +
-                            "JOIN genres g ON bg.genre_id = g.genre_id\n" +
-                            "WHERE (b.isbn != ?1 AND a.author_id != ?2) AND g.genre_id = ?3";
-        Query countbooks = em.createNativeQuery(countquery);
-        countbooks.setParameter(1, isbn);
-        countbooks.setParameter(2, authorId);
-        countbooks.setParameter(3, genreId);
-        long countb = (Long)countbooks.getSingleResult();*/
-        
         CriteriaBuilder cb = em.getCriteriaBuilder();      
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
         Root<Books> book = cq.from(Books.class);
