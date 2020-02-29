@@ -4,16 +4,24 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
     </h:head>
     <h:body>
         <ui:composition>
             <p:menubar styleClass="topMenuBar">
-                <p:menuitem value="" url="www.google.com" styleClass="logomenuitem"/>
-                <p:menuitem value="BOOKIFY Manager" url="none" style="text-size:1.5em; color:white;" styleClass="menuitem" />
+                <p:menuitem value="" url="index.xhtml" styleClass="logomenuitem"/>
+                <p:menuitem value="${msgs.companyName} ${userSession.loggedInUserName}" url="index.xhtml" style="text-size:1.5em; color:white;" styleClass="menuitem" />
                 <p:menuitem value="FR" style="position: absolute; right:30px;" url="www.google.com" styleClass="menuitem" />
-                <p:menuitem value="${msgs.logout}" style="position: absolute; right:80px;" url="index.xhtml" styleClass="menuitem" />
+                <c:choose>
+                <c:when test="#{userSession.loggedIn}">
+                    <p:menuitem value="${msgs.logout}" style="position: absolute; right:80px;" url="index.xhtml" styleClass="menuitem" actionListener="#{userSession.logout}" />
+                </c:when>
+                <c:otherwise>
+                    <p:menuitem value="${msgs.login}" style="position: absolute; right:80px;" url="login.xhtml" styleClass="menuitem" />
+                </c:otherwise>
+                </c:choose>
                 <p:menuitem value="${msgs.profile}" style="position: absolute; right: 170px;" url="www.google.com" styleClass="menuitem" />
                 <p:menuitem value="${msgs.dashboard}" style="position: absolute; right: 250px;" url="/gb4w20/manager-frontpage.xhtml" styleClass="menuitem" />
             </p:menubar>

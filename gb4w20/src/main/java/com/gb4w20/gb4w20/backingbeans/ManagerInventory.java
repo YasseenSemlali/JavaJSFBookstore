@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIOutput;
+import javax.faces.component.UIOutput; 
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
