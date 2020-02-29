@@ -15,12 +15,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import com.gb4w20.gb4w20.entities.Publishers;
 import com.gb4w20.gb4w20.entities.Authors;
+import com.gb4w20.gb4w20.entities.Authors_;
 import com.gb4w20.gb4w20.entities.BookFiles;
 import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.entities.Bookorder;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Orders;
+import com.gb4w20.gb4w20.entities.Publishers_;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
@@ -38,6 +40,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
@@ -465,7 +468,7 @@ public class BooksJpaController implements Serializable {
 
     public List<Books> getRecentlyBoughtBooks(int maxResults) {
         LOG.info("getting " + maxResults + " recent books");
-        
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
 
@@ -483,22 +486,22 @@ public class BooksJpaController implements Serializable {
 
         return query.getResultList();
     }
-        
+
     public List<Books> getForGenre(Long genreId) {
         return this.getTopSellingForGenre(genreId, -1);
     }
-    
+
     public List<Books> getTopSelling(int maxResults) {
         return this.getTopSellingForGenre(-1l, maxResults);
     }
-    
+
     public List<Books> getAllBooksForGenre(Long genreId) {
         return this.getTopSellingForGenre(genreId, -1);
     }
-    
+
     public List<Books> getTopSellingForGenre(Long genreId, int maxResults) {
         LOG.info("getting " + maxResults + " top selling books for genre " + genreId);
-        
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
 
@@ -506,53 +509,79 @@ public class BooksJpaController implements Serializable {
         //Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
 
         cq.select(book);
-        if(genreId != -1){
+        if (genreId != -1) {
             cq.where(book.get(Books_.genresCollection).in(genreId));
         }
         cq.orderBy(cb.desc(cb.size(book.get(Books_.bookorderCollection))));
 
         Query query = em.createQuery(cq);
-        
-        if(maxResults != -1) {
+
+        if (maxResults != -1) {
             query.setMaxResults(maxResults);
         }
 
         return query.getResultList();
     }
-    
-    public List<Books> searchBook(Long isbn, String title, String author, String publisher) {
+
+    public List<Books> searchBooks(Long isbn, String title, String author, String publisher, Boolean allTrue, Boolean useExact) {
         LOG.info("Searching books: isbn: " + isbn + " title: " + title + " author: " + author + " publisher: " + publisher);
-        
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
 
         Root<Books> book = cq.from(Books.class);
-        
+
         cq.select(book);
-        
-        if(isbn != null) {
-            cq.where(cb.equal(book.get(Books_.isbn), isbn));
+        cq.distinct(true);
+
+        String titleSearch = (useExact != null && useExact == true) ? title : "%" + title + "%";
+        String publisherSearch = (useExact != null && useExact == true) ? publisher : "%" + publisher + "%";
+
+        List<Predicate> predicates = new ArrayList<Predicate>();
+
+        if (isbn != null) {
+            predicates.add(cb.equal(book.get(Books_.isbn), isbn));
         }
         
-        if(title != null) {
-            cq.where(cb.equal(book.get(Books_.title), title));
+        if (title != null && !title.isEmpty()) {
+            predicates.add(cb.like(book.get(Books_.title), titleSearch));
         }
-        
-        if(author != null) {
-            cq.where(book.get(Books_.authorsCollection).in(author));
+
+        if (author != null && !author.isEmpty()) {
+            Expression firstName = book.join(Books_.authorsCollection).get(Authors_.firstName);
+            Expression lastName = book.join(Books_.authorsCollection).get(Authors_.lastName);
+
+            List<Predicate> authorPredicates = new ArrayList<>();
+
+            for (String name : author.split(" ")) {
+                authorPredicates.add(cb.isMember(name, firstName));
+                authorPredicates.add(cb.isMember(name, lastName));
+            }
+
+            predicates.add(cb.or(authorPredicates.toArray(new Predicate[0])));
         }
-        
-        if(publisher != null) {
-            cq.where(book.get(Books_.publishersCollection).in(publisher));
+
+        if (publisher != null && !publisher.isEmpty()) {
+            Expression publisherName = book.join(Books_.publishersCollection).get(Publishers_.name);
+
+            predicates.add(cb.isMember(publisher, publisherName));
         }
-        
+
+        if (allTrue != null && allTrue) {
+            cq.where(cb.and(predicates.toArray(new Predicate[0])));
+        } else {
+            cq.where(cb.or(predicates.toArray(new Predicate[0])));
+        }
+
         Query query = em.createQuery(cq);
+
         return query.getResultList();
     }
-    
+
     public int getBooksCount() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        Root<Books> rt = cq.from(Books.class);
+        Root<Books> rt = cq.from(Books.class
+        );
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
@@ -560,76 +589,84 @@ public class BooksJpaController implements Serializable {
     
      /**   
      * Used to find the books that were top sellers in the specified date range
-     * and returns their titles and totals. 
+     * and returns their titles and totals.
+     *
      * @param startDate of the report
      * @param endDate of the report
-     * @return the report of book titles and total sales of the book. 
+     * @return the report of book titles and total sales of the book.
      * @author Jeffrey Boisvert
      */
-    public List<NameAndNumberBean> findTopSellers(String startDate, String endDate){
-        
+    public List<NameAndNumberBean> findTopSellers(String startDate, String endDate) {
+
         LOG.info("Looking for top sellering books between " + startDate + " and " + endDate);
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery cq = cb.createQuery(NameAndNumberBean.class);
-        
-        Root<Books> book = cq.from(Books.class);
+        CriteriaQuery cq = cb.createQuery(NameAndNumberBean.class
+        );
+
+        Root<Books> book = cq.from(Books.class );
         Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
         Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
-        
+
         cq.multiselect(
-                    book.get(Books_.title), 
-                    em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax"))
-                 )
+                book.get(Books_.title),
+                em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax"))
+        )
                 .groupBy(book.get(Books_.title))
                 .where(
                         cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
-                 )
+                )
                 .orderBy(cb.desc(cb.sum(bookorder.get("amountPaidPretax"))));
 
         Query query = em.createQuery(cq);
         return query.getResultList();
     }
-    
+
     /**
-     * Used to find the books that were never sold. 
+     * Used to find the books that were never sold.
+     *
      * @param startDate of the report
      * @param endDate of the report
-     * @return books that were never sold. 
+     * @return books that were never sold.
      * @author Jeffrey Boisvert
      */
-    public List<Books> findBooksThatWereNeverSold(String startDate, String endDate){
-        
+    public List<Books> findBooksThatWereNeverSold(String startDate, String endDate) {
+
         LOG.info("Looking for books that were never sold between " + startDate + " and " + endDate);
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery booksSoldCriteraQuery = cb.createQuery(Books.class);
-        
+        CriteriaQuery booksSoldCriteraQuery = cb.createQuery(Books.class
+        );
+
         //Get all the books sold
-        Root<Books> bookSold = booksSoldCriteraQuery.from(Books.class);
+        Root<Books> bookSold = booksSoldCriteraQuery.from(Books.class
+        );
         Join<Books, Bookorder> bookorder = bookSold.join("bookorderCollection", JoinType.INNER);
         Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
-       
+
         booksSoldCriteraQuery.select(bookSold.get("isbn"))
                 .where(cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
                 );
         Query booksSoldQuery = em.createQuery(booksSoldCriteraQuery);
-        
+
         //Find books not sold
-        CriteriaQuery booksNotSoldCriteraQuery = cb.createQuery(Books.class);
-        Root<Books> booksNotSold = booksNotSoldCriteraQuery.from(Books.class);
+        CriteriaQuery booksNotSoldCriteraQuery = cb.createQuery(Books.class
+        );
+        Root<Books> booksNotSold = booksNotSoldCriteraQuery.from(Books.class
+        );
         Predicate notSoldIsbns = booksNotSold.get(Books_.isbn).in(booksSoldQuery.getResultList()).not();
         booksNotSoldCriteraQuery.select(booksNotSold)
                 .where(
-                   notSoldIsbns
+                        notSoldIsbns
                 )
                 .orderBy(cb.asc(booksNotSold.get("title")));
         Query booksNotSoldQuery = em.createQuery(booksNotSoldCriteraQuery);
-        
+
         return booksNotSoldQuery.getResultList();
     }
 
     /**
-     * Used to get all active books in the database. 
-     * @return a list of all the books. 
+     * Used to get all active books in the database.
+     *
+     * @return a list of all the books.
      * @author Jeffrey Boisvert
      */
     public List<Books> getActiveBooks() {
@@ -637,8 +674,9 @@ public class BooksJpaController implements Serializable {
     }
 
     /**
-     * Used to get a certain number of active books. 
-     * @param maxResults 
+     * Used to get a certain number of active books.
+     *
+     * @param maxResults
      * @return a list of active books sorted by title
      * @author Jeffrey Boisvert
      */
@@ -646,14 +684,16 @@ public class BooksJpaController implements Serializable {
         LOG.info("Getting all active books");
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class
+        );
 
-        Root<Books> book = cq.from(Books.class);
+        Root<Books> book = cq.from(Books.class
+        );
         cq.select(book)
                 .where(cb.isTrue(book.get("active")))
                 .orderBy(cb.asc(book.get("title")));
         Query query = em.createQuery(cq);
-        
+
         if (maxResults != -1) {
             query.setMaxResults(maxResults);
         }
