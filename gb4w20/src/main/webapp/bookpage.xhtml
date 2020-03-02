@@ -137,9 +137,10 @@ add it to the shopping cart.
                     <br></br> 
                     <p:inputTextarea value="#{bookReviewBackingBean.review}" rows="5" cols="40" maxlength="750" />
                     <p:rating value="#{bookReviewBackingBean.rating}" />
-                    <p:commandButton value="#{msgs.submit}" action="#{bookReviewBackingBean.makeReview(param['isbn'], 1)}"/>  <!--user is 1 for now -->
-                    <!--need to alert user when submission was successful and reload the page-->
-                    <!--<b:alert severity="success" title="Review completed" closable="true"><strong>Thanks for submitting a review!</strong> Your review has been submitted </b:alert>-->
+                    <p:commandButton value="#{msgs.submit}" action="#{bookReviewBackingBean.makeReview(param['isbn'], 1)}" onsuccess="PF('succeed').show()"/>  <!--user is 1 for now -->
+                    <p:dialog header="#{msgs.reviewsubmitted}" widgetVar="succeed" minHeight="40" responsive="true"> 
+                        <h:outputText value="#{msgs.thankyoureview}" />  
+                    </p:dialog>
                 </h:form> 
             </b:jumbotron>
         </b:container>
