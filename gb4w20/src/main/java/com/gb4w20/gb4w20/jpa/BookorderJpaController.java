@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Used to interact with the book order table in the database. 
  * 
- * @author Jeffrey Boisvert
+ * @author Jeffrey Boisvert, Jean Robatto
  */
 @Named
 @SessionScoped
@@ -78,7 +78,7 @@ public class BookorderJpaController implements Serializable {
 
     public void edit(Bookorder bookorder) throws NonexistentEntityException, Exception {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Bookorder persistentBookorder = em.find(Bookorder.class, bookorder.getBookorderId());
             Books isbnOld = persistentBookorder.getIsbn();
             Books isbnNew = bookorder.getIsbn();
@@ -109,19 +109,24 @@ public class BookorderJpaController implements Serializable {
                 orderIdNew.getBookorderCollection().add(bookorder);
                 orderIdNew = em.merge(orderIdNew);
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
+            utx.commit();
+        } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
+            try {
+                utx.rollback();
+            } catch (IllegalStateException | SecurityException | SystemException re) {
+                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+            }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = bookorder.getBookorderId();
-                if (findBookorder(id) == null) {
-                    throw new NonexistentEntityException("The bookorder with id " + id + " no longer exists.");
+                Long bookorderId = bookorder.getBookorderId();
+                if (findBookorder(bookorderId) == null) {
+                    throw new NonexistentEntityException("The bookorder with id " + bookorderId + " no longer exists.");
                 }
             }
             throw ex;
         } finally {
             if (em != null) {
-                em.close();
+
             }
         }
     }
@@ -164,7 +169,6 @@ public class BookorderJpaController implements Serializable {
     }
 
     private List<Bookorder> findBookorderEntities(boolean all, int maxResults, int firstResult) {
-        try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Bookorder.class));
             Query q = em.createQuery(cq);
@@ -173,17 +177,10 @@ public class BookorderJpaController implements Serializable {
                 q.setFirstResult(firstResult);
             }
             return q.getResultList();
-        } finally {
-            em.close();
-        }
     }
 
     public Bookorder findBookorder(Long id) {
-        try {
             return em.find(Bookorder.class, id);
-        } finally {
-            em.close();
-        }
     }
 
     public int getBookorderCount() {
@@ -198,6 +195,13 @@ public class BookorderJpaController implements Serializable {
         }
     }
     
+    /**
+     * Returns the total sales for a specific book
+     * 
+     * @author Jean Robatto
+     * @param isbn
+     * @return 
+     */
     public BigDecimal getTotalSalesForBook(Books isbn) {
         try {
             CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -206,9 +210,9 @@ public class BookorderJpaController implements Serializable {
             Root<Bookorder> order = cq.from(Bookorder.class);
             
             cq.select(
-                cb.sum(order.get("amountPaidPretax")))
+                cb.sum(order.get(Bookorder_.amountPaidPretax)))
                 .groupBy(order.get(Bookorder_.isbn))
-                .where(cb.equal(order.get("isbn"), isbn));
+                .where(cb.equal(order.get(Bookorder_.isbn), isbn), cb.equal(order.get(Bookorder_.enabled), Boolean.TRUE));
                 
             Query query = em.createQuery(cq);
             
@@ -218,5 +222,120 @@ public class BookorderJpaController implements Serializable {
         }
 
     }
+    
+    /**
+     * Returns the total sales for a specific order
+     * 
+     * @author Jean Robatto
+     * @param inputOrder
+     * @return 
+     */
+    public BigDecimal getTotalSalesForOrderPreTax(Orders inputOrder) {
+        try {
+            
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<BigDecimal> cq = cb.createQuery(BigDecimal.class);
+
+            Root<Bookorder> order = cq.from(Bookorder.class);
+            
+            cq.select(
+                cb.sum(order.get(Bookorder_.amountPaidPretax)))
+                .groupBy(order.get(Bookorder_.orderId))
+                .where(cb.equal(order.get(Bookorder_.orderId), inputOrder), cb.equal(order.get(Bookorder_.enabled), Boolean.TRUE));
+                
+            Query query = em.createQuery(cq);
+            return (BigDecimal) query.getSingleResult();
+        } catch (Exception e) {
+            return new BigDecimal(0);
+        }
+
+    }
+    
+    /**
+     * Returns the total HST tax for a specific order
+     * 
+     * @author Jean Robatto
+     * @param inputOrder
+     * @return 
+     */
+    public BigDecimal getHSTForOrder(Orders inputOrder) {
+        try {
+            
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<BigDecimal> cq = cb.createQuery(BigDecimal.class);
+
+            Root<Bookorder> order = cq.from(Bookorder.class);
+            
+            cq.select(
+                cb.sum(order.get(Bookorder_.hstTax)))
+                .groupBy(order.get(Bookorder_.orderId))
+                .where(cb.equal(order.get(Bookorder_.orderId), inputOrder), cb.equal(order.get(Bookorder_.enabled), Boolean.TRUE));
+                
+            Query query = em.createQuery(cq);
+            return (BigDecimal) query.getSingleResult();
+        } catch (Exception e) {
+            return new BigDecimal(0);
+        }
+
+    }
+    
+    /**
+     * Returns the total GST tax for a specific order
+     * 
+     * @author Jean Robatto
+     * @param inputOrder
+     * @return 
+     */
+    public BigDecimal getGSTForOrder(Orders inputOrder) {
+        try {
+            
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<BigDecimal> cq = cb.createQuery(BigDecimal.class);
+
+            Root<Bookorder> order = cq.from(Bookorder.class);
+            
+            cq.select(
+                cb.sum(order.get(Bookorder_.gstTax)))
+                .groupBy(order.get(Bookorder_.orderId))
+                .where(cb.equal(order.get(Bookorder_.orderId), inputOrder), cb.equal(order.get(Bookorder_.enabled), Boolean.TRUE));
+                
+            Query query = em.createQuery(cq);
+            return (BigDecimal) query.getSingleResult();
+        } catch (Exception e) {
+            return new BigDecimal(0);
+        }
+
+    }
+    
+    /**
+     * Returns the total PST tax for a specific order
+     * 
+     * @author Jean Robatto
+     * @param inputOrder
+     * @return 
+     */
+    public BigDecimal getPSTForOrder(Orders inputOrder) {
+        try {
+            
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<BigDecimal> cq = cb.createQuery(BigDecimal.class);
+
+            Root<Bookorder> order = cq.from(Bookorder.class);
+            
+            cq.select(
+                cb.sum(order.get(Bookorder_.pstTax)))
+                .groupBy(order.get(Bookorder_.orderId))
+                .where(cb.equal(order.get(Bookorder_.orderId), inputOrder), cb.equal(order.get(Bookorder_.enabled), Boolean.TRUE));
+                
+            Query query = em.createQuery(cq);
+            return (BigDecimal) query.getSingleResult();
+        } catch (Exception e) {
+            return new BigDecimal(0);
+        }
+
+    }
+    
+    
+    
     
 }

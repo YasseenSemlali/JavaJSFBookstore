@@ -2,9 +2,11 @@
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.Taxes;
+import com.gb4w20.gb4w20.entities.Taxes_;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.jpa.exceptions.PreexistingEntityException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
@@ -13,7 +15,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -167,6 +171,32 @@ public class TaxesJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    /**
+     * Returns a tax obj based on province
+     * 
+     * @author Jean Robatto
+     * @param inputOrder
+     * @return 
+     */
+    public Taxes findByProvince(String province) {
+        try {
+            
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Taxes> cq = cb.createQuery(Taxes.class);
+
+            Root<Taxes> tax = cq.from(Taxes.class);
+            
+            cq.where(cb.equal(tax.get(Taxes_.province), province));
+                
+            Query query = em.createQuery(cq);
+            return (Taxes) query.getSingleResult();
+            
+        } catch (Exception e) {
+            return null;
+        }
+
     }
     
 }

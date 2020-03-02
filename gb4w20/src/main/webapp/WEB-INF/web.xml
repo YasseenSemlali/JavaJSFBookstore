@@ -30,6 +30,10 @@
         <param-name>EmailFile</param-name>
         <param-value>\temp\EmailList.txt</param-value>
     </context-param>
+    <error-page>
+    <error-code>404</error-code>
+    <location>/404-error.xhtml</location>
+</error-page>
     <!-- Time in minutes until the session object is invalidated -->
     <session-config>
         <session-timeout>30</session-timeout>
