@@ -307,57 +307,5 @@ public class ManagerOrders implements Serializable {
     public Long getSelectedUserId() {
         return selectedUserId;
     }
-
-    /*
-    
-    switch (province) {
-            case "AB": 
-            case "NU":
-            case "NT":
-            case "YT":
-                result.put("HST", null);
-                result.put("PST", null);
-                result.put("GST", basePrice.multiply(new BigDecimal(0.05)));
-                break;
-                
-            case "BC":
-                result.put("HST", null);
-                result.put("PST", basePrice.multiply(new BigDecimal(0.07)));
-                result.put("GST", basePrice.multiply(new BigDecimal(0.05)));
-                break;
-                
-            case "MB":
-                result.put("HST", null);
-                result.put("PST", basePrice.multiply(new BigDecimal(0.08)));
-                result.put("GST", basePrice.multiply(new BigDecimal(0.05)));
-                break;
-                
-            case "NB":
-            case "NL":
-            case "NS":
-            case "PE":
-                result.put("HST", basePrice.multiply(new BigDecimal(0.15)));
-                result.put("PST", null);
-                result.put("GST", null);
-                break;
-                
-            case "ON":
-                result.put("HST", basePrice.multiply(new BigDecimal(0.13)));
-                result.put("PST", null);
-                result.put("GST", null);
-                break;
-                
-            case "QC":
-                result.put("HST", null);
-                result.put("PST", basePrice.multiply(new BigDecimal(0.09975)));
-                result.put("GST", basePrice.multiply(new BigDecimal(0.05)));
-                break;
-                
-            case "SK":
-                result.put("HST", null);
-                result.put("PST", basePrice.multiply(new BigDecimal(0.06)));
-                result.put("GST", basePrice.multiply(new BigDecimal(0.05)));
-                break;
-        }
-     */
+           
 }

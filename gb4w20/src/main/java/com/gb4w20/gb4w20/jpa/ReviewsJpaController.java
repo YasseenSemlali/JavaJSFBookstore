@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Used to interact with the reviews table in the database. 
- * @author Jeffrey Boisvert
+ * @author Jeffrey Boisvert, Jean Robatto
  */
 @Named
 @SessionScoped
@@ -87,7 +87,7 @@ public class ReviewsJpaController implements Serializable {
 
     public void edit(Reviews reviews) throws NonexistentEntityException, Exception {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Reviews persistentReviews = em.find(Reviews.class, reviews.getReviewId());
             Books isbnOld = persistentReviews.getIsbn();
             Books isbnNew = reviews.getIsbn();
@@ -118,20 +118,9 @@ public class ReviewsJpaController implements Serializable {
                 userIdNew.getReviewsCollection().add(reviews);
                 userIdNew = em.merge(userIdNew);
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            String msg = ex.getLocalizedMessage();
-            if (msg == null || msg.length() == 0) {
-                Long id = reviews.getReviewId();
-                if (findReviews(id) == null) {
-                    throw new NonexistentEntityException("The reviews with id " + id + " no longer exists.");
-                }
-            }
-            throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            utx.commit();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with edit in reviews controller method.");
         }
     }
 
@@ -188,11 +177,7 @@ public class ReviewsJpaController implements Serializable {
     }
 
     public Reviews findReviews(Long id) {
-        try {
             return em.find(Reviews.class, id);
-        } finally {
-            em.close();
-        }
     }
 
     public int getReviewsCount() {
@@ -254,6 +239,28 @@ public class ReviewsJpaController implements Serializable {
                     cb.equal(book.get(Books_.isbn), isbn),
                     cb.equal(review.get(Reviews_.approvedStatus), true)
                 ));
+        Query query = em.createQuery(cq);
+        return query.getResultList();
+    }
+    
+    /**
+     * Returns reviews whose approval status matches the param
+     * 
+     * @param approved
+     * @return List of reviews
+     * @author Jean Robatto
+     */
+    public List<Reviews> getReviewsOnApproved(boolean approved){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Reviews> cq = cb.createQuery(Reviews.class);
+        
+        Root<Reviews> review = cq.from(Reviews.class);
+        
+        cq.select(review)
+                .where(
+                    cb.equal(review.get(Reviews_.approvedStatus), approved)
+                );
+        
         Query query = em.createQuery(cq);
         return query.getResultList();
     }
