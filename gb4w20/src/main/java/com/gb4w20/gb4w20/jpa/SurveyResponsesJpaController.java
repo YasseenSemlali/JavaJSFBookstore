@@ -1,4 +1,3 @@
-
 package com.gb4w20.gb4w20.jpa;
 
 import java.io.Serializable;
@@ -8,20 +7,31 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.SurveyQuestions;
 import com.gb4w20.gb4w20.entities.SurveyResponses;
+import com.gb4w20.gb4w20.entities.SurveyResponses_;
+import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import org.eclipse.persistence.exceptions.TransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Used as a data access object between taxes entities.
- * 
+ *
  * @author Jeffrey Boisvert
  */
 @Named
@@ -35,11 +45,11 @@ public class SurveyResponsesJpaController implements Serializable {
 
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
-    
+
     /**
      * Used to create a survey response object in the database.
-     * 
-     * @param surveyResponses 
+     *
+     * @param surveyResponses
      */
     public void create(SurveyResponses surveyResponses) {
         try {
@@ -61,12 +71,13 @@ public class SurveyResponsesJpaController implements Serializable {
             }
         }
     }
-    
+
     /**
-     * Allows to update a survey response in the database. 
+     * Allows to update a survey response in the database.
+     *
      * @param surveyResponses
      * @throws NonexistentEntityException
-     * @throws Exception 
+     * @throws Exception
      */
     public void edit(SurveyResponses surveyResponses) throws NonexistentEntityException, Exception {
         try {
@@ -103,11 +114,12 @@ public class SurveyResponsesJpaController implements Serializable {
             }
         }
     }
-    
+
     /**
-     * Used to delete a survey response from the database. 
+     * Used to delete a survey response from the database.
+     *
      * @param id
-     * @throws NonexistentEntityException 
+     * @throws NonexistentEntityException
      */
     public void destroy(Long id) throws NonexistentEntityException {
         try {
@@ -132,33 +144,35 @@ public class SurveyResponsesJpaController implements Serializable {
             }
         }
     }
-    
+
     /**
-     * Returns a list of all the available survey responses. 
-     * @return a list of survey responses. 
+     * Returns a list of all the available survey responses.
+     *
+     * @return a list of survey responses.
      */
     public List<SurveyResponses> findSurveyResponsesEntities() {
         return findSurveyResponsesEntities(true, -1, -1);
     }
-    
+
     /**
-     * Used to get a list of survey responses given the max results and where to start for
-     * paging purposes. 
+     * Used to get a list of survey responses given the max results and where to
+     * start for paging purposes.
+     *
      * @param maxResults
      * @param firstResult
-     * @return a list of survey reponses. 
+     * @return a list of survey reponses.
      */
     public List<SurveyResponses> findSurveyResponsesEntities(int maxResults, int firstResult) {
         return findSurveyResponsesEntities(false, maxResults, firstResult);
     }
-    
+
     /**
-     * Used to get a certain number of survey responses which allows paging. 
-     * 
-     * @param all true to return all results false otherwise. 
+     * Used to get a certain number of survey responses which allows paging.
+     *
+     * @param all true to return all results false otherwise.
      * @param maxResults
      * @param firstResult
-     * @return 
+     * @return
      */
     private List<SurveyResponses> findSurveyResponsesEntities(boolean all, int maxResults, int firstResult) {
         try {
@@ -174,12 +188,12 @@ public class SurveyResponsesJpaController implements Serializable {
             em.close();
         }
     }
-    
+
     /**
-     * Used to find a survey response that matches the given id. 
-     * 
+     * Used to find a survey response that matches the given id.
+     *
      * @param id
-     * @return SurveyResponses of the given survey. 
+     * @return SurveyResponses of the given survey.
      */
     public SurveyResponses findSurveyResponses(Long id) {
         try {
@@ -188,5 +202,31 @@ public class SurveyResponsesJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    public void voteForQuestion(long id) throws RollbackFailureException {
+        try {
+            LOG.debug("Voting for " + id);
+            
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaUpdate<SurveyResponses> update = cb.createCriteriaUpdate(SurveyResponses.class);
+            
+            Root response = update.from(SurveyResponses.class);
+            
+            update.set(SurveyResponses_.count, cb.sum(response.get(SurveyResponses_.count), 1));
+            update.where(cb.equal(response.get(SurveyResponses_.id), id));
+            
+            utx.begin();
+            em.createQuery(update).executeUpdate();
+            utx.commit();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            try {
+                utx.rollback();
+                LOG.error("Rollback");
+            } catch (IllegalStateException | SecurityException | SystemException re) {
+                LOG.error("Rollback2");
+
+                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+            }
+        }
+    }
 }

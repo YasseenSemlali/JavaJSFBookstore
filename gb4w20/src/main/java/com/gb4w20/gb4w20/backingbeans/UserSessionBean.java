@@ -28,6 +28,22 @@ public class UserSessionBean {
     //Used to hold the user entity if logged in
     private Users user; 
     
+    private boolean hasRespondedToSurvey = false;
+
+    /**
+     * Checks if the user has responded to a survey this session
+     * @author Yasseen Semlali
+     */
+    public boolean isHasRespondedToSurvey() {
+        return hasRespondedToSurvey;
+    }
+
+    public void setHasRespondedToSurvey(boolean hasRespondedToSurvey) {
+        this.hasRespondedToSurvey = hasRespondedToSurvey;
+    }
+    
+    
+    
     /**
      * Checks whether the user is logged in or not.
      * @return true if logged in false if not
@@ -100,7 +116,7 @@ public class UserSessionBean {
      * @author Jeffrey Boisvert
      */
     private void clearSessionState() {
-        LOG.info("Currently clearing session state");
+        LOG.info("Currently clearing session state (WIP)");
     }
     
     

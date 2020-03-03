@@ -18,18 +18,22 @@
                 <form class="navbar-form navbar-left " role="search" action="search.xhtml" name="test" method="GET">
                     <input type="text" class="form-control" placeholder="Title" name="title"/>
                     <button type="submit" class="btn btn-default">Search</button>
+                     <div><a href="advanced_search.xhtml"><small>Advanced search</small></a></div>
                 </form>
 
                 <b:navbarLinks pull="right">
-                <c:when test="#{userSession.loggedIn}">
-                    <b:navLink value="${msgs.logout}" href="index.xhtml" actionListener="#{userSession.logout}" />
-                </c:when>
-                <c:otherwise>
-                    <b:navLink value="${msgs.login}" href="login.xhtml" />
-                </c:otherwise>
-                <c:when test="#{userSession.loggedInManager}">
-                    <b:navLink value="${msgs.dashboard}" href="manager_frontpage.xhtml"/>
-                </c:when>
+
+                    <c:choose>
+                        <c:when test="#{userSession.loggedIn}">
+                            <b:navLink value="${msgs.logout}" href="index.xhtml" actionListener="#{userSession.logout}" />
+                        </c:when>
+                        <c:otherwise>
+                            <b:navLink value="${msgs.login}" href="login.xhtml" />
+                        </c:otherwise>
+                    </c:choose>
+                    <h:panelGroup rendered="#{userSession.loggedInManager}">
+                        <b:navLink value="${msgs.dashboard}" href="manager_frontpage.xhtml"/>
+                    </h:panelGroup>
                     <b:navLink value="FR" href="www.google.com"/>
                 </b:navbarLinks>
             </b:navBar>

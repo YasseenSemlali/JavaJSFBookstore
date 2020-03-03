@@ -148,6 +148,7 @@ CREATE TABLE orders(
 	order_id bigint NOT NULL auto_increment,
     user_id bigint NOT NULL,
     billing_address varchar(100) NOT NULL,
+    enabled BOOLEAN NOT NULL default true,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
     PRIMARY KEY(order_id),
