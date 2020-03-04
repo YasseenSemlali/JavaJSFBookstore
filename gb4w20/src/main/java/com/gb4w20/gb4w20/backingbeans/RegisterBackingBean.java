@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.annotation.ManagedProperty;
 import javax.faces.application.FacesMessage;
@@ -54,6 +55,15 @@ public class RegisterBackingBean implements Serializable {
     private String homePhoneInput;
     private String emailInput; 
     private String passwordInput;
+    
+    /**
+     * Mainly used to set default values.
+     * @author Jeffrey Boisvert
+     */
+    @PostConstruct
+    public void init(){
+        this.countryInput = "Canada";
+    }
     
     /**
      * Getter for the available titles. 
@@ -429,6 +439,15 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     private void generateAvailableTitles() {
+        //TODO Not sure how to make this i18n compliant. Also what titles does Ken want? 
+        this.availableTitles = new ArrayList<>(Arrays.asList("Mr", "Mrs", "Ms", "Dr") );    
+    }
+    
+    /**
+     * Used as a helper method to set the list of all supported provinces
+     * @author Jeffrey Boisvert
+     */
+    private void generateProvinceList() {
         //TODO Not sure how to make this i18n compliant. Also what titles does Ken want? 
         this.availableTitles = new ArrayList<>(Arrays.asList("Mr", "Mrs", "Ms", "Dr") );    
     }
