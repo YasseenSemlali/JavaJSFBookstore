@@ -5,7 +5,6 @@ Java Server Faces page that displays the register user page of the app
 
 @author Jeffrey Boisvert
 -->
-
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -25,19 +24,24 @@ Java Server Faces page that displays the register user page of the app
             <h:form class="form-signin">
                 <p:growl id="growl" sticky="false" showDetail="true" />
                      <div class="form-group">
-                        <h:selectOneMenu id="title-select" class="custom-select" value = "#{clientReportBackingBean.userId}">
-                            <f:selectItems value="#{clientReportBackingBean.users}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
+                         <h:outputLabel for="title-select" value="#{msgs.title}"/>
+                         <h:selectOneMenu id="title-select" class="custom-select" value = "#{registerBackingBean.titleInput}">
+                            <f:selectItems value="#{registerBackingBean.availableTitles}" var="title" itemValue="#{title}" itemLabel="#{title}"/>
                         </h:selectOneMenu>
                      </div>
                      <div class="form-group">
+                         <h:outputLabel for="first-name" value="#{msgs.firstname}" />
+                        <h:inputText id="first-name" class="form-control" value="#{registerBackingBean.emailInput}"/>
+                     </div>
+                     <div class="form-group">
                         <h:outputLabel for="email" value="#{msgs.email}" />
-                        <h:inputText id="email" class="form-control" value="#{loginBackingBean.emailInput}"/>
+                        <h:inputText id="email" class="form-control" value="#{registerBackingBean.emailInput}"/>
                      </div>
                      <div class="form-group">
                         <h:outputLabel for="password" value="#{msgs.password}" />
-                        <h:inputSecret id="password" class="form-control" value="#{loginBackingBean.passwordInput}"/>
+                        <h:inputSecret id="password" class="form-control" value="#{registerBackingBean.passwordInput}"/>
                      </div>
-                    <h:commandButton class="btn btn-primary" value="#{msgs.login}" action="#{loginBackingBean.login}" />
+                <h:commandButton class="btn btn-primary" value="#{msgs.register_page}" action="#{registerBackingBean.register}" />
             </h:form>
         </b:container>
     </ui:define>
