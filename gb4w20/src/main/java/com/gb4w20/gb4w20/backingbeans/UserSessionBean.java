@@ -37,12 +37,14 @@ public class UserSessionBean implements Serializable {
 
     /**
      * Checks if the user has responded to a survey this session
+     * @return true if has responded to a survey, false otherwise
      * @author Yasseen Semlali
      */
     public boolean isHasRespondedToSurvey() {
         return hasRespondedToSurvey;
     }
 
+    
     public void setHasRespondedToSurvey(boolean hasRespondedToSurvey) {
         this.hasRespondedToSurvey = hasRespondedToSurvey;
     }
@@ -55,6 +57,7 @@ public class UserSessionBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public boolean isLoggedIn(){
+        LOG.info("User is " + (this.user != null));
         return this.user != null; 
     }
     
@@ -76,6 +79,7 @@ public class UserSessionBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public boolean isLoggedInManager(){
+        LOG.info("Logged in manager " + (this.user != null && this.user.getIsManager()));
         return this.user != null && this.user.getIsManager(); 
     }
     
@@ -109,11 +113,15 @@ public class UserSessionBean implements Serializable {
     
     /**
      * Used to logout the user from the session
+     * @return Where the app redirects to
      * @author Jeffrey Boisvert
      */
-    public void logout(){
+    public String logout(){
+        LOG.info("Logging out user");
         this.user = null; 
+        LOG.info("User is null");
         clearSessionState();
+        return "index.xhtml"; 
     }
     
     /**
