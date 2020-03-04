@@ -16,33 +16,74 @@ Java Server Faces page that displays the register user page of the app
     <ui:define name="head">
         <title>#{msgs.register_page}</title>
     </ui:define>
-
     <ui:define name="content">
-        <b:container fluid="true">
-            <h2 class="header">#{msgs.register_page}</h2>
+        <h:outputStylesheet library="css" name="login.css"  />
+        <div class="content-container">
+            <b:container fluid="true">
+                <h2 class="header">#{msgs.register_page}</h2>
 
-            <h:form class="form-signin">
-                <p:growl id="growl" sticky="false" showDetail="true" />
-                     <div class="form-group">
-                         <h:outputLabel for="title-select" value="#{msgs.title}"/>
-                         <h:selectOneMenu id="title-select" class="custom-select" value = "#{registerBackingBean.titleInput}">
-                            <f:selectItems value="#{registerBackingBean.availableTitles}" var="title" itemValue="#{title}" itemLabel="#{title}"/>
-                        </h:selectOneMenu>
-                     </div>
-                     <div class="form-group">
-                         <h:outputLabel for="first-name" value="#{msgs.firstname}" />
-                        <h:inputText id="first-name" class="form-control" value="#{registerBackingBean.emailInput}"/>
-                     </div>
-                     <div class="form-group">
-                        <h:outputLabel for="email" value="#{msgs.email}" />
-                        <h:inputText id="email" class="form-control" value="#{registerBackingBean.emailInput}"/>
-                     </div>
-                     <div class="form-group">
-                        <h:outputLabel for="password" value="#{msgs.password}" />
-                        <h:inputSecret id="password" class="form-control" value="#{registerBackingBean.passwordInput}"/>
-                     </div>
-                <h:commandButton class="btn btn-primary" value="#{msgs.register_page}" action="#{registerBackingBean.register}" />
-            </h:form>
-        </b:container>
+                <h:form class="form-signin">
+                    <p:growl id="growl" sticky="false" showDetail="true" />
+                         <div class="form-group">
+                             <b:selectOneMenu  id="title-select" class="custom-select" value = "#{registerBackingBean.titleInput}" label="#{msgs.title}">
+                                <f:selectItems value="#{registerBackingBean.availableTitles}" var="title" itemValue="#{title}" itemLabel="#{title}"/>
+                             </b:selectOneMenu>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="first-name" value="#{msgs.firstname}" />
+                             <h:inputText id="first-name" class="form-control" value="#{registerBackingBean.firstNameInput}"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="last-name" value="#{msgs.lastname}" />
+                             <h:inputText id="last-name" class="form-control" value="#{registerBackingBean.lastNameInput}"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="company-name" value="#{msgs.company_name_input}" />
+                             <h:inputText id="company-name" class="form-control" value="#{registerBackingBean.companyInput}"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="first-address" value="#{msgs.address_one}" />
+                             <h:inputText id="first-address" class="form-control" value="#{registerBackingBean.firstAddressInput}"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="second-address" value="#{msgs.address_two}" />
+                             <h:inputText id="second-address" class="form-control" value="#{registerBackingBean.secondAddressInput}"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="city" value="#{msgs.city}" />
+                             <h:inputText id="city" class="form-control" value="#{registerBackingBean.cityInput}"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="province" value="#{msgs.province}" />
+                             <h:inputText id="province" class="form-control" value="#{registerBackingBean.provinceInput}"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="country" value="#{msgs.country}" />
+                             <h:inputText id="country" class="form-control" value="#{registerBackingBean.countryInput}"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="postal-code" value="#{msgs.postal_code}" />
+                             <h:inputText id="postal-code" class="form-control" value="#{registerBackingBean.postalInput}"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="cell-phone" value="#{msgs.cell_phone}" />
+                             <h:inputText id="cell-phone" class="form-control" value="#{registerBackingBean.mobilePhoneInput}"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="home-phone" value="#{msgs.home_phone}" />
+                             <h:inputText id="home-phone" class="form-control" value="#{registerBackingBean.homePhoneInput}"/>
+                         </div>
+                         <div class="form-group">
+                            <h:outputLabel for="email" value="#{msgs.email}" />
+                            <h:inputText id="email" class="form-control" value="#{registerBackingBean.emailInput}"/>
+                         </div>
+                         <div class="form-group">
+                            <h:outputLabel for="password" value="#{msgs.password}" />
+                            <h:inputSecret id="password" class="form-control" value="#{registerBackingBean.passwordInput}"/>
+                         </div>
+                    <h:commandButton class="btn btn-primary" value="#{msgs.register_page}" action="#{registerBackingBean.register}" />
+                </h:form>
+            </b:container>
+        </div>
     </ui:define>
 </ui:composition>
