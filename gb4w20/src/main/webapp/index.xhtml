@@ -13,6 +13,7 @@ Java Server Faces page that displays the frontpage of the app
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:hf="http://highfaces.org"
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
         <title>Front page</title>
@@ -70,28 +71,35 @@ Java Server Faces page that displays the frontpage of the app
                         </c:forEach>
                     </b:panelGrid>
                 </b:column>
-                <b:column col-md="4">
+                <b:column col-md="4" id="survey">
                     <h2>Survey</h2>
-
                     <c:set var="question" value="#{surveyQuestionsJpaController.getActiveQuestion()}"/>
-                    <h3>#{question.getQuestion()}</h3>
 
-                    #{userSession.isHasRespondedToSurvey()}
-                    <c:choose>
-                        <c:when test="#{userSession.isHasRespondedToSurvey()}">
-                            TODO show responses
-                        </c:when>
-                        <c:otherwise>
-                            <b:form>
+                    <h:panelGroup rendered="#{question != null}">
+                        <h:panelGroup rendered="#{userSession.isHasRespondedToSurvey()}">
+                            <hf:chart type="bar"  title="#{question.getQuestion()}">
+                                <hf:chartSerie value="#{question.getSurveyResponsesCollection()}" var="response" point="#{response.getCount()}" tickLabel="#{response.getResponse()}" />
+                                <hf:chartLegend position="ne" enabled="false"/>
+                            </hf:chart>
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="#{!userSession.isHasRespondedToSurvey()}">
+                            <h3>#{question.getQuestion()}</h3>
+                            <h:form>
                                 <h:selectOneRadio value="#{surveyBackingBean.questionId}" layout="pageDirection">
                                     <f:selectItems  value="#{question.getSurveyResponsesCollection()}" var="response" itemValue="#{response.getId()}" itemLabel="#{response.getResponse()}"/>
                                     <br/>
                                 </h:selectOneRadio>
-                                <b:commandButton value="Submit" action="#{surveyBackingBean.vote()}" look="primary" update="@form" />
-                            </b:form>
-                        </c:otherwise>
-                    </c:choose>
+                                <h:commandButton value="Submit" action="#{surveyBackingBean.vote()}">
+                                    <f:ajax execute="@form" render="survey"/>
+                                </h:commandButton>
+                            </h:form>
+                        </h:panelGroup>
+                    </h:panelGroup>
 
+                    <h:panelGroup rendered="#{question == null}">
+                        There is no survey to complete at present, please check again at a later date.
+                    </h:panelGroup>
                 </b:column>
                 <b:column col-md="4">
                     <h2>News</h2>

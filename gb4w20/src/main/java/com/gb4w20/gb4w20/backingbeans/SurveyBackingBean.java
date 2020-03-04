@@ -42,9 +42,7 @@ public class SurveyBackingBean {
         
         try {
             responsesController.voteForQuestion(questionId);
-            System.out.println(session.isHasRespondedToSurvey());
             session.setHasRespondedToSurvey(true);
-            System.out.println(session.isHasRespondedToSurvey());
         } catch (RollbackFailureException ex) {
             // TODO show error
         }
