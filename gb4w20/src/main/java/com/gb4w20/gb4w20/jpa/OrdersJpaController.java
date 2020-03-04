@@ -1,4 +1,3 @@
-
 package com.gb4w20.gb4w20.jpa;
 
 import java.io.Serializable;
@@ -189,7 +188,6 @@ public class OrdersJpaController implements Serializable {
     }
 
     private List<Orders> findOrdersEntities(boolean all, int maxResults, int firstResult) {
-        try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Orders.class));
             Query q = em.createQuery(cq);
@@ -198,17 +196,10 @@ public class OrdersJpaController implements Serializable {
                 q.setFirstResult(firstResult);
             }
             return q.getResultList();
-        } finally {
-            em.close();
-        }
     }
 
     public Orders findOrders(Long id) {
-        try {
             return em.find(Orders.class, id);
-        } finally {
-            em.close();
-        }
     }
 
     public int getOrdersCount() {

@@ -131,7 +131,7 @@ public class LoginBackingBean implements Serializable {
        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(this.emailInput);
         
        return this.emailInput == null || 
-              this.emailInput.isBlank() || 
+              //this.emailInput.isBlank() || 
               this.emailInput.isEmpty() ||
               (!matcher.find()); 
     }
@@ -143,7 +143,7 @@ public class LoginBackingBean implements Serializable {
      */
     private boolean isPasswordNotValid(){
        return this.passwordInput == null || 
-              this.passwordInput.isBlank() || 
+              //this.passwordInput.isBlank() || 
               this.passwordInput.isEmpty(); 
     }
     

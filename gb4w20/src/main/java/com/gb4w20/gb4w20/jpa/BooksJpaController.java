@@ -456,8 +456,14 @@ public class BooksJpaController implements Serializable {
 
         Root<Books> book = cq.from(Books.class);
 
-        cq.select(book).where(cb.gt(book.get("salePrice"), 0));
-
+        cq.select(book);
+        
+        List<Predicate> predicates = new ArrayList();
+        predicates.add(cb.isTrue(book.get(Books_.active)));
+        
+        predicates.add(cb.gt(book.get("salePrice"), 0));
+        cq.where(cb.and(predicates.toArray(new Predicate[0])));
+        
         Query query = em.createQuery(cq);
         if (maxResults != -1) {
             query.setMaxResults(maxResults);
@@ -478,17 +484,20 @@ public class BooksJpaController implements Serializable {
         Join<Orders, Users> user = order.join("userId", JoinType.INNER);
 
         // TODO get email from session
-        cq.select(book).where(cb.equal(user.get("email"), "cst.send@gmail.com"));
+        cq.select(book);
+        
+        List<Predicate> predicates = new ArrayList();
+        predicates.add(cb.isTrue(book.get(Books_.active)));
+        
+        predicates.add(cb.equal(user.get("email"), "cst.send@gmail.com"));
+        
+        cq.where(cb.and(predicates.toArray(new Predicate[0])));
         cq.orderBy(cb.desc(order.get("timestamp")));
 
         Query query = em.createQuery(cq);
         query.setMaxResults(maxResults);
 
         return query.getResultList();
-    }
-
-    public List<Books> getForGenre(Long genreId) {
-        return this.getTopSellingForGenre(genreId, -1);
     }
 
     public List<Books> getTopSelling(int maxResults) {
@@ -509,9 +518,15 @@ public class BooksJpaController implements Serializable {
         //Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
 
         cq.select(book);
+        
+        List<Predicate> predicates = new ArrayList();
+        predicates.add(cb.isTrue(book.get(Books_.active)));
+        
         if (genreId != -1) {
-            cq.where(book.get(Books_.genresCollection).in(genreId));
+            predicates.add(book.get(Books_.genresCollection).in(genreId));
         }
+        
+        cq.where(cb.and(predicates.toArray(new Predicate[0])));
         cq.orderBy(cb.desc(cb.size(book.get(Books_.bookorderCollection))));
 
         Query query = em.createQuery(cq);
@@ -523,7 +538,7 @@ public class BooksJpaController implements Serializable {
         return query.getResultList();
     }
 
-    public List<Books> searchBooks(Long isbn, String title, String author, String publisher, Boolean allTrue, Boolean useExact) {
+    public List<Books> searchBooks(Long isbn, String title, String author, String publisher, Boolean allTrue) {
         LOG.info("Searching books: isbn: " + isbn + " title: " + title + " author: " + author + " publisher: " + publisher);
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -534,17 +549,15 @@ public class BooksJpaController implements Serializable {
         cq.select(book);
         cq.distinct(true);
 
-        String titleSearch = (useExact != null && useExact == true) ? title : "%" + title + "%";
-        String publisherSearch = (useExact != null && useExact == true) ? publisher : "%" + publisher + "%";
-
         List<Predicate> predicates = new ArrayList<Predicate>();
+        predicates.add(cb.isTrue(book.get(Books_.active)));
 
         if (isbn != null) {
             predicates.add(cb.equal(book.get(Books_.isbn), isbn));
         }
-
+        
         if (title != null && !title.isEmpty()) {
-            predicates.add(cb.like(book.get(Books_.title), titleSearch));
+            predicates.add(cb.like(book.get(Books_.title), "%" + title + "%"));
         }
 
         if (author != null && !author.isEmpty()) {

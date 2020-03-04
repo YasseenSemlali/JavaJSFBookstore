@@ -16,7 +16,6 @@ Java Server Faces page that displays the frontpage of the app
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
         <title>Front page</title>
-        
     </ui:define>
 
     <ui:define name="content">
@@ -49,16 +48,16 @@ Java Server Faces page that displays the frontpage of the app
                 </div>
             </div>
 
-           <!--https://stackoverflow.com/questions/37837623/primefaces-carousel-next-and-prev-methods-are-not-working-in-version-5-3-and-->
+            <!--https://stackoverflow.com/questions/37837623/primefaces-carousel-next-and-prev-methods-are-not-working-in-version-5-3-and-->
             <p:carousel numVisible="5" value="#{booksJpaController.getBooksOnSale()}" headerText="On sale" var="book" itemStyle="text-align:center" responsive="true" >
-               
+
                 <ui:decorate template="/templates/book.xhtml">
                     <ui:param name="book" value="#{book}"></ui:param>
                     <ui:param name="showPrice" value="true"></ui:param>
                     <ui:param name="showOldPrice" value="true"></ui:param>
                 </ui:decorate>
             </p:carousel>
-           
+
 
             <b:row>
                 <b:column col-md="4">
@@ -74,13 +73,25 @@ Java Server Faces page that displays the frontpage of the app
                 <b:column col-md="4">
                     <h2>Survey</h2>
 
-                    <h3>#{surveyQuestionsJpaController.getActiveQuestion().getQuestion()}</h3>
-                    <b:form>
-                        <ui:repeat value="#{surveyQuestionsJpaController.getActiveQuestion().getSurveyResponsesCollection()}" var="response">
-                            <b:radiobutton value="#{response.getId()}" item-label="#{response.getResponse()}"></b:radiobutton>
-                        </ui:repeat>
-                        <b:commandButton value="Submit" action="#" look="primary" update="@form" />
-                    </b:form>
+                    <c:set var="question" value="#{surveyQuestionsJpaController.getActiveQuestion()}"/>
+                    <h3>#{question.getQuestion()}</h3>
+
+                    #{userSession.isHasRespondedToSurvey()}
+                    <c:choose>
+                        <c:when test="#{userSession.isHasRespondedToSurvey()}">
+                            TODO show responses
+                        </c:when>
+                        <c:otherwise>
+                            <b:form>
+                                <h:selectOneRadio value="#{surveyBackingBean.questionId}" layout="pageDirection">
+                                    <f:selectItems  value="#{question.getSurveyResponsesCollection()}" var="response" itemValue="#{response.getId()}" itemLabel="#{response.getResponse()}"/>
+                                    <br/>
+                                </h:selectOneRadio>
+                                <b:commandButton value="Submit" action="#{surveyBackingBean.vote()}" look="primary" update="@form" />
+                            </b:form>
+                        </c:otherwise>
+                    </c:choose>
+
                 </b:column>
                 <b:column col-md="4">
                     <h2>News</h2>
