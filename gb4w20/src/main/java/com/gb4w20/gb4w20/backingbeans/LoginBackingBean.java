@@ -24,7 +24,7 @@ public class LoginBackingBean implements Serializable {
     
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(LoginBackingBean.class);
     private static final String CLIENT_PAGE = "index.xhtml";
-    private static final String MANAGER_PAGE = "manager_frontpage.xhtml"; 
+    private static final String MANAGER_PAGE = "manager-frontpage.xhtml"; 
     private static final String LOGIN_PAGE ="login.xhtml";
     //Credit to https://stackoverflow.com/questions/8204680/java-regex-email Jason Buberel for regex pattern 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);

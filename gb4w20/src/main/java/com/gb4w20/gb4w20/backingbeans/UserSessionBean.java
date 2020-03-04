@@ -3,7 +3,9 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
@@ -17,8 +19,8 @@ import org.slf4j.LoggerFactory;
  * @author Jeffrey Boisvert
  */
 @Named("userSession")
-@RequestScoped
-public class UserSessionBean {
+@SessionScoped
+public class UserSessionBean implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(UserSessionBean.class);
 
@@ -28,16 +30,21 @@ public class UserSessionBean {
     //Used to hold the user entity if logged in
     private Users user; 
     
-    private boolean hasRespondedToSurvey = false;
+    //Default is false
+    private boolean hasRespondedToSurvey;
+    
+    //PostConstruct -> after indepecndy inject 
 
     /**
      * Checks if the user has responded to a survey this session
+     * @return true if has responded to a survey, false otherwise
      * @author Yasseen Semlali
      */
     public boolean isHasRespondedToSurvey() {
         return hasRespondedToSurvey;
     }
 
+    
     public void setHasRespondedToSurvey(boolean hasRespondedToSurvey) {
         this.hasRespondedToSurvey = hasRespondedToSurvey;
     }
@@ -50,6 +57,7 @@ public class UserSessionBean {
      * @author Jeffrey Boisvert
      */
     public boolean isLoggedIn(){
+        LOG.info("User is " + (this.user != null));
         return this.user != null; 
     }
     
@@ -71,6 +79,7 @@ public class UserSessionBean {
      * @author Jeffrey Boisvert
      */
     public boolean isLoggedInManager(){
+        LOG.info("Logged in manager " + (this.user != null && this.user.getIsManager()));
         return this.user != null && this.user.getIsManager(); 
     }
     
@@ -104,11 +113,15 @@ public class UserSessionBean {
     
     /**
      * Used to logout the user from the session
+     * @return Where the app redirects to
      * @author Jeffrey Boisvert
      */
-    public void logout(){
+    public String logout(){
+        LOG.info("Logging out user");
         this.user = null; 
+        LOG.info("User is null");
         clearSessionState();
+        return "index.xhtml"; 
     }
     
     /**
