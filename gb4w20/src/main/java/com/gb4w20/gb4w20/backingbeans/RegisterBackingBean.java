@@ -43,6 +43,7 @@ public class RegisterBackingBean implements Serializable {
     private String titleInput; 
     private String firstNameInput;
     private String lastNameInput;
+    private String companyInput; 
     private String firstAddressInput;
     private String secondAddressInput;
     private String cityInput; 
@@ -340,6 +341,29 @@ public class RegisterBackingBean implements Serializable {
     }
     
     /**
+     * Used to get the companyInput value inputted
+     * @return String of the inputted companyInput.
+     * @author Jeffrey Boisvert
+     */
+    public String getCompanyInput() {
+        if(this.companyInput == null){
+            return ""; 
+        }
+        return companyInput;
+    }
+    
+    /**
+     * Used to set the companyInput to the value given
+     * @param companyInput given
+     * @author Jeffrey Boisvert 
+     */
+    public void setCompanyInput(String companyInput) {
+        this.companyInput = companyInput;
+    }
+    
+    
+    
+    /**
      * Used to register the user
      * @return A string of a uri of where to redirect to
      * @author Jeffrey Boisvert
@@ -417,9 +441,20 @@ public class RegisterBackingBean implements Serializable {
      */
     private Users generateUserBasedOnInput() {
         Users user = new Users(); 
-        user.setTitle(this.titleInput);
-        user.setEmail(this.emailInput);
-        user.setPassword(this.passwordInput);
+        user.setTitle(titleInput);
+        user.setFirstName(firstNameInput);
+        user.setLastName(lastNameInput);
+        user.setCompanyName(companyInput);
+        user.setAddress1(firstAddressInput);
+        user.setAddress2(secondAddressInput);
+        user.setCity(cityInput);
+        user.setProvince(provinceInput);
+        user.setCountry(countryInput);
+        user.setPostalCode(postalInput);
+        user.setCellPhone(mobilePhoneInput);
+        user.setHomePhone(homePhoneInput);
+        user.setEmail(emailInput);
+        user.setPassword(passwordInput);
         
         return user;
     }
