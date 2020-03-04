@@ -3,7 +3,9 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
@@ -17,8 +19,8 @@ import org.slf4j.LoggerFactory;
  * @author Jeffrey Boisvert
  */
 @Named("userSession")
-@RequestScoped
-public class UserSessionBean {
+@SessionScoped
+public class UserSessionBean implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(UserSessionBean.class);
 
@@ -28,7 +30,10 @@ public class UserSessionBean {
     //Used to hold the user entity if logged in
     private Users user; 
     
-    private boolean hasRespondedToSurvey = false;
+    //Default is false
+    private boolean hasRespondedToSurvey;
+    
+    //PostConstruct -> after indepecndy inject 
 
     /**
      * Checks if the user has responded to a survey this session
