@@ -551,13 +551,15 @@ public class BooksJpaController implements Serializable {
 
         List<Predicate> predicates = new ArrayList<Predicate>();
         predicates.add(cb.isTrue(book.get(Books_.active)));
+        
+        List<Predicate> searchPredicates = new ArrayList<Predicate>();
 
         if (isbn != null) {
-            predicates.add(cb.equal(book.get(Books_.isbn), isbn));
+            searchPredicates.add(cb.equal(book.get(Books_.isbn), isbn));
         }
         
         if (title != null && !title.isEmpty()) {
-            predicates.add(cb.like(book.get(Books_.title), "%" + title + "%"));
+            searchPredicates.add(cb.like(book.get(Books_.title), "%" + title + "%"));
         }
 
         if (author != null && !author.isEmpty()) {
@@ -571,21 +573,22 @@ public class BooksJpaController implements Serializable {
                 authorPredicates.add(cb.isMember(name, lastName));
             }
 
-            predicates.add(cb.or(authorPredicates.toArray(new Predicate[0])));
+            searchPredicates.add(cb.or(authorPredicates.toArray(new Predicate[0])));
         }
 
         if (publisher != null && !publisher.isEmpty()) {
             Expression publisherName = book.join(Books_.publishersCollection).get(Publishers_.name);
 
-            predicates.add(cb.isMember(publisher, publisherName));
+            searchPredicates.add(cb.isMember(publisher, publisherName));
         }
 
         if (allTrue != null && allTrue) {
-            cq.where(cb.and(predicates.toArray(new Predicate[0])));
+            predicates.add(cb.and(searchPredicates.toArray(new Predicate[0])));
         } else {
-            cq.where(cb.or(predicates.toArray(new Predicate[0])));
+            predicates.add(cb.or(searchPredicates.toArray(new Predicate[0])));
         }
 
+        cq.where(cb.and(predicates.toArray(new Predicate[0])));
         Query query = em.createQuery(cq);
 
         return query.getResultList();

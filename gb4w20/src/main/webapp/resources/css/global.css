@@ -25,6 +25,11 @@ body, html {
 #j_idt11_inner{
     padding: 2em;
 }
+.hide-images img{
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
+}
 
 /* TOP MENU */
 .topMenuBar {
