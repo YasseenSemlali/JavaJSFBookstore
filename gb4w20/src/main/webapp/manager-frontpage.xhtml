@@ -14,7 +14,7 @@ a manager can perform.
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
-        <title>Manager</title>
+        <title>#{msgs.dashboard}</title>
     </ui:define>
 
     <ui:define name="content">
@@ -23,7 +23,7 @@ a manager can perform.
         <b:container style="margin-top: 5%; margin-bottom:5%" fluid="true">
             <b:row>
                 <b:column  col-md="4">
-                    <a href="manager-forms/manager_inventory.xhtml" style="color: black">
+                    <a href="manager-forms/manager-inventory.xhtml" style="color: black">
                         <div class="menutile">
                             <p:graphicImage name="images/inventory_icon.png" style="width: 33%; height: 33%" />
                             <br />
@@ -32,11 +32,13 @@ a manager can perform.
                     </a>
                 </b:column>
                 <b:column  col-md="4">
+                    <a href="manager-forms/manager-sales.xhtml" style="color: black">
                     <div class="menutile">
                         <p:graphicImage name="images/sales_icon.png" style="width: 33%; height: 33%" />
                         <br />
                         <h4>${msgs.sales}</h4>
                     </div>
+                    </a>
                 </b:column>
                 <b:column  col-md="4">
                     <div class="menutile">
@@ -48,7 +50,7 @@ a manager can perform.
             </b:row>
             <b:row>
                 <b:column  col-md="4">
-                     <a href="manager-forms/manager_orders.xhtml" style="color: black">
+                     <a href="manager-forms/manager-orders.xhtml" style="color: black">
                     <div class="menutile">
                         <p:graphicImage name="images/orders_icon.png" style="width: 33%; height: 33%" />
                         <br />
@@ -57,12 +59,13 @@ a manager can perform.
                      </a>
                 </b:column>
                 <b:column  col-md="4">
-
+                    <a href="manager-forms/manager-reviews.xhtml" style="color: black">
                     <div class="menutile">
                         <p:graphicImage name="images/reviews_icon.png" style="width: 33%; height: 33%" />
                         <br />
                         <h4>${msgs.reviews}</h4>
                     </div>
+                        </a>
                 </b:column>
                 <b:column  col-md="4">
                     <a href="reports-page.xhtml" style="color: black">

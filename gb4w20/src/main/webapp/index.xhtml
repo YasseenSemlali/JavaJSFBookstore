@@ -13,10 +13,10 @@ Java Server Faces page that displays the frontpage of the app
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:hf="http://highfaces.org"
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
-        <title>Front page</title>
-        
+        <title>${msgs.page_title_index}</title>
     </ui:define>
 
     <ui:define name="content">
@@ -33,7 +33,7 @@ Java Server Faces page that displays the frontpage of the app
 
             <div class="card">
                 <div class="card-header">
-                    <h1>Browse by genre</h1>
+                    <h1>${msgs.browse_genre}</h1>
                 </div>
                 <div class="card-body">
                     <b:panelGrid columns="4">
@@ -41,7 +41,7 @@ Java Server Faces page that displays the frontpage of the app
                             <div class="card text-center">
                                 <div class="card-body">
                                     <h2 class="card-title">#{genre.getGenre()}</h2>
-                                    <a href="genre.xhtml?id=#{genre.getGenreId()}" class="btn btn-primary">Browse</a>
+                                    <a href="genre.xhtml?id=#{genre.getGenreId()}" class="btn btn-primary">${msgs.browse}</a>
                                 </div>
                             </div>
                         </c:forEach>
@@ -49,20 +49,20 @@ Java Server Faces page that displays the frontpage of the app
                 </div>
             </div>
 
-           <!--https://stackoverflow.com/questions/37837623/primefaces-carousel-next-and-prev-methods-are-not-working-in-version-5-3-and-->
-            <p:carousel numVisible="5" value="#{booksJpaController.getBooksOnSale()}" headerText="On sale" var="book" itemStyle="text-align:center" responsive="true" >
-               
+            <!--https://stackoverflow.com/questions/37837623/primefaces-carousel-next-and-prev-methods-are-not-working-in-version-5-3-and-->
+            <p:carousel numVisible="5" value="#{booksJpaController.getBooksOnSale()}" headerText="${msgs.on_sale}" var="book" itemStyle="text-align:center" responsive="true" >
+
                 <ui:decorate template="/templates/book.xhtml">
                     <ui:param name="book" value="#{book}"></ui:param>
                     <ui:param name="showPrice" value="true"></ui:param>
                     <ui:param name="showOldPrice" value="true"></ui:param>
                 </ui:decorate>
             </p:carousel>
-           
+
 
             <b:row>
                 <b:column col-md="4">
-                    <h2>You recently bought</h2>
+                    <h2>${msgs.you_recently_bought}</h2>
                     <b:panelGrid columns="2">
                         <c:forEach items="#{booksJpaController.getRecentlyBoughtBooks(3)}" var="book">
                             <ui:decorate template="/templates/book.xhtml">
@@ -71,19 +71,40 @@ Java Server Faces page that displays the frontpage of the app
                         </c:forEach>
                     </b:panelGrid>
                 </b:column>
-                <b:column col-md="4">
-                    <h2>Survey</h2>
+                <b:column col-md="4" id="survey">
+                    <h2>${msgs.survey}</h2>
+                    <c:set var="question" value="#{surveyQuestionsJpaController.getActiveQuestion()}"/>
 
-                    <h3>#{surveyQuestionsJpaController.getActiveQuestion().getQuestion()}</h3>
-                    <b:form>
-                        <ui:repeat value="#{surveyQuestionsJpaController.getActiveQuestion().getSurveyResponsesCollection()}" var="response">
-                            <b:radiobutton value="#{response.getId()}" item-label="#{response.getResponse()}"></b:radiobutton>
-                        </ui:repeat>
-                        <b:commandButton value="Submit" action="#" look="primary" update="@form" />
-                    </b:form>
+                    <h:panelGroup rendered="#{question != null}">
+                        <h:panelGroup rendered="#{userSession.isHasRespondedToSurvey()}">
+                            <hf:chart type="bar"  title="#{question.getQuestion()}">
+                                <hf:chartSerie value="#{question.getSurveyResponsesCollection()}" var="response" point="#{response.getCount()}" tickLabel="#{response.getResponse()}" />
+                                <hf:chartLegend position="ne" enabled="false"/>
+                            </hf:chart>
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="#{!userSession.isHasRespondedToSurvey()}">
+                            <h3>#{question.getQuestion()}</h3>
+                            <h:form id="surveyform">
+                                <h:selectOneRadio value="#{surveyBackingBean.questionId}" layout="pageDirection">
+                                    <f:selectItems  value="#{question.getSurveyResponsesCollection()}" var="response" itemValue="#{response.getId()}" itemLabel="#{response.getResponse()}"/>
+                                    <br/>
+                                </h:selectOneRadio>
+                                <h:commandButton value="Submit" action="#{surveyBackingBean.vote()}" id="surveysubmit">
+                                    <f:ajax execute="@form" render="survey"/>
+                                </h:commandButton>
+                                <br/>
+                                <h:message class="error" for="surveysubmit"/>
+                            </h:form>
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{question == null}">
+                        ${msgs.no_survey_msg}
+                    </h:panelGroup>
                 </b:column>
                 <b:column col-md="4">
-                    <h2>News</h2>
+                    <h2>${msgs.news2}</h2>
                 </b:column>
             </b:row>
         </b:container>

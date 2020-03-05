@@ -15,7 +15,7 @@ Java Server Faces page that displays the frontpage of the app
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
-        <title>Genre</title>
+        <title>${msgs.page_title_genre}</title>
     </ui:define>
 
     <ui:define name="content">
@@ -24,15 +24,19 @@ Java Server Faces page that displays the frontpage of the app
                 <c:when test="#{param['id'] != null}">
                     <c:set var="genre" value="#{genresJpaController.findGenres(param['id'])}"/>
                     <h1>#{genre.getGenre()}</h1>
-                    <p:carousel numVisible="5" value="#{booksJpaController.getTopSellingForGenre(genre.getGenreId(),5)}" headerText="Best sellers" var="book" itemStyle="text-align:center" responsive="true" >
+                    <p:carousel numVisible="5" value="#{booksJpaController.getTopSellingForGenre(genre.getGenreId(),5)}" headerText="${msgs.best_sellers}" var="book" itemStyle="text-align:center" responsive="true" >
                         <ui:decorate template="/templates/book.xhtml">
                             <ui:param name="book" value="#{book}"></ui:param>
                             <ui:param name="showPrice" value="true"></ui:param>
                             <ui:param name="showOldPrice" value="true"></ui:param>
                         </ui:decorate>
                     </p:carousel>
-                    
-                    <h2>All #{genre.getGenre()} books</h2>
+
+                    <h2>
+                        <h:outputFormat value="#{msgs.all_genre_books}">
+                            <f:param value="#{genre.getGenre()}" />
+                        </h:outputFormat>
+                    </h2>
                     <b:panelGrid columns="6">
                         <c:forEach items="#{booksJpaController.getAllBooksForGenre(genre.getGenreId())}" var="book">
                             <ui:decorate template="/templates/book.xhtml">
