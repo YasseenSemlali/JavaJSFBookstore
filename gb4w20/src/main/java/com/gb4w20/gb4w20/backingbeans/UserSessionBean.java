@@ -49,8 +49,6 @@ public class UserSessionBean implements Serializable {
         this.hasRespondedToSurvey = hasRespondedToSurvey;
     }
     
-    
-    
     /**
      * Checks whether the user is logged in or not.
      * @return true if logged in false if not
@@ -129,7 +127,7 @@ public class UserSessionBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     private void clearSessionState() {
-        LOG.info("Currently clearing session state (WIP)");
+        LOG.info("Currently clearing session state");
     }
     
     

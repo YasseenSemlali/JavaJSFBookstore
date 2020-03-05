@@ -92,7 +92,7 @@ public class LoginBackingBean implements Serializable {
         if(areInputsNotValid()){
             LOG.info("Values not valid for " + this.emailInput + " with password " + this.passwordInput);
             FacesContext context = FacesContext.getCurrentInstance();
-            ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msg");
+            ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msgs");
             //TODO i18n currently not working
             context.addMessage(null, new FacesMessage("Invalid Parameters", "Please provide valid email and password"));
             

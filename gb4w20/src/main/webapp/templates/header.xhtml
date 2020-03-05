@@ -19,7 +19,7 @@
                     <button type="submit" class="btn btn-default">${msgs.search}</button>
                     <div><a href="advanced_search.xhtml"><small>${msgs.advanced_search}</small></a></div>
                 </form>
-                
+
                 <h:form>
                     <b:navbarLinks pull="right">
                         <c:choose>
@@ -30,12 +30,17 @@
                                 <b:navLink value="${msgs.login}" href="login.xhtml" />
                             </c:otherwise>
                         </c:choose>
-                        <h:panelGroup rendered="#{userSession.loggedInManager}">
+                        <h:panelGroup rendered="#{userSession.loggedInManager}"> 
                             <b:navLink value="${msgs.dashboard}" href="manager-frontpage.xhtml"/>
                         </h:panelGroup>
                         <b:navLink value="FR" href="www.google.com"/>
                     </b:navbarLinks>
                 </h:form>
+                <!-- For testing purposes, resets whether the user has responded to the survey
+                <h:form>
+                    <h:commandButton value="reset" action="#{userSession.setHasRespondedToSurvey(false)}"/>
+                </h:form>
+                -->
             </b:navBar>
         </ui:composition>
     </h:body>
