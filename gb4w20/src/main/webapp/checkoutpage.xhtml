@@ -21,13 +21,26 @@ and finalize transactions
     </ui:define>
     
     <ui:define name="content">
+        <f:metadata>
+            <f:event type="preRenderView"
+                     listener="#{cartBookBackingBean.checkBooksInCookie}" />
+        </f:metadata>
+        
         <b:container>
-            <b:jumbotron style="text-align: center; background-color: #000000;">
+            <div style="text-align: center; background-color: #000000;">
                 <h1 style="color: #fff">Start reading now!</h1>
-            </b:jumbotron>
+            </div>
             <b:jumbotron style="text-align: center">
                 <h2>Check-Out</h2>
             </b:jumbotron>
+        </b:container>
+        
+        <b:container>
+            #{cartBookBackingBean.isbn}
+        </b:container>
+        
+        <b:container>
+            
         </b:container>
     </ui:define>
     
