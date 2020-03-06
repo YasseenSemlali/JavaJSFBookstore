@@ -4,7 +4,6 @@ import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.jpa.ReviewsJpaController;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -35,12 +34,8 @@ public class ManagerReviews implements Serializable {
             Reviews review = reviewController.findReviews(revId);
             review.setApprovedStatus(status);
             reviewController.edit(review);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("manager-reviews.xhtml");
         } catch (Exception ex) {
             LOG.info(ex.toString());
         }
     }
-
-    
-
 }

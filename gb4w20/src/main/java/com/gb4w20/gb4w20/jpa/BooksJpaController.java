@@ -350,10 +350,6 @@ public class BooksJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-
-            }
         }
     }
 

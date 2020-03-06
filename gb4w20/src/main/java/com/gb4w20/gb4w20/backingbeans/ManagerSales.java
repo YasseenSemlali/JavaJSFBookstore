@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -45,13 +44,14 @@ public class ManagerSales implements Serializable {
      * based on input number bound to field
      * 
      * @param isbn 
+     * @param index 
      */
     public void editSalePrice(Long isbn, int index) {
         try {
             Books book = booksController.findBooks(isbn);
             book.setSalePrice(newSalePrice[index]);
             booksController.edit(book);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("manager-sales.xhtml");
+            newSalePrice[index] = new BigDecimal(0);
         } catch (Exception ex) {
             LOG.info(ex.toString());
         }

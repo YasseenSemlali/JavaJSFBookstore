@@ -20,7 +20,7 @@ necessary to manage reviews in the web app.
     
     <ui:define name="content">
         <b:container style="margin-top: 5%; margin-bottom:5%;">
-            <p:tabView>
+            <p:tabView id="allrevs">
                 <p:tab title="#{msgs.approved_revs}" >
                     <h:form>
                     <p:dataTable var="review" value="#{reviewsJpaController.getReviewsOnApproved(true)}"
@@ -51,9 +51,10 @@ necessary to manage reviews in the web app.
                         </p:column>
                         
                         <p:column>
-                            <p:commandButton value="#{msgs.disapprove}" action="#{managerReviews.editApprovalStatus(review.reviewId, false)}" />
+                            <p:commandButton value="#{msgs.disapprove}">
+                                <f:ajax listener="#{managerReviews.editApprovalStatus(review.reviewId, false)}" render="allrevs" execute="@all" />
+                            </p:commandButton>
                         </p:column>
-                        
                         
                     </p:dataTable>
                         </h:form>
@@ -88,9 +89,10 @@ necessary to manage reviews in the web app.
                         </p:column>
                         
                          <p:column>
-                            <p:commandButton value="#{msgs.approve}" action="#{managerReviews.editApprovalStatus(review.reviewId, true)}" />
+                            <p:commandButton value="#{msgs.approve}">
+                                <f:ajax listener="#{managerReviews.editApprovalStatus(review.reviewId, true)}" render="allrevs" execute="@all" />
+                            </p:commandButton>
                         </p:column>
-                        
                     </p:dataTable>
                         </h:form>
                 </p:tab>

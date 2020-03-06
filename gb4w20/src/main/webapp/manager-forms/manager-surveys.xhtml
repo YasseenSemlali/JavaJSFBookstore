@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays all the options
+necessary to manage news for the web app
+
+@author Jean Robatto
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.surveys}</title>
+    </ui:define>
+    
+    <ui:define name="content">
+        <b:container style="margin-top: 5%; margin-bottom:5%;">
+            <h:form style="text-align: center">
+                <p:dataTable id="surveylist" var="survey" value="#{surveyQuestionsJpaController.findSurveyQuestionsEntities()}"
+                             emptyMessage="#{msgs.noresults}" rowIndexVar="index">
+
+                    <p:column filterBy="#{survey.id}" headerText="ID" filterMatchMode="contains">
+                        <h:outputText value="#{survey.id}" />
+                    </p:column>
+
+                    <p:column filterBy="#{survey.timestamp}" headerText="#{msgs.date}" filterMatchMode="contains">
+                        <h:outputText value="#{survey.timestamp}" />
+                    </p:column>
+
+                    <p:column filterBy="#{survey.question}" headerText="#{msgs.question}" filterMatchMode="contains">
+                        <h:outputText value="#{survey.question}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msgs.new_surv_question}">
+                        <h:inputText value="#{managerSurveys.questions[index]}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msgs.enabled}">
+                        <h:outputLabel value="#{survey.enabled}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msgs.set_enabled}">
+                        <p:inputSwitch value="#{managerSurveys.enabled[index]}" />
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton value="#{msgs.edit}">
+                            <f:ajax listener="#{managerSurveys.editSurvey(survey.id, index)}" render="surveylist" execute="@all" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>       
+        </b:container>
+        </ui:define>                
+        </ui:composition>
