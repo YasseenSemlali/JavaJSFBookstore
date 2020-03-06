@@ -58,6 +58,9 @@ public class RegisterBackingBean implements Serializable {
     private String emailInput; 
     private String passwordInput;
     
+    //Bundle for i18n
+    private ResourceBundle bundle; 
+    
     /**
      * Mainly used to set default values.
      * @author Jeffrey Boisvert
@@ -65,6 +68,8 @@ public class RegisterBackingBean implements Serializable {
     @PostConstruct
     public void init(){
         this.countryInput = "Canada";
+        FacesContext context = FacesContext.getCurrentInstance();
+        this.bundle = context.getApplication().getResourceBundle(context, "msgs");
     }
     
     /**
@@ -387,7 +392,7 @@ public class RegisterBackingBean implements Serializable {
         if(areInputsNotValid()){
             LOG.info("Values not valid for " + this.emailInput + " with password " + this.passwordInput);
             FacesContext context = FacesContext.getCurrentInstance();
-            ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msg");
+            ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msgs");
             //TODO i18n currently not working
             context.addMessage(null, new FacesMessage("Invalid Parameters", "Please provide valid email and password"));
             
@@ -466,8 +471,7 @@ public class RegisterBackingBean implements Serializable {
     public void validateName(FacesContext fc, UIComponent c, Object value) {
         if (value == null || ((String) value).isBlank() || ((String) value).isEmpty()) {
             throw new ValidatorException(new FacesMessage(
-                    //TODO get bundle
-                    "Name cannot contain underscores"));
+                    this.bundle.getString("name_error")));
         }
     }
     
