@@ -13,29 +13,34 @@
             <b:navBar inverse="true" styleClass="topMenuBar">
                 <b:navbarLinks>
                     <b:navLink value="" href="/gb4w20/index.xhtml" styleClass="logomenuitem"/>
-                    <h1>#{userSession.loggedInUserName}</h1>
                 </b:navbarLinks>
                 <form class="navbar-form navbar-left " role="search" action="search.xhtml" name="test" method="GET">
                     <input type="text" class="form-control" placeholder="Title" name="title"/>
-                    <button type="submit" class="btn btn-default">Search</button>
-                     <div><a href="advanced_search.xhtml"><small>Advanced search</small></a></div>
+                    <button type="submit" class="btn btn-default">${msgs.search}</button>
+                    <div><a href="advanced_search.xhtml"><small>${msgs.advanced_search}</small></a></div>
                 </form>
 
-                <b:navbarLinks pull="right">
-
-                    <c:choose>
-                        <c:when test="#{userSession.loggedIn}">
-                            <b:navLink value="${msgs.logout}" href="index.xhtml" actionListener="#{userSession.logout}" />
-                        </c:when>
-                        <c:otherwise>
-                            <b:navLink value="${msgs.login}" href="login.xhtml" />
-                        </c:otherwise>
-                    </c:choose>
-                    <h:panelGroup rendered="#{userSession.loggedInManager}">
-                        <b:navLink value="${msgs.dashboard}" href="manager_frontpage.xhtml"/>
-                    </h:panelGroup>
-                    <b:navLink value="FR" href="www.google.com"/>
-                </b:navbarLinks>
+                <h:form>
+                    <b:navbarLinks pull="right">
+                        <c:choose>
+                            <c:when test="#{userSession.loggedIn}">
+                                <b:navCommandLink  value="${msgs.logout}" action="#{userSession.logout}" />
+                            </c:when>
+                            <c:otherwise>
+                                <b:navLink value="${msgs.login}" href="login.xhtml" />
+                            </c:otherwise>
+                        </c:choose>
+                        <h:panelGroup rendered="#{userSession.loggedInManager}"> 
+                            <b:navLink value="${msgs.dashboard}" href="manager-frontpage.xhtml"/>
+                        </h:panelGroup>
+                        <b:navLink value="FR" href="www.google.com"/>
+                    </b:navbarLinks>
+                </h:form>
+                <!-- For testing purposes, resets whether the user has responded to the survey
+                <h:form>
+                    <h:commandButton value="reset" action="#{userSession.setHasRespondedToSurvey(false)}"/>
+                </h:form>
+                -->
             </b:navBar>
         </ui:composition>
     </h:body>

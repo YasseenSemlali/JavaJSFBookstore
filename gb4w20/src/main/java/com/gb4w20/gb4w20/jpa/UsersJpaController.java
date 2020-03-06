@@ -255,6 +255,7 @@ public class UsersJpaController implements Serializable {
      * @param maxResults max number of users to return
      * @param firstResult which record should be first looked for. 
      * @return 
+     * @author Jeffrey Boisvert
      */
     private List<Users> findUsersEntities(boolean all, int maxResults, int firstResult) {
 
