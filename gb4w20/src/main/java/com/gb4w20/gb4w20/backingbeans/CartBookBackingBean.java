@@ -3,11 +3,13 @@
  */
 package com.gb4w20.gb4w20.backingbeans;
 
+import com.gb4w20.gb4w20.entities.Books;
+import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import java.util.HashSet;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.Cookie;
 import org.slf4j.Logger;
@@ -17,38 +19,69 @@ import org.slf4j.LoggerFactory;
  * <h1>Cart Book Backing Bean</h1>
  * <p>
  * This is the backing bean for adding books to the cart by adding them to the
- * cookie and this class also contains methods to read and write to cookies.
+ * session.
  * </p>
  *
  * @author Jasmar Badion
  */
-@Named
-@RequestScoped
+@Named("cartSession")
+@SessionScoped
 public class CartBookBackingBean implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(CartBookBackingBean.class);
+    //HashSet is used so that cart only has unique books meaning
+    //user cannot add the same book to the cart, user can still add amount of 
+    //that book in the cart page
+    private HashSet<Books> books;
 
-    private Long isbn;
+    @Inject
+    private BooksJpaController bookJpaController;
 
-    public Long getIsbn() {
-        return this.isbn;
+    /**
+     * Default constructor initializing the HashSet
+     */
+    public CartBookBackingBean() {
+        this.books = new HashSet<Books>();
     }
-
-    public void setIsbn(Long isbn) {
-        this.isbn = isbn;
+    
+    /**
+     * Getter for books
+     * @return 
+     */
+    public HashSet<Books> getBooks() {
+        return this.books;
+    }
+    
+    /**
+     * Setter for the books
+     * @param books 
+     */
+    public void setBooks(HashSet<Books> books){
+        this.books = books;
     }
 
     /**
+     * Adding book to the books list that will be in 
+     * session scope
+     * @param isbn
+     * @return 
+     */
+    public boolean addBookToSession(Long isbn) {
+        LOG.info(isbn.toString());
+        return this.books.add(this.bookJpaController.findBooks(isbn));
+    }
+}
+    /**
      *
      */
-    public void addIsbnToCookie(Long isbn) {
+    /*public void addIsbnToCookie(Long isbn) {
         this.isbn = isbn;
         FacesContext context = FacesContext.getCurrentInstance();
         Cookie cart = (Cookie) context.getExternalContext().getRequestCookieMap().get("isbn");
         cart.getValue().split(",");
         cart.setPath("/");
         context.getExternalContext().addResponseCookie("isbn", this.isbn.toString(), null);
-    }
+    }*/
 
     /*public void writeIsbnToCookie(){
         FacesContext context = FacesContext.getCurrentInstance();
@@ -58,7 +91,7 @@ public class CartBookBackingBean implements Serializable {
     /**
      *
      */
-    public void checkBooksInCookie() {
+    /*public void checkBooksInCookie() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> cookieMap = null;
 
@@ -84,4 +117,4 @@ public class CartBookBackingBean implements Serializable {
         }
         //writeIsbnToCookie(); //setMaxAge, setPath
     }
-}
+}*/

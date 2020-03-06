@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-Java Server Faces page that displays a checkout page
+Java Server Faces page that displays a cart page
 showing all the items or the item you have added to your cart
 that you will be purchasing. Also, you can remove items in here
 and finalize transactions
@@ -19,31 +19,39 @@ and finalize transactions
     <ui:define name="head">
         <title>Cart</title>
     </ui:define>
-    
+
     <ui:define name="content">
-        <f:metadata>
+        <!--<f:metadata>
             <f:event type="preRenderView"
                      listener="#{cartBookBackingBean.checkBooksInCookie}" />
-        </f:metadata>
-        
+        </f:metadata>-->
+
         <b:container>
             <div style="text-align: center; background-color: #000000;">
-                <h1 style="color: #fff">Start reading now!</h1>
+                <h1 style="color: #fff">#{msgs.startreadingnow}</h1>
             </div>
             <b:jumbotron style="text-align: center">
-                <h2>Check-Out</h2>
+                <h2>#{msgs.checkout}</h2>
             </b:jumbotron>
         </b:container>
-        
+
         <b:container>
-            #{cartBookBackingBean.isbn}
+            <b:jumbotron>
+                <c:forEach items="#{cartSession.books}" var="cartbooks">
+                    <ui:decorate template="/templates/book.xhtml">
+                        <ui:param name="book" value="#{cartbooks}"></ui:param>
+                        <ui:param name="showPrice" value="true"></ui:param>
+                        <ui:param name="showOldPrice" value="true"></ui:param>
+                    </ui:decorate>
+                </c:forEach>
+            </b:jumbotron>
         </b:container>
-        
+
         <b:container>
-            
+
         </b:container>
     </ui:define>
-    
+
     <ui:define name="footer">
         <ui:include src="/templates/footer.xhtml"></ui:include>
     </ui:define>
