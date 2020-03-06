@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -35,12 +36,15 @@ public class RegisterBackingBean implements Serializable {
     private static final String LOGIN_PAGE ="login.xhtml";
     //Credit to https://stackoverflow.com/questions/8204680/java-regex-email Jason Buberel for regex pattern 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-    
+    public static final Pattern VALID_PHONE_NUMBER_REGEX = Pattern.compile("[0-9]{3}[0-9]{3}[0-9]{4}");
+    public static final Pattern VALID_POSTAL_CODE_REGEX = Pattern.compile("[A-Z][0-9][A-Z][0-9][A-Z][0-9]");
+
     @Inject
     UsersJpaController userJpaController;
     
     //Lists for selections
     private List<String> availableTitles; 
+    private List<String> provinceSelections;
     
     //Inputs
     private String titleInput; 
@@ -248,7 +252,7 @@ public class RegisterBackingBean implements Serializable {
      * @param city given
      * @author Jeffrey Boisvert 
      */
-    public void setCity(String city) {
+    public void setCityInput(String city) {
         this.cityInput = city;
     }
     
@@ -377,7 +381,18 @@ public class RegisterBackingBean implements Serializable {
     public void setCompanyInput(String companyInput) {
         this.companyInput = companyInput;
     }
-    
+
+    /**
+     * Used to get the provinceSelections value set
+     * @return List of the set provinceSelections.
+     * @author Jeffrey Boisvert
+     */
+    public List<String> getProvinceSelections() {
+        if(this.provinceSelections == null){
+            generateProvinceList();
+        }
+        return provinceSelections;
+    }
     
     
     /**
@@ -386,59 +401,14 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public String register(){
-        
-        //If not valid parameters
-        //TODO build error message
-        if(areInputsNotValid()){
-            LOG.info("Values not valid for " + this.emailInput + " with password " + this.passwordInput);
-            FacesContext context = FacesContext.getCurrentInstance();
-            ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msgs");
-            //TODO i18n currently not working
-            context.addMessage(null, new FacesMessage("Invalid Parameters", "Please provide valid email and password"));
-            
-            return null;
-         }
          
         Users user = generateUserBasedOnInput();
+        LOG.info("Creating user " + user);
         this.userJpaController.create(user);
             
         //TODO show an alert saying register successful please login
         return LOGIN_PAGE;
         
-    }
-    
-    /**
-     * Used as a help method to check if the inputs are valid
-     * @return true of valid, false otherwise
-     * @author Jeffrey Boisvert
-     */
-    private boolean areInputsNotValid() {
-        return isEmailNotValid() || isPasswordNotValid(); 
-    }
-    
-    /**
-     * Used to validate if the email is valid or not. 
-     * @return true if not valid
-     * @author Jeffrey Boisvert
-     */
-    private boolean isEmailNotValid(){
-       Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(this.emailInput);
-        
-       return this.emailInput == null || 
-              //this.emailInput.isBlank() || 
-              this.emailInput.isEmpty() ||
-              (!matcher.find()); 
-    }
-    
-    /**
-     * Used to valid if the password is valid or not
-     * @return true if not valid
-     * @author Jeffrey Boisvert
-     */
-    private boolean isPasswordNotValid(){
-       return this.passwordInput == null || 
-              //this.passwordInput.isBlank() || 
-              this.passwordInput.isEmpty(); 
     }
 
     /**
@@ -447,7 +417,15 @@ public class RegisterBackingBean implements Serializable {
      */
     private void generateAvailableTitles() {
         //TODO Not sure how to make this i18n compliant. Also what titles does Ken want? 
-        this.availableTitles = new ArrayList<>(Arrays.asList("Mr", "Mrs", "Ms", "Dr") );    
+        this.availableTitles = new ArrayList<>(
+                Arrays.asList(
+                        this.bundle.getString("mr_title"), 
+                        this.bundle.getString("mrs_title"), 
+                        this.bundle.getString("ms_title"), 
+                        this.bundle.getString("dr_title")
+                ) 
+        );   
+       Collections.sort(this.availableTitles);
     }
     
     /**
@@ -455,8 +433,25 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     private void generateProvinceList() {
-        //TODO Not sure how to make this i18n compliant. Also what titles does Ken want? 
-        this.availableTitles = new ArrayList<>(Arrays.asList("Mr", "Mrs", "Ms", "Dr") );    
+        this.provinceSelections = new ArrayList<>(
+                Arrays.asList(
+                        this.bundle.getString("ab_label"), 
+                        this.bundle.getString("bc_label"), 
+                        this.bundle.getString("ma_label"), 
+                        this.bundle.getString("nb_label"), 
+                        this.bundle.getString("nl_label"), 
+                        this.bundle.getString("nt_label"), 
+                        this.bundle.getString("ns_label"), 
+                        this.bundle.getString("nu_label"), 
+                        this.bundle.getString("on_label"), 
+                        this.bundle.getString("pe_label"),
+                        this.bundle.getString("qc_label"),
+                        this.bundle.getString("sk_label"),
+                        this.bundle.getString("yt_label")
+                ) 
+        ); 
+        
+        Collections.sort(this.provinceSelections);
     }
     
     /**
@@ -469,9 +464,60 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validateName(FacesContext fc, UIComponent c, Object value) {
-        if (value == null || ((String) value).isBlank() || ((String) value).isEmpty()) {
+        if (((String) value).isBlank()) {
             throw new ValidatorException(new FacesMessage(
                     this.bundle.getString("name_error")));
+        }
+    }
+    
+    /**
+     * Used to validate if email is in the correct format
+     * Format: test@email.com
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validateEmail(FacesContext fc, UIComponent c, Object value) {
+       Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher((String) value);
+        
+       if(!matcher.find()){
+         throw new ValidatorException(new FacesMessage(
+                    this.bundle.getString("email_error")));
+        }
+    }
+    
+    /**
+     * Used to validate if postal code is in the correct format
+     * Format: A1A2B2
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validatePostalCode(FacesContext fc, UIComponent c, Object value) {
+       Matcher matcher = VALID_POSTAL_CODE_REGEX.matcher((String) value);
+        
+       if(!matcher.find()){
+         throw new ValidatorException(new FacesMessage(
+                    this.bundle.getString("email_error")));
+        }
+    }
+    
+    /**
+     * Used to validate if phone number is in the correct format
+     * Format: 123-123-1234
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validatePhone(FacesContext fc, UIComponent c, Object value) {
+       Matcher matcher = VALID_PHONE_NUMBER_REGEX.matcher((String) value);
+        
+       if(!matcher.find()){
+         throw new ValidatorException(new FacesMessage(
+                    this.bundle.getString("phone_error")));
         }
     }
     
