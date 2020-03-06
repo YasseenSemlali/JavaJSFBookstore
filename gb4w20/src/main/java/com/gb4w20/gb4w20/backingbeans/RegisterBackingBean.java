@@ -15,7 +15,9 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.annotation.ManagedProperty;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.LoggerFactory;
@@ -450,6 +452,23 @@ public class RegisterBackingBean implements Serializable {
     private void generateProvinceList() {
         //TODO Not sure how to make this i18n compliant. Also what titles does Ken want? 
         this.availableTitles = new ArrayList<>(Arrays.asList("Mr", "Mrs", "Ms", "Dr") );    
+    }
+    
+    /**
+     * Used to validate if the user entered a name. 
+     * Design decision to only validate if empty or blank string (allow user to enter 123 if they
+     * really want to it is a string regardless). 
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validateName(FacesContext fc, UIComponent c, Object value) {
+        if (value == null || ((String) value).isBlank() || ((String) value).isEmpty()) {
+            throw new ValidatorException(new FacesMessage(
+                    //TODO get bundle
+                    "Name cannot contain underscores"));
+        }
     }
     
     /**

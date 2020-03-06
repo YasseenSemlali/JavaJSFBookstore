@@ -31,7 +31,11 @@ Java Server Faces page that displays the register user page of the app
                          </div>
                          <div class="form-group">
                              <h:outputLabel for="first-name" value="#{msgs.firstname}" />
-                             <h:inputText id="first-name" class="form-control" value="#{registerBackingBean.firstNameInput}"/>
+                             <h:inputText 
+                                 id="first-name" class="form-control" value="#{registerBackingBean.firstNameInput}" validator="#{registerBackingBean.validateName}">
+                                 <f:ajax event="change" render="first-name-error"/>
+                             </h:inputText>
+                             <h:message id="first-name-error" for="first-name" style="color: red"/>
                          </div>
                          <div class="form-group">
                              <h:outputLabel for="last-name" value="#{msgs.lastname}" />
