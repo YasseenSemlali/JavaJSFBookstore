@@ -21,18 +21,11 @@ and finalize transactions
     </ui:define>
 
     <ui:define name="content">
-        <!--<f:metadata>
-            <f:event type="preRenderView"
-                     listener="#{cartBookBackingBean.checkBooksInCookie}" />
-        </f:metadata>-->
-
         <b:container>
             <div style="text-align: center; background-color: #000000;">
                 <h1 style="color: #fff">#{msgs.startreadingnow}</h1>
             </div>
-            <b:jumbotron style="text-align: center">
-                <h2>#{msgs.checkout}</h2>
-            </b:jumbotron>
+            <h2 style="text-align: center">#{msgs.checkout}</h2>
         </b:container>
 
         <b:container>
@@ -44,16 +37,23 @@ and finalize transactions
                         <ui:param name="showOldPrice" value="true"></ui:param>
                     </ui:decorate>
                     <h:form>
-                        <p:outputLabel>#{msgs.quantity}</p:outputLabel>
-                        <b:touchSpin></b:touchSpin>
-                        <p:commandButton value="#{msgs.remove}" action="#{cartSession.removeBookFromSession(cartbooks)}" onsuccess="location.reload()"/>
+                        <p:commandButton value="#{msgs.remove}" action="#{cartSession.removeBookFromSession(cartbooks)}" style="background-color: red; color: white" onsuccess="location.reload()"/>
                     </h:form>
+                    <br></br>
                 </c:forEach>
+                <h3>#{msgs.total}: $#{cartSession.calculateTotalAmount()}</h3>
             </b:jumbotron>
         </b:container>
 
         <b:container>
-
+            <b:jumbotron>
+                <h:form>
+                    <b:panelGrid columns="2">
+                        <b:commandButton value="#{msgs.backshopping}" action="index.xhtml" look="primary"/>
+                        <b:commandButton value="#{msgs.finalize}" look="success"/> <!--still need to make an action to finalize-->
+                    </b:panelGrid>
+                </h:form>
+            </b:jumbotron>
         </b:container>
     </ui:define>
 

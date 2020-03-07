@@ -6,6 +6,7 @@ package com.gb4w20.gb4w20.backingbeans;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -33,6 +34,7 @@ public class CartBookBackingBean implements Serializable {
     //user cannot add the same book to the cart, user can still add amount of 
     //that book in the cart page
     private HashSet<Books> books;
+    private BigDecimal total;
 
     @Inject
     private BooksJpaController bookJpaController;
@@ -42,6 +44,7 @@ public class CartBookBackingBean implements Serializable {
      */
     public CartBookBackingBean() {
         this.books = new HashSet<Books>();
+        this.total = new BigDecimal(0);
     }
     
     /**
@@ -58,6 +61,22 @@ public class CartBookBackingBean implements Serializable {
      */
     public void setBooks(HashSet<Books> books){
         this.books = books;
+    }
+    
+    /**
+     * Getter for total
+     * @return 
+     */
+    public BigDecimal getTotal(){
+        return this.total;
+    }
+    
+    /**
+     * Setter for total
+     * @param total 
+     */
+    public void setTotal(BigDecimal total){
+        this.total = total;
     }
 
     /**
@@ -81,51 +100,26 @@ public class CartBookBackingBean implements Serializable {
         LOG.info(book.getIsbn() + " being removed from the ccart");
         return this.books.remove(book);
     }
+    
+    /**
+     * If there are books in the cart, this will calculate
+     * the total amount of the book or books in the cart
+     * that the user will need to pay
+     * @return 
+     */
+    public BigDecimal calculateTotalAmount(){
+        if (!this.books.isEmpty()){
+            BigDecimal listSale;
+             for (Books book : this.books){
+                 listSale = book.getListPrice().subtract(book.getSalePrice());
+                 LOG.debug("listsale is " + listSale);
+                 this.total = this.total.add(listSale);
+                 LOG.debug("total is " + this.total);
+             }
+             return this.total;
+        }
+        else{
+            return new BigDecimal(0);
+        }
+    } 
 }
-    /**
-     *
-     */
-    /*public void addIsbnToCookie(Long isbn) {
-        this.isbn = isbn;
-        FacesContext context = FacesContext.getCurrentInstance();
-        Cookie cart = (Cookie) context.getExternalContext().getRequestCookieMap().get("isbn");
-        cart.getValue().split(",");
-        cart.setPath("/");
-        context.getExternalContext().addResponseCookie("isbn", this.isbn.toString(), null);
-    }*/
-
-    /*public void writeIsbnToCookie(){
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.getExternalContext().addResponseCookie("isbn", this.isbn.toString(), null);
-    }*/
-
-    /**
-     *
-     */
-    /*public void checkBooksInCookie() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, Object> cookieMap = null;
-
-        if (cookieMap == null || cookieMap.isEmpty()) {
-            LOG.info("No cookies");
-        } else {
-            ArrayList<Object> ac = new ArrayList<>(cookieMap.values());
-
-            // Streams coding to print out the contenst of the cookies found
-            ac.stream().map((c) -> {
-                LOG.info(((Cookie) c).getName());
-                return c;
-            }).forEach((c) -> {
-                LOG.info(((Cookie) c).getValue());
-            });
-        }
-
-        //to get a specific cookie
-        Object book_cookie = context.getExternalContext().getRequestCookieMap().get("isbn");
-        if (book_cookie != null) {
-            LOG.info(((Cookie) book_cookie).getName());
-            LOG.info(((Cookie) book_cookie).getValue());
-        }
-        //writeIsbnToCookie(); //setMaxAge, setPath
-    }
-}*/

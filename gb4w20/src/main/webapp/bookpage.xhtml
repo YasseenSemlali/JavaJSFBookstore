@@ -31,11 +31,6 @@ add it to the shopping cart.
                 <c:set var="authorbooks" value="#{book.getAuthorsCollection()}"/>
                 <c:set var="genrebooks" value="#{book.getGenresCollection()}"/>
 
-                <!--<f:metadata>
-                    <f:event type="preRenderView"
-                             listener="#{cartBookBackingBean.checkBooksInCookie}" />
-                </f:metadata>-->
-
                 <b:container>
                     <b:jumbotron>
                         <ui:decorate template="/templates/book.xhtml">
@@ -63,7 +58,11 @@ add it to the shopping cart.
                         <br></br>
                         <h:form>
                             <input type="hidden" name="isbn" value="#{param.isbn}" />
-                            <p:commandButton value="#{msgs.addToCart}" style="background-color: #007bff; color: white" action="#{cartSession.addBookToSession(param['isbn'])}"></p:commandButton>
+                            <p:commandButton value="#{msgs.addToCart}" style="background-color: #007bff; color: white" action="#{cartSession.addBookToSession(param['isbn'])}" onsuccess="PF('succeed').show()">
+                                <p:dialog header="#{msgs.addedtocart}" widgetVar="succeed" minHeight="20" responsive="true">
+                                    <h:outputText value="#{msgs.checkcart}" /> 
+                                </p:dialog>
+                            </p:commandButton>
                         </h:form>
                     </b:jumbotron> 
                 </b:container>
@@ -149,7 +148,7 @@ add it to the shopping cart.
                                     <br></br> 
                                     <p:inputTextarea value="#{bookReviewBackingBean.review}" rows="5" cols="40" maxlength="750" />
                                     <p:rating value="#{bookReviewBackingBean.rating}" />
-                                    <p:commandButton value="#{msgs.submit}" action="#{bookReviewBackingBean.makeReview(param['isbn'], userSession.loggedInUserId)}" onsuccess="PF('succeed').show()"/>  <!--user is 1 for now -->
+                                    <p:commandButton value="#{msgs.submit}" action="#{bookReviewBackingBean.makeReview(param['isbn'], userSession.loggedInUserId)}" onsuccess="PF('succeed').show()"/> 
                                     <p:dialog header="#{msgs.reviewsubmitted}" widgetVar="succeed" minHeight="40" responsive="true"> 
                                         <h:outputText value="#{msgs.thankyoureview}" />  
                                     </p:dialog>
