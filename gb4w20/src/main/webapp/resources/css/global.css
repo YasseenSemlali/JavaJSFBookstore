@@ -103,7 +103,9 @@ body, html {
     box-sizing: border-box;
 }
 
-
+.error {
+    color:red;
+}
 
 
 
