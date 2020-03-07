@@ -96,6 +96,12 @@ public class AuthorReportBackingBean implements Serializable {
             return;
         }
         
+        if(this.startDate.after(this.endDate)){
+            FacesMessage message = new FacesMessage(this.bundle.getString("start_date_after_end_date_error"));
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        
         try{
             
             setTotalSales();
