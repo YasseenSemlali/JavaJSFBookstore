@@ -21,6 +21,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -471,7 +473,7 @@ public class RegisterBackingBean implements Serializable {
     }
     
     /**
-     * Used to validate if email is in the correct format
+     * Used to validate if email is in the correct format and not already taken
      * Format: test@email.com
      * @param fc
      * @param c
@@ -485,6 +487,15 @@ public class RegisterBackingBean implements Serializable {
          throw new ValidatorException(new FacesMessage(
                     this.bundle.getString("email_error")));
         }
+       
+       try {
+           this.userJpaController.findUsers(emailInput);
+       }
+       catch(NoResultException | NonUniqueResultException ex){
+           LOG.debug("Email is already taken ", ex);
+           throw new ValidatorException(new FacesMessage(
+                    this.bundle.getString("email_taken_error")));
+       }
        
        
     }
