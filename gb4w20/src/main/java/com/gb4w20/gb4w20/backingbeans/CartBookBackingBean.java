@@ -67,8 +67,19 @@ public class CartBookBackingBean implements Serializable {
      * @return 
      */
     public boolean addBookToSession(Long isbn) {
-        LOG.info(isbn.toString());
+        LOG.info(isbn + " being added to the cart");
         return this.books.add(this.bookJpaController.findBooks(isbn));
+    }
+    
+    /**
+     * Removing the book from the books list that will be in 
+     * session scope
+     * @param book
+     * @return 
+     */
+    public boolean removeBookFromSession(Books book){
+        LOG.info(book.getIsbn() + " being removed from the ccart");
+        return this.books.remove(book);
     }
 }
     /**

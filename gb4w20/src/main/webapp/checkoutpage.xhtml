@@ -43,6 +43,11 @@ and finalize transactions
                         <ui:param name="showPrice" value="true"></ui:param>
                         <ui:param name="showOldPrice" value="true"></ui:param>
                     </ui:decorate>
+                    <h:form>
+                        <p:outputLabel>#{msgs.quantity}</p:outputLabel>
+                        <b:touchSpin></b:touchSpin>
+                        <p:commandButton value="#{msgs.remove}" action="#{cartSession.removeBookFromSession(cartbooks)}" onsuccess="location.reload()"/>
+                    </h:form>
                 </c:forEach>
             </b:jumbotron>
         </b:container>
