@@ -110,6 +110,7 @@ public class CartBookBackingBean implements Serializable {
     public BigDecimal calculateTotalAmount(){
         if (!this.books.isEmpty()){
             BigDecimal listSale;
+            this.total = new BigDecimal(0);
              for (Books book : this.books){
                  listSale = book.getListPrice().subtract(book.getSalePrice());
                  LOG.debug("listsale is " + listSale);

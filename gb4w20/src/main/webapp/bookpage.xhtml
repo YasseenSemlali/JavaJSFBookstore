@@ -58,8 +58,8 @@ add it to the shopping cart.
                         <br></br>
                         <h:form>
                             <input type="hidden" name="isbn" value="#{param.isbn}" />
-                            <p:commandButton value="#{msgs.addToCart}" style="background-color: #007bff; color: white" action="#{cartSession.addBookToSession(param['isbn'])}" onsuccess="PF('succeed').show()">
-                                <p:dialog header="#{msgs.addedtocart}" widgetVar="succeed" minHeight="20" responsive="true">
+                            <p:commandButton value="#{msgs.addToCart}" style="background-color: #007bff; color: white" action="#{cartSession.addBookToSession(param['isbn'])}" onsuccess="PF('succeedcart').show()">
+                                <p:dialog header="#{msgs.addedtocart}" widgetVar="succeedcart" minHeight="20" responsive="true">
                                     <h:outputText value="#{msgs.checkcart}" /> 
                                 </p:dialog>
                             </p:commandButton>
