@@ -5,6 +5,7 @@ import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Genres;
 import com.gb4w20.gb4w20.entities.Publishers;
 import com.gb4w20.gb4w20.exceptions.BackendException;
+import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.AuthorsJpaController;
 import com.gb4w20.gb4w20.jpa.BookorderJpaController;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
@@ -411,7 +412,7 @@ public class ManagerInventory implements Serializable {
             booksController.create(newBook);
 
             return "/action-responses/action-success";
-        } catch (Exception ex) {
+        } catch (RollbackFailureException ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure.xhtml";
         }
@@ -504,7 +505,7 @@ public class ManagerInventory implements Serializable {
             genresController.create(newGenre);
 
             return "/action-responses/action-success";
-        } catch (Exception ex) {
+        } catch (BackendException ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";
         }
@@ -544,7 +545,7 @@ public class ManagerInventory implements Serializable {
             publishersController.create(newPublisher);
 
             return "/action-responses/action-success";
-        } catch (Exception ex) {
+        } catch (BackendException ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";
         }

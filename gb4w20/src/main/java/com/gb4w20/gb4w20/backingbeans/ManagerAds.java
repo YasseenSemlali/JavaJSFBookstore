@@ -2,6 +2,7 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Ads;
 import com.gb4w20.gb4w20.exceptions.BackendException;
+import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.AdsJpaController;
 import java.io.IOException;
 import java.io.Serializable;
@@ -102,7 +103,7 @@ public class ManagerAds implements Serializable {
             adsController.create(ad);
 
             return "/action-responses/action-success";
-        } catch (Exception ex) {
+        } catch (BackendException | RollbackFailureException ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";
         }

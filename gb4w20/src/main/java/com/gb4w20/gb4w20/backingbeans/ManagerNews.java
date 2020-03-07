@@ -1,6 +1,7 @@
 package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.RssFeeds;
+import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.RssFeedsJpaController;
 import java.io.IOException;
 import java.io.Serializable;
@@ -92,7 +93,7 @@ public class ManagerNews implements Serializable {
             newsController.create(feed);
 
             return "/action-responses/action-success";
-        } catch (Exception ex) {
+        } catch (BackendException ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";
         }
