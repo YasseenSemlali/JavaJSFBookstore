@@ -24,16 +24,29 @@ Java Server Faces page that displays the login form for a user
         <h2 class="header">#{msgs.login}</h2>
         
         <h:form class="form-signin">
-            <p:growl id="growl" sticky="false" showDetail="true" />  
                  <div class="form-group">
-                    <h:outputLabel for="email" value="#{msgs.email}" />
-                    <h:inputText id="email" class="form-control" value="#{loginBackingBean.emailInput}"/>
+                     <h:outputLabel for="email" value="#{msgs.email}" />
+                     <h:inputText id="email" class="form-control" 
+                                 value="#{loginBackingBean.emailInput}"  
+                                 validator="#{loginBackingBean.validateEmail}">
+                              <f:ajax event="change" render="email-error"/>
+                     </h:inputText>
+                     <h:message id="email-error" for="email" style="color: red"/>
                  </div>
                  <div class="form-group">
-                    <h:outputLabel for="password" value="#{msgs.password}" />
-                    <h:inputSecret id="password" class="form-control" value="#{loginBackingBean.passwordInput}"/>
+                     <h:outputLabel for="password" value="#{msgs.password}" />
+                     <h:inputSecret id="password"
+                                    class="form-control" 
+                                    value="#{loginBackingBean.passwordInput}"
+                                    validator="#{loginBackingBean.validatePassword}">
+                              <f:ajax event="change" render="password-error"/>
+                     </h:inputSecret>
+                     <h:message id="password-error" for="password" style="color: red"/>   
                  </div>
-                <h:commandButton class="btn btn-primary" value="#{msgs.login}" action="#{loginBackingBean.login}" />
+                <b:commandButton update="@form" 
+                                 class="btn btn-primary" 
+                                 value="#{msgs.login}" 
+                                 action="#{loginBackingBean.login}"/>
         </h:form>
         </div>
     </ui:define>

@@ -10,11 +10,11 @@
     </h:head>
     <h:body>
         <ui:composition>    
-            <b:navBar inverse="true" styleClass="topMenuBar">
+            <b:navBar id="main-nav" inverse="true" styleClass="topMenuBar">
                 <b:navbarLinks>
                     <b:navLink value="" href="/gb4w20/index.xhtml" styleClass="logomenuitem"/>
                 </b:navbarLinks>
-                <form class="navbar-form navbar-left " role="search" action="search.xhtml" name="test" method="GET">
+                <form id="nav-search" class="navbar-form navbar-left " role="search" action="search.xhtml" name="test" method="GET">
                     <input type="text" class="form-control" placeholder="Title" name="title"/>
                     <button type="submit" class="btn btn-default">${msgs.search}</button>
                     <div><a href="advanced_search.xhtml"><small>${msgs.advanced_search}</small></a></div>
