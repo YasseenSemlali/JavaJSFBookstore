@@ -55,14 +55,14 @@ The user can select which author they would like to view via a drop down.
         <div class="jumbotron">
               <h3 class="report-sub-title">#{msgs.itemsPurchased}</h3>
               <h:panelGroup class="report-result" layout="block">
-              <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty totalSalesReportBackingBean.purchasedProducts}">
-              <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
-                  <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
-                        <c:forEach items="#{totalSalesReportBackingBean.purchasedProducts}" var="sales">
-                            <h:panelGroup>#{sales.name}</h:panelGroup>
-                            <h:panelGroup>$#{sales.amount}</h:panelGroup>
-                        </c:forEach>
-             </h:panelGrid>
+                <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty totalSalesReportBackingBean.purchasedProducts}">
+                <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
+                    <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
+                          <c:forEach items="#{totalSalesReportBackingBean.purchasedProducts}" var="sales">
+                              <h:panelGroup>#{sales.name}</h:panelGroup>
+                              <h:panelGroup>$#{sales.amount}</h:panelGroup>
+                          </c:forEach>
+               </h:panelGrid>
              </h:panelGroup>
         </div>
     </ui:define>
