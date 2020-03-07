@@ -1,17 +1,24 @@
 
 package com.gb4w20.gb4w20.backingbeans;
 
+import static com.gb4w20.gb4w20.backingbeans.RegisterBackingBean.VALID_EMAIL_ADDRESS_REGEX;
+import com.gb4w20.gb4w20.entities.Users;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.annotation.ManagedProperty;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -34,6 +41,19 @@ public class LoginBackingBean implements Serializable {
     
     private String emailInput; 
     private String passwordInput;
+    
+    //Bundle for i18n
+    private ResourceBundle bundle; 
+    
+    /**
+     * Mainly used to set default values.
+     * @author Jeffrey Boisvert
+     */
+    @PostConstruct
+    public void init(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        this.bundle = context.getApplication().getResourceBundle(context, "msgs");
+    }
     
     /**
      * Used to get the email value inputted
@@ -83,68 +103,56 @@ public class LoginBackingBean implements Serializable {
      * 1) If a manager redirected to to the manager page
      * 2) If a normal client redirect to the index.xhtml page
      * If login failed prompted with error
-     * @return A string of a uri of where to redirect to
+     * @return A string of a URI of where to redirect to
      * @author Jeffrey Boisvert
      */
     public String login(){
-        
-        //If not valid notify user
-        if(areInputsNotValid()){
-            LOG.info("Values not valid for " + this.emailInput + " with password " + this.passwordInput);
-            FacesContext context = FacesContext.getCurrentInstance();
-            ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msgs");
-            //TODO i18n currently not working
-            context.addMessage(null, new FacesMessage("Invalid Parameters", "Please provide valid email and password"));
-            
-            return null;
-         }
         
         if(this.session.loginUser(this.emailInput, this.passwordInput)){
             LOG.info("Login successful for " + this.emailInput + " with password " + this.passwordInput);
             return this.session.isLoggedInManager() ? MANAGER_PAGE : CLIENT_PAGE;  
         }
         
-         LOG.info("No user found for " + this.emailInput + " with password " + this.passwordInput);
-         FacesContext context = FacesContext.getCurrentInstance();
-         ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msgs");
-         context.addMessage(null, new FacesMessage("Invalid login", "Email and password provided did not match any of our records. Please try again"));
+        //Invalid login
+        FacesMessage message = new FacesMessage(this.bundle.getString("invalidLoginDetails"));
+        FacesContext.getCurrentInstance().addMessage(null, message);
             
         return null;
         
     }
     
     /**
-     * Used as a help method to check if the inputs are valid
-     * @return true of valid, false otherwise
+     * Used to validate if email is in the correct format
+     * Format: test@email.com
+     * @param fc
+     * @param c
+     * @param value entered
      * @author Jeffrey Boisvert
      */
-    private boolean areInputsNotValid() {
-        return isEmailNotValid() || isPasswordNotValid(); 
-    }
-    
-    /**
-     * Used to validate if the email is valid or not. 
-     * @return true if not valid
-     * @author Jeffrey Boisvert
-     */
-    private boolean isEmailNotValid(){
-       Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(this.emailInput);
+    public void validateEmail(FacesContext fc, UIComponent c, Object value) {
+       Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher((String) value);
         
-       return this.emailInput == null || 
-              //this.emailInput.isBlank() || 
-              this.emailInput.isEmpty() ||
-              (!matcher.find()); 
+       if(!matcher.find()){
+         throw new ValidatorException(new FacesMessage(
+                    this.bundle.getString("email_error")));
+        }
+
     }
     
     /**
-     * Used to valid if the password is valid or not
-     * @return true if not valid
+     * Used to validate if the user entered a name. 
+     * Design decision to only validate if empty or blank string (allow user to enter 123 if they
+     * really want to it is a string regardless). 
+     * @param fc
+     * @param c
+     * @param value entered
      * @author Jeffrey Boisvert
      */
-    private boolean isPasswordNotValid(){
-       return this.passwordInput == null || 
-              //this.passwordInput.isBlank() || 
-              this.passwordInput.isEmpty(); 
+    public void validateIsNotBlank(FacesContext fc, UIComponent c, Object value) {
+        if (((String) value).isBlank()) {
+            throw new ValidatorException(new FacesMessage(
+                    this.bundle.getString("empty_error")));
+        }
     }
     
 }
