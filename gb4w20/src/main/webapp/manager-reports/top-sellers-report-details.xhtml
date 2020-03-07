@@ -29,6 +29,7 @@ This will list the books based on sales along with the total amount of sales.
         <h:panelGroup layout="block" class="jumbotron">
         <h:panelGroup layout="block" class="h2 report-title">#{msgs.topSellersReport}</h:panelGroup>
         <h:form class="report-form" >
+            <h:messages id="report-error" class="alert alert-danger" globalOnly="true" />
             <h:panelGroup layout="block">
                     <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
                     <p:calendar class="datepicker" value="#{topSellersReportBackingBean.startDate}"
@@ -41,7 +42,7 @@ This will list the books based on sales along with the total amount of sales.
                         id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
             </h:panelGroup>
-             <b:commandButton update="report-result"
+             <b:commandButton update="report-result @form"
                               class="btn btn-primary run-report-button" 
                               value="#{msgs.runReport}"
                               action="#{topSellersReportBackingBean.runReport}"/>
