@@ -1,7 +1,8 @@
 package com.gb4w20.gb4w20.backingbeans;
 
-import com.gb4w20.gb4w20.entities.RssFeeds;
-import com.gb4w20.gb4w20.jpa.RssFeedsJpaController;
+import com.gb4w20.gb4w20.entities.Ads;
+import com.gb4w20.gb4w20.exceptions.BackendException;
+import com.gb4w20.gb4w20.jpa.AdsJpaController;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,22 +15,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A java bean to edit news.
+ * A java bean to edit ads.
  *
  * @author Jean Robatto
  */
 @Named
 @RequestScoped
-public class ManagerNews implements Serializable {
+public class ManagerAds implements Serializable {
 
-    private final static Logger LOG = LoggerFactory.getLogger(ManagerNews.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ManagerAds.class);
 
     @Inject
-    private RssFeedsJpaController newsController;
+    private AdsJpaController adsController;
 
+    private String[] locations;
     private String[] urls;
     private Boolean[] enabled;
-    
+
+    private String newLocation;
     private String newUrl;
 
     /**
@@ -37,65 +40,76 @@ public class ManagerNews implements Serializable {
      */
     @PostConstruct
     private void init() {
-        int size = newsController.getRssFeedsCount();
+        int size = adsController.getAdsCount();
+        locations = new String[size];
         urls = new String[size];
         enabled = new Boolean[size];
         for (int i = 0; i < size; i++) {
+            locations[i] = "";
             urls[i] = "";
-            enabled[i] = Boolean.FALSE;
+            this.enabled[i] = Boolean.FALSE;
         }
     }
 
     /**
-     * Method to alter the state of a news feed
+     * Method to alter the state of an ad.
      *
      * @param id
      * @param index
      * @throws java.io.IOException
      */
-    public void editFeed(Long id, int index) throws IOException {
+    public void editAd(Long id, int index) throws IOException {
         try {
-            RssFeeds feed = newsController.findRssFeeds(id);
+            Ads ad = adsController.findAds(id);
 
             //Only edit fields which have been edited
-            if (!feed.getEnabled().equals(enabled[index])) {
-                feed.setEnabled(enabled[index]);
+            if (!locations[index].isEmpty()) {
+                ad.setFileLocation(locations[index]);
             }
             if (!urls[index].isEmpty()) {
-                feed.setUrl(urls[index]);
+                ad.setUrl(urls[index]);
+            }
+            if (!ad.getEnabled().equals(enabled[index])) {
+                ad.setEnabled(enabled[index]);
             }
 
-            newsController.edit(feed);
+            adsController.edit(ad);
 
             //Reset inputs
-            enabled[index] = Boolean.FALSE;
+            locations[index] = "";
             urls[index] = "";
+            enabled[index] = Boolean.FALSE;
 
-        } catch (Exception ex) {
+        } catch (BackendException ex) {
             LOG.info(ex.toString());
             FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/action-responses/action-failure.xhtml");
         }
     }
-    
+
     /**
-     * Method to create a new feed.
+     * Method to create a new ad.
      *
      * @return redirection
      */
-    public String createFeed() {
+    public String createAd() {
         try {
-            RssFeeds feed = new RssFeeds();
-            feed.setUrl(newUrl);
-            feed.setTimestamp(new Date());
-            feed.setEnabled(Boolean.TRUE);
+            Ads ad = new Ads();
+            ad.setFileLocation(newLocation);
+            ad.setUrl(newUrl);
+            ad.setTimestamp(new Date());
+            ad.setEnabled(Boolean.TRUE);
             
-            newsController.create(feed);
+            adsController.create(ad);
 
             return "/action-responses/action-success";
         } catch (Exception ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";
         }
+    }
+
+    public String[] getLocations() {
+        return locations;
     }
 
     public String[] getUrls() {
@@ -106,8 +120,16 @@ public class ManagerNews implements Serializable {
         return enabled;
     }
 
+    public String getNewLocation() {
+        return newLocation;
+    }
+
     public String getNewUrl() {
         return newUrl;
+    }
+
+    public void setLocations(String[] locations) {
+        this.locations = locations;
     }
 
     public void setUrls(String[] urls) {
@@ -118,9 +140,12 @@ public class ManagerNews implements Serializable {
         this.enabled = enabled;
     }
 
+    public void setNewLocation(String newLocation) {
+        this.newLocation = newLocation;
+    }
+
     public void setNewUrl(String newUrl) {
         this.newUrl = newUrl;
     }
 
-    
 }

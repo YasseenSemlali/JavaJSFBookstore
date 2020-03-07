@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 Java Server Faces page that displays all the options
-necessary to manage reviews in the web app.
+necessary to manage sales in the web app.
 
 @author Jean Robatto
 -->
@@ -22,7 +22,7 @@ necessary to manage reviews in the web app.
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <h:form>
                 <p:dataTable id="salelist" var="book" value="#{booksJpaController.findBooksEntities()}"
-                             emptyMessage="#{msgs.noresults}" rowIndexVar="index">
+                             emptyMessage="#{msgs.noresults}" rowIndexVar="index" resizableColumns="true">
 
                     <p:column filterBy="#{book.isbn}" headerText="ISBN" filterMatchMode="contains">
                         <h:outputText value="#{book.isbn}" />
@@ -35,11 +35,11 @@ necessary to manage reviews in the web app.
                     <p:column filterBy="#{book.listPrice} $" headerText="#{msgs.list_price}" filterMatchMode="contains">
                         <h:outputText value="#{book.listPrice} $" />
                     </p:column>
-                    
+
                     <p:column filterBy="#{book.salePrice} $" headerText="#{msgs.sale_price}" filterMatchMode="contains">
                         <h:outputText value="#{book.salePrice} $" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msgs.sale_price}">
                         <p:inputNumber value="#{managerSales.newSalePrice[index]}" />
                     </p:column>
@@ -50,7 +50,7 @@ necessary to manage reviews in the web app.
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
-                </h:form>
+            </h:form>
         </b:container>
     </ui:define>                
 </ui:composition>

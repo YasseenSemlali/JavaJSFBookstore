@@ -17,44 +17,49 @@ necessary to manage news for the web app
     <ui:define name="head">
         <title>#{msgs.news}</title>
     </ui:define>
-    
+
     <ui:define name="content">
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <h:form style="text-align: center">
-                <p:dataTable id="newslist" var="new" value="#{rssFeedsJpaController.findRssFeedsEntities()}"
-                             emptyMessage="#{msgs.noresults}" rowIndexVar="index">
+                <p:commandButton style="padding: 2%; margin: 3%" value="#{msgs.create_feed}" styleClass="formComponent" action="manager-news-new.xhtml" />
+            </h:form>
+            <div class="card">
+                <h:form style="text-align: center">
+                    <p:dataTable id="newslist" var="new" value="#{rssFeedsJpaController.findRssFeedsEntities()}"
+                                 emptyMessage="#{msgs.noresults}" rowIndexVar="index" resizableColumns="true">
 
-                    <p:column filterBy="#{new.id}" headerText="ID" filterMatchMode="contains">
-                        <h:outputText value="#{new.id}" />
-                    </p:column>
+                        <p:column filterBy="#{new.id}" headerText="ID" filterMatchMode="contains">
+                            <h:outputText value="#{new.id}" />
+                        </p:column>
 
-                    <p:column filterBy="#{new.timestamp}" headerText="#{msgs.date}" filterMatchMode="contains">
-                        <h:outputText value="#{new.timestamp}" />
-                    </p:column>
+                        <p:column filterBy="#{new.timestamp}" headerText="#{msgs.date}" filterMatchMode="contains">
+                            <h:outputText value="#{new.timestamp}" />
+                        </p:column>
 
-                    <p:column filterBy="#{new.url}" headerText="URL" filterMatchMode="contains">
-                        <h:outputText value="#{new.url}" />
-                    </p:column>
-                    
-                    <p:column headerText="#{msgs.new_feed}">
-                        <h:inputText value="#{managerNews.urls[index]}" />
-                    </p:column>
-                    
-                    <p:column headerText="#{msgs.enabled}">
-                        <h:outputLabel value="#{new.enabled}" />
-                    </p:column>
-                    
-                    <p:column headerText="#{msgs.set_enabled}">
-                        <p:inputSwitch value="#{managerNews.enabled[index]}" />
-                    </p:column>
+                        <p:column filterBy="#{new.url}" headerText="URL" filterMatchMode="contains">
+                            <h:outputText value="#{new.url}" />
+                        </p:column>
 
-                    <p:column>
-                        <p:commandButton value="#{msgs.edit}">
-                            <f:ajax listener="#{managerNews.editFeed(new.id, index)}" render="newslist" execute="@all" />
-                        </p:commandButton>
-                    </p:column>
-                </p:dataTable>
-            </h:form>       
+                        <p:column headerText="#{msgs.new_feed}">
+                            <h:inputText value="#{managerNews.urls[index]}" />
+                        </p:column>
+
+                        <p:column headerText="#{msgs.enabled}">
+                            <h:outputLabel value="#{new.enabled}" />
+                        </p:column>
+
+                        <p:column headerText="#{msgs.set_enabled}">
+                            <p:inputSwitch value="#{managerNews.enabled[index]}" />
+                        </p:column>
+
+                        <p:column>
+                            <p:commandButton value="#{msgs.edit}">
+                                <f:ajax listener="#{managerNews.editFeed(new.id, index)}" render="newslist" execute="@all" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>  
+            </div>
         </b:container>
-        </ui:define>                
-        </ui:composition>
+    </ui:define>                
+</ui:composition>

@@ -18,6 +18,18 @@ necessary to manage inventory of our store.
         <title>#{msgs.inventory}</title>
     </ui:define>
     <ui:define name="content">
+         <!-- FIXES STYLING FOR MOBILE -->
+        <style>
+            .text-right-mobile {
+                text-align: right;
+            }
+
+            @media (max-width: 1200px) {
+                .text-right-mobile {
+                    text-align: left;
+                }
+            }
+        </style>
         <b:container style="margin-top: 5%; margin-bottom:5%;" >
             <p:tabView style="text-align: center;" >
                 <p:tab title="${msgs.book}" id="bookTab">
@@ -25,10 +37,10 @@ necessary to manage inventory of our store.
                         <div class="card">
                             <div class="contaimer">
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:selectOneMenu id="selectbook" class="custom-select" value="#{managerInventory.selectIsbn}" style="width:30%;">
                                             <p:ajax event="change" 
                                                     update="isbn title synopsis cover pubdate numpages wholeprice listprice saleprice active allauthors allgenres allpublishers totalsaleslabel"
@@ -39,90 +51,90 @@ necessary to manage inventory of our store.
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="ISBN:" styleClass="formComponent"/>
                                     </div>
-                                    <div class="col-lg text-left">
-                                         <p:inputText id="isbn" value="#{managerInventory.isbn}" styleClass="formComponent"/> 
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputText id="isbn" value="#{managerInventory.isbn}" styleClass="formComponent"/> 
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.title}:" styleClass="formComponent"/>
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:inputText id="title" value="#{managerInventory.title}" styleClass="formComponent" /> 
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.synopsis}:" styleClass="formComponent"/>
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:inputText id="synopsis" value="#{managerInventory.synopsis}" styleClass="formComponent"/>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.cover}:" styleClass="formComponent"/>
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:inputText id="cover" value="#{managerInventory.cover}" styleClass="formComponent"/>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.pubdate}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
-                                         <p:calendar id="pubdate" pattern="dd/MM/yyyy" style="background-color: white" value="#{managerInventory.dateOfPublication}" styleClass="formComponent" />
+                                    <div class="col-lg-6 text-left">
+                                        <p:calendar id="pubdate" pattern="dd/MM/yyyy" style="background-color: white" value="#{managerInventory.dateOfPublication}" styleClass="formComponent" />
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.num_pages}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:inputNumber id="numpages" value="#{managerInventory.pages}" styleClass="formComponent" />
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.whole_price}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
-                                         <p:inputNumber id="wholeprice" value="#{managerInventory.wholesalePrice}" styleClass="formComponent" />
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputNumber id="wholeprice" value="#{managerInventory.wholesalePrice}" styleClass="formComponent" />
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.list_price}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:inputNumber id="listprice" value="#{managerInventory.listPrice}" styleClass="formComponent" />
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.sale_price}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:inputNumber id="saleprice" value="#{managerInventory.salePrice}" styleClass="formComponent" />
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.active}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:inputSwitch id="active" value="#{managerInventory.active}" styleClass="formComponent" />
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
-                                         <p:outputLabel value="#{msgs.addauthor}:" styleClass="formComponent" />
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.addauthor}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:selectOneMenu id="book_author" class="custom-select" value="#{managerInventory.authorToAdd}" style="width:30%" styleClass="formComponent" >
                                             <p:ajax event="change" 
                                                     update="allauthors"
@@ -132,10 +144,10 @@ necessary to manage inventory of our store.
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="#{msgs.allauthors}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:dataTable id="allauthors" value="#{managerInventory.bookAuthor}" emptyMessage="#{msgs.noresults}" var="author" style="width:50%; text-align: center">
                                             <p:column>
                                                 #{author.firstName} #{author.lastName}
@@ -144,18 +156,18 @@ necessary to manage inventory of our store.
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
-                                        
+                                    <div class="col-lg-6 text-right-mobile">
+
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:commandButton value="#{msgs.clearauthors}" action="#{managerInventory.clearAuthors()}" update="allauthors" styleClass="formComponent" />
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
-                                         <p:outputLabel value="#{msgs.addgenre}:" styleClass="formComponent" />
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.addgenre}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:selectOneMenu id="book_genre" class="custom-select" value="#{managerInventory.genreToAdd}" style="width:30%" styleClass="formComponent" >
                                             <p:ajax event="change" 
                                                     update="allgenres"
@@ -165,10 +177,10 @@ necessary to manage inventory of our store.
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="#{msgs.allgenres}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:dataTable id="allgenres" emptyMessage="#{msgs.noresults}" value="#{managerInventory.bookGenre}" var="genre" style="width:50%; text-align: center">
                                             <p:column>
                                                 #{genre.genre}
@@ -177,18 +189,18 @@ necessary to manage inventory of our store.
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
-                                        
+                                    <div class="col-lg-6 text-right-mobile">
+
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:commandButton value="#{msgs.cleargenres}" action="#{managerInventory.clearGenres()}" update="allgenres" styleClass="formComponent" />
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
-                                         <p:outputLabel value="#{msgs.addpublisher}:" styleClass="formComponent" />
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.addpublisher}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:selectOneMenu id="book_publisher" class="custom-select" value="#{managerInventory.publisherToAdd}" style="width:30%" styleClass="formComponent" >
                                             <p:ajax event="change" 
                                                     update="allpublishers"
@@ -198,10 +210,10 @@ necessary to manage inventory of our store.
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="#{msgs.allpubs}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:dataTable id="allpublishers" emptyMessage="#{msgs.noresults}" value="#{managerInventory.bookPublisher}" var="publisher" style="width:50%; text-align: center">
                                             <p:column>
                                                 #{publisher.name}
@@ -210,36 +222,36 @@ necessary to manage inventory of our store.
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
-                                        
+                                    <div class="col-lg-6 text-right-mobile">
+
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:commandButton value="#{msgs.clearpubs}" action="#{managerInventory.clearPublishers()}" update="allpublishers" styleClass="formComponent" />
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="#{msgs.totalsales}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:outputLabel value="#{managerInventory.totalSales} $" styleClass="formComponent" id="totalsaleslabel"/>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
-                                        
+                                    <div class="col-lg-6 text-right-mobile">
+
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:commandButton 
                                             value="#{msgs.submit}" 
                                             action="#{managerInventory.submitBook}"
                                             styleClass="formComponent" />
                                     </div>
                                 </div>
-                             </div>
-                         </div>                        
-                        </h:form>
-                        
+                            </div>
+                        </div>                        
+                    </h:form>
+
                 </p:tab>
                 <p:tab title="|" disabled="true"></p:tab>
                 <p:tab title="${msgs.author}" id="authorTab">
@@ -247,10 +259,10 @@ necessary to manage inventory of our store.
                         <div class="card">
                             <div class="contaimer">
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:selectOneMenu 
                                             id="selectauthor" 
                                             class="custom-select" 
@@ -262,45 +274,45 @@ necessary to manage inventory of our store.
                                             <f:selectItems value="#{authorsJpaController.findAuthorsEntities()}" var="author" itemValue="#{author.authorId}" itemLabel="#{author.firstName} #{author.lastName}"/>
                                         </p:selectOneMenu>
                                     </div>
-                                 </div>
+                                </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.firstname}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:inputText id="author_firstname" value="#{managerInventory.authorFirstName}" styleClass="formComponent" /> 
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.lastname}:" styleClass="formComponent"/> 
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:inputText id="author_lastname" value="#{managerInventory.authorLastName}" styleClass="formComponent"/>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
-                                        
+                                    <div class="col-lg-6 text-right-mobile">
+
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:commandButton value="#{msgs.submit}" action="#{managerInventory.submitAuthor}" styleClass="formComponent" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </h:form>
+                    </h:form>
                 </p:tab>
                 <p:tab title="|" disabled="true"></p:tab>
                 <p:tab title="${msgs.publisher}" id="publisherTab">
                     <h:form id="publisherForm">
-                      <div class="card">
+                        <div class="card">
                             <div class="contaimer">
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:selectOneMenu id="selectpublisher" class="custom-select" value="#{managerInventory.publisherId}" style="width:30%;">
                                             <p:ajax event="change" update="publisher_name"
                                                     listener="#{managerInventory.publisherChanged}" />
@@ -308,37 +320,37 @@ necessary to manage inventory of our store.
                                             <f:selectItems value="#{publishersJpaController.findPublishersEntities()}" var="publisher" itemValue="#{publisher.publisherId}" itemLabel="#{publisher.name}"/>
                                         </p:selectOneMenu>
                                     </div>
-                                 </div>
+                                </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel for="publisher_name" value="#{msgs.name}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:inputText id="publisher_name" value="#{managerInventory.publisherName}" styleClass="formComponent" /> 
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
-                                        
+                                    <div class="col-lg-6 text-right-mobile">
+
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:commandButton value="#{msgs.submit}" action="#{managerInventory.submitPublisher()}" styleClass="formComponent"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </h:form>
+                    </h:form>
                 </p:tab>
                 <p:tab title="|" disabled="true"></p:tab>
                 <p:tab title="${msgs.genre}" id="genreTab">
                     <h:form id="genreForm">
-                     <div class="card">
+                        <div class="card">
                             <div class="contaimer">
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:selectOneMenu id="selectgenre" class="custom-select" value="#{managerInventory.genreId}" style="width:30%;">
                                             <p:ajax event="change" update="genre"
                                                     listener="#{managerInventory.genreChanged}" />
@@ -346,28 +358,28 @@ necessary to manage inventory of our store.
                                             <f:selectItems value="#{genresJpaController.findGenresEntities()}" var="genre" itemValue="#{genre.genreId}" itemLabel="#{genre.genre}"/>
                                         </p:selectOneMenu>
                                     </div>
-                                 </div>
+                                </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="#{msgs.genre}:" styleClass="formComponent"/>
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:inputText id="genre" value="#{managerInventory.genre}" styleClass="formComponent" /> 
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg text-right">
-                                        
+                                    <div class="col-lg-6 text-right-mobile">
+
                                     </div>
-                                    <div class="col-lg text-left">
+                                    <div class="col-lg-6 text-left">
                                         <p:commandButton value="#{msgs.submit}" action="#{managerInventory.submitGenre()}" styleClass="formComponent"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </h:form>
+                    </h:form>
                 </p:tab>
-             </p:tabView>
+            </p:tabView>
         </b:container>
-        </ui:define>                
-        </ui:composition>
+    </ui:define>                
+</ui:composition>

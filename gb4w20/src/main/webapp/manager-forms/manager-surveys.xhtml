@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 Java Server Faces page that displays all the options
-necessary to manage news for the web app
+necessary to manage surveys for the web app
 
 @author Jean Robatto
 -->
@@ -17,12 +17,16 @@ necessary to manage news for the web app
     <ui:define name="head">
         <title>#{msgs.surveys}</title>
     </ui:define>
-    
+
     <ui:define name="content">
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <h:form style="text-align: center">
+                <p:commandButton style="padding: 2%; margin: 3%" value="#{msgs.create_survey}" styleClass="formComponent" action="manager-survey-new.xhtml" />
+            </h:form>
+            <div class="card">
+            <h:form style="text-align: center">
                 <p:dataTable id="surveylist" var="survey" value="#{surveyQuestionsJpaController.findSurveyQuestionsEntities()}"
-                             emptyMessage="#{msgs.noresults}" rowIndexVar="index">
+                             emptyMessage="#{msgs.noresults}" rowIndexVar="index" resizableColumns="true">
 
                     <p:column filterBy="#{survey.id}" headerText="ID" filterMatchMode="contains">
                         <h:outputText value="#{survey.id}" />
@@ -35,15 +39,15 @@ necessary to manage news for the web app
                     <p:column filterBy="#{survey.question}" headerText="#{msgs.question}" filterMatchMode="contains">
                         <h:outputText value="#{survey.question}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msgs.new_surv_question}">
                         <h:inputText value="#{managerSurveys.questions[index]}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msgs.enabled}">
                         <h:outputLabel value="#{survey.enabled}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msgs.set_enabled}">
                         <p:inputSwitch value="#{managerSurveys.enabled[index]}" />
                     </p:column>
@@ -55,6 +59,7 @@ necessary to manage news for the web app
                     </p:column>
                 </p:dataTable>
             </h:form>       
+            </div>
         </b:container>
-        </ui:define>                
-        </ui:composition>
+    </ui:define>                
+</ui:composition>

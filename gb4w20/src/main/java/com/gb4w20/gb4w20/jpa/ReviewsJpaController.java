@@ -11,6 +11,7 @@ import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.entities.Reviews_;
 import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
@@ -18,12 +19,10 @@ import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -49,7 +48,7 @@ public class ReviewsJpaController implements Serializable {
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
 
-    public void create(Reviews reviews) throws RollbackFailureException {
+    public void create(Reviews reviews) throws RollbackFailureException, BackendException {
         try {
             utx.begin();
             Books isbn = reviews.getIsbn();
@@ -77,6 +76,7 @@ public class ReviewsJpaController implements Serializable {
             try {
                 utx.rollback();
                 LOG.error("Rollback");
+                throw new BackendException("Error in create method in reviews controller.");
             } catch (IllegalStateException | SecurityException | SystemException re) {
                 LOG.error("Rollback2");
 
@@ -121,6 +121,7 @@ public class ReviewsJpaController implements Serializable {
             utx.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with edit in reviews controller method.");
+            throw new BackendException("Error in edit method in reviews controller.");
         }
     }
 
