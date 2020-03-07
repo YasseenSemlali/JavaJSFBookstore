@@ -23,7 +23,7 @@ Java Server Faces page that displays the login form for a user
         <div class="content-container">
         <h2 class="header">#{msgs.login}</h2>
         <h:form class="form-signin">
-                 <h:messages class="alert alert-danger" globalOnly="true" />
+                 <h:messages id="login-error" class="alert alert-danger" globalOnly="true" />
                  <div class="form-group">
                      <h:outputLabel for="email" value="#{msgs.email}" />
                      <h:inputText id="email" class="form-control" 
