@@ -18,7 +18,7 @@ This will list the books based on sales along with the total amount of sales.
         <title>#{msgs.topSellersReport}</title>
         <h:outputStylesheet library="css" name="report.css" />
     </ui:define>
-    <ui:define name="content">
+   <ui:define name="content">
     <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
              <li class="breadcrumb-item"><a href="../manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
@@ -26,39 +26,43 @@ This will list the books based on sales along with the total amount of sales.
              <li class="breadcrumb-item active" aria-current="page">#{msgs.topSellersReport}</li>
           </ol>
     </nav>
-        <div class="jumbotron">
-        <h1 class="report-title">#{msgs.topSellersReport}</h1>
+        <h:panelGroup layout="block" class="jumbotron">
+        <h:panelGroup layout="block" class="h2 report-title">#{msgs.topSellersReport}</h:panelGroup>
         <h:form class="report-form" >
-            <div>
+            <h:panelGroup layout="block">
                     <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
                     <p:calendar class="datepicker" value="#{topSellersReportBackingBean.startDate}"
                         id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
-            </div>
-            <div>
+            </h:panelGroup>
+            <h:panelGroup layout="block">
                     <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
                     <p:calendar class="datepicker" value="#{topSellersReportBackingBean.endDate}"
                         id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
-            </div>
-            <h:commandButton class="btn btn-primary run-report-button" value="#{msgs.runReport}"
-                             action="#{topSellersReportBackingBean.runReport}"/>
+            </h:panelGroup>
+             <b:commandButton update="report-result"
+                              class="btn btn-primary run-report-button" 
+                              value="#{msgs.runReport}"
+                              action="#{topSellersReportBackingBean.runReport}"/>
 
         </h:form>
-        </div>
-        <!-- Report --> 
-        <div class="jumbotron">
-            <h3 class="report-sub-title">#{msgs.topSellers}</h3>
-            <h:panelGroup class="report-result" layout="block">
-                <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty topSellersReportBackingBean.bookSales}">
-                      <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
-                      <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
-                      <c:forEach items="#{topSellersReportBackingBean.bookSales}" var="bookSales">
-                                <h:panelGroup>#{bookSales.name}</h:panelGroup>
-                                <h:panelGroup>$#{bookSales.amount}</h:panelGroup>
-                            </c:forEach>
-                </h:panelGrid>
+        </h:panelGroup>
+        <!-- Report -->
+        <h:panelGroup id="report-result" layout="block">
+            <h:panelGroup layout="block" class="jumbotron" rendered="#{not empty topSellersReportBackingBean.bookSales}">
+                <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.topSellers}</h:panelGroup>
+                <h:panelGroup class="report-result" layout="block">
+                    <h:panelGrid class="table table-hover" columns="2" border="1">
+                          <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
+                          <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
+                          <c:forEach items="#{topSellersReportBackingBean.bookSales}" var="bookSales">
+                                    <h:panelGroup>#{bookSales.name}</h:panelGroup>
+                                    <h:panelGroup>$#{bookSales.amount}</h:panelGroup>
+                                </c:forEach>
+                    </h:panelGrid>
+                </h:panelGroup>
             </h:panelGroup>
-        </div>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>
