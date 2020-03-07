@@ -319,7 +319,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return this.userId +": " + this.firstName + " " + this.lastName;
+        return "Users{" + "userId=" + userId + ", title=" + title + ", firstName=" + firstName + ", lastName=" + lastName + ", companyName=" + companyName + ", address1=" + address1 + ", address2=" + address2 + ", city=" + city + ", province=" + province + ", country=" + country + ", postalCode=" + postalCode + ", homePhone=" + homePhone + ", cellPhone=" + cellPhone + ", email=" + email + ", password=" + password + ", isManager=" + isManager + ", reviewsCollection=" + reviewsCollection + ", ordersCollection=" + ordersCollection + '}';
     }
     
 }
