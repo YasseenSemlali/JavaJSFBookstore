@@ -489,12 +489,14 @@ public class RegisterBackingBean implements Serializable {
         }
        
        try {
-           this.userJpaController.findUsers(emailInput);
-       }
-       catch(NoResultException | NonUniqueResultException ex){
-           LOG.debug("Email is already taken ", ex);
+           LOG.debug("Looking at email " + (String) value);
+           Users user = this.userJpaController.findUsers((String) value);
+           LOG.debug("Found user " + user);
            throw new ValidatorException(new FacesMessage(
                     this.bundle.getString("email_taken_error")));
+       }
+       catch(NoResultException | NonUniqueResultException ex){
+           LOG.debug("Email is not taken " + (String) value, ex);
        }
        
        
