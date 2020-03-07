@@ -63,6 +63,12 @@ public class TopSellersReportBackingBean implements Serializable {
      */
     private void setBookSales() {
         
+        if(this.startDate == null || this.endDate == null){
+            FacesMessage message = new FacesMessage(this.bundle.getString("missing_dates_error"));
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        
         try{
             
             this.bookSales = this.booksJpaController.findTopSellers(sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
