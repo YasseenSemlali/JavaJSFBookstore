@@ -128,15 +128,23 @@ Java Server Faces page that displays the register user page of the app
                          </div>
                          <div class="form-group">
                             <h:outputLabel for="password" value="#{msgs.password}" />
-                            <h:inputSecret id="password" required="true" 
+                            <h:inputSecret id="password"
                                            class="form-control" 
                                            value="#{registerBackingBean.passwordInput}"
-                                           validator="#{registerBackingBean.validateEmail}">
+                                           validator="#{registerBackingBean.validatePassword}">
                                      <f:ajax event="change" render="password-error"/>
                              </h:inputSecret>
                              <h:message id="password-error" for="password" style="color: red"/>               
                          </div>
-                    <h:commandButton class="btn btn-primary" value="#{msgs.register_page}" action="#{registerBackingBean.register}" />
+                    <!--<h:commandButton class="btn btn-primary" 
+                                     value="#{msgs.register_page}" 
+                                     action="#{registerBackingBean.register}" >
+                            <f:ajax execute="@form"/>
+                    </h:commandButton>-->
+                    <b:commandButton update="@form" 
+                                     class="btn btn-primary" 
+                                     value="#{msgs.register_page}" 
+                                     action="#{registerBackingBean.register}"/>
                 </h:form>
             </b:container>
         </div>

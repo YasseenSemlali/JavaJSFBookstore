@@ -485,6 +485,8 @@ public class RegisterBackingBean implements Serializable {
          throw new ValidatorException(new FacesMessage(
                     this.bundle.getString("email_error")));
         }
+       
+       
     }
     
     /**
@@ -518,6 +520,22 @@ public class RegisterBackingBean implements Serializable {
        if(!matcher.find()){
          throw new ValidatorException(new FacesMessage(
                     this.bundle.getString("phone_error")));
+        }
+    }
+    
+    /**
+     * Used to validate if password entered is strong enough
+     * Valid password:
+     *      - at least 8 characters
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validatePassword(FacesContext fc, UIComponent c, Object value) {
+       if(((String)value).length() < 8){
+         throw new ValidatorException(new FacesMessage(
+                    this.bundle.getString("password_error")));
         }
     }
     

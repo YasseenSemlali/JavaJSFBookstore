@@ -284,6 +284,29 @@ public class UsersJpaController implements Serializable {
     }
     
     /**
+     * Used to find a user with a given email. 
+     * @param email
+     * @return user object of that id. 
+     * @author Jeffrey Boisvert
+     */
+    public Users findUsers(String email) throws NoResultException, NonUniqueResultException{
+        
+          CriteriaBuilder cb = em.getCriteriaBuilder();
+          CriteriaQuery<Users> cq = cb.createQuery(Users.class);
+          Root<Users> user = cq.from(Users.class);
+          
+          cq.select(user);
+          cq.where(cb.and(
+                  cb.equal(user.get(Users_.email), email)
+            )
+          );
+          
+          TypedQuery<Users> query = em.createQuery(cq);
+          return query.getSingleResult();
+        
+    }
+    
+    /**
      * Used to find the user entity that have the email and password. 
      * @param email of the user
      * @param password of the user
