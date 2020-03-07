@@ -33,8 +33,7 @@ Java Server Faces page that displays the register user page of the app
                              <h:outputLabel for="first-name" value="#{msgs.firstname}" />
                              <h:inputText 
                                  id="first-name" class="form-control"
-                                 required="true"
-                                 value="#{registerBackingBean.firstNameInput}" validator="#{registerBackingBean.validateName}">
+                                 value="#{registerBackingBean.firstNameInput}" validator="#{registerBackingBean.validateIsNotBlank}">
                                  <f:ajax event="change" render="first-name-error"/>
                              </h:inputText>
                              <h:message id="first-name-error" for="first-name" style="color: red"/>
@@ -42,7 +41,7 @@ Java Server Faces page that displays the register user page of the app
                          <div class="form-group">
                              <h:outputLabel for="last-name" value="#{msgs.lastname}" />
                              <h:inputText id="last-name" class="form-control" 
-                                          value="#{registerBackingBean.lastNameInput}" validator="#{registerBackingBean.validateName}">
+                                          value="#{registerBackingBean.lastNameInput}" validator="#{registerBackingBean.validateIsNotBlank}">
                                   <f:ajax event="change" render="last-name-error"/>
                              </h:inputText>
                              <h:message id="last-name-error" for="last-name" style="color: red"/>
@@ -50,22 +49,37 @@ Java Server Faces page that displays the register user page of the app
                          <div class="form-group">
                              <h:outputLabel for="company-name" value="#{msgs.company_name_input}" />
                              <h:inputText id="company-name" class="form-control" 
-                                          value="#{registerBackingBean.companyInput}" validator="#{registerBackingBean.validateName}">
+                                          value="#{registerBackingBean.companyInput}" validator="#{registerBackingBean.validateIsNotBlank}">
                                   <f:ajax event="change" render="company-name-error"/>
                              </h:inputText>
                              <h:message id="company-name-error" for="company-name" style="color: red"/>
                          </div>
                          <div class="form-group">
                              <h:outputLabel for="first-address" value="#{msgs.address_one}" />
-                             <h:inputText id="first-address" class="form-control" value="#{registerBackingBean.firstAddressInput}"/>
+                             <h:inputText id="first-address" class="form-control" 
+                                          value="#{registerBackingBean.firstAddressInput}" 
+                                          validator="#{registerBackingBean.validateIsNotBlank}">
+                                  <f:ajax event="change" render="first-address-error"/>
+                             </h:inputText>
+                             <h:message id="first-address-error" for="first-address" style="color: red"/>
                          </div>
                          <div class="form-group">
                              <h:outputLabel for="second-address" value="#{msgs.address_two}" />
-                             <h:inputText id="second-address" class="form-control" value="#{registerBackingBean.secondAddressInput}"/>
+                             <h:inputText id="second-address" class="form-control" 
+                                          value="#{registerBackingBean.secondAddressInput}"
+                                          validator="#{registerBackingBean.validateIsNotBlank}">
+                                  <f:ajax event="change" render="second-address-error"/>
+                             </h:inputText>
+                             <h:message id="second-address-error" for="second-address" style="color: red"/>
                          </div>
                          <div class="form-group">
                              <h:outputLabel for="city" value="#{msgs.city}" />
-                             <h:inputText id="city" class="form-control" value="#{registerBackingBean.cityInput}"/>
+                             <h:inputText id="city" class="form-control" 
+                                          value="#{registerBackingBean.cityInput}"
+                                          validator="#{registerBackingBean.validateIsNotBlank}">
+                                  <f:ajax event="change" render="city-error"/>
+                             </h:inputText>
+                             <h:message id="city-error" for="city" style="color: red"/>
                          </div>
                          <div class="form-group">
                              <b:selectOneMenu  id="province-select" class="custom-select" value = "#{registerBackingBean.provinceInput}" label="#{msgs.province}">
@@ -78,20 +92,34 @@ Java Server Faces page that displays the register user page of the app
                          </div>
                          <div class="form-group">
                              <h:outputLabel for="postal-code" value="#{msgs.postal_code}" />
-                             <h:inputText id="postal-code" a:maxlength="6" class="form-control" value="#{registerBackingBean.postalInput}"/>
+                             <h:inputText id="postal-code" a:maxlength="6" class="form-control" 
+                                          value="#{registerBackingBean.postalInput}"
+                                          validator="#{registerBackingBean.validatePostalCode}">
+                                  <f:ajax event="change" render="postal-code-error"/>
+                             </h:inputText>
+                             <h:message id="postal-code-error" for="postal-code" style="color: red"/>
                          </div>
                          <div class="form-group">
                              <h:outputLabel for="cell-phone" value="#{msgs.cell_phone}" />
-                             <h:inputText id="cell-phone" a:maxlength="10" class="form-control" value="#{registerBackingBean.mobilePhoneInput}"/>
+                             <h:inputText id="cell-phone" a:maxlength="10" class="form-control" 
+                                          value="#{registerBackingBean.mobilePhoneInput}"
+                                          validator="#{registerBackingBean.validatePhone}">
+                                  <f:ajax event="change" render="cell-phone-error"/>
+                             </h:inputText>
+                             <h:message id="cell-phone-error" for="cell-phone" style="color: red"/>
                          </div>
                          <div class="form-group">
                              <h:outputLabel for="home-phone" value="#{msgs.home_phone}" />
-                             <h:inputText id="home-phone" a:maxlength="10" class="form-control" value="#{registerBackingBean.homePhoneInput}"/>
+                             <h:inputText id="home-phone" a:maxlength="10" class="form-control" 
+                                          value="#{registerBackingBean.homePhoneInput}"
+                                          validator="#{registerBackingBean.validatePhone}">
+                                  <f:ajax event="change" render="home-phone-error"/>
+                             </h:inputText>
+                             <h:message id="home-phone-error" for="home-phone" style="color: red"/>
                          </div>
                          <div class="form-group">
                             <h:outputLabel for="email" value="#{msgs.email}" />
                             <h:inputText id="email" class="form-control" 
-                                         required="true"
                                          value="#{registerBackingBean.emailInput}"  
                                          validator="#{registerBackingBean.validateEmail}">
                                      <f:ajax event="change" render="email-error"/>
@@ -101,7 +129,12 @@ Java Server Faces page that displays the register user page of the app
                          <div class="form-group">
                             <h:outputLabel for="password" value="#{msgs.password}" />
                             <h:inputSecret id="password" required="true" 
-                                           class="form-control" value="#{registerBackingBean.passwordInput}"/>
+                                           class="form-control" 
+                                           value="#{registerBackingBean.passwordInput}"
+                                           validator="#{registerBackingBean.validateEmail}">
+                                     <f:ajax event="change" render="password-error"/>
+                             </h:inputSecret>
+                             <h:message id="password-error" for="password" style="color: red"/>               
                          </div>
                     <h:commandButton class="btn btn-primary" value="#{msgs.register_page}" action="#{registerBackingBean.register}" />
                 </h:form>

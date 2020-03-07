@@ -463,10 +463,10 @@ public class RegisterBackingBean implements Serializable {
      * @param value entered
      * @author Jeffrey Boisvert
      */
-    public void validateName(FacesContext fc, UIComponent c, Object value) {
+    public void validateIsNotBlank(FacesContext fc, UIComponent c, Object value) {
         if (((String) value).isBlank()) {
             throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("name_error")));
+                    this.bundle.getString("empty_error")));
         }
     }
     
