@@ -17,11 +17,9 @@ The user can select which author they would like to view via a drop down.
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
         <title>#{msgs.totalSalesReport}</title>
-        <h:outputStylesheet library="css" name="report.css" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
-
     </ui:define>
     <ui:define name="content">
+    <h:outputStylesheet library="css" name="report.css" />
     <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
              <li class="breadcrumb-item"><a href="../manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
@@ -29,40 +27,43 @@ The user can select which author they would like to view via a drop down.
              <li class="breadcrumb-item active" aria-current="page">#{msgs.totalSalesReport}</li>
           </ol>
     </nav>
-        <div class="jumbotron">
-            <h1 class="report-title">#{msgs.totalSalesReport}</h1>
-        <h:form id="totalSalesForm" >
-            <div class="form-control">
+        <h:panelGroup layout="block" class="jumbotron">
+        <h1 class="report-title">#{msgs.totalSalesReport}</h1>
+        <h:outputText class="report-title">#{msgs.totalSalesReport}</h:outputText>
+        <h:form class="report-form" >
+            <h:panelGroup layout="block">
                     <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
                     <p:calendar class="datepicker" value="#{totalSalesReportBackingBean.startDate}"
                         id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
-                </div>
-            <div class="form-control">
+            </h:panelGroup>
+            <div>
                     <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
                     <p:calendar class="datepicker" value="#{totalSalesReportBackingBean.endDate}"
                         id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
-                </div>
+            </div>
             <h:commandButton class="btn btn-primary run-report-button" value="#{msgs.runReport}"
                              action="#{totalSalesReportBackingBean.runReport}"/>
 
         </h:form>
-        </div>
+        </h:panelGroup>
         <!-- Report --> 
         <div class="jumbotron">
-             <h4>#{msgs.totalSalesLabel} $#{totalSalesReportBackingBean.totalSales == null ? 0.00 : totalSalesReportBackingBean.totalSales}</h4>
+             <h4 class="report-sub-title">#{msgs.totalSalesLabel} $#{totalSalesReportBackingBean.totalSales == null ? 0.00 : totalSalesReportBackingBean.totalSales}</h4>
         </div>
         <div class="jumbotron">
-              <h3>#{msgs.itemsPurchased}</h3>
+              <h3 class="report-sub-title">#{msgs.itemsPurchased}</h3>
+              <h:panelGroup class="report-result" layout="block">
               <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty totalSalesReportBackingBean.purchasedProducts}">
-                  <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
+              <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
                   <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
                         <c:forEach items="#{totalSalesReportBackingBean.purchasedProducts}" var="sales">
                             <h:panelGroup>#{sales.name}</h:panelGroup>
                             <h:panelGroup>$#{sales.amount}</h:panelGroup>
                         </c:forEach>
-            </h:panelGrid>
+             </h:panelGrid>
+             </h:panelGroup>
         </div>
     </ui:define>
 </ui:composition>
