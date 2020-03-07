@@ -26,7 +26,7 @@ necessary to manage surveys for the web app
             <div class="card">
             <h:form style="text-align: center">
                 <p:dataTable id="surveylist" var="survey" value="#{surveyQuestionsJpaController.findSurveyQuestionsEntities()}"
-                             emptyMessage="#{msgs.noresults}" rowIndexVar="index" resizableColumns="true">
+                             emptyMessage="#{msgs.noresults}" rowIndexVar="index" tableStyle="width:auto">
 
                     <p:column filterBy="#{survey.id}" headerText="ID" filterMatchMode="contains">
                         <h:outputText value="#{survey.id}" />

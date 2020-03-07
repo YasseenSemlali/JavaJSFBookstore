@@ -26,7 +26,7 @@ necessary to manage inventory of our store.
             <div class="card" style="margin-top: 5%">
                 <h:form>
                     <p:dataTable var="order" value="#{ordersJpaController.findOrdersEntities()}"
-                                 emptyMessage="#{msgs.noresults}">
+                                 emptyMessage="#{msgs.noresults}" tableStyle="width:auto">
 
                         <p:column filterBy="#{order.orderId}" headerText="Id" filterMatchMode="contains">
                             <h:outputText value="#{order.orderId}" />

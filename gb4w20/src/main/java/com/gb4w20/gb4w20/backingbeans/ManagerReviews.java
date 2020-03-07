@@ -24,22 +24,38 @@ public class ManagerReviews implements Serializable {
     
     @Inject
     private ReviewsJpaController reviewController;
+    
+    private Integer activeTabIndex = 0;
 
     /**
      * Method to set the status of a review
      * 
      * @param revId
      * @param status
+     * @param activeTabIndex
      * @throws java.io.IOException
      */
-    public void editApprovalStatus(Long revId, boolean status) throws IOException {
+    public void editApprovalStatus(Long revId, boolean status, Integer activeTabIndex) throws IOException {
         try {
             Reviews review = reviewController.findReviews(revId);
             review.setApprovedStatus(status);
             reviewController.edit(review);
+            
+            this.activeTabIndex = activeTabIndex;
+            
         } catch (Exception ex) {
             LOG.info(ex.toString());
             FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/action-responses/action-failure.xhtml");
         }
     }
+
+    public Integer getActiveTabIndex() {
+        return activeTabIndex;
+    }
+
+    public void setActiveTabIndex(Integer activeTabIndex) {
+        this.activeTabIndex = activeTabIndex;
+    }
+    
+    
 }

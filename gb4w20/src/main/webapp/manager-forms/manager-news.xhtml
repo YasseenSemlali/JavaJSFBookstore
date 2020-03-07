@@ -26,7 +26,7 @@ necessary to manage news for the web app
             <div class="card">
                 <h:form style="text-align: center">
                     <p:dataTable id="newslist" var="new" value="#{rssFeedsJpaController.findRssFeedsEntities()}"
-                                 emptyMessage="#{msgs.noresults}" rowIndexVar="index" resizableColumns="true">
+                                 emptyMessage="#{msgs.noresults}" rowIndexVar="index" tableStyle="width:auto">
 
                         <p:column filterBy="#{new.id}" headerText="ID" filterMatchMode="contains">
                             <h:outputText value="#{new.id}" />

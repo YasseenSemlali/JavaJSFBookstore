@@ -20,11 +20,11 @@ necessary to manage reviews in the web app.
 
     <ui:define name="content">
         <b:container style="margin-top: 5%; margin-bottom:5%;">
-            <p:tabView id="allrevs">
+            <p:tabView id="allrevs" activeIndex="#{managerReviews.activeTabIndex}" >
                 <p:tab title="#{msgs.approved_revs}" >
                     <h:form>
                         <p:dataTable var="review" value="#{reviewsJpaController.getReviewsOnApproved(true)}"
-                                     emptyMessage="#{msgs.noresults}" resizableColumns="true">
+                                     emptyMessage="#{msgs.noresults}" tableStyle="width:auto">
 
                             <p:column filterBy="#{review.isbn.title}" headerText="#{msgs.title}" filterMatchMode="contains">
                                 <h:outputText value="#{review.isbn.title}" />
@@ -52,7 +52,7 @@ necessary to manage reviews in the web app.
 
                             <p:column>
                                 <p:commandButton value="#{msgs.disapprove}">
-                                    <f:ajax listener="#{managerReviews.editApprovalStatus(review.reviewId, false)}" render="allrevs" execute="@all" />
+                                    <f:ajax listener="#{managerReviews.editApprovalStatus(review.reviewId, false, 0)}" render="allrevs" execute="@all" />
                                 </p:commandButton>
                             </p:column>
 
@@ -62,7 +62,7 @@ necessary to manage reviews in the web app.
                 <p:tab title="#{msgs.not_approved_revs}" >
                     <h:form>
                         <p:dataTable var="review" value="#{reviewsJpaController.getReviewsOnApproved(false)}"
-                                     emptyMessage="#{msgs.noresults}">
+                                     emptyMessage="#{msgs.noresults}" tableStyle="width:auto">
 
                             <p:column filterBy="#{review.isbn.title}" headerText="#{msgs.title}" filterMatchMode="contains">
                                 <h:outputText value="#{review.isbn.title}" />
@@ -90,7 +90,7 @@ necessary to manage reviews in the web app.
 
                             <p:column>
                                 <p:commandButton value="#{msgs.approve}">
-                                    <f:ajax listener="#{managerReviews.editApprovalStatus(review.reviewId, true)}" render="allrevs" execute="@all" />
+                                    <f:ajax listener="#{managerReviews.editApprovalStatus(review.reviewId, true, 1)}" render="allrevs" execute="@all" />
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>
