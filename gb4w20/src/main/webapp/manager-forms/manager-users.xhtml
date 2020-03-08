@@ -212,12 +212,13 @@ necessary to manage users in the web app.
                                 <b:row>
                                     <b:column  col-md="4">
                                         <b:commandButton 
-                                            update="@form form-message" 
+                                            update="@form" 
                                             value="#{msgs.submit}" 
                                             action="#{managerClient.submitUser}"
                                             styleClass="btn btn-primary" />
-                                    <!-- Used to tell the user if they added something correctly or not." -->
-                                    <b:message id="form-message" for="@previous" />
+                                        <b:growl id="growlMsg" globalOnly="true" placementFrom="bottom"
+         show-detail="true" show-summary="false" allowDismiss="true"
+         delay="10000" escape="true" />
                                     </b:column> 
                                 </b:row>
                                 </div>

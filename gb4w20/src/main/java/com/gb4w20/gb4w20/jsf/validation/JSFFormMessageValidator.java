@@ -250,16 +250,18 @@ public class JSFFormMessageValidator implements Serializable{
          FacesMessage message = new FacesMessage(
                     this.bundle.getString("form_submission_successful"));
          message.setSeverity(FacesMessage.SEVERITY_INFO);
-           
-         throw new ValidatorException(message);
+         
+         FacesContext.getCurrentInstance().addMessage(null, message);
+
     }
     
     public void formSubmissionUnsuccessful(){
          FacesMessage message = new FacesMessage(
                     this.bundle.getString("form_submission_unsuccessful"));
          message.setSeverity(FacesMessage.SEVERITY_ERROR);
-           
-         throw new ValidatorException(message);
+         
+         FacesContext.getCurrentInstance().addMessage(null, message);
+
     }
     
     
