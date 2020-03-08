@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class ManagerClientBackingBean implements Serializable {
 
-    private final static Logger LOG = LoggerFactory.getLogger(ManagerClientBackingBean.class);
+    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(ManagerClientBackingBean.class);
 
     @Inject
     private UsersJpaController usersJpaController;
@@ -68,10 +68,10 @@ public class ManagerClientBackingBean implements Serializable {
     public void userChanged(AjaxBehaviorEvent e) {
         Long userId = (Long) ((UIOutput) e.getSource()).getValue();
         if (userId == -1 || userId == null) {
-            LOG.debug("Clearing fields");
+            LOG.info("Clearing fields");
             clearSelectedFields();
         } else {
-            LOG.debug("Setting to user with id " + userId);
+            LOG.info("Setting to user with id " + userId);
             this.edit = true;
             setFieldsBasedOnSelectedUser(userId);
 
@@ -104,7 +104,9 @@ public class ManagerClientBackingBean implements Serializable {
             Users user = new Users();
 
             setUserObjectBasedOnSelectedInputs(user);
-
+            
+            LOG.info("Creating user " + user);
+            
             this.usersJpaController.create(user);
 
             return "/action-responses//action-responses/action-success";
@@ -122,14 +124,18 @@ public class ManagerClientBackingBean implements Serializable {
      */
     private String editUser() {
         try {
+            LOG.info("Editing user");
             Users user = this.usersJpaController.findUsers(this.selectedUserId);
-            setUserObjectBasedOnSelectedInputs(user);
+            
+            setUserObjectBasedOnSelectedInputs(user);    
+            LOG.info("Editing user " + user);
             
             this.usersJpaController.edit(user);
             
             //TODO make it show a good pop up 
             return "/action-responses/action-success";
         } catch (Exception ex) {
+            LOG.error("Was unable to edit user", ex);
             //TODO make it show a bad pop up error
             return "/action-responses/action-failure";
         }
