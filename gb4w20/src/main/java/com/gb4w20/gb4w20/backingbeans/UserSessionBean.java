@@ -34,6 +34,15 @@ public class UserSessionBean implements Serializable {
     private boolean hasRespondedToSurvey;
     
     //PostConstruct -> after indepecndy inject 
+    
+    /**
+     * Getting the user id of user logged in
+     * @return 
+     * @Jasmar
+     */
+    public long getLoggedInUserId(){
+        return this.user.getUserId(); 
+    }
 
     /**
      * Checks if the user has responded to a survey this session

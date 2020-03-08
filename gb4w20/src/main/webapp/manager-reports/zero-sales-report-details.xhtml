@@ -25,37 +25,43 @@ Java Server Faces page that displays the zero sales report.
              <li class="breadcrumb-item active" aria-current="page">#{msgs.zeroSalesReport}</li>
           </ol>
     </nav>
-        <div class="jumbotron">
-        <h1 class="report-title" style="text-align: center">#{msgs.zeroSalesReport}</h1>
-        <h:form class="report-form" >
-            <div>
-                    <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
-                    <p:calendar class="datepicker" value="#{zeroSalesReportBackingBean.startDate}"
-                        id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
-                    </p:calendar>
-                </div>
-            <div>
-                    <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
-                    <p:calendar class="datepicker" value="#{zeroSalesReportBackingBean.endDate}"
-                        id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
-                    </p:calendar>
-            </div>
-            <h:commandButton class="btn btn-primary run-report-button" value="#{msgs.runReport}"
-                             action="#{zeroSalesReportBackingBean.runReport}"/>
+        <h:panelGroup layout="block" class="jumbotron">
+            <h:panelGroup layout="block" class="h2 report-title">#{msgs.zeroSalesReport}</h:panelGroup>
+            <h:form class="report-form" >
+                <h:messages id="report-error" class="alert alert-danger" globalOnly="true" />
+                <h:panelGroup layout="block">
+                        <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
+                        <p:calendar class="datepicker" value="#{zeroSalesReportBackingBean.startDate}"
+                            id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
+                        </p:calendar>
+                </h:panelGroup>
+                <h:panelGroup layout="block">
+                        <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
+                        <p:calendar class="datepicker" value="#{zeroSalesReportBackingBean.endDate}"
+                            id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
+                        </p:calendar>
+                </h:panelGroup>
+                
+                <b:commandButton update="report-result @form"
+                              class="btn btn-primary run-report-button" 
+                              value="#{msgs.runReport}"
+                              action="#{zeroSalesReportBackingBean.runReport}"/>
 
-        </h:form>
-        </div>
+            </h:form>
+        </h:panelGroup>
         <!-- Report --> 
-        <div class="jumbotron">
-            <h3 style="text-align: center">#{msgs.zeroSales}</h3>
-            <h:panelGroup class="report-result" layout="block">
-            <h:panelGrid class="table table-hover" columns="1" border="1" rendered="#{not empty zeroSalesReportBackingBean.bookSales}">
-                  <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
-                  <c:forEach items="#{zeroSalesReportBackingBean.bookSales}" var="book">
-                      <h:panelGroup>#{book.title}</h:panelGroup>
-                  </c:forEach>
-            </h:panelGrid>
+        <h:panelGroup id="report-result" layout="block">
+            <h:panelGroup layout="block" class="jumbotron" rendered="#{not empty zeroSalesReportBackingBean.bookSales}">
+                <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.zeroSales}</h:panelGroup>
+                <h:panelGroup class="report-result" layout="block">
+                <h:panelGrid class="table table-hover" columns="1" border="1">
+                      <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
+                      <c:forEach items="#{zeroSalesReportBackingBean.bookSales}" var="book">
+                          <h:panelGroup>#{book.title}</h:panelGroup>
+                      </c:forEach>
+                </h:panelGrid>
+                </h:panelGroup>
             </h:panelGroup>
-        </div>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>

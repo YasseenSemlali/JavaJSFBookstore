@@ -3,9 +3,15 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
+import com.gb4w20.gb4w20.jpa.OrdersJpaController;
+import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.Serializable;
 import java.util.List;
+import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -25,6 +31,12 @@ public class ZeroSalesReportBackingBean implements Serializable {
     @Inject
     private BooksJpaController booksJpaController;
     
+    @Inject
+    private OrdersJpaController ordersJpaController;
+    
+    @Inject
+    private JSFFormMessageValidator validator;
+    
     private java.util.Date startDate;
     
     private java.util.Date endDate; 
@@ -36,7 +48,32 @@ public class ZeroSalesReportBackingBean implements Serializable {
      * on the values set in startDate and endDate. 
      */
     public void runReport(){
-        setBookSales();
+        
+        if(validator.validateDatesAreValid(startDate, endDate)){
+
+            try {
+
+                setBookSales();
+                validator.validateCollectionIsNotEmpty(this.bookSales, "report_no_result");
+
+            }
+            catch (Exception ex){
+                try{
+                    //Means there were no sales so it is all books 
+                    List list = this.ordersJpaController.getPurchasedBooks(sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
+                    if(list.isEmpty()){
+                        this.bookSales = this.booksJpaController.findBooksEntities();
+                    }
+                }
+                catch(Exception e){
+                    LOG.debug("Error running report " + ex.getMessage(), ex);
+                    validator.createFacesMessageFromKey("error_running_report");
+                }
+  
+            }
+        
+        }
+        
     }
     
     

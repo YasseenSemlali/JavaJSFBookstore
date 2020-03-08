@@ -1,19 +1,22 @@
+<!--
+Java Server Faces page that displays all the reports
+the manager can do on the store. 
+
+@author Jeffrey Boisvert (Jean Robatto helped with design a lot shout out to him!)
+-->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:b="http://bootsfaces.net/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h:head>
-        <title>Manager</title>
-    </h:head>
-    <h:body>
-        <div>
-            <ui:insert name="topMenuBar">
-                <ui:include src="/templates/header.xhtml"></ui:include>
-            </ui:insert>
-        </div>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.reportsLower}</title>
+    </ui:define>
+    <ui:define name="content">
         <h:outputStylesheet library="css" name="global.css"  />
         <h:outputStylesheet library="css" name="reports-page.css"  />
         <nav aria-label="breadcrumb">
@@ -23,8 +26,8 @@
           </ol>
         </nav>
         <b:container style="margin-top: 5%; margin-bottom:5%">
-        <div class="ui-g"  >
-            <div class="ui-g-4">
+        <b:row>
+            <b:column  col-md="4">
                 <a href="manager-reports/customer-report-details.xhtml" style="color: black">
                     <div class="menutile">
                         <p:graphicImage name="images/clients_icon.png" style="width: 33%; height: 33%" />
@@ -32,8 +35,8 @@
                         <h4>${msgs.salesByClient}</h4>
                     </div>
                 </a>
-            </div>
-            <div class="ui-g-4">
+            </b:column>
+            <b:column  col-md="4">
                 <a href="manager-reports/author-report-details.xhtml" style="color: black">
                     <div class="menutile">
                         <p:graphicImage name="images/author.png" style="width: 33%; height: 33%" />
@@ -41,8 +44,8 @@
                         <h4>${msgs.salesByAuthor}</h4>
                     </div>
                 </a>
-            </div>
-            <div class="ui-g-4">
+            </b:column>
+            <b:column  col-md="4">
              <a href="manager-reports/publisher-report-details.xhtml" style="color: black">
                 <div class="menutile">
                     <p:graphicImage name="images/enterprise.png" style="width: 33%; height: 33%" />
@@ -50,13 +53,13 @@
                     <h4>${msgs.salesByPublisher}</h4>
                 </div>
              </a>
-            </div>
-        </div>
+            </b:column>
+        </b:row>
         </b:container>
         
         <b:container style="margin-top: 5%; margin-bottom:5%">
-        <div class="ui-g"  >
-            <div class="ui-g-4">
+        <b:row>
+            <b:column  col-md="4">
                 <a href="manager-reports/top-clients-report-details.xhtml" style="color: black">
                     <div class="menutile">
                         <p:graphicImage name="images/top_users.png" style="width: 33%; height: 33%" />
@@ -64,8 +67,8 @@
                         <h4>${msgs.topClients}</h4>
                     </div>
                 </a>
-            </div>
-            <div class="ui-g-4">
+            </b:column>
+            <b:column  col-md="4">
                 <a href="manager-reports/top-sellers-report-details.xhtml" style="color: black">
                     <div class="menutile">
                         <p:graphicImage name="images/top_books.png" style="width: 33%; height: 33%" />
@@ -73,8 +76,8 @@
                         <h4>${msgs.topSellers}</h4>
                     </div>
                 </a>
-            </div>
-            <div class="ui-g-4">
+            </b:column>
+            <b:column  col-md="4">
              <a href="manager-reports/zero-sales-report-details.xhtml" style="color: black">
                 <div class="menutile">
                     <p:graphicImage name="images/no_sales.png" style="width: 33%; height: 33%" />
@@ -82,13 +85,13 @@
                     <h4>${msgs.zeroSales}</h4>
                 </div>
              </a>
-            </div>
-        </div>
+            </b:column>
+        </b:row>
         </b:container>
         
         <b:container style="margin-top: 5%; margin-bottom:5%">
-        <div class="ui-g"  >
-            <div class="ui-g-4">
+        <b:row>
+            <b:column  col-md="4">
                 <a href="manager-reports/stock-report-details.xhtml" style="color: black">
                     <div class="menutile">
                         <p:graphicImage name="images/inventory_icon.png" style="width: 33%; height: 33%" />
@@ -96,8 +99,8 @@
                         <h4>${msgs.stock}</h4>
                     </div>
                 </a>
-            </div>
-            <div class="ui-g-4">
+            </b:column>
+            <b:column  col-md="4">
                 <a href="manager-reports/total-sales-report-details.xhtml" style="color: black">
                     <div class="menutile">
                         <p:graphicImage name="images/sales_icon.png" style="width: 33%; height: 33%" />
@@ -105,14 +108,8 @@
                         <h4>${msgs.totalSales}</h4>
                     </div>
                 </a>
-            </div>
-        </div>
+            </b:column>
+        </b:row>
         </b:container>
-        
-        <div>
-            <ui:insert name="footer">
-                <ui:include src="/templates/footer.xhtml"></ui:include>
-            </ui:insert>
-        </div>
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>
