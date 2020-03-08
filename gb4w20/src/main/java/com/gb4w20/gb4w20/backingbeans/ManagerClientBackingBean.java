@@ -12,6 +12,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput; 
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -94,11 +95,11 @@ public class ManagerClientBackingBean implements Serializable {
      * @return redirection
      * @author Jeffrey Boisvert
      */
-    public String submitUser() {
+    public void submitUser() {
         if (this.edit) {
-            return editUser();
+            editUser();
         } else {
-            return addUser();
+            addUser();
         }
     }
 
@@ -108,7 +109,7 @@ public class ManagerClientBackingBean implements Serializable {
      * @return redirection
      * @author Jeffrey Boisvert
      */
-    private String addUser() {
+    private void addUser() {
         try {
             LOG.debug("Creating user!");
             Users user = new Users();
@@ -118,11 +119,14 @@ public class ManagerClientBackingBean implements Serializable {
             LOG.info("Creating user " + user);
             
             this.usersJpaController.create(user);
-
-            return "/action-responses/action-responses/action-success";
+            this.validator.formSubmissionSuccessful();
+            
+        } catch (ValidatorException ex){
+            //Let message bubble up
+            throw ex; 
         } catch (Exception ex) {
-            return "/action-responses/action-failure";
-
+            LOG.error("Was unable to add user", ex);
+            this.validator.formSubmissionUnsuccessful();
         }
     }
 
@@ -132,7 +136,7 @@ public class ManagerClientBackingBean implements Serializable {
      * @return redirection
      * @author Jeffrey Boisvert
      */
-    private String editUser() {
+    private void editUser() {
         try {
             LOG.info("Editing user");
             Users user = this.usersJpaController.findUsers(this.selectedUserId);
@@ -141,13 +145,14 @@ public class ManagerClientBackingBean implements Serializable {
             LOG.info("Editing user " + user);
             
             this.usersJpaController.edit(user);
+            this.validator.formSubmissionSuccessful();
             
-            //TODO make it show a good pop up 
-            return "/action-responses/action-success";
+        } catch (ValidatorException ex){
+            //Let message bubble up
+            throw ex; 
         } catch (Exception ex) {
             LOG.error("Was unable to edit user", ex);
-            //TODO make it show a bad pop up error
-            return "/action-responses/action-failure";
+            this.validator.formSubmissionUnsuccessful();
         }
     }
     
