@@ -16,10 +16,9 @@ This will list the books that are active with the current wholesale, list and sa
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
         <title>#{msgs.stockReport}</title>
-        <h:outputStylesheet library="css" name="report.css" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
     </ui:define>
     <ui:define name="content">
+    <h:outputStylesheet library="css" name="report.css" />
     <f:metadata>
         <f:viewAction action="#{stockReportBackingBean.runReport()}" />
     </f:metadata>
@@ -32,19 +31,21 @@ This will list the books that are active with the current wholesale, list and sa
     </nav>
         <!-- Report --> 
         <div class="jumbotron">
-            <h3>#{msgs.stock}</h3>
-            <h:panelGrid class="table table-hover" columns="4" border="1" rendered="#{not empty stockReportBackingBean.stock}">
-                  <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
-                  <h:panelGroup class="column-header">#{msgs.whole_price}</h:panelGroup>
-                  <h:panelGroup class="column-header">#{msgs.list_price}</h:panelGroup>
-                  <h:panelGroup class="column-header">#{msgs.salePrice}</h:panelGroup>
-                  <c:forEach items="#{stockReportBackingBean.stock}" var="book">
-                      <h:panelGroup>#{book.title}</h:panelGroup>
-                      <h:panelGroup>#{book.wholesalePrice}</h:panelGroup>
-                      <h:panelGroup>#{book.listPrice}</h:panelGroup>
-                      <h:panelGroup>#{book.salePrice.doubleValue() == 0.0 ? "N/A": book.salePrice}</h:panelGroup>
-                  </c:forEach>
-            </h:panelGrid>
+            <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.stock}</h:panelGroup>
+            <h:panelGroup class="report-result" layout="block">
+                <h:panelGrid class="table table-hover " columns="4" border="1" rendered="#{not empty stockReportBackingBean.stock}">
+                      <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
+                      <h:panelGroup class="column-header">#{msgs.whole_price}</h:panelGroup>
+                      <h:panelGroup class="column-header">#{msgs.list_price}</h:panelGroup>
+                      <h:panelGroup class="column-header">#{msgs.salePrice}</h:panelGroup>
+                      <c:forEach items="#{stockReportBackingBean.stock}" var="book">
+                          <h:panelGroup>#{book.title}</h:panelGroup>
+                          <h:panelGroup>#{book.wholesalePrice}</h:panelGroup>
+                          <h:panelGroup>#{book.listPrice}</h:panelGroup>
+                          <h:panelGroup>#{book.salePrice.doubleValue() == 0.0 ? "N/A": book.salePrice}</h:panelGroup>
+                      </c:forEach>
+                </h:panelGrid>
+            </h:panelGroup>
         </div>
     </ui:define>
 </ui:composition>
