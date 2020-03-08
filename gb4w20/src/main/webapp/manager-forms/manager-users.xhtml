@@ -17,23 +17,36 @@ necessary to manage users in the web app.
     <ui:define name="head">
         <title>#{msgs.users_title}</title>
     </ui:define>
-
     <ui:define name="content">
-        <b:container style="margin-top: 5%; margin-bottom:5%;">
-            <h:form>
-                <p:dataTable var="user" value="#{usersJpaController.findUsersEntities()}"
-                             emptyMessage="#{msgs.noresults}" rowIndexVar="index">
-
-                    <p:column filterBy="#{user.title}" headerText="#{msgs.title}" filterMatchMode="contains">
-                        <h:outputText value="#{user.title}" />
-                    </p:column>
-                    
-                    <p:column filterBy="#{user.firstName}" headerText="#{msgs.firstname}" filterMatchMode="contains">
-                        <h:outputText value="#{user.firstName}" />
-                    </p:column>
-
-                </p:dataTable>
-                </h:form>
+        <b:container style="margin-top: 5%; margin-bottom:5%;" >
+                    <h:form id="bookForm">
+                        <div class="card">
+                            <div class="contaimer">
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:selectOneMenu label="#{msgs.clientName}" id="selectbook" class="custom-select" value="#{managerInventory.selectIsbn}" style="width:30%;">
+                                            <p:ajax event="change" 
+                                                    update="@form"
+                                                    listener="#{managerInventory.bookChanged}" />
+                                            <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
+                                            <f:selectItems value="#{usersJpaController.findUsersEntities()}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
+                                        </b:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                         <b:inputText id="userId" label="#{msgs.user_id_label}" value="#{managerInventory.isbn}" styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                    <div class="col-lg text-left">
+                                        <p:commandButton 
+                                            value="#{msgs.submit}" 
+                                            action="#{managerInventory.submitBook}"
+                                            styleClass="formComponent" />
+                                    </div>
+                                </div>
+                             </div>                    
+                        </h:form>
         </b:container>
-    </ui:define>                
+        </ui:define>                
 </ui:composition>
