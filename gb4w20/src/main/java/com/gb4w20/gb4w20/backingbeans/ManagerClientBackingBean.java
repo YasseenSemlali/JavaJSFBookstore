@@ -171,6 +171,7 @@ public class ManagerClientBackingBean implements Serializable {
             this.selectedCellPhone = ""; 
             this.selectedEmail = ""; 
             this.selectedPassword = "";  
+            this.selectedIsManagerState = false;
             this.totalSales = new BigDecimal(0);
     }
     
@@ -197,6 +198,7 @@ public class ManagerClientBackingBean implements Serializable {
             this.selectedCellPhone = user.getCellPhone(); 
             this.selectedEmail = user.getEmail(); 
             this.selectedPassword = user.getPassword(); 
+            this.selectedIsManagerState = user.getIsManager();
             //TODO get purchased items ever total not just by dates
             this.totalSales = new BigDecimal(1000);    
     }

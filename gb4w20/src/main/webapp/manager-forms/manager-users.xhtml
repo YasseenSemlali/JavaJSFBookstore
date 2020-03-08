@@ -39,6 +39,14 @@ necessary to manage users in the web app.
                                 </div>
                                 <div class="row">
                                     <div class="col-lg text-left">
+                                        <b:selectBooleanCheckbox 
+                                            value="#{managerClient.selectedIsManagerState}" 
+                                            caption="#{msgs.is_manager_caption}"
+                                            label="#{msgs.is_manager_label}" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
                                         <b:inputText label="#{msgs.title}" 
                                                      value="#{managerClient.selectedUserTitle}" 
                                                      styleClass="formComponent"/> 
@@ -139,14 +147,6 @@ necessary to manage users in the web app.
                                         <b:inputSecret label="#{msgs.password}" 
                                                      value="#{managerClient.selectedPassword}" 
                                                      styleClass="formComponent"/> 
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg text-left">
-                                        <b:selectBooleanCheckbox 
-                                            value="#{managerClient.selectedIsManagerState}" 
-                                            caption="#{msgs.is_manager_caption}"
-                                            label="#{msgs.is_manager_label}" />
                                     </div>
                                 </div>
                                     <div class="col-lg text-left">

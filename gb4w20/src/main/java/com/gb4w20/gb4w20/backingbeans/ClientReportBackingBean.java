@@ -3,6 +3,7 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import java.io.Serializable;
 import java.util.List;
@@ -30,6 +31,9 @@ public class ClientReportBackingBean implements Serializable {
     @Inject
     private UsersJpaController usersJpaController;
     
+    @Inject
+    private JSFFormMessageValidator validator;
+    
     private Long userId; 
     
     private java.util.Date startDate;
@@ -41,19 +45,6 @@ public class ClientReportBackingBean implements Serializable {
     private Double totalSales; 
     
     private List<NameAndNumberBean> purchasedProducts; 
-    
-    //Bundle for i18n
-    private ResourceBundle bundle; 
-    
-    /**
-     * Mainly used to set default values.
-     * @author Jeffrey Boisvert
-     */
-    @PostConstruct
-    public void init(){
-        FacesContext context = FacesContext.getCurrentInstance();
-        this.bundle = context.getApplication().getResourceBundle(context, "msgs");
-    }
     
     /**
      * Used to get a list of all the users in the database. 
@@ -88,32 +79,20 @@ public class ClientReportBackingBean implements Serializable {
      */
     public void runReport(){
         
-        if(this.startDate == null || this.endDate == null){
-            FacesMessage message = new FacesMessage(this.bundle.getString("missing_dates_error"));
-            FacesContext.getCurrentInstance().addMessage(null, message);
-            return;
-        }
-        
-        if(this.startDate.after(this.endDate)){
-            FacesMessage message = new FacesMessage(this.bundle.getString("start_date_after_end_date_error"));
-            FacesContext.getCurrentInstance().addMessage(null, message);
-            return;
-        }
-        
-        try{
+         if(validator.validateDatesAreValid(startDate, endDate)){
 
-            setTotalSales();
-            setPurchasedProducts();
-            
-            if(this.purchasedProducts.isEmpty()){
-                FacesMessage message = new FacesMessage(this.bundle.getString("report_no_result"));
-                FacesContext.getCurrentInstance().addMessage(null, message);
+            try {
+                
+                setTotalSales();
+                setPurchasedProducts();
+                validator.validateCollectionIsNotEmpty(purchasedProducts, "report_no_result");
+                
             }
-        }
-        catch (Exception ex){
-            LOG.debug("Error running report ", ex);
-            FacesMessage message = new FacesMessage(this.bundle.getString("error_running_report"));
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            catch (Exception ex){
+                LOG.debug("Error running report ", ex);
+                validator.createFacesMessageFromKey("error_running_report");
+            }
+        
         }
     }
     
