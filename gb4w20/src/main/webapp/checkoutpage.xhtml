@@ -50,7 +50,14 @@ and finalize transactions
                 <h:form>
                     <b:panelGrid columns="2">
                         <b:commandButton value="#{msgs.backshopping}" action="index.xhtml" look="primary"/>
-                        <b:commandButton value="#{msgs.finalize}" look="success"/> <!--still need to make an action to finalize-->
+                        <c:choose>
+                            <c:when test="#{userSession.loggedIn}">
+                                <b:commandButton value="#{msgs.finalize}" look="success"/> <!--still need to make an action to finalize-->
+                            </c:when>
+                            <c:otherwise>
+                                <p:outputLabel>#{msgs.logintofinalize}</p:outputLabel>
+                            </c:otherwise> 
+                        </c:choose>
                     </b:panelGrid>
                 </h:form>
             </b:jumbotron>
