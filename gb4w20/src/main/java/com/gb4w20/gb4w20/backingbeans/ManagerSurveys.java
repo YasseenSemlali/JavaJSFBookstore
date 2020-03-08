@@ -91,7 +91,7 @@ public class ManagerSurveys implements Serializable {
             
             surveysController.create(survey);
 
-            return "/action-responses/action-success";
+            return "/manager-forms/manager-surveys";
         } catch (Exception ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";

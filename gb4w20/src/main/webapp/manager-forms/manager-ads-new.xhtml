@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 Java Server Faces page that displays all the options
-necessary to add a new AD
+necessary to add a new Ad
 
 @author Jean Robatto
 -->
@@ -32,27 +32,66 @@ necessary to add a new AD
             }
         </style>
         <b:container style="margin-top: 5%; margin-bottom:5%;">
-            <h:form style="text-align: center">
-                
+            <h:form style="text-align: center; padding-top:20%; padding-bottom: 20%;">
+
                 <div class="row">
                     <div class="col-lg-6 text-right-mobile">
-                        <p:outputLabel value="#{msgs.file_location}" styleClass="formComponent" />
+                        <p:outputLabel for="new_location" value="#{msgs.file_location}" styleClass="formComponent" />
                     </div>
                     <div class="col-lg-6 text-left">
-                        <p:inputText value="#{managerAds.newLocation}" styleClass="formComponent" />
+                        <p:inputText 
+                            id="new_location" 
+                            value="#{managerAds.newLocation}" 
+                            styleClass="formComponent" 
+                            required="true" 
+                            requiredMessage="NO EMPTY"
+                            validatorMessage="INVALID"
+                             >
+                            <f:validateLength minimum="1" maximum="200" />
+                            <f:ajax event="blur" render="new_location_msg" />
+                        </p:inputText>
                     </div>
                 </div>
-                
-                 <div class="row">
+                <div class="row">
+                    <div class="col-lg-6 text-right-mobile"></div>
+                    <div class="col-lg-6 text-left">
+                        <p:message id="new_location_msg" for="new_location" style="width: 32%; margin: 2%">
+                            <p:autoUpdate />
+                        </p:message>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="col-lg-6 text-right-mobile">
                         <p:outputLabel value="#{msgs.url}" styleClass="formComponent" />
                     </div>
                     <div class="col-lg-6 text-left">
-                        <p:inputText value="#{managerAds.newUrl}" styleClass="formComponent" />
+                        <p:inputText 
+                            id="new_url" 
+                            value="#{managerAds.newUrl}" 
+                            styleClass="formComponent" 
+                            required="true" 
+                            requiredMessage="NO EMPTY"
+                            validatorMessage="INVALID"
+                             >
+                            <f:validateLength minimum="1" maximum="2" />
+                            <f:ajax event="blur" render="new_url_msg" />
+                        </p:inputText>
                     </div>
                 </div>
-                
-                <p:commandButton value="#{msgs.create_ad}" action="#{managerAds.createAd()}" styleClass="formComponent" />
+                <div class="row">
+                    <div class="col-lg-6 text-right-mobile"></div>
+                    <div class="col-lg-6 text-left">
+                        <p:message id="new_url_msg" for="new_url" style="width: 32%; margin: 2%">
+                            <p:autoUpdate />
+                        </p:message>
+                    </div>
+                </div>
+
+                <p:commandButton 
+                    value="#{msgs.create_ad}" 
+                    action="#{managerAds.createAd()}" 
+                    styleClass="formComponent" />
             </h:form>       
         </b:container>
     </ui:define>                

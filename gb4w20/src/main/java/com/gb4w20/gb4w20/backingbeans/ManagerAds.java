@@ -12,6 +12,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,8 +34,8 @@ public class ManagerAds implements Serializable {
     private String[] urls;
     private Boolean[] enabled;
 
-    private String newLocation;
-    private String newUrl;
+    @Size(min = 1, max = 200, message = "YO BITCH LOC") private String newLocation;
+    @Size(min = 1, max = 200, message = "YO BITCH URL") private String newUrl;
 
     /**
      * Method to initialize variables
@@ -102,7 +103,7 @@ public class ManagerAds implements Serializable {
             
             adsController.create(ad);
 
-            return "/action-responses/action-success";
+            return "/manager-forms/manager-ads";
         } catch (BackendException | RollbackFailureException ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";

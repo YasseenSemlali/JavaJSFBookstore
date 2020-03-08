@@ -32,18 +32,42 @@ necessary to add a new surbey
             }
         </style>
         <b:container style="margin-top: 5%; margin-bottom:5%;">
-            <h:form style="text-align: center">
+            <h:form style="text-align: center; padding-top:20%; padding-bottom: 20%;">
                 
                  <div class="row">
                     <div class="col-lg-6 text-right-mobile">
-                        <p:outputLabel value="#{msgs.question}" styleClass="formComponent" />
+                        <p:outputLabel 
+                            for="new_question" 
+                            value="#{msgs.question}" 
+                            styleClass="formComponent" />
                     </div>
                     <div class="col-lg-6 text-left">
-                        <p:inputText value="#{managerSurveys.newQuestion}" styleClass="formComponent" />
+                        <p:inputText 
+                            id="new_question" 
+                            value="#{managerSurveys.newQuestion}" 
+                            styleClass="formComponent" 
+                            required="true" 
+                            requiredMessage="NO EMPTY"
+                            validatorMessage="INVALID"
+                            >
+                            <f:validateLength minimum="1" maximum="2048" />
+                            <f:ajax event="blur" render="new_url_msg" />
+                        </p:inputText>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 text-right-mobile"></div>
+                    <div class="col-lg-6 text-left">
+                        <p:message for="new_question" style="width: 32%; margin: 2%">
+                            <p:autoUpdate />
+                        </p:message>
                     </div>
                 </div>
                 
-                <p:commandButton value="#{msgs.create_survey}" action="#{managerSurveys.createSurvey()}" styleClass="formComponent" />
+                <p:commandButton 
+                    value="#{msgs.create_survey}" 
+                    action="#{managerSurveys.createSurvey()}" 
+                    styleClass="formComponent" />
             </h:form>       
         </b:container>
     </ui:define>                

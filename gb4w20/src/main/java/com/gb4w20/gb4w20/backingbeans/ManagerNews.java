@@ -92,7 +92,7 @@ public class ManagerNews implements Serializable {
             
             newsController.create(feed);
 
-            return "/action-responses/action-success";
+            return "manager-forms/manager-news";
         } catch (BackendException ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";
