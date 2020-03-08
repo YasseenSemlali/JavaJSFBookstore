@@ -114,8 +114,11 @@ public class JSFFormMessageValidator implements Serializable{
      */
     public void validateIsNotBlank(String value) {
         if (value.isBlank()) {
-            throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("empty_error")));
+            FacesMessage message = new FacesMessage(
+                       this.bundle.getString("empty_error"));
+            
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
         }
     }
     
@@ -127,8 +130,11 @@ public class JSFFormMessageValidator implements Serializable{
      */
     public void validateIsNotJustWhiteSpace(String value) {
         if (value.length() > 0 && value.isBlank()) {
-            throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("whitespace_error")));
+            FacesMessage message = new FacesMessage(
+                       this.bundle.getString("whitespace_error"));
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            
+            throw new ValidatorException(message);
         }
     }
     
@@ -147,8 +153,12 @@ public class JSFFormMessageValidator implements Serializable{
            LOG.debug("Looking at email " + value);
            Users user = this.userJpaController.findUsers(value);
            LOG.debug("Found user " + user);
-           throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("email_taken_error")));
+           
+            FacesMessage message = new FacesMessage(
+                       this.bundle.getString("email_taken_error"));
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+         
+           throw new ValidatorException(message);
        }
        catch(NoResultException | NonUniqueResultException ex){
            LOG.debug("Email is not taken " + value, ex);
@@ -166,8 +176,11 @@ public class JSFFormMessageValidator implements Serializable{
        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher((String) value);
         
        if(!matcher.find()){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("email_error")));
+         FacesMessage message = new FacesMessage(
+                    this.bundle.getString("email_error"));
+         message.setSeverity(FacesMessage.SEVERITY_ERROR);
+         
+         throw new ValidatorException(message);
         }
        
     }
@@ -182,8 +195,11 @@ public class JSFFormMessageValidator implements Serializable{
        Matcher matcher = VALID_POSTAL_CODE_REGEX.matcher(value);
         
        if(!matcher.find()){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("postal_code_error")));
+         FacesMessage message = new FacesMessage(
+                    this.bundle.getString("postal_code_error"));
+         message.setSeverity(FacesMessage.SEVERITY_ERROR);
+         
+         throw new ValidatorException(message);
         }
     }
     
@@ -197,8 +213,11 @@ public class JSFFormMessageValidator implements Serializable{
        Matcher matcher = VALID_PHONE_NUMBER_REGEX.matcher(value);
         
        if(!matcher.find()){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("phone_error")));
+         FacesMessage message = new FacesMessage(
+                    this.bundle.getString("phone_error"));
+         message.setSeverity(FacesMessage.SEVERITY_ERROR);
+           
+         throw new ValidatorException(message);
         }
     }
     
@@ -211,8 +230,11 @@ public class JSFFormMessageValidator implements Serializable{
      */
     public void validatePassword(String value) {
        if(value.length() < 8){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("password_error")));
+        FacesMessage message = new FacesMessage(
+                    this.bundle.getString("password_error"));
+         message.setSeverity(FacesMessage.SEVERITY_ERROR);
+         
+         throw new ValidatorException(message);
         }
     } 
     

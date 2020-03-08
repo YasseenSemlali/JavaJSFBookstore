@@ -3,11 +3,14 @@ package com.gb4w20.gb4w20.backingbeans;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.jsf.validation.FormValues;
+import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput; 
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,6 +35,9 @@ public class ManagerClientBackingBean implements Serializable {
     
     @Inject
     private FormValues values;
+    
+    @Inject 
+    private JSFFormMessageValidator validator;
 
     //To know if editing or not
     private boolean edit;
@@ -215,6 +221,77 @@ public class ManagerClientBackingBean implements Serializable {
             this.selectedIsManagerState = user.getIsManager();
             //TODO get purchased items ever total not just by dates
             this.totalSales = new BigDecimal(1000);    
+    }
+    
+     /**
+     * Used to validate if the user entered a value. 
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validateIsNotBlank(FacesContext fc, UIComponent c, Object value) {
+        this.validator.validateIsNotBlank((String)value);
+    }
+    
+    /**
+     * Used to validate if the user entered a value but allow it to be blank. 
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validateIsNotJustWhiteSpace(FacesContext fc, UIComponent c, Object value) {
+        this.validator.validateIsNotJustWhiteSpace((String)value);
+    }
+    
+    /**
+     * Used to validate if email is in the correct format and not already taken
+     * Format: test@email.com
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validateEmail(FacesContext fc, UIComponent c, Object value) {
+        this.validator.validateEmail((String)value);
+    }
+    
+    /**
+     * Used to validate if postal code is in the correct format
+     * Format: A1A2B2
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validatePostalCode(FacesContext fc, UIComponent c, Object value) {
+        this.validator.validatePostalCode((String)value);
+    }
+    
+    /**
+     * Used to validate if phone number is in the correct format
+     * Format: 123-123-1234
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validatePhone(FacesContext fc, UIComponent c, Object value) {
+        this.validator.validatePhone((String)value);
+    }
+    
+    /**
+     * Used to validate if password entered is strong enough
+     * Valid password:
+     *      - at least 8 characters
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validatePassword(FacesContext fc, UIComponent c, Object value) {
+        this.validator.validatePassword((String)value);
     }
     
     //List of available options

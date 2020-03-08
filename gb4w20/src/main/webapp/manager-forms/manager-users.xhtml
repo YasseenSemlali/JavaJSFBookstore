@@ -4,7 +4,7 @@
 Java Server Faces page that displays all the options
 necessary to manage users in the web app.
 
-@author Jeffrey Boisvert and special thanks to Jean Robatto for styling and structure
+@author Jeffrey Boisvert and special thanks to Jean Robatto for idea and main structure
 -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:b="http://bootsfaces.net/ui"
@@ -25,7 +25,7 @@ necessary to manage users in the web app.
                             <div class="contaimer">
                                 <b:row>
                                    <b:column  col-md="4">
-                                        <b:selectOneMenu label="#{msgs.clientName}" 
+                                        <b:selectOneMenu label="#{msgs.select_a_client}" 
                                                          id="selectbook" 
                                                          class="custom-select" 
                                                          value="#{managerClient.selectedUserId}" 
@@ -124,9 +124,14 @@ necessary to manage users in the web app.
                                 </b:row>
                                 <b:row>
                                     <b:column  col-md="4">
-                                        <b:inputText label="#{msgs.home_phone}" 
+                                        <b:inputText 
+                                            label="#{msgs.home_phone}" 
                                                      value="#{managerClient.selectedHomePhone}" 
-                                                     /> 
+                                                     validator="#{managerClient.validatePhone}"
+                                                     >
+                                            <f:ajax event="change" render="home-phone-error"/>
+                                        </b:inputText>
+                                        <b:message id="home-phone-error" class="bf-error" for="@previous" />
                                     </b:column>
                                 </b:row>
                                 <b:row>
@@ -159,6 +164,7 @@ necessary to manage users in the web app.
                                 <b:row>
                                     <b:column  col-md="4">
                                         <b:commandButton 
+                                            update="@form" 
                                             value="#{msgs.submit}" 
                                             action="#{managerClient.submitUser}"
                                             styleClass="btn btn-primary" />
