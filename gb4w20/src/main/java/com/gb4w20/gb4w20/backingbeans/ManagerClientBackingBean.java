@@ -68,6 +68,7 @@ public class ManagerClientBackingBean implements Serializable {
     public void userChanged(AjaxBehaviorEvent e) {
         Long userId = (Long) ((UIOutput) e.getSource()).getValue();
         if (userId == -1 || userId == null) {
+            this.edit=false;
             LOG.info("Clearing fields");
             clearSelectedFields();
         } else {
@@ -101,6 +102,7 @@ public class ManagerClientBackingBean implements Serializable {
      */
     private String addUser() {
         try {
+            LOG.debug("Creating user!");
             Users user = new Users();
 
             setUserObjectBasedOnSelectedInputs(user);
@@ -109,7 +111,7 @@ public class ManagerClientBackingBean implements Serializable {
             
             this.usersJpaController.create(user);
 
-            return "/action-responses//action-responses/action-success";
+            return "/action-responses/action-responses/action-success";
         } catch (Exception ex) {
             return "/action-responses/action-failure";
 
@@ -161,6 +163,7 @@ public class ManagerClientBackingBean implements Serializable {
             user.setCellPhone(this.selectedCellPhone);
             user.setEmail(this.selectedEmail);
             user.setPassword(this.selectedPassword);
+            user.setIsManager(this.selectedIsManagerState);
     }
     
     /**
