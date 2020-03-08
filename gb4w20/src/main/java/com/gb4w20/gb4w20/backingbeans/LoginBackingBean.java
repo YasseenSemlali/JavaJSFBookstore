@@ -140,7 +140,7 @@ public class LoginBackingBean implements Serializable {
     }
     
     /**
-     * Used to validate if the user entered a name. 
+     * Used to validate if the user entered a value. 
      * Design decision to only validate if empty or blank string (allow user to enter 123 if they
      * really want to it is a string regardless). 
      * @param fc

@@ -515,7 +515,7 @@ public class RegisterBackingBean implements Serializable {
         
        if(!matcher.find()){
          throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("email_error")));
+                    this.bundle.getString("postal_code_error")));
         }
     }
     
