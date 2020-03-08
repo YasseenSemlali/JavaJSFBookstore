@@ -109,7 +109,7 @@ public class LoginBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validateEmail(FacesContext fc, UIComponent c, Object value) {
-        this.validator.validateEmail((String)value);
+        this.validator.validateEmailFormat((String)value);
     }
     
     /**

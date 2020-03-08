@@ -128,10 +128,7 @@ public class JSFFormMessageValidator implements Serializable{
     public void validateEmail(String value) {
        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher((String) value);
         
-       if(!matcher.find()){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("email_error")));
-        }
+       validateEmailFormat(value);
        
        try {
            LOG.debug("Looking at email " + value);
@@ -146,6 +143,21 @@ public class JSFFormMessageValidator implements Serializable{
        
     }
        
+    /**
+     * Used to validate if email is in the correct format
+     * Format: test@email.com
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validateEmailFormat(String value) {
+       Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher((String) value);
+        
+       if(!matcher.find()){
+         throw new ValidatorException(new FacesMessage(
+                    this.bundle.getString("email_error")));
+        }
+       
+    }
     
     /**
      * Used to validate if postal code is in the correct format
