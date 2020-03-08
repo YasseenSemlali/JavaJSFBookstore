@@ -63,6 +63,8 @@ public class ManagerClientBackingBean implements Serializable {
 
     //Total sales of selected User
     private BigDecimal totalSales;
+    //Used to validate if the email changed or not.
+    private String previousEmail; 
 
     /**
      * Whenever a user is changed, fills the form fields with the info
@@ -190,6 +192,8 @@ public class ManagerClientBackingBean implements Serializable {
             this.selectedHomePhone = "";
             this.selectedCellPhone = ""; 
             this.selectedEmail = ""; 
+            //There is no previous email
+            this.previousEmail = "";
             this.selectedPassword = "";  
             this.selectedIsManagerState = false;
             this.totalSales = new BigDecimal(0);
@@ -216,7 +220,9 @@ public class ManagerClientBackingBean implements Serializable {
             this.selectedPostalCode = user.getPostalCode();
             this.selectedHomePhone = user.getHomePhone();
             this.selectedCellPhone = user.getCellPhone(); 
-            this.selectedEmail = user.getEmail(); 
+            this.selectedEmail = user.getEmail();
+            //Used to store and compare if ever
+            this.previousEmail = user.getEmail();
             this.selectedPassword = user.getPassword(); 
             this.selectedIsManagerState = user.getIsManager();
             //TODO get purchased items ever total not just by dates
@@ -246,7 +252,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
     
     /**
-     * Used to validate if email is in the correct format and not already taken
+     * Used to validate if email is in the correct format.
+     * If editing, will only validate format
+     * If adding, will validate format and if already taken.
      * Format: test@email.com
      * @param fc
      * @param c
@@ -254,7 +262,13 @@ public class ManagerClientBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validateEmail(FacesContext fc, UIComponent c, Object value) {
-        this.validator.validateEmail((String)value);
+        if(this.edit && previousEmail.equals(value)){
+            this.validator.validateEmailFormat((String)value);
+        }
+        else {
+            this.validator.validateEmail((String)value);
+        }
+
     }
     
     /**
