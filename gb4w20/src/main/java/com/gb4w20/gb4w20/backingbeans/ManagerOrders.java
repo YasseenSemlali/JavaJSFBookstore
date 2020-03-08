@@ -114,7 +114,7 @@ public class ManagerOrders implements Serializable {
 
         Bookorder bookorder = new Bookorder();
 
-        BigDecimal bookprice = (book.getSalePrice().compareTo(new BigDecimal(0)) == 0) ? book.getListPrice() : book.getSalePrice();
+        BigDecimal bookprice = book.getListPrice().subtract(book.getSalePrice());
 
         bookorder.setAmountPaidPretax(bookprice);
         bookorder.setEnabled(Boolean.TRUE);
