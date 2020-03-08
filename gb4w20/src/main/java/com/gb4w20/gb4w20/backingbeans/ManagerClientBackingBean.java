@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jeffrey Boisvert
  */
-@Named
+@Named("managerClient")
 @SessionScoped
 public class ManagerClientBackingBean implements Serializable {
 
@@ -63,10 +63,13 @@ public class ManagerClientBackingBean implements Serializable {
     public void userChanged(AjaxBehaviorEvent e) {
         Long userId = (Long) ((UIOutput) e.getSource()).getValue();
         if (userId == -1 || userId == null) {
+            LOG.debug("Clearing fields");
             clearSelectedFields();
         } else {
+            LOG.debug("Setting to user with id " + userId);
             this.edit = true;
             setFieldsBasedOnSelectedUser(userId);
+
         }
     }
 
@@ -216,6 +219,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public Long getSelectedUserId() {
+        if(selectedUserId == null){
+            return -1l;
+        }
         return selectedUserId;
     }
 
@@ -224,6 +230,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedUserTitle() {
+        if(selectedUserTitle == null){
+            return "";
+        }
         return selectedUserTitle;
     }
 
@@ -232,6 +241,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedUserFirstName() {
+        if(selectedUserFirstName == null){
+            return "";
+        }
         return selectedUserFirstName;
     }
 
@@ -240,6 +252,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedLastName() {
+        if(selectedLastName == null){
+            return "";
+        }
         return selectedLastName;
     }
 
@@ -248,6 +263,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedCompany() {
+        if(selectedCompany == null){
+            return "";
+        }
         return selectedCompany;
     }
 
@@ -256,6 +274,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedAddress1() {
+        if(selectedAddress1 == null){
+            return "";
+        }
         return selectedAddress1;
     }
 
@@ -264,6 +285,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedAddress2() {
+        if(selectedAddress2 == null){
+            return "";
+        }
         return selectedAddress2;
     }
 
@@ -272,6 +296,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedCity() {
+        if(selectedCity == null){
+            return "";
+        }
         return selectedCity;
     }
 
@@ -280,6 +307,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedProvince() {
+        if(selectedProvince == null){
+            return "";
+        }
         return selectedProvince;
     }
 
@@ -288,6 +318,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedCountry() {
+        if(selectedCountry == null){
+            return "";
+        }
         return selectedCountry;
     }
 
@@ -296,6 +329,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedPostalCode() {
+        if(selectedPostalCode == null){
+            return "";
+        }
         return selectedPostalCode;
     }
 
@@ -304,6 +340,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedHomePhone() {
+        if(selectedHomePhone == null){
+            return "";
+        }
         return selectedHomePhone;
     }
 
@@ -312,6 +351,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedCellPhone() {
+        if(selectedCellPhone == null){
+            return "";
+        }
         return selectedCellPhone;
     }
 
@@ -320,6 +362,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedEmail() {
+        if(selectedEmail == null){
+            return "";
+        }
         return selectedEmail;
     }
 
@@ -328,6 +373,9 @@ public class ManagerClientBackingBean implements Serializable {
     }
 
     public String getSelectedPassword() {
+        if(selectedPassword == null){
+            return "";
+        }
         return selectedPassword;
     }
 

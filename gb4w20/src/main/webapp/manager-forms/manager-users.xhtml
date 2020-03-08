@@ -24,10 +24,14 @@ necessary to manage users in the web app.
                             <div class="contaimer">
                                 <div class="row">
                                     <div class="col-lg text-left">
-                                        <b:selectOneMenu label="#{msgs.clientName}" id="selectbook" class="custom-select" value="#{managerInventory.selectIsbn}" style="width:30%;">
-                                            <p:ajax event="change" 
-                                                    update="@form"
-                                                    listener="#{managerInventory.bookChanged}" />
+                                        <b:selectOneMenu label="#{msgs.clientName}" 
+                                                         id="selectbook" 
+                                                         class="custom-select" 
+                                                         value="#{managerClient.selectedUserId}" 
+                                                         style="width:30%;"
+                                                         ajax="true" update="userId">
+                                            <f:ajax event="change" 
+                                                    listener="#{managerClient.userChanged}" />
                                             <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
                                             <f:selectItems value="#{usersJpaController.findUsersEntities()}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
                                         </b:selectOneMenu>
@@ -35,7 +39,9 @@ necessary to manage users in the web app.
                                 </div>
                                 <div class="row">
                                     <div class="col-lg text-left">
-                                         <b:inputText id="userId" label="#{msgs.user_id_label}" value="#{managerInventory.isbn}" styleClass="formComponent"/> 
+                                        <b:inputText id="userId" label="#{msgs.title}" 
+                                                     value="#{managerClient.selectedUserTitle}" 
+                                                     styleClass="formComponent"/> 
                                     </div>
                                 </div>
                                     <div class="col-lg text-left">
