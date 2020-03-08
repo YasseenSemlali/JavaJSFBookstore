@@ -3,6 +3,7 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import java.io.Serializable;
 import java.util.List;
@@ -30,31 +31,36 @@ public class TopSellersReportBackingBean implements Serializable {
     @Inject
     private BooksJpaController booksJpaController;
     
+    @Inject
+    private JSFFormMessageValidator validator;
+    
     private java.util.Date startDate;
     
     private java.util.Date endDate; 
     
     private List<NameAndNumberBean> bookSales; 
     
-    //Bundle for i18n
-    private ResourceBundle bundle; 
-    
-    /**
-     * Mainly used to set default values.
-     * @author Jeffrey Boisvert
-     */
-    @PostConstruct
-    public void init(){
-        FacesContext context = FacesContext.getCurrentInstance();
-        this.bundle = context.getApplication().getResourceBundle(context, "msgs");
-    }
-    
     /**
      * This will set the properties of the bean of for the book sales based
      * on the values set in startDate and endDate. 
      */
     public void runReport(){
-        setBookSales();
+        
+         if(validator.validateDatesAreValid(startDate, endDate)){
+
+            try {
+
+                setBookSales();
+                validator.validateCollectionIsNotEmpty(bookSales, "report_no_result");
+                
+            }
+            catch (Exception ex){
+                LOG.debug("Error running report ", ex);
+                validator.createFacesMessageFromKey("error_running_report");
+            }
+        
+        }
+
     }
     
     
@@ -63,32 +69,7 @@ public class TopSellersReportBackingBean implements Serializable {
      */
     private void setBookSales() {
         
-        if(this.startDate == null || this.endDate == null){
-            FacesMessage message = new FacesMessage(this.bundle.getString("missing_dates_error"));
-            FacesContext.getCurrentInstance().addMessage(null, message);
-            return;
-        }
-        
-        if(this.startDate.after(this.endDate)){
-            FacesMessage message = new FacesMessage(this.bundle.getString("start_date_after_end_date_error"));
-            FacesContext.getCurrentInstance().addMessage(null, message);
-            return;
-        }
-        
-        try{
-            
-            this.bookSales = this.booksJpaController.findTopSellers(sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
-
-            if(this.bookSales.isEmpty()){
-                FacesMessage message = new FacesMessage(this.bundle.getString("report_no_result"));
-                FacesContext.getCurrentInstance().addMessage(null, message);
-            }
-        }
-        catch (Exception ex){
-            LOG.debug("Error running report ", ex);
-            FacesMessage message = new FacesMessage(this.bundle.getString("error_running_report"));
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
+        this.bookSales = this.booksJpaController.findTopSellers(sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
         
     }
     
