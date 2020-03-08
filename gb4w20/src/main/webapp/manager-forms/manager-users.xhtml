@@ -23,7 +23,7 @@ necessary to manage users in the web app.
         <b:container style="margin-top: 5%; margin-bottom:5%;" >
                     <h:form>
                         <div class="card">
-                            <div class="contaimer">
+                            <div class="container">
                                 <b:row>
                                    <b:column  col-md="4">
                                         <b:selectOneMenu label="#{msgs.select_a_client}" 
@@ -31,7 +31,7 @@ necessary to manage users in the web app.
                                                          class="custom-select" 
                                                          value="#{managerClient.selectedUserId}" 
                                                          style="width:100%;"
-                                                         ajax="true" update="@form">
+                                                         ajax="true" update="total-sales @form">
                                             <f:ajax event="change" 
                                                     listener="#{managerClient.userChanged}" />
                                             <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
@@ -45,6 +45,11 @@ necessary to manage users in the web app.
                                             value="#{managerClient.selectedIsManagerState}" 
                                             caption="#{msgs.is_manager_caption}"
                                             label="#{msgs.is_manager_label}" />
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <h:panelGroup id="total-sales" layout="block" class="h3">#{msgs.totalSalesLabel} $#{managerClient.totalSales}</h:panelGroup>
                                     </b:column>
                                 </b:row>
                                 <b:row>
@@ -216,9 +221,10 @@ necessary to manage users in the web app.
                                             value="#{msgs.submit}" 
                                             action="#{managerClient.submitUser}"
                                             styleClass="btn btn-primary" />
-                                        <b:growl id="growlMsg" globalOnly="true" placementFrom="bottom"
-         show-detail="true" show-summary="false" allowDismiss="true"
-         delay="10000" escape="true" />
+                                        <!-- Used to notify about the form submission -->
+                                        <b:growl globalOnly="true" placementFrom="bottom"
+                                            show-detail="true" show-summary="false" allowDismiss="true"
+                                            delay="10000" escape="true" />
                                     </b:column> 
                                 </b:row>
                                 </div>

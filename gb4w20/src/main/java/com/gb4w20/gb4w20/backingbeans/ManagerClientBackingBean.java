@@ -63,7 +63,7 @@ public class ManagerClientBackingBean implements Serializable {
     private boolean selectedIsManagerState; 
 
     //Total sales of selected User
-    private BigDecimal totalSales;
+    private Double totalSales;
     //Used to validate if the email changed or not.
     private String previousEmail; 
 
@@ -201,7 +201,7 @@ public class ManagerClientBackingBean implements Serializable {
             this.previousEmail = "";
             this.selectedPassword = "";  
             this.selectedIsManagerState = false;
-            this.totalSales = new BigDecimal(0);
+            this.totalSales = 0.0;
     }
     
     
@@ -230,8 +230,7 @@ public class ManagerClientBackingBean implements Serializable {
             this.previousEmail = user.getEmail();
             this.selectedPassword = user.getPassword(); 
             this.selectedIsManagerState = user.getIsManager();
-            //TODO get purchased items ever total not just by dates
-            this.totalSales = new BigDecimal(1000);    
+            this.totalSales = this.usersJpaController.getUsersTotalSales(userId);    
     }
     
      /**
@@ -341,11 +340,14 @@ public class ManagerClientBackingBean implements Serializable {
         return edit;
     }
 
-    public void setTotalSales(BigDecimal totalSales) {
+    public void setTotalSales(double totalSales) {
         this.totalSales = totalSales;
     }
     
-    public BigDecimal getTotalSales() {
+    public double getTotalSales() {
+        if(this.totalSales == null){
+            return 0.0;
+        }
         return totalSales;
     }
 
