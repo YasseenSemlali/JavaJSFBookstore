@@ -34,7 +34,9 @@
                         <h:panelGroup rendered="#{userSession.loggedInManager}"> 
                             <b:navLink value="${msgs.dashboard}" href="manager-frontpage.xhtml"/>
                         </h:panelGroup>
-                        <b:navLink value="#{msgs.cart}" href="checkoutpage.xhtml"/>
+                        <b:navLink href="checkoutpage.xhtml">
+                            <b:icon value="shopping-cart" size="2x">#{msgs.cart}</b:icon>
+                        </b:navLink>
                         <b:navLink value="FR" href="www.google.com"/>
                     </b:navbarLinks>
                 </h:form>
