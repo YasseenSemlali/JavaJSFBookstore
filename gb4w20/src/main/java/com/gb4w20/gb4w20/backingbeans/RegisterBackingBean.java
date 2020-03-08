@@ -43,10 +43,10 @@ public class RegisterBackingBean implements Serializable {
     public static final Pattern VALID_POSTAL_CODE_REGEX = Pattern.compile("[A-Z][0-9][A-Z][0-9][A-Z][0-9]");
 
     @Inject
-    UsersJpaController userJpaController;
+    private UsersJpaController userJpaController;
     
     @Inject
-    FormValues values;
+    private FormValues values;
     
     //Inputs
     private String titleInput; 

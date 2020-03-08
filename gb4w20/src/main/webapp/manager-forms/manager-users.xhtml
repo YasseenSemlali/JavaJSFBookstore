@@ -47,9 +47,12 @@ necessary to manage users in the web app.
                                 </div>
                                 <div class="row">
                                     <div class="col-lg text-left">
-                                        <b:inputText label="#{msgs.title}" 
+                                        <b:selectOneMenu  
+                                                     label="#{msgs.title}" 
                                                      value="#{managerClient.selectedUserTitle}" 
-                                                     styleClass="formComponent"/> 
+                                                     styleClass="formComponent">
+                                            <f:selectItems value="#{managerClient.availableTitles}" var="title" itemValue="#{title}" itemLabel="#{title}"/>
+                                        </b:selectOneMenu>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -96,9 +99,12 @@ necessary to manage users in the web app.
                                 </div>
                                 <div class="row">
                                     <div class="col-lg text-left">
-                                        <b:inputText label="#{msgs.province}" 
+                                        <b:selectOneMenu  
+                                                     label="#{msgs.province}" 
                                                      value="#{managerClient.selectedProvince}" 
-                                                     styleClass="formComponent"/> 
+                                                     styleClass="formComponent">
+                                            <f:selectItems value="#{managerClient.provinceSelections}" var="province" itemValue="#{province}" itemLabel="#{province}"/>
+                                        </b:selectOneMenu>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -150,10 +156,10 @@ necessary to manage users in the web app.
                                     </div>
                                 </div>
                                     <div class="col-lg text-left">
-                                        <p:commandButton 
+                                        <b:commandButton 
                                             value="#{msgs.submit}" 
                                             action="#{managerInventory.submitBook}"
-                                            styleClass="formComponent" />
+                                            styleClass="formComponent btn btn-primary" />
                                     </div>
                                 </div>
                              </div>                    

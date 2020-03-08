@@ -2,8 +2,10 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import com.gb4w20.gb4w20.jsf.validation.FormValues;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIOutput; 
 import javax.faces.event.AjaxBehaviorEvent;
@@ -27,6 +29,9 @@ public class ManagerClientBackingBean implements Serializable {
 
     @Inject
     private UsersJpaController usersJpaController;
+    
+    @Inject
+    private FormValues values;
 
     //To know if editing or not
     private boolean edit;
@@ -201,6 +206,25 @@ public class ManagerClientBackingBean implements Serializable {
             this.selectedIsManagerState = user.getIsManager();
             //TODO get purchased items ever total not just by dates
             this.totalSales = new BigDecimal(1000);    
+    }
+    
+    //List of available options
+    /**
+     * Getter for the available titles. 
+     * If the value is null it creates the list. 
+     * @return list of available titles
+     */
+    public List<String> getAvailableTitles(){
+        return this.values.getAvailableTitles();
+    }
+    
+    /**
+     * Used to get the provinceSelections value set
+     * @return List of the set provinceSelections.
+     * @author Jeffrey Boisvert
+     */
+    public List<String> getProvinceSelections() {
+        return this.values.getProvinceSelections();
     }
     
     //Getters and Setters
