@@ -29,7 +29,7 @@ necessary to manage users in the web app.
                                                          class="custom-select" 
                                                          value="#{managerClient.selectedUserId}" 
                                                          style="width:30%;"
-                                                         ajax="true" update="userId">
+                                                         ajax="true" update="@form">
                                             <f:ajax event="change" 
                                                     listener="#{managerClient.userChanged}" />
                                             <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
@@ -39,9 +39,114 @@ necessary to manage users in the web app.
                                 </div>
                                 <div class="row">
                                     <div class="col-lg text-left">
-                                        <b:inputText id="userId" label="#{msgs.title}" 
+                                        <b:inputText label="#{msgs.title}" 
                                                      value="#{managerClient.selectedUserTitle}" 
                                                      styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.firstname}" 
+                                                     value="#{managerClient.selectedUserFirstName}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.lastname}" 
+                                                     value="#{managerClient.selectedLastName}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.company_name_input}" 
+                                                     value="#{managerClient.selectedCompany}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.address_one}" 
+                                                     value="#{managerClient.selectedAddress1}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.address_two}" 
+                                                     value="#{managerClient.selectedAddress2}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.city}" 
+                                                     value="#{managerClient.selectedCity}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.province}" 
+                                                     value="#{managerClient.selectedProvince}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.country}" 
+                                                     value="#{managerClient.selectedCountry}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.postal_code}" 
+                                                     value="#{managerClient.selectedPostalCode}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.home_phone}" 
+                                                     value="#{managerClient.selectedHomePhone}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.cell_phone}" 
+                                                     value="#{managerClient.selectedCellPhone}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputText label="#{msgs.email}" 
+                                                     value="#{managerClient.selectedEmail}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <!-- 
+                                This would not normally be here like this. 
+                                This is just done for the scope of the project 
+                                and a proper change password system would be implemented
+                                usually - Jeffrey Boisvert 
+                                --> 
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:inputSecret label="#{msgs.password}" 
+                                                     value="#{managerClient.selectedPassword}" 
+                                                     styleClass="formComponent"/> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg text-left">
+                                        <b:selectBooleanCheckbox 
+                                            value="#{managerClient.selectedIsManagerState}" 
+                                            caption="#{msgs.is_manager_caption}"
+                                            label="#{msgs.is_manager_label}" />
                                     </div>
                                 </div>
                                     <div class="col-lg text-left">
