@@ -65,7 +65,7 @@ public class TopClientsReportBackingBean implements Serializable {
      */
     private void setClientSales() {
         
-                if(this.startDate == null || this.endDate == null){
+        if(this.startDate == null || this.endDate == null){
             FacesMessage message = new FacesMessage(this.bundle.getString("missing_dates_error"));
             FacesContext.getCurrentInstance().addMessage(null, message);
             return;

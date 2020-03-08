@@ -28,42 +28,46 @@ The user can select which author they would like to view via a drop down.
           </ol>
     </nav>
         <h:panelGroup layout="block" class="jumbotron">
-        <h1 class="report-title">#{msgs.totalSalesReport}</h1>
-        <h:outputText class="report-title">#{msgs.totalSalesReport}</h:outputText>
+        <h:panelGroup layout="block" class="h2 report-title">#{msgs.totalSalesReport}</h:panelGroup>
         <h:form class="report-form" >
+            <h:messages id="report-error" class="alert alert-danger" globalOnly="true" />
             <h:panelGroup layout="block">
                     <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
                     <p:calendar class="datepicker" value="#{totalSalesReportBackingBean.startDate}"
                         id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
             </h:panelGroup>
-            <div>
+            <h:panelGroup layout="block">
                     <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
                     <p:calendar class="datepicker" value="#{totalSalesReportBackingBean.endDate}"
                         id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
-            </div>
-            <h:commandButton class="btn btn-primary run-report-button" value="#{msgs.runReport}"
-                             action="#{totalSalesReportBackingBean.runReport}"/>
+            </h:panelGroup>
+            <b:commandButton update="report-result @form"
+                              class="btn btn-primary run-report-button" 
+                              value="#{msgs.runReport}"
+                              action="#{totalSalesReportBackingBean.runReport}"/>
 
         </h:form>
         </h:panelGroup>
         <!-- Report --> 
-        <div class="jumbotron">
-             <h4 class="report-sub-title">#{msgs.totalSalesLabel} $#{totalSalesReportBackingBean.totalSales == null ? 0.00 : totalSalesReportBackingBean.totalSales}</h4>
-        </div>
-        <div class="jumbotron">
-              <h3 class="report-sub-title">#{msgs.itemsPurchased}</h3>
-              <h:panelGroup class="report-result" layout="block">
-                <h:panelGrid class="table table-hover" columns="2" border="1" rendered="#{not empty totalSalesReportBackingBean.purchasedProducts}">
-                <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
-                    <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
-                          <c:forEach items="#{totalSalesReportBackingBean.purchasedProducts}" var="sales">
-                              <h:panelGroup>#{sales.name}</h:panelGroup>
-                              <h:panelGroup>$#{sales.amount}</h:panelGroup>
-                          </c:forEach>
-               </h:panelGrid>
-             </h:panelGroup>
-        </div>
+        <h:panelGroup id="report-result" layout="block">
+            <h:panelGroup layout="block" class="jumbotron" rendered="#{not empty totalSalesReportBackingBean.purchasedProducts}">
+                 <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.totalSalesLabel} $#{totalSalesReportBackingBean.totalSales == null ? 0.00 : totalSalesReportBackingBean.totalSales}</h:panelGroup>
+            </h:panelGroup>
+            <h:panelGroup layout="block" class="jumbotron" rendered="#{not empty totalSalesReportBackingBean.purchasedProducts}">
+                  <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.itemsPurchased}</h:panelGroup>
+                  <h:panelGroup class="report-result" layout="block">
+                    <h:panelGrid class="table table-hover" columns="2" border="1">
+                    <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
+                        <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
+                              <c:forEach items="#{totalSalesReportBackingBean.purchasedProducts}" var="sales">
+                                  <h:panelGroup>#{sales.name}</h:panelGroup>
+                                  <h:panelGroup>$#{sales.amount}</h:panelGroup>
+                              </c:forEach>
+                   </h:panelGrid>
+                 </h:panelGroup>
+            </h:panelGroup>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>

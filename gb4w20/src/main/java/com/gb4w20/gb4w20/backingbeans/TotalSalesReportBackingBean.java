@@ -10,7 +10,11 @@ import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import java.io.Serializable;
 import java.util.List;
+import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -38,13 +42,52 @@ public class TotalSalesReportBackingBean implements Serializable {
     
     private List<NameAndNumberBean> purchasedProducts;
 
+    //Bundle for i18n
+    private ResourceBundle bundle; 
+    
+    /**
+     * Mainly used to set default values.
+     * @author Jeffrey Boisvert
+     */
+    @PostConstruct
+    public void init(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        this.bundle = context.getApplication().getResourceBundle(context, "msgs");
+    }
+    
     /**
      * Used to run the report.
      * This will set the properties of the bean of total sales and purchased products. 
      */
     public void runReport(){
-        setTotalSales();
-        setPurchasedProducts();
+        
+        if(this.startDate == null || this.endDate == null){
+            FacesMessage message = new FacesMessage(this.bundle.getString("missing_dates_error"));
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        
+        if(this.startDate.after(this.endDate)){
+            FacesMessage message = new FacesMessage(this.bundle.getString("start_date_after_end_date_error"));
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        
+        try{
+            setTotalSales();
+            setPurchasedProducts();
+            
+            if(this.purchasedProducts.isEmpty()){
+                FacesMessage message = new FacesMessage(this.bundle.getString("report_no_result"));
+                FacesContext.getCurrentInstance().addMessage(null, message);
+            }
+        }
+        catch (Exception ex){
+            LOG.debug("Error running report ", ex);
+            FacesMessage message = new FacesMessage(this.bundle.getString("error_running_report"));
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+
     }
     
     /**
