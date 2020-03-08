@@ -3,6 +3,7 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import com.gb4w20.gb4w20.jsf.validation.FormValues;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -44,9 +45,8 @@ public class RegisterBackingBean implements Serializable {
     @Inject
     UsersJpaController userJpaController;
     
-    //Lists for selections
-    private List<String> availableTitles; 
-    private List<String> provinceSelections;
+    @Inject
+    FormValues values;
     
     //Inputs
     private String titleInput; 
@@ -84,10 +84,7 @@ public class RegisterBackingBean implements Serializable {
      * @return list of available titles
      */
     public List<String> getAvailableTitles(){
-        if(this.availableTitles == null){
-            generateAvailableTitles();
-        }
-        return this.availableTitles; 
+        return this.values.getAvailableTitles();
     }
     
     /**
@@ -390,10 +387,7 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public List<String> getProvinceSelections() {
-        if(this.provinceSelections == null){
-            generateProvinceList();
-        }
-        return provinceSelections;
+        return this.values.getProvinceSelections();
     }
     
     
@@ -411,49 +405,6 @@ public class RegisterBackingBean implements Serializable {
         //TODO show an alert saying register successful please login
         return LOGIN_PAGE;
         
-    }
-
-    /**
-     * Used as a helper method to set the list based on the local 
-     * @author Jeffrey Boisvert
-     */
-    private void generateAvailableTitles() {
-        //TODO Not sure how to make this i18n compliant. Also what titles does Ken want? 
-        this.availableTitles = new ArrayList<>(
-                Arrays.asList(
-                        this.bundle.getString("mr_title"), 
-                        this.bundle.getString("mrs_title"), 
-                        this.bundle.getString("ms_title"), 
-                        this.bundle.getString("dr_title")
-                ) 
-        );   
-       Collections.sort(this.availableTitles);
-    }
-    
-    /**
-     * Used as a helper method to set the list of all supported provinces
-     * @author Jeffrey Boisvert
-     */
-    private void generateProvinceList() {
-        this.provinceSelections = new ArrayList<>(
-                Arrays.asList(
-                        this.bundle.getString("ab_label"), 
-                        this.bundle.getString("bc_label"), 
-                        this.bundle.getString("ma_label"), 
-                        this.bundle.getString("nb_label"), 
-                        this.bundle.getString("nl_label"), 
-                        this.bundle.getString("nt_label"), 
-                        this.bundle.getString("ns_label"), 
-                        this.bundle.getString("nu_label"), 
-                        this.bundle.getString("on_label"), 
-                        this.bundle.getString("pe_label"),
-                        this.bundle.getString("qc_label"),
-                        this.bundle.getString("sk_label"),
-                        this.bundle.getString("yt_label")
-                ) 
-        ); 
-        
-        Collections.sort(this.provinceSelections);
     }
     
     /**
