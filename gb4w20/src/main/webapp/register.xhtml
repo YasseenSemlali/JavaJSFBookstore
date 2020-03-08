@@ -49,7 +49,7 @@ Java Server Faces page that displays the register user page of the app
                          <div class="form-group">
                              <h:outputLabel for="company-name" value="#{msgs.company_name_input}" />
                              <h:inputText id="company-name" class="form-control" 
-                                          value="#{registerBackingBean.companyInput}" validator="#{registerBackingBean.validateIsNotBlank}">
+                                          value="#{registerBackingBean.companyInput}" validator="#{registerBackingBean.validateIsNotJustWhiteSpace}">
                                   <f:ajax event="change" render="company-name-error"/>
                              </h:inputText>
                              <h:message id="company-name-error" for="company-name" style="color: red"/>
@@ -67,7 +67,7 @@ Java Server Faces page that displays the register user page of the app
                              <h:outputLabel for="second-address" value="#{msgs.address_two}" />
                              <h:inputText id="second-address" class="form-control" 
                                           value="#{registerBackingBean.secondAddressInput}"
-                                          validator="#{registerBackingBean.validateIsNotBlank}">
+                                          validator="#{registerBackingBean.validateIsNotJustWhiteSpace}">
                                   <f:ajax event="change" render="second-address-error"/>
                              </h:inputText>
                              <h:message id="second-address-error" for="second-address" style="color: red"/>
