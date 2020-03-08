@@ -128,7 +128,7 @@ public class JSFFormMessageValidator implements Serializable{
     public void validateIsNotJustWhiteSpace(String value) {
         if (value.length() > 0 && value.isBlank()) {
             throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("empty_error")));
+                    this.bundle.getString("whitespace_error")));
         }
     }
     
