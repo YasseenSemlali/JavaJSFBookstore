@@ -392,9 +392,7 @@ public class RegisterBackingBean implements Serializable {
     }
     
     /**
-     * Used to validate if the user entered a name. 
-     * Design decision to only validate if empty or blank string (allow user to enter 123 if they
-     * really want to it is a string regardless). 
+     * Used to validate if the user entered a value. 
      * @param fc
      * @param c
      * @param value entered
@@ -402,6 +400,17 @@ public class RegisterBackingBean implements Serializable {
      */
     public void validateIsNotBlank(FacesContext fc, UIComponent c, Object value) {
         this.validator.validateIsNotBlank((String)value);
+    }
+    
+    /**
+     * Used to validate if the user entered a value but allow it to be blank. 
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validateIsNotJustWhiteSpace(FacesContext fc, UIComponent c, Object value) {
+        this.validator.validateIsNotJustWhiteSpace((String)value);
     }
     
     /**

@@ -120,6 +120,19 @@ public class JSFFormMessageValidator implements Serializable{
     }
     
     /**
+     * Used to validate if the user entered a valid value or just white space. 
+     * This allows a blank string to pass but not a string like "   ". 
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validateIsNotJustWhiteSpace(String value) {
+        if (value.length() > 0 && value.isBlank()) {
+            throw new ValidatorException(new FacesMessage(
+                    this.bundle.getString("empty_error")));
+        }
+    }
+    
+    /**
      * Used to validate if email is in the correct format and not already taken
      * Format: test@email.com
      * @param value entered
