@@ -4,26 +4,15 @@ package com.gb4w20.gb4w20.backingbeans;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.jsf.validation.FormValues;
-import java.io.IOException;
+import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.annotation.ManagedProperty;
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -37,13 +26,11 @@ public class RegisterBackingBean implements Serializable {
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(RegisterBackingBean.class);
     private static final String CLIENT_PAGE = "index.xhtml";
     private static final String LOGIN_PAGE ="login.xhtml";
-    //Credit to https://stackoverflow.com/questions/8204680/java-regex-email Jason Buberel for regex pattern 
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-    public static final Pattern VALID_PHONE_NUMBER_REGEX = Pattern.compile("[0-9]{3}[0-9]{3}[0-9]{4}");
-    public static final Pattern VALID_POSTAL_CODE_REGEX = Pattern.compile("[A-Z][0-9][A-Z][0-9][A-Z][0-9]");
 
     @Inject
     private UsersJpaController userJpaController;
+    
+    @Inject JSFFormMessageValidator validator;
     
     @Inject
     private FormValues values;
@@ -64,18 +51,14 @@ public class RegisterBackingBean implements Serializable {
     private String emailInput; 
     private String passwordInput;
     
-    //Bundle for i18n
-    private ResourceBundle bundle; 
-    
     /**
      * Mainly used to set default values.
      * @author Jeffrey Boisvert
      */
     @PostConstruct
     public void init(){
+        //No other country than Canada for now
         this.countryInput = "Canada";
-        FacesContext context = FacesContext.getCurrentInstance();
-        this.bundle = context.getApplication().getResourceBundle(context, "msgs");
     }
     
     /**
@@ -417,10 +400,7 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validateIsNotBlank(FacesContext fc, UIComponent c, Object value) {
-        if (((String) value).isBlank()) {
-            throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("empty_error")));
-        }
+        this.validator.validateIsNotBlank((String)value);
     }
     
     /**
@@ -432,25 +412,7 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validateEmail(FacesContext fc, UIComponent c, Object value) {
-       Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher((String) value);
-        
-       if(!matcher.find()){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("email_error")));
-        }
-       
-       try {
-           LOG.debug("Looking at email " + (String) value);
-           Users user = this.userJpaController.findUsers((String) value);
-           LOG.debug("Found user " + user);
-           throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("email_taken_error")));
-       }
-       catch(NoResultException | NonUniqueResultException ex){
-           LOG.debug("Email is not taken " + (String) value, ex);
-       }
-       
-       
+        this.validator.validateEmail((String)value);
     }
     
     /**
@@ -462,12 +424,7 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validatePostalCode(FacesContext fc, UIComponent c, Object value) {
-       Matcher matcher = VALID_POSTAL_CODE_REGEX.matcher((String) value);
-        
-       if(!matcher.find()){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("postal_code_error")));
-        }
+        this.validator.validatePostalCode((String)value);
     }
     
     /**
@@ -479,12 +436,7 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validatePhone(FacesContext fc, UIComponent c, Object value) {
-       Matcher matcher = VALID_PHONE_NUMBER_REGEX.matcher((String) value);
-        
-       if(!matcher.find()){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("phone_error")));
-        }
+        this.validator.validatePhone((String)value);
     }
     
     /**
@@ -497,10 +449,7 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validatePassword(FacesContext fc, UIComponent c, Object value) {
-       if(((String)value).length() < 8){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("password_error")));
-        }
+        this.validator.validatePassword((String)value);
     }
     
     /**
