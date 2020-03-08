@@ -3,26 +3,16 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
-import java.io.IOException;
+import com.gb4w20.gb4w20.jsf.validation.FormValues;
+import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.annotation.ManagedProperty;
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -36,17 +26,15 @@ public class RegisterBackingBean implements Serializable {
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(RegisterBackingBean.class);
     private static final String CLIENT_PAGE = "index.xhtml";
     private static final String LOGIN_PAGE ="login.xhtml";
-    //Credit to https://stackoverflow.com/questions/8204680/java-regex-email Jason Buberel for regex pattern 
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-    public static final Pattern VALID_PHONE_NUMBER_REGEX = Pattern.compile("[0-9]{3}[0-9]{3}[0-9]{4}");
-    public static final Pattern VALID_POSTAL_CODE_REGEX = Pattern.compile("[A-Z][0-9][A-Z][0-9][A-Z][0-9]");
 
     @Inject
-    UsersJpaController userJpaController;
+    private UsersJpaController userJpaController;
     
-    //Lists for selections
-    private List<String> availableTitles; 
-    private List<String> provinceSelections;
+    @Inject 
+    private JSFFormMessageValidator validator;
+    
+    @Inject
+    private FormValues values;
     
     //Inputs
     private String titleInput; 
@@ -64,18 +52,14 @@ public class RegisterBackingBean implements Serializable {
     private String emailInput; 
     private String passwordInput;
     
-    //Bundle for i18n
-    private ResourceBundle bundle; 
-    
     /**
      * Mainly used to set default values.
      * @author Jeffrey Boisvert
      */
     @PostConstruct
     public void init(){
+        //No other country than Canada for now
         this.countryInput = "Canada";
-        FacesContext context = FacesContext.getCurrentInstance();
-        this.bundle = context.getApplication().getResourceBundle(context, "msgs");
     }
     
     /**
@@ -84,10 +68,7 @@ public class RegisterBackingBean implements Serializable {
      * @return list of available titles
      */
     public List<String> getAvailableTitles(){
-        if(this.availableTitles == null){
-            generateAvailableTitles();
-        }
-        return this.availableTitles; 
+        return this.values.getAvailableTitles();
     }
     
     /**
@@ -390,10 +371,7 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public List<String> getProvinceSelections() {
-        if(this.provinceSelections == null){
-            generateProvinceList();
-        }
-        return provinceSelections;
+        return this.values.getProvinceSelections();
     }
     
     
@@ -412,64 +390,27 @@ public class RegisterBackingBean implements Serializable {
         return LOGIN_PAGE;
         
     }
-
-    /**
-     * Used as a helper method to set the list based on the local 
-     * @author Jeffrey Boisvert
-     */
-    private void generateAvailableTitles() {
-        //TODO Not sure how to make this i18n compliant. Also what titles does Ken want? 
-        this.availableTitles = new ArrayList<>(
-                Arrays.asList(
-                        this.bundle.getString("mr_title"), 
-                        this.bundle.getString("mrs_title"), 
-                        this.bundle.getString("ms_title"), 
-                        this.bundle.getString("dr_title")
-                ) 
-        );   
-       Collections.sort(this.availableTitles);
-    }
     
     /**
-     * Used as a helper method to set the list of all supported provinces
-     * @author Jeffrey Boisvert
-     */
-    private void generateProvinceList() {
-        this.provinceSelections = new ArrayList<>(
-                Arrays.asList(
-                        this.bundle.getString("ab_label"), 
-                        this.bundle.getString("bc_label"), 
-                        this.bundle.getString("ma_label"), 
-                        this.bundle.getString("nb_label"), 
-                        this.bundle.getString("nl_label"), 
-                        this.bundle.getString("nt_label"), 
-                        this.bundle.getString("ns_label"), 
-                        this.bundle.getString("nu_label"), 
-                        this.bundle.getString("on_label"), 
-                        this.bundle.getString("pe_label"),
-                        this.bundle.getString("qc_label"),
-                        this.bundle.getString("sk_label"),
-                        this.bundle.getString("yt_label")
-                ) 
-        ); 
-        
-        Collections.sort(this.provinceSelections);
-    }
-    
-    /**
-     * Used to validate if the user entered a name. 
-     * Design decision to only validate if empty or blank string (allow user to enter 123 if they
-     * really want to it is a string regardless). 
+     * Used to validate if the user entered a value. 
      * @param fc
      * @param c
      * @param value entered
      * @author Jeffrey Boisvert
      */
     public void validateIsNotBlank(FacesContext fc, UIComponent c, Object value) {
-        if (((String) value).isBlank()) {
-            throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("empty_error")));
-        }
+        this.validator.validateIsNotBlank((String)value);
+    }
+    
+    /**
+     * Used to validate if the user entered a value but allow it to be blank. 
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jeffrey Boisvert
+     */
+    public void validateIsNotJustWhiteSpace(FacesContext fc, UIComponent c, Object value) {
+        this.validator.validateIsNotJustWhiteSpace((String)value);
     }
     
     /**
@@ -481,25 +422,7 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validateEmail(FacesContext fc, UIComponent c, Object value) {
-       Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher((String) value);
-        
-       if(!matcher.find()){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("email_error")));
-        }
-       
-       try {
-           LOG.debug("Looking at email " + (String) value);
-           Users user = this.userJpaController.findUsers((String) value);
-           LOG.debug("Found user " + user);
-           throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("email_taken_error")));
-       }
-       catch(NoResultException | NonUniqueResultException ex){
-           LOG.debug("Email is not taken " + (String) value, ex);
-       }
-       
-       
+        this.validator.validateEmail((String)value);
     }
     
     /**
@@ -511,12 +434,7 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validatePostalCode(FacesContext fc, UIComponent c, Object value) {
-       Matcher matcher = VALID_POSTAL_CODE_REGEX.matcher((String) value);
-        
-       if(!matcher.find()){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("postal_code_error")));
-        }
+        this.validator.validatePostalCode((String)value);
     }
     
     /**
@@ -528,12 +446,7 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validatePhone(FacesContext fc, UIComponent c, Object value) {
-       Matcher matcher = VALID_PHONE_NUMBER_REGEX.matcher((String) value);
-        
-       if(!matcher.find()){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("phone_error")));
-        }
+        this.validator.validatePhone((String)value);
     }
     
     /**
@@ -546,10 +459,7 @@ public class RegisterBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validatePassword(FacesContext fc, UIComponent c, Object value) {
-       if(((String)value).length() < 8){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("password_error")));
-        }
+        this.validator.validatePassword((String)value);
     }
     
     /**

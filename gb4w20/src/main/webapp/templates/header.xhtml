@@ -12,12 +12,12 @@
         <ui:composition>    
             <b:navBar id="main-nav" inverse="true" styleClass="topMenuBar">
                 <b:navbarLinks>
-                    <b:navLink value="" href="/gb4w20/index.xhtml" styleClass="logomenuitem"/>
+                    <b:navLink value="" href="#{request.contextPath}/index.xhtml" styleClass="logomenuitem"/>
                 </b:navbarLinks>
                 <form id="nav-search" class="navbar-form navbar-left " role="search" action="search.xhtml" name="test" method="GET">
                     <input type="text" class="form-control" placeholder="Title" name="title"/>
                     <button type="submit" class="btn btn-default">${msgs.search}</button>
-                    <div><a href="advanced_search.xhtml"><small>${msgs.advanced_search}</small></a></div>
+                    <div><a href="#{request.contextPath}/advanced_search.xhtml"><small>${msgs.advanced_search}</small></a></div>
                 </form>
 
                 <h:form>
@@ -28,13 +28,13 @@
                             </c:when>
                             <c:otherwise>
                                 <b:navLink value="${msgs.login}" href="login.xhtml" />
-                                <b:navLink value="${msgs.register_page}" href="register.xhtml" />
+                                <b:navLink value="${msgs.register_page}" href="#{request.contextPath}/register.xhtml" />
                             </c:otherwise>
                         </c:choose>
                         <h:panelGroup rendered="#{userSession.loggedInManager}"> 
-                            <b:navLink value="${msgs.dashboard}" href="manager-frontpage.xhtml"/>
+                            <b:navLink value="${msgs.dashboard}" href="#{request.contextPath}/manager-frontpage.xhtml"/>
                         </h:panelGroup>
-                        <b:navLink href="checkoutpage.xhtml">
+                        <b:navLink href="#{request.contextPath}/checkoutpage.xhtml">
                             <b:icon value="shopping-cart" size="2x">#{msgs.cart}</b:icon>
                         </b:navLink>
                         <b:navLink value="FR" href="www.google.com"/>
