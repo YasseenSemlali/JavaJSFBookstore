@@ -189,7 +189,15 @@ public class JSFFormMessageValidator implements Serializable{
          throw new ValidatorException(new FacesMessage(
                     this.bundle.getString("password_error")));
         }
-    }  
+    } 
+    
+    /**
+     * Builds a FacesMessage notifying the user that their login details were invalid
+     */
+    public void inValidLoginError(){
+        FacesMessage message = new FacesMessage(this.bundle.getString("invalidLoginDetails"));
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
     
     
 }

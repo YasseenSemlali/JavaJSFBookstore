@@ -30,7 +30,8 @@ public class RegisterBackingBean implements Serializable {
     @Inject
     private UsersJpaController userJpaController;
     
-    @Inject JSFFormMessageValidator validator;
+    @Inject 
+    private JSFFormMessageValidator validator;
     
     @Inject
     private FormValues values;
