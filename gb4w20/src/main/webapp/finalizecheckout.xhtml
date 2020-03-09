@@ -1,10 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-Java Server Faces page that displays a cart page
-showing all the items or the item you have added to your cart
-that you will be purchasing. Also, you can remove items in here
-and finalize transactions
+Java Server Faces page that displays a page where it
+asks the logged in user to input his credit card information
+to be able to finalize the transaction.
 
 @author Jasmar Badion
 -->
@@ -19,11 +18,31 @@ and finalize transactions
     <ui:define name="head">
         <title>Finalize</title>
     </ui:define>
-    
+
     <ui:define name="content">
-        
+        <h:form>
+            <b:panelGrid colSpans="2,10" size="xs">
+                <h:outputLabel value="#{msgs.creditcardnumber}"/>
+                <b:inputText value="#{transaction.card}" span="6" required="true">
+                    <!--<f:converter converterId="com.gb4w20.gb4w20.jsf.validation.CreditCardConverter" />
+                    <f:validator validatorId="com.gb4w20.gb4w20.jsf.validation.CreditCardValidator" />-->
+                </b:inputText>
+                <h:outputLabel value="#{msgs.cardexpirydate}"/>
+                <b:inputText value="#{transaction.date}" span="4">
+                    <f:convertDateTime pattern="MM/yyyy" />
+                </b:inputText>
+                <h:outputLabel value="#{msgs.billingaddress}"/>
+                <b:inputText value="#{transaction.billAddress}" span="8"/>
+                <h:outputLabel value="#{msgs.cardsecuritycode}"/>
+                <b:inputText value="#{transaction.cardSecurityCode}" span="2"/>
+            </b:panelGrid>
+            <h3>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h3>
+            <div style="text-align: center">
+                <b:commandButton value="#{msgs.pay}" look="primary" style="width:80px" action="#"/>
+            </div>
+        </h:form>
     </ui:define>
-    
+
     <ui:define name="footer">
         <ui:include src="/templates/footer.xhtml"></ui:include>
     </ui:define>
