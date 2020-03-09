@@ -61,6 +61,14 @@ public class LocaleBackingBean implements Serializable{
         FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
         LOG.info("Local is now set to " + locale.toString());
     }
+    
+    /**
+     * Used to validate if the locale is in french or not
+     * @return true if set to french, false otherwise
+     */
+    public boolean isSetToFrench(){
+        return this.getLanguage().equals("fr");
+    }
 
     
 }
