@@ -35,8 +35,8 @@
                             <b:navLink value="${msgs.dashboard}" href="#{request.contextPath}/manager-frontpage.xhtml"/>
                         </h:panelGroup>
                         <b:navLink value="#{msgs.cart}" href="#{request.contextPath}/checkoutpage.xhtml"/>
-                        <b:navLink value="FR" href="www.google.com"/>
                     </b:navbarLinks>
+                    <h:commandLink action="#{localeBackingBean.setLanguage('fr', 'CA')}" value="FR" />
                 </h:form>
                 <!-- For testing purposes, resets whether the user has responded to the survey
                 <h:form>

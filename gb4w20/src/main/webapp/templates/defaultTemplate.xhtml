@@ -5,27 +5,29 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h:head>
-        <ui:insert name="head">
-        </ui:insert>
-    </h:head>
-    <h:body>
-        <h:outputStylesheet library="css" name="global.css" />
+    <f:view locale="#{localeBackingBean.locale}">
+        <h:head>
+            <ui:insert name="head">
+            </ui:insert>
+        </h:head>
+        <h:body>
+                <h:outputStylesheet library="css" name="global.css" />
 
-        <div>
-            <ui:insert name="header">
-                <ui:include src="/templates/header.xhtml"></ui:include>
-            </ui:insert>
-        </div>
-        <div>
-            <ui:insert name="content">
-                <ui:include src="/templates/content.xhtml"></ui:include>
-            </ui:insert>
-        </div>
-        <div>
-            <ui:insert name="footer">
-                <ui:include src="/templates/footer.xhtml"></ui:include>
-            </ui:insert>
-        </div>
-    </h:body>
+                <div>
+                    <ui:insert name="header">
+                        <ui:include src="/templates/header.xhtml"></ui:include>
+                    </ui:insert>
+                </div>
+                <div>
+                    <ui:insert name="content">
+                        <ui:include src="/templates/content.xhtml"></ui:include>
+                    </ui:insert>
+                </div>
+                <div>
+                    <ui:insert name="footer">
+                        <ui:include src="/templates/footer.xhtml"></ui:include>
+                    </ui:insert>
+                </div>
+        </h:body>
+    </f:view>
 </html>

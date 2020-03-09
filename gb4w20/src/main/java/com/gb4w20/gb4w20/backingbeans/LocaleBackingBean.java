@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.slf4j.LoggerFactory;
 
 /**
  * Used to hold the locale of the current session. 
@@ -19,6 +20,8 @@ import javax.inject.Named;
 @Named
 @SessionScoped
 public class LocaleBackingBean implements Serializable{
+    
+    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(LocaleBackingBean.class);
     
     private Locale locale;
 
@@ -33,6 +36,9 @@ public class LocaleBackingBean implements Serializable{
      * @author Jeffrey Boisvert
      */
     public Locale getLocale() {
+        if(locale==null){
+            return FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
+        }
         return locale;
     }
     
@@ -51,8 +57,9 @@ public class LocaleBackingBean implements Serializable{
      * @param country of the language being set ex: CA
      */
     public void setLanguage(String language, String country) {
-        locale = new Locale(a, b);
+        locale = new Locale(language, country);
         FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
+        LOG.info("Local is now set to " + locale.toString());
     }
 
     
