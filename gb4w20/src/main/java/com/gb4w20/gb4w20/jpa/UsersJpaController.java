@@ -284,6 +284,29 @@ public class UsersJpaController implements Serializable {
     }
     
     /**
+     * Used to find a user with a given email. 
+     * @param email
+     * @return user object of that id. 
+     * @author Jeffrey Boisvert
+     */
+    public Users findUsers(String email) throws NoResultException, NonUniqueResultException{
+        
+          CriteriaBuilder cb = em.getCriteriaBuilder();
+          CriteriaQuery<Users> cq = cb.createQuery(Users.class);
+          Root<Users> user = cq.from(Users.class);
+          
+          cq.select(user);
+          cq.where(cb.and(
+                  cb.equal(user.get(Users_.email), email)
+            )
+          );
+          
+          TypedQuery<Users> query = em.createQuery(cq);
+          return query.getSingleResult();
+        
+    }
+    
+    /**
      * Used to find the user entity that have the email and password. 
      * @param email of the user
      * @param password of the user
@@ -319,7 +342,7 @@ public class UsersJpaController implements Serializable {
      */
     public double getUsersTotalSales(Long id, String startDate, String endDate){
 
-        LOG.info("Looking for total sales for user with id " + id);
+        LOG.info("Total sales user with id " + id + " between " + startDate + " and " + endDate);
         
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -340,6 +363,33 @@ public class UsersJpaController implements Serializable {
     }
     
     /**
+     * Used to get the total sales of a client.
+     * @param id of the user
+     * @return total of sales
+     * @author Jeffrey Boisvert
+     */
+    public double getUsersTotalSales(Long id){
+
+        LOG.info("Looking for total sales for user with id " + id);
+        
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        
+        Root<Orders> orders = cq.from(Orders.class);
+        Join<Orders, Bookorder> bookorder = orders.join("bookorderCollection", JoinType.INNER);
+        Join<Orders, Users> user = orders.join("userId", JoinType.INNER);
+
+        cq.select(em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+                .where(
+                     cb.equal(user.get("userId"), id)
+                );
+
+        Query query = em.createQuery(cq);
+        return query.getSingleResult() != null ? ((BigDecimal) query.getSingleResult()).doubleValue() : 0.00;
+        
+    }
+    
+    /**
      * Used to get all the books purchased by a user and the totals. 
      * This includes if a user ordered an item more than once in theory. 
      * 
@@ -351,7 +401,7 @@ public class UsersJpaController implements Serializable {
      */
     public List<NameAndNumberBean> getUserPurchasedBooks(Long id, String startDate, String endDate){
         
-        LOG.info("Looking for books bought by user with id " + id);
+        LOG.info("Looking for books bought by user with id " + id + " between " + startDate + " and " + endDate);
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameAndNumberBean.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         

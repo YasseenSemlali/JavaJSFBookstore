@@ -5,10 +5,15 @@ import com.gb4w20.gb4w20.entities.Publishers;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.PublishersJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import java.io.Serializable;
 import java.util.List;
+import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -27,6 +32,9 @@ public class PublisherReportBackingBean implements Serializable {
 
     @Inject
     private PublishersJpaController publisherJpaController;
+    
+    @Inject
+    private JSFFormMessageValidator validator;
     
     private Long publisherId; 
     
@@ -72,8 +80,23 @@ public class PublisherReportBackingBean implements Serializable {
      * This will set the properties of the bean of total sales and purchased items. 
      */
     public void runReport(){
-        setTotalSales();
-        setPurchasedProducts();
+        
+         if(validator.validateDatesAreValid(startDate, endDate)){
+
+            try {
+                
+                setTotalSales();
+                setPurchasedProducts();
+                validator.validateCollectionIsNotEmpty(purchasedProducts, "report_no_result");
+                
+            }
+            catch (Exception ex){
+                LOG.debug("Error running report ", ex);
+                validator.createFacesMessageFromKey("error_running_report");
+            }
+        
+        }
+                 
     }
     
     /**
