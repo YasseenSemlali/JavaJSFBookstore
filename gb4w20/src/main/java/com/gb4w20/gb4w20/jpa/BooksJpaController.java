@@ -5,6 +5,7 @@
  */
 package com.gb4w20.gb4w20.jpa;
 
+import com.gb4w20.gb4w20.backingbeans.UserSessionBean;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -68,6 +70,9 @@ public class BooksJpaController implements Serializable {
 
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
+    
+    @Inject
+    UserSessionBean userSession;
 
     public void create(Books books) throws RollbackFailureException {
         if (books.getGenresCollection() == null) {
@@ -489,7 +494,7 @@ public class BooksJpaController implements Serializable {
         List<Predicate> predicates = new ArrayList();
         predicates.add(cb.isTrue(book.get(Books_.active)));
         
-        predicates.add(cb.equal(user.get("email"), "cst.send@gmail.com"));
+        predicates.add(cb.equal(user.get("email"), userSession.getEmail()));
         
         cq.where(cb.and(predicates.toArray(new Predicate[0])));
         cq.orderBy(cb.desc(order.get("timestamp")));
@@ -582,7 +587,8 @@ public class BooksJpaController implements Serializable {
             searchPredicates.add(cb.isMember(publisher, publisherName));
         }
 
-        if (allTrue != null && allTrue) {
+        allTrue = allTrue == null ? false : allTrue;
+        if (allTrue || searchPredicates.size() == 0) {
             predicates.add(cb.and(searchPredicates.toArray(new Predicate[0])));
         } else {
             predicates.add(cb.or(searchPredicates.toArray(new Predicate[0])));
