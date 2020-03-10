@@ -46,9 +46,17 @@ to be able to finalize the transaction.
             </b:panelGrid>
 
             <h3>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h3>
+            <c:set var="taxprov" value="#{taxesJpaController.findByProvince(userSession.user.province)}"/>
+            <div style="color: green">
+                <h4>#{msgs.hst_tax}: $#{taxprov.getHSTpercentage()}</h4>
+                <h4>#{msgs.gst_tax}: $#{taxprov.getGSTpercentage()}</h4>
+                <h4>#{msgs.pst_tax}: $#{taxprov.getPSTpercentage()}</h4>
+            </div>
+            <h2 style="color: red">#{msgs.total}: $#{cartSession.calculateTotalAmount() + taxprov.getHSTpercentage() + taxprov.getGSTpercentage() + taxprov.getPSTpercentage()}</h2>
 
             <div style="text-align: center">
                 <b:button value="#{msgs.pay}" look="primary" onclick="$('.modalPseudoClass').modal()" style="width:80px" />
+                <!--<b:commandButton value="#{msgs.pay}" look="primary" action="" onsuccess="$('.modalPseudoClass').modal()" style="width:80px" ></b:commandButton>-->
             </div>
 
             <b:iconAwesome value="fa-cc-mastercard" size="4x"></b:iconAwesome>
@@ -57,7 +65,9 @@ to be able to finalize the transaction.
 
         <!--INVOICE SHOWN AS A MODAL WHEN PAYMENT WAS SUCCESSFUL, user can send to his e-mail or print the invoice-->
         <b:modal id="invoiceModal" title="#{msgs.invoice}" styleClass="modalPseudoClass">
+            <h1>#{msgs.companyName}</h1>
             <h3>#{msgs.thankinvoice}</h3>
+            <br></br>
             <p>
                 <h4>#{msgs.youritems}:</h4>
                 <ul>
@@ -66,17 +76,17 @@ to be able to finalize the transaction.
                     </c:forEach>
                 </ul>
             </p>
+            <hr></hr>
             <p>
                 <h4>#{msgs.amount}</h4>
                 $#{cartSession.calculateTotalAmount()}
             </p>
+            <hr></hr>
             <p>
                 <h4>#{msgs.information}</h4>
-                #{msgs.name}: 
+                #{msgs.name}: #{userSession.user.firstName} #{userSession.user.lastName}
                 <br></br>
-                #{msgs.address}:
-                <br></br>
-                #{msgs.arrivaldate}
+                #{msgs.address}: #{userSession.user.address1}
             </p>
             <f:facet name="footer">
                 <b:button value="#{msgs.sendemail}" look="primary"/>
