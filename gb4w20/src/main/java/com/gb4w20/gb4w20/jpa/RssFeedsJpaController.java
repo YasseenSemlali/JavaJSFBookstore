@@ -1,7 +1,8 @@
-
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.RssFeeds;
+import com.gb4w20.gb4w20.entities.RssFeeds_;
+import com.gb4w20.gb4w20.entities.SurveyQuestions;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
@@ -13,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
@@ -20,8 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Used to interact with the rssfeeds table in the database. 
- * 
+ * Used to interact with the rssfeeds table in the database.
+ *
  * @author Jeffrey Boisvert
  */
 @Named
@@ -97,18 +99,14 @@ public class RssFeedsJpaController implements Serializable {
     }
 
     private List<RssFeeds> findRssFeedsEntities(boolean all, int maxResults, int firstResult) {
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(RssFeeds.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(RssFeeds.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
         }
+        return q.getResultList();
     }
 
     public RssFeeds findRssFeeds(Long id) {
@@ -131,4 +129,25 @@ public class RssFeedsJpaController implements Serializable {
         }
     }
     
+     public RssFeeds getActiveFeed() {
+        LOG.info("getting active rssFeed");
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<RssFeeds> cq = cb.createQuery(RssFeeds.class);
+
+        Root<RssFeeds> feed = cq.from(RssFeeds.class);
+        cq.select(feed).where(cb.isTrue(feed.get(RssFeeds_.enabled)));
+
+        Query query = em.createQuery(cq);
+
+        List<RssFeeds> result = query.getResultList();
+        
+        if(result.size() == 0) {
+            LOG.warn("No active rss feed");
+        } else if(result.size() > 1) {
+            LOG.warn("More than 1 active rss feed, returning only 1");
+        }
+        return result.size() == 0 ? null : result.get(0);
+    }
+
 }

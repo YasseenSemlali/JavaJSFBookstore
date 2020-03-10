@@ -22,8 +22,16 @@ body, html {
 }
 
 /* Used to make mobile menu nicer */
-#main-nav_inner{
-    padding: 2em;
+@media (max-width: 767px) {
+    #main-nav_inner{
+        padding: 2em;
+    }
+}
+
+.hide-images img{
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
 }
 
 /* TOP MENU */
