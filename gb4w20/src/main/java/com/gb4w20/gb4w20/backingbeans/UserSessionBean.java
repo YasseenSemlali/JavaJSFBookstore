@@ -73,11 +73,11 @@ public class UserSessionBean implements Serializable {
      * @return the name of the logged in user
      * @author Jeffrey Boisvert
      */
-    public String getLoggedInUserName(){
+    public String getEmail(){
         if(this.user == null){
             return ""; 
         }
-        return this.user.getFirstName(); 
+        return this.user.getEmail(); 
     }
     
     /**
