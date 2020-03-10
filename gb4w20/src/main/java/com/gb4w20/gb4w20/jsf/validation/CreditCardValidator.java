@@ -4,6 +4,7 @@
 package com.gb4w20.gb4w20.jsf.validation;
 
 import com.gb4w20.gb4w20.backingbeans.CreditCardBackingBean;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
@@ -37,12 +38,21 @@ public class CreditCardValidator implements Validator {
         } else {
             cardNumber = value.toString().replaceAll("\\D", ""); // remove
         }																	// non-digits
-        //MUST DO FACESMESSAGE BELOW AND THROW EXCEPTION
+        
         if (!luhnCheck(cardNumber)) {
-            LOG.info("Bad Luhn Check");
+            FacesMessage message = CreditCardMessages.getMessage(
+                    "com.gb4w20.gb4w20.bundles.messages", "badLuhnCheck", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+
         }
     }
 
+    /**
+     * Doing a Luhn check to validate credit card number
+     * @param cardNumber
+     * @return 
+     */
     private static boolean luhnCheck(String cardNumber) {
         int sum = 0;
 

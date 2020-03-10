@@ -3,10 +3,14 @@
  */
 package com.gb4w20.gb4w20.backingbeans;
 
+import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.LoggerFactory;
 
@@ -27,27 +31,12 @@ public class TransactionBackingBean implements Serializable{
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(TransactionBackingBean.class);
     
     //Inputs
-    private BigDecimal amount;
     private CreditCardBackingBean card = new CreditCardBackingBean("");
     private Date date = new Date();
-    private String billAddress;
     private String cardSecurityCode;
     
-    /**
-     * Getter for amount
-     * @return 
-     */
-    public BigDecimal getAmount(){
-        return this.amount;
-    }
-    
-    /**
-     * Setter for amount
-     * @param amount 
-     */
-    public void setAmount(BigDecimal amount){
-        this.amount = amount;
-    }
+    @Inject 
+    private JSFFormMessageValidator validator;
     
     /**
      * Getter for card
@@ -82,26 +71,13 @@ public class TransactionBackingBean implements Serializable{
     }
     
     /**
-     * Getter for billAddress
-     * @return 
-     */
-    public String getBillAddress(){
-        return this.billAddress;
-    }
-    
-    /**
-     * Setter for billAddress
-     * @param billAddress 
-     */
-    public void setBillAddress(String billAddress){
-        this.billAddress = billAddress;
-    }
-    
-    /**
      * Getter for cardSecurityCode
      * @return 
      */
     public String getCardSecurityCode(){
+        if(this.cardSecurityCode == null){
+            return "";
+        }
         return this.cardSecurityCode;
     }
     
@@ -111,5 +87,15 @@ public class TransactionBackingBean implements Serializable{
      */
     public void setCardSecurityCode(String cardSecurityCode){
         this.cardSecurityCode = cardSecurityCode;
+    }
+    
+    /**
+     * To validate card security code or CVV
+     * @param fc
+     * @param c
+     * @param value 
+     */
+    public void validateCVV(FacesContext fc, UIComponent c, Object value) {
+        this.validator.validateCVV((String)value);
     }
 }

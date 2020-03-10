@@ -35,6 +35,7 @@ public class JSFFormMessageValidator implements Serializable{
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern VALID_PHONE_NUMBER_REGEX = Pattern.compile("[0-9]{3}[0-9]{3}[0-9]{4}");
     public static final Pattern VALID_POSTAL_CODE_REGEX = Pattern.compile("[A-Z][0-9][A-Z][0-9][A-Z][0-9]");
+    public static final Pattern VALID_CVV = Pattern.compile("[0-9]{3}");
     
     //Bundle for i18n
     private ResourceBundle bundle; 
@@ -264,5 +265,20 @@ public class JSFFormMessageValidator implements Serializable{
 
     }
     
-    
+    /**
+     * Validating the credit card security code or CVV
+     * @param value 
+     * @author Jasmar Badion
+     */
+    public void validateCVV(String value) {
+       Matcher matcher = VALID_CVV.matcher(value);
+        
+       if(!matcher.find()){
+         FacesMessage message = new FacesMessage(
+                    this.bundle.getString("cvv_error"));
+         message.setSeverity(FacesMessage.SEVERITY_ERROR);
+         
+         throw new ValidatorException(message);
+        }
+    }
 }

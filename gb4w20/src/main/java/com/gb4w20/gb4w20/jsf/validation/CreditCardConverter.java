@@ -43,7 +43,7 @@ public class CreditCardConverter implements Converter, Serializable {
      * @param newValue
      * @return
      */
-    @Override
+    
     public Object getAsObject(FacesContext context, UIComponent component,
             String newValue) throws ConverterException {
         StringBuilder builder = new StringBuilder(newValue);
@@ -61,9 +61,13 @@ public class CreditCardConverter implements Converter, Serializable {
                 invalidCharacter = ch;
             }
         }
-        //MUST DO FACESMESSAGE BELOW AND THROW EXCEPTION
+        
         if (foundInvalidCharacter) {
-            LOG.info("Invalid characters found");
+            FacesMessage message = CreditCardMessages.getMessage(
+                    "com.gb4w20.gb4w20.bundles.messages", "badCreditCardCharacter",
+                    new Object[]{invalidCharacter});
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ConverterException(message);
         }
 
         return new CreditCardBackingBean(builder.toString());
@@ -78,7 +82,7 @@ public class CreditCardConverter implements Converter, Serializable {
      * @param value
      * @return
      */
-    @Override
+    
     public String getAsString(FacesContext context, UIComponent component,
             Object value) throws ConverterException {
         if (!(value instanceof CreditCardBackingBean)) {

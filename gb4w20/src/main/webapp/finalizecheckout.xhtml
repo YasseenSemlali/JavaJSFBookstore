@@ -14,6 +14,7 @@ to be able to finalize the transaction.
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
         <title>Finalize</title>
@@ -22,25 +23,67 @@ to be able to finalize the transaction.
     <ui:define name="content">
         <h:form>
             <b:panelGrid colSpans="2,10" size="xs">
-                <h:outputLabel value="#{msgs.creditcardnumber}"/>
-                <b:inputText value="#{transaction.card}" span="6" required="true">
-                    <!--<f:converter converterId="com.gb4w20.gb4w20.jsf.validation.CreditCardConverter" />
-                    <f:validator validatorId="com.gb4w20.gb4w20.jsf.validation.CreditCardValidator" />-->
+                <h:outputLabel for="creditcard" value="#{msgs.creditcardnumber}"/>
+                <b:inputText id="creditcard" value="#{transaction.card}" span="6" required="true">
+                    <f:converter converterId="com.gb4w20.gb4w20.jsf.validation.CreditCardConverter" />
+                    <f:validator validatorId="com.gb4w20.gb4w20.jsf.validation.CreditCardValidator" />
                 </b:inputText>
-                <h:outputLabel value="#{msgs.cardexpirydate}"/>
-                <b:inputText value="#{transaction.date}" span="4">
+                <b:message id="credcarderror" for="cardexpiry" style="color: red" />
+                <br></br>
+                <h:outputLabel for="cardexpiry" value="#{msgs.cardexpirydate}"/>
+                <b:inputText id="cardexpiry" value="#{transaction.date}" span="4" tooltip="MM/yyyy (e.g. 01/2020)">
                     <f:convertDateTime pattern="MM/yyyy" />
                 </b:inputText>
-                <h:outputLabel value="#{msgs.billingaddress}"/>
-                <b:inputText value="#{transaction.billAddress}" span="8"/>
-                <h:outputLabel value="#{msgs.cardsecuritycode}"/>
-                <b:inputText value="#{transaction.cardSecurityCode}" span="2"/>
+                <b:message id="cardexpireerror" for="cardexpiry" style="color: red" />
+                <br></br>
+                <h:outputLabel for="cardsecuritycode" value="#{msgs.cardsecuritycode}"/>
+                <b:inputText id="cardsecuritycode" a:maxlength="3" span="2" 
+                             value="#{transaction.cardSecurityCode}"
+                             validator="#{transaction.validateCVV}">
+                    <f:ajax event="change" render="cvverror"/>
+                </b:inputText>
+                <b:message id="cvverror" for="cardsecuritycode" style="color: red"/>
             </b:panelGrid>
+
             <h3>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h3>
+
             <div style="text-align: center">
-                <b:commandButton value="#{msgs.pay}" look="primary" style="width:80px" action="#"/>
+                <b:button value="#{msgs.pay}" look="primary" onclick="$('.modalPseudoClass').modal()" style="width:80px" />
             </div>
+
+            <b:iconAwesome value="fa-cc-mastercard" size="4x"></b:iconAwesome>
+            <b:iconAwesome value="fa-cc-visa" size="4x"></b:iconAwesome>
         </h:form>
+
+        <!--INVOICE SHOWN AS A MODAL WHEN PAYMENT WAS SUCCESSFUL, user can send to his e-mail or print the invoice-->
+        <b:modal id="invoiceModal" title="#{msgs.invoice}" styleClass="modalPseudoClass">
+            <h3>#{msgs.thankinvoice}</h3>
+            <p>
+                <h4>#{msgs.youritems}:</h4>
+                <ul>
+                    <c:forEach items="#{cartSession.books}" var="cartbooks">
+                        <li>#{cartbooks.title}: $#{cartbooks.listPrice -  cartbooks.salePrice}</li>
+                    </c:forEach>
+                </ul>
+            </p>
+            <p>
+                <h4>#{msgs.amount}</h4>
+                $#{cartSession.calculateTotalAmount()}
+            </p>
+            <p>
+                <h4>#{msgs.information}</h4>
+                #{msgs.name}: 
+                <br></br>
+                #{msgs.address}:
+                <br></br>
+                #{msgs.arrivaldate}
+            </p>
+            <f:facet name="footer">
+                <b:button value="#{msgs.sendemail}" look="primary"/>
+                <b:button value="#{msgs.print}" look="info"/>
+                <b:button value="#{msgs.close}" dismiss="modal" look="danger"/>
+            </f:facet>
+        </b:modal>
     </ui:define>
 
     <ui:define name="footer">
