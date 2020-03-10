@@ -20,16 +20,11 @@ Java Server Faces page that displays the frontpage of the app
 
     <ui:define name="content">
         <b:container fluid="true">
-            <c:set var="books" value="#{booksJpaController.searchBooks(param['isbn'],param['title'],param['author'],param['publisher'], param['allTrue'])}"/>
+            <c:set var="books" value="#{searchBackingBean.search(param['isbn'],param['title'],param['author'],param['publisher'], param['allTrue'])}"/>
             
             <c:choose>
                 <c:when test="#{books.size() == 0}">
                      No results
-                </c:when>
-                
-                <c:when test="#{books.size() == 1}">
-                    <!--TODO redirect-->
-                    1 result TODO redirect
                 </c:when>
                 
                 <c:otherwise>

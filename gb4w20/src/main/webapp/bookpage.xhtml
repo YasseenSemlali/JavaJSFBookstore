@@ -31,6 +31,8 @@ add it to the shopping cart.
                 <c:set var="authorbooks" value="#{book.getAuthorsCollection()}"/>
                 <c:set var="genrebooks" value="#{book.getGenresCollection()}"/>
 
+                 #{lastViewedGenreBean.setMostRecentGenre(genrebooks)}
+
                 <b:container>
                     <b:jumbotron>
                         <ui:decorate template="/templates/book.xhtml">

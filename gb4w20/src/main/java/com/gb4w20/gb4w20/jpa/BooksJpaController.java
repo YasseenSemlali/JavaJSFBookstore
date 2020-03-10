@@ -5,6 +5,7 @@
  */
 package com.gb4w20.gb4w20.jpa;
 
+import com.gb4w20.gb4w20.backingbeans.UserSessionBean;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -68,6 +70,9 @@ public class BooksJpaController implements Serializable {
 
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
+    
+    @Inject
+    UserSessionBean userSession;
 
     public void create(Books books) throws RollbackFailureException {
         if (books.getGenresCollection() == null) {
@@ -489,7 +494,7 @@ public class BooksJpaController implements Serializable {
         List<Predicate> predicates = new ArrayList();
         predicates.add(cb.isTrue(book.get(Books_.active)));
         
-        predicates.add(cb.equal(user.get("email"), "cst.send@gmail.com"));
+        predicates.add(cb.equal(user.get("email"), userSession.getEmail()));
         
         cq.where(cb.and(predicates.toArray(new Predicate[0])));
         cq.orderBy(cb.desc(order.get("timestamp")));
@@ -551,13 +556,15 @@ public class BooksJpaController implements Serializable {
 
         List<Predicate> predicates = new ArrayList<Predicate>();
         predicates.add(cb.isTrue(book.get(Books_.active)));
+        
+        List<Predicate> searchPredicates = new ArrayList<Predicate>();
 
         if (isbn != null) {
-            predicates.add(cb.equal(book.get(Books_.isbn), isbn));
+            searchPredicates.add(cb.equal(book.get(Books_.isbn), isbn));
         }
         
         if (title != null && !title.isEmpty()) {
-            predicates.add(cb.like(book.get(Books_.title), "%" + title + "%"));
+            searchPredicates.add(cb.like(book.get(Books_.title), "%" + title + "%"));
         }
 
         if (author != null && !author.isEmpty()) {
@@ -571,21 +578,23 @@ public class BooksJpaController implements Serializable {
                 authorPredicates.add(cb.isMember(name, lastName));
             }
 
-            predicates.add(cb.or(authorPredicates.toArray(new Predicate[0])));
+            searchPredicates.add(cb.or(authorPredicates.toArray(new Predicate[0])));
         }
 
         if (publisher != null && !publisher.isEmpty()) {
             Expression publisherName = book.join(Books_.publishersCollection).get(Publishers_.name);
 
-            predicates.add(cb.isMember(publisher, publisherName));
+            searchPredicates.add(cb.isMember(publisher, publisherName));
         }
 
-        if (allTrue != null && allTrue) {
-            cq.where(cb.and(predicates.toArray(new Predicate[0])));
+        allTrue = allTrue == null ? false : allTrue;
+        if (allTrue || searchPredicates.size() == 0) {
+            predicates.add(cb.and(searchPredicates.toArray(new Predicate[0])));
         } else {
-            cq.where(cb.or(predicates.toArray(new Predicate[0])));
+            predicates.add(cb.or(searchPredicates.toArray(new Predicate[0])));
         }
 
+        cq.where(cb.and(predicates.toArray(new Predicate[0])));
         Query query = em.createQuery(cq);
 
         return query.getResultList();

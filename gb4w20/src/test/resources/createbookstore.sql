@@ -215,7 +215,7 @@ CREATE TABLE survey_responses(
 CREATE TABLE rss_feeds(
 	id bigint NOT NULL auto_increment PRIMARY KEY,
     url varchar(2048),
-    enabled boolean DEFAULT true,
+    enabled boolean DEFAULT false,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
