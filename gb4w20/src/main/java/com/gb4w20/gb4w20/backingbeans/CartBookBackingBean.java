@@ -39,6 +39,14 @@ public class CartBookBackingBean implements Serializable {
     @Inject
     private BooksJpaController bookJpaController;
 
+//    private Long isbn;
+//    
+//    public Long getIsbn(){
+//        return this.isbn;
+//    }
+//    public void setIsbn(Long isbn){
+//        this.isbn = isbn;
+//    }
     /**
      * Default constructor initializing the HashSet
      */

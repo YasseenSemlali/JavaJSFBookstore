@@ -20,6 +20,7 @@ public class CreditCardBackingBean implements Serializable{
     
     private final String number;
     
+    //constructor
     public CreditCardBackingBean(String number){
         this.number = number;
     }

@@ -39,7 +39,7 @@ public class CreditCardValidator implements Validator {
             cardNumber = value.toString().replaceAll("\\D", ""); // remove
         }																	// non-digits
         
-        if (!luhnCheck(cardNumber)) {
+        if (!luhnCheck(cardNumber) || cardNumber.equals("")) {
             FacesMessage message = CreditCardMessages.getMessage(
                     "com.gb4w20.gb4w20.bundles.messages", "badLuhnCheck", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);

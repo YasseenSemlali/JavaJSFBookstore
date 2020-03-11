@@ -3,9 +3,12 @@
  */
 package com.gb4w20.gb4w20.backingbeans;
 
+import com.gb4w20.gb4w20.entities.Taxes;
+import com.gb4w20.gb4w20.jpa.TaxesJpaController;
 import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
@@ -37,6 +40,9 @@ public class TransactionBackingBean implements Serializable{
     
     @Inject 
     private JSFFormMessageValidator validator;
+    
+    @Inject
+    private TaxesJpaController taxesJpaController;
     
     /**
      * Getter for card
@@ -90,6 +96,37 @@ public class TransactionBackingBean implements Serializable{
     }
     
     /**
+     * Calculating the total amount along with the taxes
+     * and scaling it to two decimals
+     * @param amount
+     * @param taxes
+     * @return 
+     */
+    public BigDecimal scaleAmountTwoDecimals(BigDecimal amount, Taxes taxes){
+        BigDecimal hst = new BigDecimal(0);
+        BigDecimal gst = new BigDecimal(0);
+        BigDecimal pst = new BigDecimal(0);
+        
+        if(taxes.getHSTpercentage() != null){
+            hst = taxes.getHSTpercentage();
+        }
+        if(taxes.getGSTpercentage() != null){
+            gst = taxes.getGSTpercentage();
+        }
+        if(taxes.getPSTpercentage() != null){
+            pst = taxes.getPSTpercentage();
+        }
+        
+        LOG.info("HST is " + hst);
+        LOG.info("GST is " + gst);
+        LOG.info("PST is " + pst);
+        
+        BigDecimal totals = amount.add(gst.add(hst.add(pst)));
+        //rounding the amount to two decimal points
+        return totals.setScale(2, RoundingMode.HALF_UP); 
+    }
+    
+    /**
      * To validate card security code or CVV
      * @param fc
      * @param c
@@ -97,5 +134,15 @@ public class TransactionBackingBean implements Serializable{
      */
     public void validateCVV(FacesContext fc, UIComponent c, Object value) {
         this.validator.validateCVV((String)value);
+    }
+    
+    /**
+     * To validate credit card expiry date
+     * @param fc
+     * @param c
+     * @param value 
+     */
+    public void validateExpiryDate(FacesContext fc, UIComponent c, Object value){
+        this.validator.validateExpiryDate((Date)value);
     }
 }

@@ -25,14 +25,19 @@ add it to the shopping cart.
     </ui:define>
 
     <ui:define name="content">
+        <!--<f:metadata>
+            <f:viewParam id="isbn" name="isbn" value="#{cartSession.isbn}" />
+        </f:metadata>-->
+        
         <c:choose>
             <c:when test="#{param['isbn'] != null}">
                 <c:set var="book" value="#{booksJpaController.findBooks(param['isbn'])}"/>
                 <c:set var="authorbooks" value="#{book.getAuthorsCollection()}"/>
                 <c:set var="genrebooks" value="#{book.getGenresCollection()}"/>
-
+                #{cartSession.setIsbn(param['isbn'])}
+                #{cartSession.isbn}
                  #{lastViewedGenreBean.setMostRecentGenre(genrebooks)}
-
+                 
                 <b:container>
                     <b:jumbotron>
                         <ui:decorate template="/templates/book.xhtml">
