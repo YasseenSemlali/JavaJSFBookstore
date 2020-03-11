@@ -156,7 +156,7 @@ public class TransactionBackingBean implements Serializable {
      */
     public String hideCreditCardNum() {
         int index = 0;
-        String mask = "##xx-xxxx-xxxx-xx##";
+        String mask = "##xx-xxxx-xxxx-xx##"; //format of how it will be displayed masked
         StringBuilder maskedNumber = new StringBuilder();
         for (int i = 0; i < mask.length(); i++) {
             char c = mask.charAt(i);

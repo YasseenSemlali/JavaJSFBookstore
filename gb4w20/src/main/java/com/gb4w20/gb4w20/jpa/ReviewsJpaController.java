@@ -212,7 +212,8 @@ public class ReviewsJpaController implements Serializable {
         TypedQuery<Double> avgrating = em.createQuery(cq);
         
         if (avgrating.getSingleResult() != null){
-            return avgrating.getSingleResult();
+            //rounding the average rating to 1 decimal place
+            return Math.round(avgrating.getSingleResult()*10)/10.0;
         }
         else{
             return 0.0;
