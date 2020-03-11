@@ -11,6 +11,11 @@ body, html {
     padding: 0;
 }
 
+div.card{
+    margin-top: 2em;
+    padding: 2em;
+}
+
 .card {
     margin: auto;
     background-color: #eee;
@@ -19,6 +24,10 @@ body, html {
     border-radius: 15px;
     box-shadow: #bbb 6px 6px 12px;
     padding: 5%;
+}
+
+.language-button{
+    margin-top: 0.55em;
 }
 
 /* Used to make mobile menu nicer */

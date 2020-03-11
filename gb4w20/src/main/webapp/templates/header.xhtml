@@ -20,6 +20,7 @@
                     <div><a href="#{request.contextPath}/advanced_search.xhtml"><small>${msgs.advanced_search}</small></a></div>
                 </form>
 
+
                 <h:form>
                     <b:navbarLinks pull="right">
                         <c:choose>
@@ -38,6 +39,14 @@
                         <b:navLink rendered="#{userSession.loggedIn}" value="${msgs.downloads}" href="#{request.contextPath}/book-downloads.xhtml"/>
                         <b:navLink value="FR" href="www.google.com"/>
                     </b:navbarLinks>
+                    <c:choose>
+                        <c:when test="#{localeBackingBean.setToFrench}">
+                            <b:commandLink class="language-button btn btn-primary" action="#{localeBackingBean.setLanguage('en', 'CA')}" value="EN" />
+                        </c:when>
+                        <c:otherwise>
+                            <b:commandLink class="language-button btn btn-primary" action="#{localeBackingBean.setLanguage('fr', 'CA')}" value="FR" />
+                        </c:otherwise>
+                    </c:choose>
                 </h:form>
                 <!-- For testing purposes, resets whether the user has responded to the survey
                 <h:form>

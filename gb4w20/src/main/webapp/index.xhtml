@@ -5,7 +5,6 @@ Java Server Faces page that displays the frontpage of the app
 
 @author Yasseen Semlali
 -->
-
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -38,11 +37,11 @@ Java Server Faces page that displays the frontpage of the app
 
         <b:container fluid="true">
             <b:jumbotron>
-                <b:container>
-                    <h1>Bookify</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sapien faucibus et molestie ac feugiat. </p>
+                <b:container style="text-align: center;">
+                    <h1>#{msgs.companyName}</h1>
+                    <p>#{msgs.slogan}</p>
                     <p>
-                        <a href="search.xhtml?allTrue=true" class="btn btn-lg btn-info">Shop now »</a>
+                        <a href="search.xhtml?allTrue=true" class="btn btn-lg btn-info">#{msgs.shop_now}</a>
                     </p>
                 </b:container>
             </b:jumbotron>
@@ -87,9 +86,7 @@ Java Server Faces page that displays the frontpage of the app
                     </b:jumbotron>
                 </h:panelGroup>
             </h:panelGroup>
-
-
-
+            
             <b:row>
                 <b:column col-md="4">
                     <h2>${msgs.you_recently_bought}</h2>
