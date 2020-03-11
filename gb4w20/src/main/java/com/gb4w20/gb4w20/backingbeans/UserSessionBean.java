@@ -36,6 +36,24 @@ public class UserSessionBean implements Serializable {
     //PostConstruct -> after indepecndy inject 
     
     /**
+     * Getter for user
+     * @return 
+     * @author Jasmar
+     */
+    public Users getUser(){
+        return this.user;
+    }
+    
+    /**
+     * Setter for user
+     * @param user 
+     * @author Jasmar 
+     */
+    public void setUser(Users user){
+        this.user = user;
+    }
+    
+    /**
      * Getting the user id of user logged in
      * @return 
      * @Jasmar
