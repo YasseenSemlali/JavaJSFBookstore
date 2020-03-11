@@ -35,6 +35,7 @@
                             <b:navLink value="${msgs.dashboard}" href="#{request.contextPath}/manager-frontpage.xhtml"/>
                         </h:panelGroup>
                         <b:navLink value="#{msgs.cart}" href="#{request.contextPath}/checkoutpage.xhtml"/>
+                        <b:navLink rendered="#{userSession.loggedIn}" value="${msgs.downloads}" href="#{request.contextPath}/book-downloads.xhtml"/>
                         <b:navLink value="FR" href="www.google.com"/>
                     </b:navbarLinks>
                 </h:form>

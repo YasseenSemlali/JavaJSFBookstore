@@ -763,321 +763,321 @@ insert into file_formats(file_format_id, format) VALUES(2, "pdf");
 insert into file_formats(file_format_id, format) VALUES(3, "mobi");
 ALTER TABLE file_formats AUTO_INCREMENT=4;
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000000, './Good_Omens_The_Nice_and_Accurate_Prophecies_of_Agnes_Nutter_Witch.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000000, './Good_Omens_The_Nice_and_Accurate_Prophecies_of_Agnes_Nutter_Witch.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000000, './Good_Omens_The_Nice_and_Accurate_Prophecies_of_Agnes_Nutter_Witch.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000000, 'Good_Omens_The_Nice_and_Accurate_Prophecies_of_Agnes_Nutter_Witch.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000000, 'Good_Omens_The_Nice_and_Accurate_Prophecies_of_Agnes_Nutter_Witch.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000000, 'Good_Omens_The_Nice_and_Accurate_Prophecies_of_Agnes_Nutter_Witch.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780765326355, './The_Way_of_Kings.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780765326355, './The_Way_of_Kings.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780765326355, 'The_Way_of_Kings.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780765326355, 'The_Way_of_Kings.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765326362, './Words_of_Radiance.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765326362, 'Words_of_Radiance.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780765326379, './Oathbringer.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765326379, './Oathbringer.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780765326379, 'Oathbringer.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765326379, 'Oathbringer.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000001, './Harry_Potter_and_the_Sorcerers_Stone.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000001, 'Harry_Potter_and_the_Sorcerers_Stone.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780439064866, './Harry_Potter_and_the_Chamber_of_Secrets.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780439064866, 'Harry_Potter_and_the_Chamber_of_Secrets.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780439655484, './Harry_Potter_and_the_Prisoner_of_Azkaban.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780439655484, './Harry_Potter_and_the_Prisoner_of_Azkaban.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780439655484, 'Harry_Potter_and_the_Prisoner_of_Azkaban.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780439655484, 'Harry_Potter_and_the_Prisoner_of_Azkaban.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000002, './Harry_Potter_and_the_Goblet_of_Fire.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000002, 'Harry_Potter_and_the_Goblet_of_Fire.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780439358071, './Harry_Potter_and_the_Order_of_the_Phoenix.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780439358071, 'Harry_Potter_and_the_Order_of_the_Phoenix.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780439785969, './Harry_Potter_and_the_HalfBlood_Prince.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780439785969, './Harry_Potter_and_the_HalfBlood_Prince.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780439785969, './Harry_Potter_and_the_HalfBlood_Prince.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780439785969, 'Harry_Potter_and_the_HalfBlood_Prince.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780439785969, 'Harry_Potter_and_the_HalfBlood_Prince.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780439785969, 'Harry_Potter_and_the_HalfBlood_Prince.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780545010221, './Harry_Potter_and_the_Deathly_Hallows.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780545010221, 'Harry_Potter_and_the_Deathly_Hallows.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316075558, './The_Black_Prism.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316075558, './The_Black_Prism.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316075558, 'The_Black_Prism.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316075558, 'The_Black_Prism.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316079914, './The_Blinding_Knife.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316079914, 'The_Blinding_Knife.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000003, './The_Broken_Eye.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000003, './The_Broken_Eye.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000003, './The_Broken_Eye.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000003, 'The_Broken_Eye.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000003, 'The_Broken_Eye.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000003, 'The_Broken_Eye.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316251334, './The_Blood_Mirror.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316251334, './The_Blood_Mirror.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316251334, './The_Blood_Mirror.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316251334, 'The_Blood_Mirror.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316251334, 'The_Blood_Mirror.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316251334, 'The_Blood_Mirror.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316251303, './The_Burning_White.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316251303, './The_Burning_White.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316251303, './The_Burning_White.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316251303, 'The_Burning_White.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316251303, 'The_Burning_White.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316251303, 'The_Burning_White.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780756404079, './The_Name_of_the_Wind.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780756404079, './The_Name_of_the_Wind.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780756404079, 'The_Name_of_the_Wind.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780756404079, 'The_Name_of_the_Wind.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780756404734, './The_Wise_Mans_Fear.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780756404734, './The_Wise_Mans_Fear.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780756404734, 'The_Wise_Mans_Fear.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780756404734, 'The_Wise_Mans_Fear.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000004, './The_Priory_of_the_Orange_Tree.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000004, './The_Priory_of_the_Orange_Tree.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000004, './The_Priory_of_the_Orange_Tree.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000004, 'The_Priory_of_the_Orange_Tree.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000004, 'The_Priory_of_the_Orange_Tree.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000004, 'The_Priory_of_the_Orange_Tree.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000005, './The_Lies_of_Locke_Lamora.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000005, './The_Lies_of_Locke_Lamora.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000005, './The_Lies_of_Locke_Lamora.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000005, 'The_Lies_of_Locke_Lamora.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000005, 'The_Lies_of_Locke_Lamora.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000005, 'The_Lies_of_Locke_Lamora.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000006, './Red_Seas_Under_Red_Skies.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000006, 'Red_Seas_Under_Red_Skies.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780553804690, './The_Republic_of_Thieves.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780553804690, './The_Republic_of_Thieves.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780553804690, 'The_Republic_of_Thieves.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780553804690, 'The_Republic_of_Thieves.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780593099322, './Dune.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780593099322, 'Dune.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000007, './1984.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000007, '1984.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780812550702, './Enders_Game.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780812550702, './Enders_Game.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780812550702, 'Enders_Game.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780812550702, 'Enders_Game.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780765377067, './The_ThreeBody_Problem.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765377067, './The_ThreeBody_Problem.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780765377067, './The_ThreeBody_Problem.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780765377067, 'The_ThreeBody_Problem.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765377067, 'The_ThreeBody_Problem.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780765377067, 'The_ThreeBody_Problem.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000008, './The_Dark_Forest.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000008, 'The_Dark_Forest.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765377104, './Deaths_End.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780765377104, './Deaths_End.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765377104, 'Deaths_End.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780765377104, 'Deaths_End.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780060929879, './Brave_New_World.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780060929879, 'Brave_New_World.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000009, './Fahrenheit_451.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000009, './Fahrenheit_451.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000009, 'Fahrenheit_451.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000009, 'Fahrenheit_451.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000010, './The_Hitchhikers_Guide_to_the_Galaxy.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000010, './The_Hitchhikers_Guide_to_the_Galaxy.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000010, './The_Hitchhikers_Guide_to_the_Galaxy.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000010, 'The_Hitchhikers_Guide_to_the_Galaxy.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000010, 'The_Hitchhikers_Guide_to_the_Galaxy.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000010, 'The_Hitchhikers_Guide_to_the_Galaxy.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000011, './The_Restaurant_at_the_End_of_the_Universe.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000011, './The_Restaurant_at_the_End_of_the_Universe.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000011, './The_Restaurant_at_the_End_of_the_Universe.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000011, 'The_Restaurant_at_the_End_of_the_Universe.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000011, 'The_Restaurant_at_the_End_of_the_Universe.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000011, 'The_Restaurant_at_the_End_of_the_Universe.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345418906, './Life_the_Universe_and_Everything.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345418906, './Life_the_Universe_and_Everything.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345418906, './Life_the_Universe_and_Everything.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345418906, 'Life_the_Universe_and_Everything.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345418906, 'Life_the_Universe_and_Everything.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345418906, 'Life_the_Universe_and_Everything.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000012, './So_Long_and_Thanks_for_All_the_Fish.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000012, './So_Long_and_Thanks_for_All_the_Fish.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000012, './So_Long_and_Thanks_for_All_the_Fish.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000012, 'So_Long_and_Thanks_for_All_the_Fish.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000012, 'So_Long_and_Thanks_for_All_the_Fish.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000012, 'So_Long_and_Thanks_for_All_the_Fish.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345379337, './Mostly_Harmless.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345379337, './Mostly_Harmless.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345379337, './Mostly_Harmless.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345379337, 'Mostly_Harmless.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345379337, 'Mostly_Harmless.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345379337, 'Mostly_Harmless.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781401323585, './And_Another_Thing.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781401323585, 'And_Another_Thing.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780804139021, './The_Martian.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780804139021, './The_Martian.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780804139021, './The_Martian.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780804139021, 'The_Martian.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780804139021, 'The_Martian.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780804139021, 'The_Martian.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780553803709, './I_Robot.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780553803709, 'I_Robot.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780385333849, './SlaughterhouseFive.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385333849, './SlaughterhouseFive.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780385333849, 'SlaughterhouseFive.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385333849, 'SlaughterhouseFive.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000013, './Flowers_for_Algernon.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000013, './Flowers_for_Algernon.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000013, 'Flowers_for_Algernon.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000013, 'Flowers_for_Algernon.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780393312836, './A_Clockwork_Orange.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780393312836, './A_Clockwork_Orange.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780393312836, './A_Clockwork_Orange.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780393312836, 'A_Clockwork_Orange.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780393312836, 'A_Clockwork_Orange.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780393312836, 'A_Clockwork_Orange.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421501680, './Death_Note_Vol_1_Boredom.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421501680, './Death_Note_Vol_1_Boredom.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421501680, './Death_Note_Vol_1_Boredom.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421501680, 'Death_Note_Vol_1_Boredom.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421501680, 'Death_Note_Vol_1_Boredom.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421501680, 'Death_Note_Vol_1_Boredom.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591169208, './Fullmetal_Alchemist_Vol_1.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781591169208, './Fullmetal_Alchemist_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591169208, 'Fullmetal_Alchemist_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781591169208, 'Fullmetal_Alchemist_Vol_1.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591826033, './Fruits_Basket_Vol_1.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781591826033, './Fruits_Basket_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591826033, 'Fruits_Basket_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781591826033, 'Fruits_Basket_Vol_1.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591169154, './Ouran_High_School_Host_Club_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591169154, 'Ouran_High_School_Host_Club_Vol_1.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421508221, './Vampire_Knight_Vol_1.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421508221, './Vampire_Knight_Vol_1.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421508221, './Vampire_Knight_Vol_1.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421508221, 'Vampire_Knight_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421508221, 'Vampire_Knight_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421508221, 'Vampire_Knight_Vol_1.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781591164418, './Bleach_Volume_01.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781591164418, 'Bleach_Volume_01.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781569319000, './Naruto_Vol_01_Uzumaki_Naruto.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781569319000, './Naruto_Vol_01_Uzumaki_Naruto.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781569319000, 'Naruto_Vol_01_Uzumaki_Naruto.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781569319000, 'Naruto_Vol_01_Uzumaki_Naruto.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316080842, './Black_Butler_Vol_1.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316080842, './Black_Butler_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316080842, 'Black_Butler_Vol_1.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316080842, 'Black_Butler_Vol_1.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781569319475, './InuYasha_Turning_Back_Time.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781569319475, './InuYasha_Turning_Back_Time.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781569319475, './InuYasha_Turning_Back_Time.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781569319475, 'InuYasha_Turning_Back_Time.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781569319475, 'InuYasha_Turning_Back_Time.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781569319475, 'InuYasha_Turning_Back_Time.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421505855, './Skip_Beat_Vol_01.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421505855, './Skip_Beat_Vol_01.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421505855, 'Skip_Beat_Vol_01.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421505855, 'Skip_Beat_Vol_01.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781892213013, './Sailor_Moon_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781892213013, 'Sailor_Moon_Vol_1.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781569319017, './One_Piece_Volume_1_Romance_Dawn.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781569319017, './One_Piece_Volume_1_Romance_Dawn.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781569319017, 'One_Piece_Volume_1_Romance_Dawn.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781569319017, 'One_Piece_Volume_1_Romance_Dawn.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421501086, './Nana_Vol_1.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421501086, './Nana_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421501086, 'Nana_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421501086, 'Nana_Vol_1.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591162209, './Rurouni_Kenshin_Volume_01.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591162209, 'Rurouni_Kenshin_Volume_01.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345470577, './Tsubasa_RESERVoir_CHRoNiCLE_Vol_1.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345470577, './Tsubasa_RESERVoir_CHRoNiCLE_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345470577, 'Tsubasa_RESERVoir_CHRoNiCLE_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345470577, 'Tsubasa_RESERVoir_CHRoNiCLE_Vol_1.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591828785, './Cardcaptor_Sakura_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591828785, 'Cardcaptor_Sakura_Vol_1.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345470584, './xxxHolic_Vol_1.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345470584, './xxxHolic_Vol_1.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345470584, './xxxHolic_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345470584, 'xxxHolic_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345470584, 'xxxHolic_Vol_1.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345470584, 'xxxHolic_Vol_1.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9784757518087, './Pandora_Hearts_1.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9784757518087, 'Pandora_Hearts_1.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345501332, './Fairy_Tail_Vol_01.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345501332, 'Fairy_Tail_Vol_01.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421527550, './Kimi_ni_Todoke_From_Me_to_You_Vol_1.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421527550, 'Kimi_ni_Todoke_From_Me_to_You_Vol_1.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781413903171, './Yotsuba_Vol_1.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781413903171, './Yotsuba_Vol_1.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781413903171, 'Yotsuba_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781413903171, 'Yotsuba_Vol_1.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421506234, './DGrayman_Vol_1.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421506234, './DGrayman_Vol_1.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421506234, './DGrayman_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421506234, 'DGrayman_Vol_1.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421506234, 'DGrayman_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421506234, 'DGrayman_Vol_1.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781612620244, './Attack_on_Titan_Vol_1.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781612620244, './Attack_on_Titan_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781612620244, 'Attack_on_Titan_Vol_1.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781612620244, 'Attack_on_Titan_Vol_1.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781427814036, './Maidsama_Vol_01.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781427814036, 'Maidsama_Vol_01.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780450040184, './The_Shining.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780450040184, './The_Shining.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780450040184, 'The_Shining.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780450040184, 'The_Shining.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780450411434, './It.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780450411434, 'It.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780393970128, './Dracula.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780393970128, 'Dracula.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781416524304, './Carrie.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781416524304, './Carrie.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781416524304, './Carrie.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781416524304, 'Carrie.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781416524304, 'Carrie.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781416524304, 'Carrie.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780450031069, './Salems_Lot.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780450031069, 'Salems_Lot.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385199575, './The_Stand.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780385199575, './The_Stand.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385199575, 'The_Stand.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780385199575, 'The_Stand.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780450417399, './Misery.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780450417399, './Misery.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780450417399, 'Misery.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780450417399, 'Misery.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780143039983, './The_Haunting_of_Hill_House.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780143039983, './The_Haunting_of_Hill_House.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780143039983, './The_Haunting_of_Hill_House.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780143039983, 'The_Haunting_of_Hill_House.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780143039983, 'The_Haunting_of_Hill_House.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780143039983, 'The_Haunting_of_Hill_House.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780307346605, './World_War_Z_An_Oral_History_of_the_Zombie_War.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780307346605, './World_War_Z_An_Oral_History_of_the_Zombie_War.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780307346605, 'World_War_Z_An_Oral_History_of_the_Zombie_War.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780307346605, 'World_War_Z_An_Oral_History_of_the_Zombie_War.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345476876, './Interview_with_the_Vampire.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345476876, './Interview_with_the_Vampire.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345476876, 'Interview_with_the_Vampire.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345476876, 'Interview_with_the_Vampire.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781476727653, './Doctor_Sleep.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781476727653, './Doctor_Sleep.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781476727653, 'Doctor_Sleep.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781476727653, 'Doctor_Sleep.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780307348241, './Cujo.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780307348241, 'Cujo.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780062200570, './NOS4A2.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780062200570, './NOS4A2.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780062200570, 'NOS4A2.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780062200570, 'NOS4A2.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780385603102, './House_of_Leaves.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780385603102, './House_of_Leaves.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385603102, './House_of_Leaves.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780385603102, 'House_of_Leaves.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780385603102, 'House_of_Leaves.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385603102, 'House_of_Leaves.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780061147937, './HeartShaped_Box.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780061147937, './HeartShaped_Box.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780061147937, 'HeartShaped_Box.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780061147937, 'HeartShaped_Box.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9782253147695, './Christine.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9782253147695, './Christine.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9782253147695, './Christine.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9782253147695, 'Christine.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9782253147695, 'Christine.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9782253147695, 'Christine.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780450574580, './Needful_Things.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780450574580, './Needful_Things.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780450574580, 'Needful_Things.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780450574580, 'Needful_Things.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780061007224, './The_Exorcist.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780061007224, './The_Exorcist.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780061007224, 'The_Exorcist.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780061007224, 'The_Exorcist.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780143039976, './We_Have_Always_Lived_in_the_Castle.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780143039976, './We_Have_Always_Lived_in_the_Castle.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780143039976, './We_Have_Always_Lived_in_the_Castle.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780143039976, 'We_Have_Always_Lived_in_the_Castle.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780143039976, 'We_Have_Always_Lived_in_the_Castle.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780143039976, 'We_Have_Always_Lived_in_the_Castle.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780451528957, './The_Strange_Case_of_Dr_Jekyll_and_Mr_Hyde.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780451528957, './The_Strange_Case_of_Dr_Jekyll_and_Mr_Hyde.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780451528957, 'The_Strange_Case_of_Dr_Jekyll_and_Mr_Hyde.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780451528957, 'The_Strange_Case_of_Dr_Jekyll_and_Mr_Hyde.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250301697, './The_Silent_Patient.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250301697, './The_Silent_Patient.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250301697, 'The_Silent_Patient.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250301697, 'The_Silent_Patient.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385544238, './My_Sister_the_Serial_Killer.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780385544238, './My_Sister_the_Serial_Killer.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780385544238, './My_Sister_the_Serial_Killer.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385544238, 'My_Sister_the_Serial_Killer.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780385544238, 'My_Sister_the_Serial_Killer.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780385544238, 'My_Sister_the_Serial_Killer.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781501188770, './The_Turn_of_the_Key.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781501188770, './The_Turn_of_the_Key.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781501188770, 'The_Turn_of_the_Key.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781501188770, 'The_Turn_of_the_Key.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250105684, './The_Lost_Man.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250105684, './The_Lost_Man.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250105684, './The_Lost_Man.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250105684, 'The_Lost_Man.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250105684, 'The_Lost_Man.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250105684, 'The_Lost_Man.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250133731, './An_Anonymous_Girl.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250133731, 'An_Anonymous_Girl.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250317995, './The_Whisper_Man.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250317995, 'The_Whisper_Man.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781538748466, './Run_Away.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781538748466, './Run_Away.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781538748466, 'Run_Away.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781538748466, 'Run_Away.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781524745141, './Lock_Every_Door.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781524745141, './Lock_Every_Door.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781524745141, './Lock_Every_Door.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781524745141, 'Lock_Every_Door.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781524745141, 'Lock_Every_Door.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781524745141, 'Lock_Every_Door.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780374156022, './Miracle_Creek.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780374156022, './Miracle_Creek.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780374156022, 'Miracle_Creek.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780374156022, 'Miracle_Creek.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250120922, './The_MotherinLaw.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250120922, 'The_MotherinLaw.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250066213, './A_Better_Man.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250066213, './A_Better_Man.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250066213, './A_Better_Man.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250066213, 'A_Better_Man.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250066213, 'A_Better_Man.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250066213, 'A_Better_Man.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781501190100, './The_Family_Upstairs.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781501190100, './The_Family_Upstairs.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781501190100, './The_Family_Upstairs.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781501190100, 'The_Family_Upstairs.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781501190100, 'The_Family_Upstairs.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781501190100, 'The_Family_Upstairs.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316531269, './The_Chain.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316531269, './The_Chain.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316531269, 'The_Chain.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316531269, 'The_Chain.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000014, './Disappearing_Earth.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000014, 'Disappearing_Earth.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780062834300, './Searching_for_Sylvie_Lee.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780062834300, './Searching_for_Sylvie_Lee.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780062834300, './Searching_for_Sylvie_Lee.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780062834300, 'Searching_for_Sylvie_Lee.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780062834300, 'Searching_for_Sylvie_Lee.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780062834300, 'Searching_for_Sylvie_Lee.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781542040358, './Ill_Never_Tell.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781542040358, './Ill_Never_Tell.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781542040358, 'Ill_Never_Tell.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781542040358, 'Ill_Never_Tell.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316485616, './The_Night_Fire.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316485616, './The_Night_Fire.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316485616, './The_Night_Fire.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316485616, 'The_Night_Fire.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316485616, 'The_Night_Fire.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316485616, 'The_Night_Fire.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780062858085, './The_Last_Widow.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780062858085, 'The_Last_Widow.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000015, './My_Lovely_Wife.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000015, './My_Lovely_Wife.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000015, 'My_Lovely_Wife.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000015, 'My_Lovely_Wife.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781476798622, './The_Line_Between.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781476798622, './The_Line_Between.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781476798622, './The_Line_Between.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781476798622, 'The_Line_Between.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781476798622, 'The_Line_Between.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781476798622, 'The_Line_Between.epub');
 
 insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000014, 5, 'Disappearing Earth: test review by John' , true );
 insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781612620244, 2, 'Attack on Titan, Vol. 1: test review by John' , true );
@@ -1191,7 +1191,6 @@ INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'Ph
 INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'Neither', 250);  
 INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'I do not read', 1024);
 
-INSERT INTO rss_feeds(url) values ('rss.cbc.ca/lineup/topstories');
-INSERT INTO rss_feeds(url) values ('https://www.theglobeandmail.com/?service=rss');
-INSERT INTO rss_feeds(url) values ('http://www.ctvnews.ca/rss/ctvnews-ca-top-stories-public-rss-1.822009');
-INSERT INTO rss_feeds(url) values ('https://globalnews.ca/feed/');
+INSERT INTO rss_feeds(url, enabled) values ('https://www.cbc.ca/cmlink/rss-topstories', true);
+INSERT INTO rss_feeds(url, enabled) values ('http://www.ctvnews.ca/rss/ctvnews-ca-top-stories-public-rss-1.822009', true);
+INSERT INTO rss_feeds(url, enabled) values ('https://globalnews.ca/feed/', true);
