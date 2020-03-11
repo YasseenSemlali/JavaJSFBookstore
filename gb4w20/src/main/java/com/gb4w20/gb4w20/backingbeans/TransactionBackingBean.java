@@ -9,6 +9,7 @@ import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
@@ -108,13 +109,13 @@ public class TransactionBackingBean implements Serializable{
         BigDecimal pst = new BigDecimal(0);
         
         if(taxes.getHSTpercentage() != null){
-            hst = taxes.getHSTpercentage();
+            hst = amount.multiply(taxes.getHSTpercentage());
         }
         if(taxes.getGSTpercentage() != null){
-            gst = taxes.getGSTpercentage();
+            gst = amount.multiply(taxes.getGSTpercentage());
         }
         if(taxes.getPSTpercentage() != null){
-            pst = taxes.getPSTpercentage();
+            pst = amount.multiply(taxes.getPSTpercentage());
         }
         
         LOG.info("HST is " + hst);
@@ -124,6 +125,16 @@ public class TransactionBackingBean implements Serializable{
         BigDecimal totals = amount.add(gst.add(hst.add(pst)));
         //rounding the amount to two decimal points
         return totals.setScale(2, RoundingMode.HALF_UP); 
+    }
+    
+    /**
+     * Get the current date to be displayed to invoice to know the date purchased
+     * @return 
+     */
+    public String showCurrentDate(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+    Date datenow = new Date();  
+    return formatter.format(datenow);
     }
     
     /**

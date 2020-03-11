@@ -49,9 +49,9 @@ to be able to finalize the transaction.
             <h3>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h3>
             <c:set var="taxprov" value="#{taxesJpaController.findByProvince(userSession.user.province)}"/>
             <div style="color: green"> 
-                <h4>#{msgs.hst_tax}: $#{taxprov.getHSTpercentage()}</h4>
-                <h4>#{msgs.gst_tax}: $#{taxprov.getGSTpercentage()}</h4>
-                <h4>#{msgs.pst_tax}: $#{taxprov.getPSTpercentage()}</h4>
+                <h4>#{msgs.hst_tax}: $#{cartSession.calculateTotalAmount()*taxprov.getHSTpercentage()}</h4>
+                <h4>#{msgs.gst_tax}: $#{cartSession.calculateTotalAmount()*taxprov.getGSTpercentage()}</h4>
+                <h4>#{msgs.pst_tax}: $#{cartSession.calculateTotalAmount()*taxprov.getPSTpercentage()}</h4>
             </div>
             <h2 style="color: red">#{msgs.total}: $#{transaction.scaleAmountTwoDecimals(cartSession.calculateTotalAmount(), taxprov)}</h2>
 
