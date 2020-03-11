@@ -39,6 +39,8 @@ or print it or both.
         <hr></hr>
         <p>
             <h4>#{msgs.information}</h4>
+            #{msgs.credcardnum}: <span style="color: green">#{transaction.hideCreditCardNum()}</span>
+            <br></br>
             #{msgs.name}: #{userSession.user.firstName} #{userSession.user.lastName}
             <br></br>
             #{msgs.address}: #{userSession.user.address1}
@@ -48,9 +50,11 @@ or print it or both.
         <hr></hr>
         <!--Need to do an action for send email and print-->
         <p>
+            <b:icon value="envelope" size="lg" style="padding-right: 5px" />
             <b:button value="#{msgs.sendemail}" look="primary"/>
         </p>
         <p>
+            <b:icon value="print" size="lg" style="padding-right: 5px" />
             <b:button value="#{msgs.print}" look="info"/>
         </p>
     </ui:define>
