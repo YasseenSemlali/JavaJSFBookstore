@@ -1,24 +1,14 @@
 
 package com.gb4w20.gb4w20.backingbeans;
 
-import static com.gb4w20.gb4w20.backingbeans.RegisterBackingBean.VALID_EMAIL_ADDRESS_REGEX;
-import com.gb4w20.gb4w20.entities.Users;
-import java.io.IOException;
+import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.Serializable;
-import java.util.ResourceBundle;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.annotation.ManagedProperty;
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -37,23 +27,13 @@ public class LoginBackingBean implements Serializable {
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     
     @Inject
-    UserSessionBean session; 
+    private UserSessionBean session; 
+    
+    @Inject 
+    private JSFFormMessageValidator validator;
     
     private String emailInput; 
     private String passwordInput;
-    
-    //Bundle for i18n
-    private ResourceBundle bundle; 
-    
-    /**
-     * Mainly used to set default values.
-     * @author Jeffrey Boisvert
-     */
-    @PostConstruct
-    public void init(){
-        FacesContext context = FacesContext.getCurrentInstance();
-        this.bundle = context.getApplication().getResourceBundle(context, "msgs");
-    }
     
     /**
      * Used to get the email value inputted
@@ -114,8 +94,7 @@ public class LoginBackingBean implements Serializable {
         }
         
         //Invalid login
-        FacesMessage message = new FacesMessage(this.bundle.getString("invalidLoginDetails"));
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        this.validator.inValidLoginError();
             
         return null;
         
@@ -130,13 +109,7 @@ public class LoginBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validateEmail(FacesContext fc, UIComponent c, Object value) {
-       Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher((String) value);
-        
-       if(!matcher.find()){
-         throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("email_error")));
-        }
-
+        this.validator.validateEmailFormat((String)value);
     }
     
     /**
@@ -149,10 +122,7 @@ public class LoginBackingBean implements Serializable {
      * @author Jeffrey Boisvert
      */
     public void validateIsNotBlank(FacesContext fc, UIComponent c, Object value) {
-        if (((String) value).isBlank()) {
-            throw new ValidatorException(new FacesMessage(
-                    this.bundle.getString("empty_error")));
-        }
+        this.validator.validateIsNotBlank((String)value);
     }
     
 }
