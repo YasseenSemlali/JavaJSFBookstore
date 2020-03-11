@@ -103,7 +103,7 @@ public class TransactionBackingBean implements Serializable{
      * @param taxes
      * @return 
      */
-    public BigDecimal scaleAmountTwoDecimals(BigDecimal amount, Taxes taxes){
+    public BigDecimal calculateAmountWithTaxes(BigDecimal amount, Taxes taxes){
         BigDecimal hst = new BigDecimal(0);
         BigDecimal gst = new BigDecimal(0);
         BigDecimal pst = new BigDecimal(0);
@@ -125,6 +125,10 @@ public class TransactionBackingBean implements Serializable{
         BigDecimal totals = amount.add(gst.add(hst.add(pst)));
         //rounding the amount to two decimal points
         return totals.setScale(2, RoundingMode.HALF_UP); 
+    }
+    
+    public BigDecimal scaleByTwoDecimals(BigDecimal amount){
+        return amount.setScale(2, RoundingMode.HALF_UP);
     }
     
     /**
