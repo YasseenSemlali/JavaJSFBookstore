@@ -155,32 +155,6 @@ public class GenresJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
     }
     
-    public List<Books> getTopSelling(int maxResults) {
-        return this.getTopSellingForGenre(-1, maxResults);
-    }
-    
-    public List<Books> getTopSellingForGenre(long genreId, int maxResults) {
-        LOG.info("getting " + maxResults + " top selling books for genre " + genreId);
-        
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
-
-        Root<Books> book = cq.from(Books.class);
-        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
-
-        cq.select(book);
-        if(genreId != -1){
-            cq.where(cb.equal(book.get("genreId"), genreId));
-        }
-        cq.groupBy(book.get("isbn"));   
-        cq.orderBy(cb.desc(cb.count(bookorder)));
-
-        Query query = em.createQuery(cq);
-        query.setMaxResults(maxResults);
-
-        return query.getResultList();
-    }
-    
     /**
      * Getting other books of same genre but different author
      * to be displayed on the book page

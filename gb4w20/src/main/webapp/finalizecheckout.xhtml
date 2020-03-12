@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays a page where it
+asks the logged in user to input his credit card information
+to be able to finalize the transaction.
+
+@author Jasmar Badion
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.finalize}</title>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <b:panelGrid colSpans="2,10" size="xs">
+                <h:outputLabel for="creditcard" value="#{msgs.creditcardnumber}"/>
+                <b:inputText id="creditcard" value="#{transaction.card}" span="6" required="true">
+                    <f:converter converterId="com.gb4w20.gb4w20.jsf.validation.CreditCardConverter" />
+                    <f:validator validatorId="com.gb4w20.gb4w20.jsf.validation.CreditCardValidator" />
+                </b:inputText>
+                <h:message id="credcarderror" for="creditcard" style="color: red" />
+                <br></br>
+                <h:outputLabel for="cardexpiry" value="#{msgs.cardexpirydate}"/>
+                <b:inputText id="cardexpiry" value="#{transaction.date}" 
+                             validator="#{transaction.validateExpiryDate}" span="4" tooltip="MM/yyyy (e.g. 01/2020)">
+                    <f:convertDateTime pattern="MM/yyyy" />
+                </b:inputText>
+                <h:message id="cardexpireerror" for="cardexpiry" style="color: red" />
+                <br></br>
+                <h:outputLabel for="cardsecuritycode" value="#{msgs.cardsecuritycode}"/>
+                <b:inputText id="cardsecuritycode" a:maxlength="3" span="2" 
+                             value="#{transaction.cardSecurityCode}"
+                             validator="#{transaction.validateCVV}">
+                    <f:ajax event="change" render="cvverror"/>
+                </b:inputText>
+                <h:message id="cvverror" for="cardsecuritycode" style="color: red"/>
+            </b:panelGrid>
+
+            <h3>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h3>
+            <c:set var="taxprov" value="#{taxesJpaController.findByProvince(userSession.user.province)}"/>
+            <div style="color: green"> 
+                <h4>#{msgs.hst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getHSTpercentage())}</h4>
+                <h4>#{msgs.gst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getGSTpercentage())}</h4>
+                <h4>#{msgs.pst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getPSTpercentage())}</h4>
+            </div>
+            <h2 style="color: red">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxprov)}</h2>
+
+            <div style="text-align: center">
+                <b:commandButton action="invoice" value="#{msgs.pay}" look="primary"/>
+            </div>
+
+            <b:iconAwesome value="fa-cc-mastercard" size="4x"></b:iconAwesome>
+            <b:iconAwesome value="fa-cc-visa" size="4x"></b:iconAwesome>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="footer">
+        <ui:include src="/templates/footer.xhtml"></ui:include>
+    </ui:define>
+</ui:composition>
+
