@@ -17,9 +17,9 @@
     </context-param>
     <!-- Blank styling for prime faces while maintaining the functionality -->
     <context-param>
-    <param-name>primefaces.THEME</param-name>
-    <param-value>admin</param-value>
-</context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>admin</param-value>
+    </context-param>
     <!-- set the default timezone -->
     <context-param>
         <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
@@ -31,9 +31,9 @@
         <param-value>\temp\EmailList.txt</param-value>
     </context-param>
     <error-page>
-    <error-code>404</error-code>
-    <location>/404-error.xhtml</location>
-</error-page>
+        <error-code>404</error-code>
+        <location>/404-error.xhtml</location>
+    </error-page>
     <!-- Time in minutes until the session object is invalidated -->
     <session-config>
         <session-timeout>30</session-timeout>
@@ -41,4 +41,9 @@
     <welcome-file-list>
         <welcome-file>manager-frontpage.xhtml</welcome-file>
     </welcome-file-list>
+    
+    <context-param>
+        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+        <param-value>/WEB-INF/bookify.taglib.xml</param-value>
+    </context-param>
 </web-app>

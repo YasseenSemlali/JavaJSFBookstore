@@ -13,12 +13,14 @@ Java Server Faces page that displays the frontpage of the app
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:hf="http://highfaces.org"
+                xmlns:bk="http://bookify.com/facelets"
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
         <title>${msgs.page_title_index}</title>
     </ui:define>
 
-    <ui:define name="content">        
+    <ui:define name="content">    
+
         <h:form id="cookieForm" style="display:none">
             <h:inputText id="cookiesEnabled" value="#{cookiesEnabledBackingBean.cookiesEnabled}">
                 <f:ajax event="change" execute="cookiesEnabled" render="requiresCookie" immediate="true" />
@@ -64,11 +66,7 @@ Java Server Faces page that displays the frontpage of the app
 
             <!--https://stackoverflow.com/questions/37837623/primefaces-carousel-next-and-prev-methods-are-not-working-in-version-5-3-and-->
             <p:carousel numVisible="5" value="#{booksJpaController.getBooksOnSale()}" headerText="${msgs.on_sale}" var="book" itemStyle="text-align:center" responsive="true" >
-                <ui:decorate template="/templates/book.xhtml">
-                    <ui:param name="book" value="#{book}"></ui:param>
-                    <ui:param name="showPrice" value="true"></ui:param>
-                    <ui:param name="showOldPrice" value="true"></ui:param>
-                </ui:decorate>
+                <bk:book value="#{book}" showPrice="true"/>
             </p:carousel>
 
             <h:panelGroup id="requiresCookie">
@@ -77,24 +75,18 @@ Java Server Faces page that displays the frontpage of the app
                     <c:choose>
                         <c:when test="#{recbooks != null}">
                             <p:carousel numVisible="5" value="#{recbooks}" headerText="${msgs.recommended_for_you}" var="book" itemStyle="text-align:center" responsive="true" >
-                                <ui:decorate template="/templates/book.xhtml">
-                                    <ui:param name="book" value="#{book}"></ui:param>
-                                    <ui:param name="showPrice" value="true"></ui:param>
-                                    <ui:param name="showOldPrice" value="true"></ui:param>
-                                </ui:decorate>
+                                <bk:book value="#{book}" showPrice="true"/>
                             </p:carousel>
                         </c:when>
                     </c:choose>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{!cookiesEnabledBackingBean.cookiesEnabled}">
-                            <b:jumbotron>
-                                <h2>${msgs.no_cookies}</h2>
-                            </b:jumbotron>
+                    <b:jumbotron>
+                        <h2>${msgs.no_cookies}</h2>
+                    </b:jumbotron>
                 </h:panelGroup>
             </h:panelGroup>
-
-
-
+            
             <b:row>
                 <b:column col-md="4">
                     <h2>${msgs.you_recently_bought}</h2>
@@ -103,9 +95,7 @@ Java Server Faces page that displays the frontpage of the app
                         <c:when test="#{userSession.loggedIn}">
                             <b:panelGrid columns="2">
                                 <c:forEach items="#{booksJpaController.getRecentlyBoughtBooks(3)}" var="book">
-                                    <ui:decorate template="/templates/book.xhtml">
-                                        <ui:param name="book" value="#{book}"></ui:param>
-                                    </ui:decorate>
+                                   <bk:book value="#{book}"/>
                                 </c:forEach>
                             </b:panelGrid>
                         </c:when>
