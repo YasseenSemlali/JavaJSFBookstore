@@ -17,46 +17,51 @@ or print it or both.
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="content">
         <title>#{msgs.invoice}</title>
-        <h1>#{msgs.companyName} <span style="color: blue">#{msgs.invoice}</span></h1>
-        <h3>#{msgs.thankinvoice}</h3>
-        <br></br>
-        <p>
-            <h4>#{msgs.youritems}:</h4>
-            <ul>
-                <c:forEach items="#{cartSession.books}" var="cartbooks">
-                    <li>#{cartbooks.title}: $#{cartbooks.listPrice -  cartbooks.salePrice}</li>
-                </c:forEach>
-            </ul>
-        </p>
-        <hr></hr>
-        <p>
-            <h4>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h4>
-            <p>#{msgs.hst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getHSTpercentage())}</p>
-            <p>#{msgs.gst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getGSTpercentage())}</p>
-            <p>#{msgs.pst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getPSTpercentage())}</p>
-            <h4><div style="color: red">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxesJpaController.findByProvince(userSession.user.province))}</div></h4>
-        </p>
-        <hr></hr>
-        <p>
-            <h4>#{msgs.information}</h4>
-            #{msgs.credcardnum}: <span style="color: green">#{transaction.hideCreditCardNum()}</span>
+        <p:outputPanel id="invoiceprint">
+            <h1>#{msgs.companyName} <span style="color: blue">#{msgs.invoice}</span></h1>
+            <h3>#{msgs.thankinvoice}</h3>
             <br></br>
-            #{msgs.name}: #{userSession.user.firstName} #{userSession.user.lastName}
-            <br></br>
-            #{msgs.address}: #{userSession.user.address1}
-            <br></br>
-            #{msgs.datepurchase}: #{transaction.showCurrentDate()}
-        </p>
+            <p>
+                <h4>#{msgs.youritems}:</h4>
+                <ul>
+                    <c:forEach items="#{cartSession.books}" var="cartbooks">
+                        <li>#{cartbooks.title}: $#{cartbooks.listPrice -  cartbooks.salePrice}</li>
+                    </c:forEach>
+                </ul>
+            </p>
+            <hr></hr>
+            <p>
+                <h4>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h4>
+                <p>#{msgs.hst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getHSTpercentage())}</p>
+                <p>#{msgs.gst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getGSTpercentage())}</p>
+                <p>#{msgs.pst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getPSTpercentage())}</p>
+                <h4><div style="color: red">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxesJpaController.findByProvince(userSession.user.province))}</div></h4>
+            </p>
+            <hr></hr>
+            <p>
+                <h4>#{msgs.information}</h4>
+                <!--#{msgs.credcardnum}: <span style="color: green">#{transaction.hideCreditCardNum()}</span>-->
+                <br></br>
+                #{msgs.name}: #{userSession.user.firstName} #{userSession.user.lastName}
+                <br></br>
+                #{msgs.address}: #{userSession.user.address1}
+                <br></br>
+                #{msgs.datepurchase}: #{transaction.showCurrentDate()}
+            </p>
+        </p:outputPanel>
         <hr></hr>
-        <!--Need to do an action for send email and print-->
-        <p>
-            <b:icon value="envelope" size="lg" style="padding-right: 5px" />
-            <b:button value="#{msgs.sendemail}" look="primary"/>
-        </p>
-        <p>
-            <b:icon value="print" size="lg" style="padding-right: 5px" />
-            <b:button value="#{msgs.print}" look="info"/>
-        </p>
+        <!--Sending email and print-->
+        <h:form>
+            <p>
+                <b:icon value="envelope" size="lg" style="padding-right: 5px" />
+                <b:commandButton value="#{msgs.sendemail}" look="primary" action="#{emailBackingBean.perform()}"/>
+            </p>
+            <p>
+                <b:icon value="print" size="lg" style="padding-right: 5px" />
+                <p:commandButton value="#{msgs.print}" type="button">
+                    <p:printer target="invoiceprint"/>
+                </p:commandButton>
+            </p>
+        </h:form>
     </ui:define>
 </ui:composition>
-
