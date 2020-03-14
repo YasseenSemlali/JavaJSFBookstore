@@ -14,6 +14,7 @@ import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.entities.Publishers;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -197,9 +198,9 @@ public class PublishersJpaController implements Serializable {
      * @return a list of the book titles and total sales. 
      * @author Jeffrey Boisvert
      */
-    public List<NameAndNumberBean> getPurchasedBooksByPublisher(long id, String startDate, String endDate){
+    public List<NameTotalAndCountBean> getPurchasedBooksByPublisher(long id, String startDate, String endDate){
         LOG.info("Looking for books bought by publisher with id " + id);
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameAndNumberBean.class);
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameTotalAndCountBean.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         
         Root<Orders> order = cq.from(Orders.class);
@@ -207,7 +208,11 @@ public class PublishersJpaController implements Serializable {
         Join<Bookorder, Books> book = bookorder.join("isbn", JoinType.INNER);
         Join<Books, Publishers> publishers = book.join(Books_.publishersCollection);
         
-        cq.multiselect(book.get(Books_.title), em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+        cq.multiselect(
+                    book.get(Books_.title), 
+                    cb.sum(bookorder.get("amountPaidPretax")),
+                    cb.count(bookorder.get("orderId"))
+                )
                 .groupBy(book.get(Books_.title))
                 .where(cb.and(
                         cb.equal(publishers.get("publisherId"), id),
