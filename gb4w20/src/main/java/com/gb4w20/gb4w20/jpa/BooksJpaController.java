@@ -30,6 +30,7 @@ import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.jpa.exceptions.PreexistingEntityException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
@@ -645,12 +646,11 @@ public class BooksJpaController implements Serializable {
      * @return the report of book titles and total sales of the book.
      * @author Jeffrey Boisvert
      */
-    public List<NameAndNumberBean> findTopSellers(String startDate, String endDate) {
+    public List<NameTotalAndCountBean> findTopSellers(String startDate, String endDate) {
 
         LOG.info("Looking for top sellering books between " + startDate + " and " + endDate);
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery cq = cb.createQuery(NameAndNumberBean.class
-        );
+        CriteriaQuery cq = cb.createQuery(NameTotalAndCountBean.class);
 
         Root<Books> book = cq.from(Books.class );
         Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
@@ -658,7 +658,8 @@ public class BooksJpaController implements Serializable {
 
         cq.multiselect(
                 book.get(Books_.title),
-                em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax"))
+                cb.sum(bookorder.get("amountPaidPretax")),
+                cb.count(bookorder.get("orderId"))
         )
                 .groupBy(book.get(Books_.title))
                 .where(
