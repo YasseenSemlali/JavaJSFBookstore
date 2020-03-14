@@ -225,7 +225,9 @@ public class AuthorsJpaController implements Serializable {
         Join<Bookorder, Books> book = bookorder.join("isbn", JoinType.INNER);
         Join<Books, Authors> authors = book.join(Books_.authorsCollection);
         
-        cq.multiselect(book.get(Books_.title), em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+        cq.multiselect(
+                    book.get(Books_.title), 
+                    em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
                 .groupBy(book.get(Books_.title))
                 .where(cb.and(
                         cb.equal(authors.get("authorId"), id),
