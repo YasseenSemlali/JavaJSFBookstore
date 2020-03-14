@@ -12,13 +12,18 @@ import java.math.BigDecimal;
  */
 public class NameTotalAndCountBean extends NameAndNumberBean implements Serializable {
     
-    private BigDecimal count; 
+    private Long count;
+    
+    public NameTotalAndCountBean(String name, BigDecimal amount, Long count){
+        super(name, amount);
+        this.count = count;
+    }
 
-    public BigDecimal getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(BigDecimal count) {
+    public void setCount(Long count) {
         this.count = count;
     }
     

@@ -12,12 +12,11 @@ import java.math.BigDecimal;
 public class NameAndNumberBean implements Serializable {
     
     private String name;
-    
     private BigDecimal amount; 
-        
-    public NameAndNumberBean() {
-    }
     
+    public NameAndNumberBean(){
+    }
+        
     public NameAndNumberBean(String name, BigDecimal amount){
         this.name = name; 
         this.amount = amount; 
