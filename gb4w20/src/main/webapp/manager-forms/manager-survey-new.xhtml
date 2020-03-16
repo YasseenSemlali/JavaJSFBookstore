@@ -47,10 +47,10 @@ necessary to add a new surbey
                             value="#{managerSurveys.newQuestion}" 
                             styleClass="formComponent" 
                             required="true" 
-                            requiredMessage="NO EMPTY"
-                            validatorMessage="INVALID"
+                            requiredMessage="#{msgs.no_empty}"
+                            validatorMessage="#{msgs.string_too_long}"
                             >
-                            <f:validateLength minimum="1" maximum="2048" />
+                            <f:validateLength minimum="1" maximum="1024" />
                             <f:ajax event="blur" render="new_url_msg" />
                         </p:inputText>
                     </div>

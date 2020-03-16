@@ -2,11 +2,14 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
+import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,6 +29,9 @@ public class ManagerSales implements Serializable {
     
     @Inject
     private BooksJpaController booksController;
+    
+    @Inject
+    private JSFFormMessageValidator validator;
     
     private BigDecimal[] newSalePrice;
     
@@ -54,12 +60,25 @@ public class ManagerSales implements Serializable {
             Books book = booksController.findBooks(isbn);
             book.setSalePrice(newSalePrice[index]);
             booksController.edit(book);
-            
+
             //Reset input field
-            newSalePrice[index] = new BigDecimal(0);
+            this.newSalePrice[index] = new BigDecimal(0);
         } catch (Exception ex) {
             LOG.info(ex.toString());
             FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/action-responses/action-failure.xhtml");
+        }
+    }
+    
+    /**
+     * Used to validate that the sale price is smaller than the list price
+     * @param fc
+     * @param c
+     * @param value entered
+     * @author Jean Robatto
+     */
+    public void validateSalePrice(FacesContext fc, UIComponent c, Object value) {
+        if (saleprice>listprice) {
+            validator.createFacesMessageFromKey("bigger_than_list");
         }
     }
 
@@ -70,5 +89,5 @@ public class ManagerSales implements Serializable {
     public void setNewSalePrice(BigDecimal[] newSalePrice) {
         this.newSalePrice = newSalePrice;
     }
-    
+
 }

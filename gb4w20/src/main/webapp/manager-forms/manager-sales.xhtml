@@ -21,6 +21,7 @@ necessary to manage sales in the web app.
     <ui:define name="content">
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <h:form>
+                <h:messages id="report-error" class="alert alert-danger" globalOnly="true" />
                 <p:dataTable id="salelist" var="book" value="#{booksJpaController.findBooksEntities()}"
                              emptyMessage="#{msgs.noresults}" rowIndexVar="index" tableStyle="width:auto">
 
@@ -41,7 +42,11 @@ necessary to manage sales in the web app.
                     </p:column>
 
                     <p:column headerText="#{msgs.sale_price}">
-                        <p:inputNumber value="#{managerSales.newSalePrice[index]}" />
+                        <p:inputText 
+                                id="new_sale"
+                                value="#{managerSales.newSalePrice[index]}"
+                                validator="#{managerSales.validateSalePrice}"
+                                />
                     </p:column>
 
                     <p:column>

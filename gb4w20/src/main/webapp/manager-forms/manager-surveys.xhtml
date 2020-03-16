@@ -41,7 +41,18 @@ necessary to manage surveys for the web app
                     </p:column>
 
                     <p:column headerText="#{msgs.new_surv_question}">
-                        <h:inputText value="#{managerSurveys.questions[index]}" />
+                         <p:inputText 
+                                id="new_question" 
+                                value="#{managerSurveys.questions[index]}"
+                                validatorMessage="#{msgs.string_too_long}"
+                                 >
+                                <!-- IF LENGTH IS 0, BEAN WILL IGNORE THE FIELD -->
+                                <f:validateLength minimum="0" maximum="1024" />
+                                <f:ajax event="blur" render="new_question_msg" />
+                            </p:inputText>
+                            <p:message id="new_question_msg" for="new_question" style="margin: 2%">
+                                    <p:autoUpdate />
+                            </p:message>
                     </p:column>
 
                     <p:column headerText="#{msgs.enabled}">

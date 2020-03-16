@@ -40,8 +40,19 @@ necessary to manage news for the web app
                             <h:outputText value="#{new.url}" />
                         </p:column>
 
-                        <p:column headerText="#{msgs.new_feed}">
-                            <h:inputText value="#{managerNews.urls[index]}" />
+                        <p:column headerText="#{msgs.new_url}">
+                            <p:inputText 
+                                id="new_url" 
+                                value="#{managerNews.urls[index]}"
+                                validatorMessage="#{msgs.string_too_long}"
+                                 >
+                                <!-- IF LENGTH IS 0, BEAN WILL IGNORE THE FIELD -->
+                                <f:validateLength minimum="0" maximum="2048" />
+                                <f:ajax event="blur" render="new_url_msg" />
+                            </p:inputText>
+                            <p:message id="new_url_msg" for="new_url" style="margin: 2%">
+                                    <p:autoUpdate />
+                            </p:message>
                         </p:column>
 
                         <p:column headerText="#{msgs.enabled}">

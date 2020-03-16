@@ -34,8 +34,8 @@ public class ManagerAds implements Serializable {
     private String[] urls;
     private Boolean[] enabled;
 
-    @Size(min = 1, max = 200, message = "YO BITCH LOC") private String newLocation;
-    @Size(min = 1, max = 200, message = "YO BITCH URL") private String newUrl;
+    @Size(min = 1, max = 200) private String newLocation;
+    @Size(min = 1, max = 2048) private String newUrl;
 
     /**
      * Method to initialize variables

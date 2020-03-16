@@ -41,7 +41,18 @@ necessary to manage ads for the web app
                         </p:column>
 
                         <p:column headerText="#{msgs.new_file_location}" style="padding:10px">
-                            <h:inputText value="#{managerAds.locations[index]}" />
+                            <p:inputText 
+                                id="new_location"
+                                value="#{managerAds.locations[index]}"
+                                validatorMessage="#{msgs.string_too_long}"
+                                 >
+                                <!-- IF LENGTH IS 0, BEAN WILL IGNORE THE FIELD -->
+                                <f:validateLength minimum="0" maximum="200" />
+                                <f:ajax event="blur" render="new_url_msg" />
+                            </p:inputText>
+                            <p:message id="new_location_msg" for="new_location" style="margin: 2%">
+                                    <p:autoUpdate />
+                            </p:message>
                         </p:column>
 
                         <p:column filterBy="#{ad.url}" headerText="#{msgs.url}" filterMatchMode="contains">
@@ -49,8 +60,21 @@ necessary to manage ads for the web app
                         </p:column>
 
                         <p:column headerText="#{msgs.new_url}">
-                            <h:inputText value="#{managerAds.urls[index]}" />
+                            <p:inputText 
+                                id="new_url" 
+                                value="#{managerAds.urls[index]}"
+                                validatorMessage="#{msgs.string_too_long}"
+                                 >
+                                <!-- IF LENGTH IS 0, BEAN WILL IGNORE THE FIELD -->
+                                <f:validateLength minimum="0" maximum="2048" />
+                                <f:ajax event="blur" render="new_url_msg" />
+                            </p:inputText>
+                            <p:message id="new_url_msg" for="new_url" style="margin: 2%">
+                                    <p:autoUpdate />
+                            </p:message>
                         </p:column>
+                        
+                        
 
                         <p:column headerText="#{msgs.enabled}">
                             <h:outputLabel value="#{ad.enabled}" />

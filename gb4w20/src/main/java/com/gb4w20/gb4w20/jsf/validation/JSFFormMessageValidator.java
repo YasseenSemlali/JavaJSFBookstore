@@ -4,8 +4,6 @@ import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Date;
 import java.util.ResourceBundle;

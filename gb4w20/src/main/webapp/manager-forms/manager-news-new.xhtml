@@ -43,10 +43,10 @@ necessary to add a new RSS FEED
                             value="#{managerNews.newUrl}" 
                             styleClass="formComponent" 
                             required="true" 
-                            requiredMessage="NO EMPTY"
-                            validatorMessage="INVALID"
+                            requiredMessage="#{msgs.no_empty}"
+                            validatorMessage="#{msgs.string_too_long}"
                              >
-                            <f:validateLength minimum="1" maximum="3" />
+                            <f:validateLength minimum="1" maximum="2048" />
                             <f:ajax event="blur" render="new_url_msg" />
                         </p:inputText>
                     </div>

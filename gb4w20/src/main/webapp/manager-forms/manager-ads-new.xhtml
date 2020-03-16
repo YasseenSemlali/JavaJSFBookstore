@@ -44,8 +44,8 @@ necessary to add a new Ad
                             value="#{managerAds.newLocation}" 
                             styleClass="formComponent" 
                             required="true" 
-                            requiredMessage="NO EMPTY"
-                            validatorMessage="INVALID"
+                            requiredMessage="#{msgs.no_empty}"
+                            validatorMessage="#{msgs.string_too_long}"
                              >
                             <f:validateLength minimum="1" maximum="200" />
                             <f:ajax event="blur" render="new_location_msg" />
@@ -71,10 +71,10 @@ necessary to add a new Ad
                             value="#{managerAds.newUrl}" 
                             styleClass="formComponent" 
                             required="true" 
-                            requiredMessage="NO EMPTY"
-                            validatorMessage="INVALID"
+                            requiredMessage="#{msgs.no_empty}"
+                            validatorMessage="#{msgs.string_too_long}"
                              >
-                            <f:validateLength minimum="1" maximum="2" />
+                            <f:validateLength minimum="1" maximum="2048" />
                             <f:ajax event="blur" render="new_url_msg" />
                         </p:inputText>
                     </div>

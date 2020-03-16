@@ -11,6 +11,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,7 @@ public class ManagerNews implements Serializable {
     private String[] urls;
     private Boolean[] enabled;
     
-    private String newUrl;
+    @Size(min = 1, max = 2048)private String newUrl;
 
     /**
      * Method to initialize variables
@@ -80,7 +81,6 @@ public class ManagerNews implements Serializable {
     
     /**
      * Method to create a new feed.
-     *
      * @return redirection
      */
     public String createFeed() {
@@ -92,7 +92,7 @@ public class ManagerNews implements Serializable {
             
             newsController.create(feed);
 
-            return "manager-forms/manager-news";
+            return "/manager-forms/manager-news";
         } catch (BackendException ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";

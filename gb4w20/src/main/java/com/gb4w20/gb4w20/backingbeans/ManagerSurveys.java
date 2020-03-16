@@ -10,6 +10,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ public class ManagerSurveys implements Serializable {
     private String[] questions;
     private Boolean[] enabled;
 
-    private String newQuestion;
+    @Size(min = 1, max = 1024)private String newQuestion;
     
     /**
      * Method to initialize variables
