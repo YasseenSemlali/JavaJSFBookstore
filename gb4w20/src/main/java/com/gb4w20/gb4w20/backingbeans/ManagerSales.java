@@ -83,7 +83,7 @@ public class ManagerSales implements Serializable {
      * @author Jean Robatto
      */
     private boolean validateSalePrice(BigDecimal listPrice, BigDecimal newSalePrice) {
-        return listPrice.compareTo(newSalePrice) == 1; //listPrice > newSalePrice
+        return listPrice.compareTo(newSalePrice) == 1 && newSalePrice.compareTo(new BigDecimal(0)) == 1; //listPrice > newSalePrice && newSalePrice > 0
     }
     
 
