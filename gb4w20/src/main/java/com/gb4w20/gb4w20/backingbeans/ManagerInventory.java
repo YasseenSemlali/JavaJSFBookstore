@@ -21,6 +21,8 @@ import javax.faces.component.UIOutput;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,23 +55,25 @@ public class ManagerInventory implements Serializable {
 
     //Private fields
     private boolean edit;
+    
+    private Date today = new Date();
 
     //Book
     private Long selectIsbn;
     private Long isbn;
-    private String title;
-    private Date dateOfPublication;
+    @Size(min = 1, max = 100) private String title;
+    @Past private Date dateOfPublication;
     private int pages;
-    private String synopsis;
+    @Size(min = 1, max = 1000) private String synopsis;
     private String cover;
     private BigDecimal wholesalePrice;
     private BigDecimal listPrice;
     private BigDecimal salePrice;
     private Date timestamp = new Date();
     private boolean active;
-    private Collection<Authors> bookAuthor;
-    private Collection<Genres> bookGenre;
-    private Collection<Publishers> bookPublisher;
+    private Collection<Authors> bookAuthor = new ArrayList<>();
+    private Collection<Genres> bookGenre = new ArrayList<>();
+    private Collection<Publishers> bookPublisher = new ArrayList<>();
 
     private Long authorToAdd;
     private Long genreToAdd;
@@ -77,19 +81,19 @@ public class ManagerInventory implements Serializable {
 
     //Author
     private Long authorId;
-    private String authorFirstName;
-    private String authorLastName;
+    @Size(min = 1, max = 50) private String authorFirstName;
+    @Size(min = 1, max = 50) private String authorLastName;
 
     //Publisher
     private Long publisherId;
-    private String publisherName;
+    @Size(min = 1, max = 50) private String publisherName;
 
     //Genre
     private Long genreId;
-    private String genre;
+    @Size(min = 1, max = 50) private String genre;
 
     //Total sales
-    private BigDecimal totalSales;
+    private BigDecimal totalSales = new BigDecimal(0);
 
     //LISTENERS
     /**
@@ -398,6 +402,7 @@ public class ManagerInventory implements Serializable {
             newBook.setIsbn(isbn);
             newBook.setTitle(title);
             newBook.setDateOfPublication(dateOfPublication);
+            newBook.setTimestamp(timestamp);
             newBook.setSynopsis(synopsis);
             newBook.setCover(cover);
             newBook.setPages(pages);
@@ -408,7 +413,7 @@ public class ManagerInventory implements Serializable {
             newBook.setAuthorsCollection(bookAuthor);
             newBook.setGenresCollection(bookGenre);
             newBook.setPublishersCollection(bookPublisher);
-
+            
             booksController.create(newBook);
 
             return "/action-responses/action-success";
@@ -680,6 +685,12 @@ public class ManagerInventory implements Serializable {
         this.totalSales = totalSales;
     }
 
+    public void setToday(Date today) {
+        this.today = today;
+    }
+    
+    
+
     //Getters
     public Long getIsbn() {
         return isbn;
@@ -788,5 +799,11 @@ public class ManagerInventory implements Serializable {
     public BigDecimal getTotalSales() {
         return totalSales;
     }
+
+    public Date getToday() {
+        return today;
+    }
+    
+    
 
 }

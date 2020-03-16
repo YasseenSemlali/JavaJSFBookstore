@@ -6,10 +6,8 @@ import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -35,6 +33,8 @@ public class ManagerSales implements Serializable {
     
     private BigDecimal[] newSalePrice;
     
+    private Integer errorIndex;
+    
     /**
      * Method to initialize variables
      */
@@ -56,13 +56,21 @@ public class ManagerSales implements Serializable {
      * @throws java.io.IOException 
      */
     public void editSalePrice(Long isbn, int index) throws IOException {
+        
+        BigDecimal inputSalePrice = newSalePrice[index];
+        
         try {
             Books book = booksController.findBooks(isbn);
-            book.setSalePrice(newSalePrice[index]);
-            booksController.edit(book);
-
-            //Reset input field
-            this.newSalePrice[index] = new BigDecimal(0);
+            
+            if (validateSalePrice(book.getListPrice(), inputSalePrice)) {
+                book.setSalePrice(inputSalePrice);
+                booksController.edit(book);
+                //Reset input field
+                this.newSalePrice[index] = new BigDecimal(0);
+            } else {
+                errorIndex = index;
+                validator.createFacesMessageFromKey("bigger_than_list");
+            }
         } catch (Exception ex) {
             LOG.info(ex.toString());
             FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/action-responses/action-failure.xhtml");
@@ -71,23 +79,30 @@ public class ManagerSales implements Serializable {
     
     /**
      * Used to validate that the sale price is smaller than the list price
-     * @param fc
-     * @param c
-     * @param value entered
+     * 
      * @author Jean Robatto
      */
-    public void validateSalePrice(FacesContext fc, UIComponent c, Object value) {
-        if (saleprice>listprice) {
-            validator.createFacesMessageFromKey("bigger_than_list");
-        }
+    private boolean validateSalePrice(BigDecimal listPrice, BigDecimal newSalePrice) {
+        return listPrice.compareTo(newSalePrice) == 1; //listPrice > newSalePrice
     }
+    
 
     public BigDecimal[] getNewSalePrice() {
         return newSalePrice;
     }
 
+    public Integer getErrorIndex() {
+        return errorIndex;
+    }
+
     public void setNewSalePrice(BigDecimal[] newSalePrice) {
         this.newSalePrice = newSalePrice;
     }
+
+    public void setErrorIndex(Integer errorIndex) {
+        this.errorIndex = errorIndex;
+    }
+    
+    
 
 }

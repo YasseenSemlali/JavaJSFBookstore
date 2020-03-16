@@ -18,7 +18,7 @@ necessary to manage inventory of our store.
         <title>#{msgs.inventory}</title>
     </ui:define>
     <ui:define name="content">
-         <!-- FIXES STYLING FOR MOBILE -->
+        <!-- FIXES STYLING FOR MOBILE -->
         <style>
             .text-right-mobile {
                 text-align: right;
@@ -55,7 +55,25 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="ISBN:" styleClass="formComponent"/>
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:inputText id="isbn" value="#{managerInventory.isbn}" styleClass="formComponent"/> 
+                                        <p:inputText 
+                                            id="isbn" 
+                                            value="#{managerInventory.isbn}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.invlid_isbn}"
+                                            >
+                                            <f:validateLongRange maximum="9999999999999" />
+                                            <f:ajax event="blur" render="isbn_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="isbn_msg" for="isbn" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -63,7 +81,25 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="${msgs.title}:" styleClass="formComponent"/>
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:inputText id="title" value="#{managerInventory.title}" styleClass="formComponent" /> 
+                                        <p:inputText 
+                                            id="title" 
+                                            value="#{managerInventory.title}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="100" />
+                                            <f:ajax event="blur" render="title_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="title_msg" for="title" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -71,7 +107,25 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="${msgs.synopsis}:" styleClass="formComponent"/>
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:inputText id="synopsis" value="#{managerInventory.synopsis}" styleClass="formComponent"/>
+                                        <p:inputText 
+                                            id="synopsis" 
+                                            value="#{managerInventory.synopsis}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="1000" />
+                                            <f:ajax event="blur" render="synopsis_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="synopsis_msg" for="synopsis" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -87,7 +141,16 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="${msgs.pubdate}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:calendar id="pubdate" pattern="dd/MM/yyyy" style="background-color: white" value="#{managerInventory.dateOfPublication}" styleClass="formComponent" />
+                                        <p:calendar 
+                                            id="pubdate" 
+                                            pattern="dd/MM/yyyy" 
+                                            style="background-color: white" 
+                                            value="#{managerInventory.dateOfPublication}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            maxdate="#{managerInventory.today}"
+                                            />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -95,7 +158,25 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="${msgs.num_pages}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:inputNumber id="numpages" value="#{managerInventory.pages}" styleClass="formComponent" />
+                                        <p:inputNumber 
+                                            id="numpages" 
+                                            value="#{managerInventory.pages}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.num_too_high}"
+                                            >
+                                            <f:validateLongRange minimum="0" maximum="2000" />
+                                            <f:ajax event="blur" render="numpages_msg" />
+                                            </p:inputNumber>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="numpages_msg" for="numpages" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -103,7 +184,25 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="${msgs.whole_price}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:inputNumber id="wholeprice" value="#{managerInventory.wholesalePrice}" styleClass="formComponent" />
+                                        <p:inputNumber 
+                                            id="wholeprice" 
+                                            value="#{managerInventory.wholesalePrice}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateDoubleRange minimum="1" maximum="2000" />
+                                            <f:ajax event="blur" render="wholeprice_msg" />
+                                            </p:inputNumber>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="wholeprice_msg" for="wholeprice" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -111,7 +210,25 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="${msgs.list_price}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:inputNumber id="listprice" value="#{managerInventory.listPrice}" styleClass="formComponent" />
+                                        <p:inputNumber 
+                                            id="listprice" 
+                                            value="#{managerInventory.listPrice}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.invalid_list_price}"
+                                            >
+                                            <f:validateDoubleRange minimum="#{managerInventory.wholesalePrice}" maximum="2000" />
+                                            <f:ajax event="blur" render="listprice_msg" />
+                                        </p:inputNumber>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="listprice_msg" for="listprice" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -119,7 +236,25 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="${msgs.sale_price}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:inputNumber id="saleprice" value="#{managerInventory.salePrice}" styleClass="formComponent" />
+                                        <p:inputNumber 
+                                            id="saleprice" 
+                                            value="#{managerInventory.salePrice}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateDoubleRange minimum="0" maximum="2000" />
+                                            <f:ajax event="blur" render="saleprice_msg" />
+                                            </p:inputNumber>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="saleprice_msg" for="saleprice" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -280,7 +415,25 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="${msgs.firstname}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:inputText id="author_firstname" value="#{managerInventory.authorFirstName}" styleClass="formComponent" /> 
+                                        <p:inputText 
+                                            id="author_firstname" 
+                                            value="#{managerInventory.authorFirstName}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="50" />
+                                            <f:ajax event="blur" render="author_firstname_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="author_firstname_msg" for="author_firstname" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -288,17 +441,35 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="${msgs.lastname}:" styleClass="formComponent"/> 
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:inputText id="author_lastname" value="#{managerInventory.authorLastName}" styleClass="formComponent"/>
+                                        <p:inputText 
+                                            id="author_lastname" 
+                                            value="#{managerInventory.authorLastName}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="50" />
+                                            <f:ajax event="blur" render="author_lastname_msg" />
+                                        </p:inputText>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-6 text-right-mobile">
-
-                                    </div>
+                                    <div class="col-lg-6 text-right-mobile"></div>
                                     <div class="col-lg-6 text-left">
-                                        <p:commandButton value="#{msgs.submit}" action="#{managerInventory.submitAuthor}" styleClass="formComponent" />
+                                        <p:message id="author_lastname_msg" for="author_lastname" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right-mobile">
+
+                            </div>
+                            <div class="col-lg-6 text-left">
+                                <p:commandButton value="#{msgs.submit}" action="#{managerInventory.submitAuthor}" styleClass="formComponent" />
                             </div>
                         </div>
                     </h:form>
@@ -326,7 +497,25 @@ necessary to manage inventory of our store.
                                         <p:outputLabel for="publisher_name" value="#{msgs.name}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:inputText id="publisher_name" value="#{managerInventory.publisherName}" styleClass="formComponent" /> 
+                                        <p:inputText 
+                                            id="publisher_name" 
+                                            value="#{managerInventory.publisherName}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="50" />
+                                            <f:ajax event="blur" render="publisher_name_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="publisher_name_msg" for="publisher_name" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -364,7 +553,25 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="#{msgs.genre}:" styleClass="formComponent"/>
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:inputText id="genre" value="#{managerInventory.genre}" styleClass="formComponent" /> 
+                                        <p:inputText 
+                                            id="genre" 
+                                            value="#{managerInventory.genre}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="50" />
+                                            <f:ajax event="blur" render="genre_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="genre_msg" for="genre" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
                                     </div>
                                 </div>
                                 <div class="row">

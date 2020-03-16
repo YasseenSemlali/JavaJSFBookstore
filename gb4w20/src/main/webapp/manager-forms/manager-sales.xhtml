@@ -21,7 +21,6 @@ necessary to manage sales in the web app.
     <ui:define name="content">
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <h:form>
-                <h:messages id="report-error" class="alert alert-danger" globalOnly="true" />
                 <p:dataTable id="salelist" var="book" value="#{booksJpaController.findBooksEntities()}"
                              emptyMessage="#{msgs.noresults}" rowIndexVar="index" tableStyle="width:auto">
 
@@ -45,8 +44,15 @@ necessary to manage sales in the web app.
                         <p:inputText 
                                 id="new_sale"
                                 value="#{managerSales.newSalePrice[index]}"
-                                validator="#{managerSales.validateSalePrice}"
+                                required="true"
+                                requiredMessage="#{msgs.no_empty}"
                                 />
+                        <!-- USED FOR REQUIRED MESSAGE-->
+                        <p:message id="new_sale_msg" for="new_sale" style="margin: 2%">
+                             <p:autoUpdate />
+                         </p:message>
+                        <!-- USED FOR CUSTOM VALIDATION -->
+                        <h:messages id="report-error" class="alert alert-danger" style="margin: 5%" globalOnly="true" rendered="#{index == managerSales.errorIndex}" />
                     </p:column>
 
                     <p:column>

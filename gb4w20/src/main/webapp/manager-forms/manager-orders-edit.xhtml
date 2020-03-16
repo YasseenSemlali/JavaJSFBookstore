@@ -85,7 +85,25 @@ to edit orders.
                                 <p:outputLabel value="${msgs.address}:" styleClass="formComponent"/>
                             </div>
                             <div class="col-lg-6 text-left">
-                                <p:inputText value="${managerOrders.address}" styleClass="formComponent" />
+                                <p:inputText 
+                                    id="new_address"
+                                    value="${managerOrders.address}" 
+                                    styleClass="formComponent" 
+                                    required="true" 
+                                    requiredMessage="#{msgs.no_empty}"
+                                    validatorMessage="#{msgs.string_too_long}"
+                                    >
+                                    <f:validateLength minimum="1" maximum="200" />
+                                    <f:ajax event="blur" render="new_address_msg" />
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right-mobile"></div>
+                            <div class="col-lg-6 text-left">
+                                <p:message id="new_address_msg" for="new_address" style="width: 32%; margin: 2%">
+                                    <p:autoUpdate />
+                                </p:message>
                             </div>
                         </div>
                         <div class="row">
@@ -138,7 +156,7 @@ to edit orders.
                         </div>
                         <div class="row">
                             <div class="col-lg-6 text-right-mobile">
-
+                                <p:commandButton value="#{msgs.cancel}" action="#{managerOrders.cancelOrder()}" styleClass="formComponent" rendered="#{managerOrders.newOrder}"/>
                             </div>
                             <div class="col-lg-6 text-left">
                                 <p:commandButton value="#{msgs.submit}" action="#{managerOrders.editOrder()}" styleClass="formComponent"/>
