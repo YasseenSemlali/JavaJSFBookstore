@@ -53,8 +53,13 @@ or print it or both.
         <!--Sending email and print-->
         <h:form>
             <p>
+                #{emailBackingBean.setEmailReceive(userSession.email)}
                 <b:icon value="envelope" size="lg" style="padding-right: 5px" />
-                <b:commandButton value="#{msgs.sendemail}" look="primary" action="#{emailBackingBean.perform()}"/>
+                <b:commandButton value="#{msgs.sendemail}" look="primary" action="#{emailBackingBean.perform()}" onsuccess="PF('succeedemail').show()">
+                    <p:dialog header="#{msgs.emailinvoice}" widgetVar="succeedcart" minHeight="20" responsive="true">
+                        <h:outputText value="#{msgs.emailsucceed}" /> 
+                    </p:dialog>
+                </b:commandButton>
             </p>
             <p>
                 <b:icon value="print" size="lg" style="padding-right: 5px" />

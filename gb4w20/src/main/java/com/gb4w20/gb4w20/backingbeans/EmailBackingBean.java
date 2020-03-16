@@ -81,8 +81,9 @@ public class EmailBackingBean implements Serializable{
     
     /**
      * Sending email
+     * @return 
      */
-    public void sendEmail(){
+    public String sendEmail(){
         if (checkEmail(emailSend) && checkEmail(emailReceive)) {
             LOG.debug("VALID EMAILS");
             // Create am SMTP server object
@@ -110,8 +111,10 @@ public class EmailBackingBean implements Serializable{
                 session.sendMail(email);
                 LOG.info("Email sent");
             }
+            return "success";
         }  else {
             LOG.info("Unable to send email because either send or recieve addresses are invalid");
+            return "failure";
         }
     }
     
