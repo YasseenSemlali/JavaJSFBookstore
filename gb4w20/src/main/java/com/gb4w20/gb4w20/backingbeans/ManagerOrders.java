@@ -58,6 +58,7 @@ public class ManagerOrders implements Serializable {
     //Main Fields
     private Orders order;
     private Boolean newOrder;
+    private Boolean orderEnabled;
 
     //Price and tax
     private BigDecimal pricePreTax = new BigDecimal(0);
@@ -76,7 +77,6 @@ public class ManagerOrders implements Serializable {
     private Long selectedUserId;
 
     //Actions
-    
     /**
      * Edits the order with the newly submitted inputs
      *
@@ -84,6 +84,7 @@ public class ManagerOrders implements Serializable {
      * @uthor Jean Robatto
      */
     public String editOrder() {
+        LOG.debug("Editing order with id: " + Long.toString(order.getOrderId()));
         try {
             //Bookorders
             for (Bookorder bookorder : bookOrders) {
@@ -94,19 +95,20 @@ public class ManagerOrders implements Serializable {
             order.setBookorderCollection(bookOrders);
             order.setUserId(usersController.findUsers(selectedUserId));
             order.setTimestamp(new Date());
+            order.setEnabled(orderEnabled);
 
             orderController.edit(order);
 
             //This redirect is needed to fix a rendering issue.
             FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/manager-forms/manager-orders.xhtml");
-            
+
             return "/manager-forms/manager-orders";
         } catch (Exception ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";
         }
     }
-    
+
     /**
      * Cancel a new order. Delete the order entry.
      *
@@ -114,6 +116,7 @@ public class ManagerOrders implements Serializable {
      * @uthor Jean Robatto
      */
     public String cancelOrder() {
+        LOG.debug("Cancelling order with id: " + Long.toString(order.getOrderId()));
         try {
             orderController.destroy(order.getOrderId());
             //This redirect is needed to fix a rendering issue.
@@ -135,6 +138,9 @@ public class ManagerOrders implements Serializable {
      */
     public void addBookToCollection(AjaxBehaviorEvent e) throws RollbackFailureException, BackendException {
         Long isbn = ((Long) ((UIOutput) e.getSource()).getValue());
+        
+        LOG.debug("Adding book to order collection with ISBN: " + Long.toString(isbn));
+        
         Books book = booksController.findBooks(isbn);
 
         Bookorder bookorder = new Bookorder();
@@ -175,6 +181,7 @@ public class ManagerOrders implements Serializable {
      */
     public String selectOrder(Orders selected_order) throws BackendException {
         if (selected_order == null) {
+            LOG.debug("Selected a new order");
             order = new Orders();
 
             //Set fields
@@ -199,10 +206,13 @@ public class ManagerOrders implements Serializable {
             order.setTimestamp(new Date());
 
             orderController.create(order);
-            
+
             newOrder = true;
 
+            orderEnabled = order.getEnabled();
+
         } else {
+            LOG.debug("Selected order with id: " + Long.toString(selected_order.getOrderId()));
             order = selected_order;
             selectedUserId = order.getUserId().getUserId();
             bookOrders = order.getBookorderCollection();
@@ -217,8 +227,10 @@ public class ManagerOrders implements Serializable {
 
             //Info
             address = order.getBillingAddress();
-            
+
             newOrder = false;
+
+            orderEnabled = order.getEnabled();
         }
 
         return "manager-orders-edit";
@@ -300,6 +312,10 @@ public class ManagerOrders implements Serializable {
         this.newOrder = newOrder;
     }
 
+    public void setOrderEnabled(Boolean orderEnabled) {
+        this.orderEnabled = orderEnabled;
+    }
+
     //Getters
     public Collection<Bookorder> getBookOrders() {
         return bookOrders;
@@ -348,5 +364,9 @@ public class ManagerOrders implements Serializable {
     public Boolean getNewOrder() {
         return newOrder;
     }
-           
+
+    public Boolean getOrderEnabled() {
+        return orderEnabled;
+    }
+
 }

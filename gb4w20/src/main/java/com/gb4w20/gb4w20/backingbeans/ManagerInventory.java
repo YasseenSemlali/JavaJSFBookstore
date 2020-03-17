@@ -106,6 +106,7 @@ public class ManagerInventory implements Serializable {
     public void bookChanged(AjaxBehaviorEvent e) {
         Long input_isbn = (Long) ((UIOutput) e.getSource()).getValue();
         if (input_isbn == -1 || input_isbn == null) {
+            LOG.debug("Selected new book");
             edit = false;
             isbn = null;
             title = null;
@@ -123,6 +124,7 @@ public class ManagerInventory implements Serializable {
             bookPublisher = new ArrayList<>();
             totalSales = new BigDecimal(0);
         } else {
+            LOG.debug("Selected book with ISBN: " + Long.toString(isbn));
             edit = true;
             Books book = booksController.findBooks(input_isbn);
             isbn = book.getIsbn();
@@ -154,10 +156,12 @@ public class ManagerInventory implements Serializable {
     public void authorChanged(AjaxBehaviorEvent e) {
         Long input_authorId = (Long) ((UIOutput) e.getSource()).getValue();
         if (input_authorId == -1) {
+            LOG.debug("Selected new author");
             edit = false;
             authorFirstName = null;
             authorLastName = null;
         } else {
+            LOG.debug("Selected author with id: " + Long.toString(input_authorId));
             edit = true;
             Authors author = authorsController.findAuthors(input_authorId);
             authorFirstName = author.getFirstName();
@@ -176,9 +180,11 @@ public class ManagerInventory implements Serializable {
     public void publisherChanged(AjaxBehaviorEvent e) {
         Long input_publisherId = (Long) ((UIOutput) e.getSource()).getValue();
         if (input_publisherId == -1) {
+            LOG.debug("Selected new publisher");
             edit = false;
             publisherName = null;
         } else {
+            LOG.debug("Selected publisher with id: " + Long.toString(input_publisherId));
             edit = true;
             Publishers publisher = publishersController.findPublishers(input_publisherId);
             publisherName = publisher.getName();
@@ -195,9 +201,11 @@ public class ManagerInventory implements Serializable {
     public void genreChanged(AjaxBehaviorEvent e) {
         Long input_genreId = (Long) ((UIOutput) e.getSource()).getValue();
         if (input_genreId == -1) {
+            LOG.debug("Selected new genre");
             edit = false;
             genre = null;
         } else {
+            LOG.debug("Selected genre with id: " + Long.toString(input_genreId));
             edit = true;
             Genres new_genre = genresController.findGenres(input_genreId);
             genre = new_genre.getGenre();
@@ -212,6 +220,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     public void addAuthorToCollection(AjaxBehaviorEvent e) {
+        LOG.debug("Adding author to book author collection");
         Long input_authorId = ((Long) ((UIOutput) e.getSource()).getValue());
         Authors author = authorsController.findAuthors(input_authorId);
         if (bookAuthor != null) {
@@ -232,6 +241,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     public void removeAuthorFromCollection(Authors author) {
+        LOG.debug("Removing author from collection");
         bookAuthor.remove(author);
     }
 
@@ -242,6 +252,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     public void clearAuthors() {
+        LOG.debug("Cleared all authors from collection");
         bookAuthor = new ArrayList<>();
     }
 
@@ -253,6 +264,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     public void addGenreToCollection(AjaxBehaviorEvent e) {
+        LOG.debug("Adding genre to book genre collection");
         Long input_genreId = ((Long) ((UIOutput) e.getSource()).getValue());
         Genres genreObj = genresController.findGenres(input_genreId);
         if (bookGenre != null) {
@@ -273,6 +285,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     public void removeGenreFromCollection(Genres genre) {
+        LOG.debug("Removing genre from collection");
         bookGenre.remove(genre);
     }
 
@@ -283,6 +296,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     public void clearGenres() {
+        LOG.debug("Cleared all genres from collection");
         bookGenre = new ArrayList<>();
     }
 
@@ -294,6 +308,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     public void addPublisherToCollection(AjaxBehaviorEvent e) {
+        LOG.debug("Adding publisher to book publisher collection");
         Long input_publisherId = ((Long) ((UIOutput) e.getSource()).getValue());
         Publishers publisher = publishersController.findPublishers(input_publisherId);
         if (bookPublisher != null) {
@@ -314,6 +329,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     public void removePublisherFromCollection(Publishers publisher) {
+        LOG.debug("Removing publisher from collection");
         bookPublisher.remove(publisher);
     }
 
@@ -324,6 +340,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     public void clearPublishers() {
+        LOG.debug("Cleared all publshers from collection");
         bookPublisher = new ArrayList<>();
     }
 
@@ -396,6 +413,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     private String addBook() {
+        LOG.debug("Adding new book to database");
         try {
             Books newBook = new Books();
 
@@ -430,6 +448,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     private String editBook() {
+        LOG.debug("Editing book with ISBN: " + Long.toString(isbn));
         try {
             Books editBook = booksController.findBooks(isbn);
             editBook.setTitle(title);
@@ -461,6 +480,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     private String addAuthor() {
+        LOG.debug("Adding new author to database");
         try {
             Authors newAuthor = new Authors();
             newAuthor.setFirstName(authorFirstName);
@@ -482,6 +502,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     private String editAuthor() {
+        LOG.debug("Editing author with id: " + Long.toString(authorId));
         try {
             Authors editAuthor = authorsController.findAuthors(authorId);
             editAuthor.setFirstName(authorFirstName);
@@ -503,6 +524,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     private String addGenre() {
+        LOG.debug("Adding new genre to database");
         try {
             Genres newGenre = new Genres();
             newGenre.setGenre(genre);
@@ -523,6 +545,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     private String editGenre() {
+        LOG.debug("Editing genre with id: " + Long.toString(genreId));
         try {
             Genres editGenre = genresController.findGenres(genreId);
             editGenre.setGenre(genre);
@@ -543,6 +566,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     private String addPublisher() {
+        LOG.debug("Adding new publisher to database");
         try {
             Publishers newPublisher = new Publishers();
             newPublisher.setName(publisherName);
@@ -563,6 +587,7 @@ public class ManagerInventory implements Serializable {
      * @author Jean Robatto
      */
     private String editPublisher() {
+        LOG.debug("Editing publisher with id: " + Long.toString(publisherId));
         try {
             Publishers editPulisher = publishersController.findPublishers(publisherId);
             editPulisher.setName(publisherName);

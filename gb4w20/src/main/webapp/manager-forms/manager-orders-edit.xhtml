@@ -156,6 +156,14 @@ to edit orders.
                         </div>
                         <div class="row">
                             <div class="col-lg-6 text-right-mobile">
+                                <p:outputLabel value="${msgs.enabled}:" styleClass="formComponent"/>
+                            </div>
+                            <div class="col-lg-6 text-left">
+                                <p:inputSwitch value="#{managerOrders.orderEnabled}" style="margin-top: 3%" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right-mobile">
                                 <p:commandButton value="#{msgs.cancel}" action="#{managerOrders.cancelOrder()}" styleClass="formComponent" rendered="#{managerOrders.newOrder}"/>
                             </div>
                             <div class="col-lg-6 text-left">

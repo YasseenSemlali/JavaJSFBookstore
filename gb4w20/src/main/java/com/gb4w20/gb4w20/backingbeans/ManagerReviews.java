@@ -36,6 +36,7 @@ public class ManagerReviews implements Serializable {
      * @throws java.io.IOException
      */
     public void editApprovalStatus(Long revId, boolean status, Integer activeTabIndex) throws IOException {
+        LOG.debug("Editing approval status or review with id " + Long.toString(revId));
         try {
             Reviews review = reviewController.findReviews(revId);
             review.setApprovedStatus(status);
