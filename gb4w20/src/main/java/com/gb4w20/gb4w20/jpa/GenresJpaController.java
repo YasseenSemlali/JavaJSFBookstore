@@ -11,13 +11,11 @@ import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Genres;
 import com.gb4w20.gb4w20.entities.Genres_;
-import com.gb4w20.gb4w20.entities.Orders;
-import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -51,7 +49,7 @@ public class GenresJpaController implements Serializable {
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
 
-    public void create(Genres genres) {
+    public void create(Genres genres) throws BackendException {
         if (genres.getBooksCollection() == null) {
             genres.setBooksCollection(new ArrayList<Books>());
         }
@@ -71,6 +69,7 @@ public class GenresJpaController implements Serializable {
             utx.commit();
         } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with create in authors controller method.", ex);
+            throw new BackendException("Error in create method in genres controller.");
         } 
     }
 
@@ -103,6 +102,7 @@ public class GenresJpaController implements Serializable {
             utx.commit();
         } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with edit in authors controller method.", ex);
+            throw new BackendException("Error in edit method in genres controller.");
         } 
     }
 

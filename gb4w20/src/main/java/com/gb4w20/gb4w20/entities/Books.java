@@ -287,9 +287,13 @@ public class Books implements Serializable {
         return true;
     }
 
+    /**
+     * Edited by: Jean Robatto
+     * @return 
+     */
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.Books[ isbn=" + isbn + " ]";
+        return "com.gb4w20.gb4w20.entities.Books[ isbn=" + isbn + " ] ";
     }
     
 }

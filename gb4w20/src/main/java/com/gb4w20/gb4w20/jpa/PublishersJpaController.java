@@ -1,7 +1,6 @@
 
 package com.gb4w20.gb4w20.jpa;
 
-import com.gb4w20.gb4w20.entities.Authors;
 import com.gb4w20.gb4w20.entities.Bookorder;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -12,6 +11,7 @@ import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.entities.Publishers;
+import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import java.math.BigDecimal;
@@ -22,7 +22,6 @@ import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
@@ -53,7 +52,7 @@ public class PublishersJpaController implements Serializable {
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
 
-    public void create(Publishers publishers) {
+    public void create(Publishers publishers) throws BackendException {
         if (publishers.getBooksCollection() == null) {
             publishers.setBooksCollection(new ArrayList<Books>());
         }
@@ -73,6 +72,7 @@ public class PublishersJpaController implements Serializable {
             utx.commit();
         } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with create in publishers controller method.", ex);
+            throw new BackendException("Error in create method in publishers controller.");
         } 
     }
 
@@ -105,6 +105,7 @@ public class PublishersJpaController implements Serializable {
             utx.commit();
         } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with edit in publishers controller method.", ex);
+            throw new BackendException("Error in edit method in publishers controller.");
         } 
     }
 
