@@ -7,6 +7,7 @@ import com.gb4w20.gb4w20.jpa.PublishersJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -46,7 +47,7 @@ public class PublisherReportBackingBean implements Serializable {
     
     private Double totalSales; 
     
-    private List<NameAndNumberBean> purchasedProducts; 
+    private List<NameTotalAndCountBean> purchasedProducts; 
     
     /**
      * Used to get a list of all the publishers in the database. 
@@ -119,7 +120,7 @@ public class PublisherReportBackingBean implements Serializable {
      * Used to retrieve the list of products by the publisher that was purchased. 
      * @return the list of products. 
      */
-    public List<NameAndNumberBean> getPurchasedProducts() {
+    public List<NameTotalAndCountBean> getPurchasedProducts() {
         return purchasedProducts;
     }
     

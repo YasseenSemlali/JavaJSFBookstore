@@ -3,6 +3,7 @@ package com.gb4w20.gb4w20.jpa;
 import com.gb4w20.gb4w20.entities.Authors;
 import com.gb4w20.gb4w20.entities.Authors_;
 import com.gb4w20.gb4w20.entities.Bookorder;
+import com.gb4w20.gb4w20.entities.Bookorder_;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -14,6 +15,7 @@ import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -217,17 +219,21 @@ public class AuthorsJpaController implements Serializable {
      * @return a list of the book titles and total sales.
      * @author Jeffrey Boisvert
      */
-    public List<NameAndNumberBean> getPurchasedBooksByAuthor(long id, String startDate, String endDate) {
+    public List<NameTotalAndCountBean> getPurchasedBooksByAuthor(long id, String startDate, String endDate){
         LOG.info("Looking for books bought by author with id " + id);
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameAndNumberBean.class);
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameTotalAndCountBean.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         Root<Orders> order = cq.from(Orders.class);
         Join<Orders, Bookorder> bookorder = order.join("bookorderCollection", JoinType.INNER);
         Join<Bookorder, Books> book = bookorder.join("isbn", JoinType.INNER);
         Join<Books, Authors> authors = book.join(Books_.authorsCollection);
-
-        cq.multiselect(book.get(Books_.title), em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+        
+        cq.multiselect(
+                    book.get(Books_.title), 
+                    cb.sum(bookorder.get("amountPaidPretax")),
+                    cb.count(bookorder.get("orderId"))
+                 )
                 .groupBy(book.get(Books_.title))
                 .where(cb.and(
                         cb.equal(authors.get("authorId"), id),

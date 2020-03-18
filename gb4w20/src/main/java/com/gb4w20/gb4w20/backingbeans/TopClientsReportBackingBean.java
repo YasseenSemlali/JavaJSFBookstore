@@ -7,6 +7,7 @@ import com.gb4w20.gb4w20.jpa.PublishersJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,7 +41,7 @@ public class TopClientsReportBackingBean implements Serializable {
     
     private java.util.Date endDate; 
     
-    private List<NameAndNumberBean> clientsSales; 
+    private List<NameTotalAndCountBean> clientsSales; 
     
     /**
      * This will set the properties of the bean of for the clients sales based
@@ -79,7 +80,7 @@ public class TopClientsReportBackingBean implements Serializable {
      * Used to retrieve the list of clients and their sales.
      * @return the list of clients and sales. 
      */
-    public List<NameAndNumberBean> getClientsSales() {
+    public List<NameTotalAndCountBean> getClientsSales() {
         return clientsSales;
     }
     
