@@ -106,7 +106,7 @@ public class EmailBackingBean implements Serializable {
             Email email = Email.create().from(emailSender)
                     .to(userSession.getUser().getEmail())
                     .subject("Invoice")
-                    .textMessage("Hello from plain text email: " + LocalDateTime.now())
+                    .textMessage("Bookify Invoice: " + LocalDateTime.now())
                     .htmlMessage("<html><META http-equiv=Content-Type "
                             + "content=\"text/html; charset=utf-8\">"
                             + "<body><h1>Bookify Invoice</h1>"
