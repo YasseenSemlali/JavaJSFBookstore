@@ -1,8 +1,9 @@
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.RssFeeds;
+import com.gb4w20.gb4w20.exceptions.BackendException;
+import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.entities.RssFeeds_;
-import com.gb4w20.gb4w20.entities.SurveyQuestions;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
@@ -10,21 +11,31 @@ import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+<<<<<<< HEAD
+ * Used to interact with the rssfeeds table in the database. 
+ * 
+ * @author Jeffrey Boisvert, Jean Robatto
+=======
  * Used to interact with the rssfeeds table in the database.
  *
  * @author Jeffrey Boisvert
+>>>>>>> bd3be3eacfbc6a83d032579efce43def73b8ea3f
  */
 @Named
 @SessionScoped
@@ -38,35 +49,30 @@ public class RssFeedsJpaController implements Serializable {
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
 
-    public void create(RssFeeds rssFeeds) {
+    public void create(RssFeeds rssFeeds) throws BackendException {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             em.persist(rssFeeds);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with create in authors controller method.", ex);
+            throw new BackendException("Error in create method in authors controller.");
         }
     }
 
     public void edit(RssFeeds rssFeeds) throws NonexistentEntityException, Exception {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             rssFeeds = em.merge(rssFeeds);
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            String msg = ex.getLocalizedMessage();
-            if (msg == null || msg.length() == 0) {
-                Long id = rssFeeds.getId();
-                if (findRssFeeds(id) == null) {
-                    throw new NonexistentEntityException("The rssFeeds with id " + id + " no longer exists.");
-                }
-            }
-            throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
+            utx.commit();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            try {
+                utx.rollback();
+                LOG.error("Rollback");
+            } catch (IllegalStateException | SecurityException | SystemException re) {
+                LOG.error("Rollback2");
+
+                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
         }
     }
@@ -110,23 +116,15 @@ public class RssFeedsJpaController implements Serializable {
     }
 
     public RssFeeds findRssFeeds(Long id) {
-        try {
             return em.find(RssFeeds.class, id);
-        } finally {
-            em.close();
-        }
     }
 
     public int getRssFeedsCount() {
-        try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<RssFeeds> rt = cq.from(RssFeeds.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
     }
     
      public RssFeeds getActiveFeed() {

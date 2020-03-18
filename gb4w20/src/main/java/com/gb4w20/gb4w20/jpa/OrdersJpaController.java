@@ -10,6 +10,7 @@ import com.gb4w20.gb4w20.entities.Bookorder;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Orders;
+import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
@@ -22,7 +23,6 @@ import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Used to interact with the orders table in the database. 
  * 
- * @author Jeffrey Boisvert
+ * @author Jeffrey Boisvert, Jean Robatto
  */
 @Named
 @SessionScoped
@@ -53,7 +53,7 @@ public class OrdersJpaController implements Serializable {
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
 
-    public void create(Orders orders) {
+    public void create(Orders orders) throws BackendException {
         if (orders.getBookorderCollection() == null) {
             orders.setBookorderCollection(new ArrayList<Bookorder>());
         }
@@ -87,6 +87,7 @@ public class OrdersJpaController implements Serializable {
             utx.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with create in orders controller method.");
+            throw new BackendException("Error in create method in orders controller.");
         }
     }
 
@@ -144,6 +145,7 @@ public class OrdersJpaController implements Serializable {
             utx.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with edit in orders controller method.");
+            throw new BackendException("Error in edit method in orders controller.");
         }
     }
 

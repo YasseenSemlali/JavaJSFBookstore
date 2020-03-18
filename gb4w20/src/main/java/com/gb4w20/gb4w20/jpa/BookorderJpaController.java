@@ -10,7 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Orders;
-import com.gb4w20.gb4w20.entities.Users_;
+import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.math.BigDecimal;
@@ -19,7 +19,6 @@ import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.HeuristicMixedException;
@@ -48,7 +47,7 @@ public class BookorderJpaController implements Serializable {
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
 
-    public void create(Bookorder bookorder) {
+    public void create(Bookorder bookorder) throws BackendException {
         try {
             utx.begin();
             Books isbn = bookorder.getIsbn();
@@ -73,6 +72,7 @@ public class BookorderJpaController implements Serializable {
             utx.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with create in bookerde controller method.");
+            throw new BackendException("Error in create method in bookorder controller.");
         }
     }
 

@@ -58,7 +58,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Yasseen Semlali
+ * @author Yasseen Semlali, Jean Robatto
  */
 @Named
 @SessionScoped
@@ -356,10 +356,6 @@ public class BooksJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-
-            }
         }
     }
 
