@@ -39,7 +39,7 @@
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>manager-frontpage.xhtml</welcome-file>
+        <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
     
     <context-param>
