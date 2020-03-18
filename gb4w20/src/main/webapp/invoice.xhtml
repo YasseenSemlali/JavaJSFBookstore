@@ -55,6 +55,12 @@ or print it or both.
             <p>
                 <b:icon value="envelope" size="lg" style="padding-right: 5px" />
                 <b:commandButton value="#{msgs.sendemail}" look="primary" action="#{emailBackingBean.perform()}" />
+                <p:dialog id="emailSuccess"  header="#{msgs.emailinvoice}" widgetVar="successEmail" modal="true" minHeight="40" responsive="true">
+                    <h:outputText value="#{msgs.emailsucceed}" /> 
+                </p:dialog>
+                <p:dialog id="emailFail"  header="#{msgs.emailinvoice}" widgetVar="failEmail" modal="true" minHeight="40" responsive="true">
+                    <h:outputText value="#{msgs.emailfail}" /> 
+                </p:dialog>
             </p>
             <p>
                 <b:icon value="print" size="lg" style="padding-right: 5px" />

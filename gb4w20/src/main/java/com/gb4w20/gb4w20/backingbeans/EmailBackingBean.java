@@ -17,6 +17,7 @@ import jodd.mail.MailServer;
 import jodd.mail.RFC2822AddressParser;
 import jodd.mail.SendMailSession;
 import jodd.mail.SmtpServer;
+import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,13 +50,6 @@ public class EmailBackingBean implements Serializable {
     private final String smtpPassword;
     private final String smtpServerName;
 
-//    private boolean emailVal;
-//    public boolean isEmailVal(){
-//        return this.emailVal;
-//    }
-//    public void setEmailVal(boolean emailVal){
-//        this.emailVal = emailVal;
-//    }
     /**
      * Constructor that retrieves the email credentials from the web.xml
      */
@@ -93,6 +87,9 @@ public class EmailBackingBean implements Serializable {
         LOG.info("Our email " + emailSender);
         LOG.info("To who: " + userSession.getUser().getEmail());
         
+        //dialog from PrimeFaces is used depending on the outcome of this method
+        PrimeFaces emailDialog = PrimeFaces.current();
+        
         if (checkEmail(emailSender) && checkEmail(userSession.getUser().getEmail())) {
             LOG.debug("VALID EMAILS");
             // Create am SMTP server object
@@ -124,16 +121,17 @@ public class EmailBackingBean implements Serializable {
                 session.open();
                 session.sendMail(email);
                 LOG.info("Email sent");
+                emailDialog.executeScript("PF('successEmail').show()");
             }
-            //this.emailVal = true;
+            
         } else {
             LOG.info("Unable to send email because either send or recieve addresses are invalid");
-            //this.emailVal = false;
+            emailDialog.executeScript("PF('failEmail').show()");
         }
     }
 
     /**
-     * Check if email exists
+     * Check if email is valid
      *
      * @param address
      * @return
