@@ -11,8 +11,14 @@ import com.gb4w20.gb4w20.jpa.BookorderJpaController;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.GenresJpaController;
 import com.gb4w20.gb4w20.jpa.PublishersJpaController;
+import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -23,6 +29,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+import org.primefaces.shaded.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,6 +74,7 @@ public class ManagerInventory implements Serializable {
     @Past private Date dateOfPublication;
     private int pages;
     @Size(min = 1, max = 1000) private String synopsis;
+    private UploadedFile uploadedCover;
     private String cover;
     private BigDecimal wholesalePrice;
     private BigDecimal listPrice;
@@ -124,7 +134,7 @@ public class ManagerInventory implements Serializable {
             bookPublisher = new ArrayList<>();
             totalSales = new BigDecimal(0);
         } else {
-            LOG.debug("Selected book with ISBN: " + Long.toString(isbn));
+            LOG.debug("Selected book with ISBN: " + Long.toString(input_isbn));
             edit = true;
             Books book = booksController.findBooks(input_isbn);
             isbn = book.getIsbn();
@@ -210,6 +220,33 @@ public class ManagerInventory implements Serializable {
             Genres new_genre = genresController.findGenres(input_genreId);
             genre = new_genre.getGenre();
         }
+    }
+    
+    /**
+     * Upload the cover image file to the server, if one is present.
+     * @author Jean Robatto
+     * @param event
+     */
+    public void handleFileUpload(FileUploadEvent event) {
+        LOG.info("IN METHOD");
+        UploadedFile newFile = event.getFile();
+        String basePath = new File("").getAbsolutePath();
+        LOG.info("PATH");
+        LOG.info(basePath);
+//        try (InputStream input = newFile.getInputstream()) {
+//            cover = newFile.getFileName();
+//            //Save to folder
+//            Path folder = Paths.get("/resources/images/");
+//            String filename = FilenameUtils.getBaseName(newFile.getFileName()); 
+//            String extension = FilenameUtils.getExtension(newFile.getFileName());
+//            Path file = Files.createTempFile(folder, filename + "-", "." + extension);
+//            LOG.info(">>>>>>>>>>>>>>>>>>");
+//            Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
+//            LOG.info("Successfully uploaded file " + filename);
+//        } catch (Exception ex) {
+//            LOG.info(ex.toString());
+//            //TODO SHOW ERORR MESSAGE
+//        }
     }
 
     /**
@@ -422,7 +459,7 @@ public class ManagerInventory implements Serializable {
             newBook.setDateOfPublication(dateOfPublication);
             newBook.setTimestamp(timestamp);
             newBook.setSynopsis(synopsis);
-            newBook.setCover(cover);
+            newBook.setCover(cover); 
             newBook.setPages(pages);
             newBook.setWholesalePrice(wholesalePrice);
             newBook.setListPrice(listPrice);
@@ -713,7 +750,10 @@ public class ManagerInventory implements Serializable {
     public void setToday(Date today) {
         this.today = today;
     }
-    
+
+    public void setUploadedCover(UploadedFile uploadedCover) {
+        this.uploadedCover = uploadedCover;
+    }
     
 
     //Getters
@@ -828,6 +868,12 @@ public class ManagerInventory implements Serializable {
     public Date getToday() {
         return today;
     }
+
+    public UploadedFile getUploadedCover() {
+        return uploadedCover;
+    }
+    
+    
     
     
 

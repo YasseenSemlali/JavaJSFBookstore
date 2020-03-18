@@ -33,6 +33,29 @@ necessary to manage inventory of our store.
         <b:container style="margin-top: 5%; margin-bottom:5%;" >
             <p:tabView style="text-align: center;" >
                 <p:tab title="${msgs.book}" id="bookTab">
+                    <h:form enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-lg-6 text-right-mobile">
+                                <p:outputLabel value="${msgs.cover}:" styleClass="formComponent"/>
+                            </div>
+                            <div class="col-lg-6 text-left">
+                                <p:growl id="upload_messages" showDetail="true" />      
+                                <p:fileUpload 
+                                    fileUploadListener="#{managerInventory.handleFileUpload}" 
+                                    allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                                    auto="true"
+                                    dragDropSupport="true"
+                                    style="width: 40%"
+                                    />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right-mobile"></div>
+                            <div class="col-lg-6 text-left">
+                                <h:graphicImage id="cover_img" library="img" name="covers/#{managerInventory.cover}" height="200px" style="margin: 20px"/> 
+                            </div>
+                        </div>
+                    </h:form>
                     <h:form id="bookForm">
                         <div class="card">
                             <div class="contaimer">
@@ -43,7 +66,7 @@ necessary to manage inventory of our store.
                                     <div class="col-lg-6 text-left">
                                         <p:selectOneMenu id="selectbook" class="custom-select" value="#{managerInventory.selectIsbn}" style="width:30%;">
                                             <p:ajax event="change" 
-                                                    update="isbn title synopsis cover pubdate numpages wholeprice listprice saleprice active allauthors allgenres allpublishers totalsaleslabel"
+                                                    update="isbn title synopsis pubdate numpages wholeprice listprice saleprice active allauthors allgenres allpublishers totalsaleslabel"
                                                     listener="#{managerInventory.bookChanged}" />
                                             <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
                                             <f:selectItems value="#{booksJpaController.findBooksEntities()}" var="book" itemValue="#{book.isbn}" itemLabel="#{book.title}"/>
@@ -130,14 +153,6 @@ necessary to manage inventory of our store.
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 text-right-mobile">
-                                        <p:outputLabel value="${msgs.cover}:" styleClass="formComponent"/>
-                                    </div>
-                                    <div class="col-lg-6 text-left">
-                                        <p:inputText id="cover" value="#{managerInventory.cover}" styleClass="formComponent"/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.pubdate}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
@@ -168,7 +183,7 @@ necessary to manage inventory of our store.
                                             >
                                             <f:validateLongRange minimum="0" maximum="2000" />
                                             <f:ajax event="blur" render="numpages_msg" />
-                                            </p:inputNumber>
+                                        </p:inputNumber>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -194,7 +209,7 @@ necessary to manage inventory of our store.
                                             >
                                             <f:validateDoubleRange minimum="1" maximum="2000" />
                                             <f:ajax event="blur" render="wholeprice_msg" />
-                                            </p:inputNumber>
+                                        </p:inputNumber>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -246,7 +261,7 @@ necessary to manage inventory of our store.
                                             >
                                             <f:validateDoubleRange minimum="0" maximum="2000" />
                                             <f:ajax event="blur" render="saleprice_msg" />
-                                            </p:inputNumber>
+                                        </p:inputNumber>
                                     </div>
                                 </div>
                                 <div class="row">
