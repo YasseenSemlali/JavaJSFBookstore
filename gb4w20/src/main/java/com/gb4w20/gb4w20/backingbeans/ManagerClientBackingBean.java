@@ -15,6 +15,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,26 +46,42 @@ public class ManagerClientBackingBean implements Serializable {
 
     //User values
     private Long selectedUserId;
+    @Size(min = 1, max = 5)
     private String selectedUserTitle; 
+    @Size(min = 1, max = 30)
     private String selectedUserFirstName; 
+    @Size(min = 1, max = 30)
     private String selectedLastName;
+    @Size(max = 20)
     private String selectedCompany;
+    @Size(min = 1, max = 50)
     private String selectedAddress1; 
+    @Size(max = 50)
     private String selectedAddress2; 
+    @Size(min = 1, max = 20)
     private String selectedCity; 
+    @Size(min = 1, max = 2)
     private String selectedProvince; 
+    @Size(min = 1, max = 10)
     private String selectedCountry; 
-    private String selectedPostalCode; 
+    @Size(min = 1, max = 10)
+    private String selectedPostalCode;
+    @Size(min = 1, max = 10)
     private String selectedHomePhone; 
+    @Size(min = 1, max = 10)
     private String selectedCellPhone; 
+    @Size(min = 1, max = 50)
     private String selectedEmail; 
     //This is just for the sake of the project this would not be in production. 
+    @Size(min = 1, max = 100)
     private String selectedPassword; 
     private boolean selectedIsManagerState; 
 
     //Total sales of selected User
+    
     private Double totalSales;
     //Used to validate if the email changed or not.
+    @Size(min = 1, max = 50)
     private String previousEmail; 
 
     /**
