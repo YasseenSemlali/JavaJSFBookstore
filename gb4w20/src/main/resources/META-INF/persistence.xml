@@ -22,7 +22,7 @@
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
   <!-- For tests --> 
-<!--  <persistence-unit name="BookPUTest" transaction-type="JTA">
+  <persistence-unit name="BookPUTest" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>java:app/jdbc/bookstore_test</jta-data-source>
     <class>com.gb4w20.gb4w20.entities.Ads</class>
@@ -41,5 +41,5 @@
     <class>com.gb4w20.gb4w20.entities.Taxes</class>
     <class>com.gb4w20.gb4w20.entities.Users</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-  </persistence-unit>-->
+  </persistence-unit>
 </persistence>
