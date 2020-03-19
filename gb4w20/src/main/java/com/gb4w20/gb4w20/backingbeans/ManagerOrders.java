@@ -4,6 +4,7 @@ import com.gb4w20.gb4w20.entities.Bookorder;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.entities.Taxes;
+import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.BookorderJpaController;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
@@ -12,6 +13,7 @@ import com.gb4w20.gb4w20.jpa.TaxesJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -19,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIOutput;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -35,7 +38,7 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class ManagerOrders implements Serializable {
 
-    private final static Logger LOG = LoggerFactory.getLogger(ManagerInventory.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ManagerOrders.class);
 
     @Inject
     private BooksJpaController booksController;
@@ -53,25 +56,27 @@ public class ManagerOrders implements Serializable {
     private TaxesJpaController taxController;
 
     //Main Fields
-    protected Orders order;
+    private Orders order;
+    private Boolean newOrder;
 
     //Price and tax
-    protected BigDecimal pricePreTax = new BigDecimal(0);
-    protected BigDecimal hstTax = new BigDecimal(0);
-    protected BigDecimal gstTax = new BigDecimal(0);
-    protected BigDecimal pstTax = new BigDecimal(0);
-    protected BigDecimal totalTax = new BigDecimal(0);
-    protected BigDecimal totalPrice = new BigDecimal(0);
+    private BigDecimal pricePreTax = new BigDecimal(0);
+    private BigDecimal hstTax = new BigDecimal(0);
+    private BigDecimal gstTax = new BigDecimal(0);
+    private BigDecimal pstTax = new BigDecimal(0);
+    private BigDecimal totalTax = new BigDecimal(0);
+    private BigDecimal totalPrice = new BigDecimal(0);
 
     //Books
-    protected Collection<Bookorder> bookOrders;
-    protected Long bookToAdd;
+    private Collection<Bookorder> bookOrders;
+    private Long bookToAdd;
 
     //Info
-    protected String address;
-    protected Long selectedUserId;
+    private String address;
+    private Long selectedUserId;
 
     //Actions
+    
     /**
      * Edits the order with the newly submitted inputs
      *
@@ -81,19 +86,41 @@ public class ManagerOrders implements Serializable {
     public String editOrder() {
         try {
             //Bookorders
-            for (Bookorder bookorder : this.bookOrders) {
+            for (Bookorder bookorder : bookOrders) {
                 bookorderController.edit(bookorder);
             }
 
-            this.order.setBillingAddress(this.address);
-            this.order.setBookorderCollection(this.bookOrders);
-            this.order.setUserId(usersController.findUsers(this.selectedUserId));
-            this.order.setTimestamp(new Date());
+            order.setBillingAddress(address);
+            order.setBookorderCollection(bookOrders);
+            order.setUserId(usersController.findUsers(selectedUserId));
+            order.setTimestamp(new Date());
 
-            orderController.edit(this.order);
+            orderController.edit(order);
 
-            return "/action-responses/action-success";
-        } catch (Exception e) {
+            //This redirect is needed to fix a rendering issue.
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/manager-forms/manager-orders.xhtml");
+            
+            return "/manager-forms/manager-orders";
+        } catch (Exception ex) {
+            LOG.info(ex.toString());
+            return "/action-responses/action-failure";
+        }
+    }
+    
+    /**
+     * Cancel a new order. Delete the order entry.
+     *
+     * @return redirection
+     * @uthor Jean Robatto
+     */
+    public String cancelOrder() {
+        try {
+            orderController.destroy(order.getOrderId());
+            //This redirect is needed to fix a rendering issue.
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/manager-forms/manager-orders.xhtml");
+            return "/manager-forms/manager-orders";
+        } catch (Exception ex) {
+            LOG.info(ex.toString());
             return "/action-responses/action-failure";
         }
     }
@@ -104,21 +131,22 @@ public class ManagerOrders implements Serializable {
      * @param e
      * @author Jean Robatto
      * @throws com.gb4w20.gb4w20.exceptions.RollbackFailureException
+     * @throws com.gb4w20.gb4w20.exceptions.BackendException
      */
-    public void addBookToCollection(AjaxBehaviorEvent e) throws RollbackFailureException {
+    public void addBookToCollection(AjaxBehaviorEvent e) throws RollbackFailureException, BackendException {
         Long isbn = ((Long) ((UIOutput) e.getSource()).getValue());
         Books book = booksController.findBooks(isbn);
 
         Bookorder bookorder = new Bookorder();
 
-        BigDecimal bookprice = (book.getSalePrice().compareTo(new BigDecimal(0)) == 0) ? book.getListPrice() : book.getSalePrice();
+        BigDecimal bookprice = book.getListPrice().subtract(book.getSalePrice());
 
         bookorder.setAmountPaidPretax(bookprice);
         bookorder.setEnabled(Boolean.TRUE);
         bookorder.setIsbn(book);
-        bookorder.setOrderId(this.order);
+        bookorder.setOrderId(order);
 
-        Map<String, BigDecimal> taxes = calculateTax(bookprice, this.order.getUserId().getProvince());
+        Map<String, BigDecimal> taxes = calculateTax(bookprice, order.getUserId().getProvince());
 
         bookorder.setGstTax(taxes.get("GST"));
         bookorder.setPstTax(taxes.get("PST"));
@@ -126,10 +154,10 @@ public class ManagerOrders implements Serializable {
 
         bookorderController.create(bookorder);
 
-        if (this.bookOrders != null) {
-            this.bookOrders.add(bookorder);
+        if (bookOrders != null) {
+            bookOrders.add(bookorder);
         } else {
-            this.bookOrders = new ArrayList<Bookorder>() {
+            bookOrders = new ArrayList<Bookorder>() {
                 {
                     add(bookorder);
                 }
@@ -140,52 +168,57 @@ public class ManagerOrders implements Serializable {
     /**
      * Sets all the fields for a new or existing order
      *
-     * @param order
+     * @param selected_order
      * @return redirection
      * @author Jean Robatto
+     * @throws com.gb4w20.gb4w20.exceptions.BackendException
      */
-    public String selectOrder(Orders order) {
-        if (order == null) {
-            this.order = new Orders();
+    public String selectOrder(Orders selected_order) throws BackendException {
+        if (selected_order == null) {
+            order = new Orders();
 
             //Set fields
-            this.selectedUserId = null;
-            this.bookOrders = new ArrayList<>();
+            selectedUserId = null;
+            bookOrders = new ArrayList<>();
 
             //Set taxes and prices
-            this.pricePreTax = new BigDecimal(0);
-            this.hstTax = new BigDecimal(0);
-            this.gstTax = new BigDecimal(0);
-            this.pstTax = new BigDecimal(0);
-            this.totalTax = new BigDecimal(0);
-            this.totalPrice = new BigDecimal(0);
+            pricePreTax = new BigDecimal(0);
+            hstTax = new BigDecimal(0);
+            gstTax = new BigDecimal(0);
+            pstTax = new BigDecimal(0);
+            totalTax = new BigDecimal(0);
+            totalPrice = new BigDecimal(0);
 
             //Info
-            this.address = "Address";
+            address = "Address";
 
             //Get ID
-            this.order.setBillingAddress(this.address);
-            this.order.setBookorderCollection(this.bookOrders);
-            this.order.setUserId(usersController.findUsersEntities().get(0));
-            this.order.setTimestamp(new Date());
+            order.setBillingAddress(address);
+            order.setBookorderCollection(bookOrders);
+            order.setUserId(usersController.findUsersEntities().get(0));
+            order.setTimestamp(new Date());
 
-            orderController.create(this.order);
+            orderController.create(order);
+            
+            newOrder = true;
 
         } else {
-            this.order = order;
-            this.selectedUserId = this.order.getUserId().getUserId();
-            this.bookOrders = order.getBookorderCollection();
+            order = selected_order;
+            selectedUserId = order.getUserId().getUserId();
+            bookOrders = order.getBookorderCollection();
 
             //Set taxes and prices
-            this.pricePreTax = bookorderController.getTotalSalesForOrderPreTax(order);
-            this.hstTax = (bookorderController.getHSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getHSTForOrder(order).setScale(2, BigDecimal.ROUND_DOWN);
-            this.gstTax = (bookorderController.getGSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getGSTForOrder(order).setScale(2, BigDecimal.ROUND_DOWN);
-            this.pstTax = (bookorderController.getPSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getPSTForOrder(order).setScale(2, BigDecimal.ROUND_DOWN);
-            this.totalTax = this.hstTax.add(this.pstTax).add(this.gstTax).setScale(2, BigDecimal.ROUND_DOWN);
-            this.totalPrice = this.pricePreTax.add(this.totalTax).setScale(2, BigDecimal.ROUND_DOWN);
+            pricePreTax = bookorderController.getTotalSalesForOrderPreTax(order);
+            hstTax = (bookorderController.getHSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getHSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
+            gstTax = (bookorderController.getGSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getGSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
+            pstTax = (bookorderController.getPSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getPSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
+            totalTax = hstTax.add(pstTax).add(gstTax).setScale(2, RoundingMode.HALF_EVEN);
+            totalPrice = pricePreTax.add(totalTax).setScale(2, RoundingMode.HALF_EVEN);
 
             //Info
-            this.address = order.getBillingAddress();
+            address = order.getBillingAddress();
+            
+            newOrder = false;
         }
 
         return "manager-orders-edit";
@@ -263,6 +296,10 @@ public class ManagerOrders implements Serializable {
         this.selectedUserId = selectedUserId;
     }
 
+    public void setNewOrder(Boolean newOrder) {
+        this.newOrder = newOrder;
+    }
+
     //Getters
     public Collection<Bookorder> getBookOrders() {
         return bookOrders;
@@ -306,6 +343,10 @@ public class ManagerOrders implements Serializable {
 
     public Long getSelectedUserId() {
         return selectedUserId;
+    }
+
+    public Boolean getNewOrder() {
+        return newOrder;
     }
            
 }

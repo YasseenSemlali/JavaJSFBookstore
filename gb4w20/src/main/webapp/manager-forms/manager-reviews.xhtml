@@ -17,82 +17,84 @@ necessary to manage reviews in the web app.
     <ui:define name="head">
         <title>#{msgs.reviews}</title>
     </ui:define>
-    
+
     <ui:define name="content">
         <b:container style="margin-top: 5%; margin-bottom:5%;">
-            <p:tabView>
+            <p:tabView id="allrevs" activeIndex="#{managerReviews.activeTabIndex}" >
                 <p:tab title="#{msgs.approved_revs}" >
                     <h:form>
-                    <p:dataTable var="review" value="#{reviewsJpaController.getReviewsOnApproved(true)}"
-                                 emptyMessage="#{msgs.noresults}">
-                    
-                        <p:column filterBy="#{review.isbn.title}" headerText="#{msgs.title}" filterMatchMode="contains">
-                            <h:outputText value="#{review.isbn.title}" />
-                        </p:column>
-                        
-                        <p:column filterBy="#{review.userId.firstName}" headerText="#{msgs.firstname}" filterMatchMode="contains">
-                            <h:outputText value="#{review.userId.firstName}" />
-                        </p:column>
-                        
-                         <p:column filterBy="#{review.userId.lastName}" headerText="#{msgs.lastname}" filterMatchMode="contains">
-                            <h:outputText value="#{review.userId.lastName}" />
-                        </p:column>
-                        
-                        <p:column filterBy="#{review.rating}" headerText="#{msgs.rating}" filterMatchMode="contains">
-                            <h:outputText value="#{review.rating}/5" />
-                        </p:column>
-                        
-                        <p:column filterBy="#{review.timestamp}" headerText="#{msgs.date}" filterMatchMode="contains">
-                            <h:outputText value="#{review.timestamp}" />
-                        </p:column>
-                        
-                        <p:column filterBy="#{review.review}" headerText="#{msgs.review}" filterMatchMode="contains">
-                            <h:outputText value="#{review.review}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <p:commandButton value="#{msgs.disapprove}" action="#{managerReviews.editApprovalStatus(review.reviewId, false)}" />
-                        </p:column>
-                        
-                        
-                    </p:dataTable>
-                        </h:form>
+                        <p:dataTable var="review" value="#{reviewsJpaController.getReviewsOnApproved(true)}"
+                                     emptyMessage="#{msgs.noresults}" tableStyle="width:auto">
+
+                            <p:column filterBy="#{review.isbn.title}" headerText="#{msgs.title}" filterMatchMode="contains">
+                                <h:outputText value="#{review.isbn.title}" />
+                            </p:column>
+
+                            <p:column filterBy="#{review.userId.firstName}" headerText="#{msgs.firstname}" filterMatchMode="contains">
+                                <h:outputText value="#{review.userId.firstName}" />
+                            </p:column>
+
+                            <p:column filterBy="#{review.userId.lastName}" headerText="#{msgs.lastname}" filterMatchMode="contains">
+                                <h:outputText value="#{review.userId.lastName}" />
+                            </p:column>
+
+                            <p:column filterBy="#{review.rating}" headerText="#{msgs.rating}" filterMatchMode="contains">
+                                <h:outputText value="#{review.rating}/5" />
+                            </p:column>
+
+                            <p:column filterBy="#{review.timestamp}" headerText="#{msgs.date}" filterMatchMode="contains">
+                                <h:outputText value="#{review.timestamp}" />
+                            </p:column>
+
+                            <p:column filterBy="#{review.review}" headerText="#{msgs.review}" filterMatchMode="contains">
+                                <h:outputText value="#{review.review}" />
+                            </p:column>
+
+                            <p:column>
+                                <p:commandButton value="#{msgs.disapprove}">
+                                    <f:ajax listener="#{managerReviews.editApprovalStatus(review.reviewId, false, 0)}" render="allrevs" execute="@all" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
                 </p:tab>
                 <p:tab title="#{msgs.not_approved_revs}" >
                     <h:form>
-                    <p:dataTable var="review" value="#{reviewsJpaController.getReviewsOnApproved(false)}"
-                                 emptyMessage="#{msgs.noresults}">
-                    
-                        <p:column filterBy="#{review.isbn.title}" headerText="#{msgs.title}" filterMatchMode="contains">
-                            <h:outputText value="#{review.isbn.title}" />
-                        </p:column>
-                        
-                        <p:column filterBy="#{review.userId.firstName}" headerText="#{msgs.firstname}" filterMatchMode="contains">
-                            <h:outputText value="#{review.userId.firstName}" />
-                        </p:column>
-                        
-                         <p:column filterBy="#{review.userId.lastName}" headerText="#{msgs.lastname}" filterMatchMode="contains">
-                            <h:outputText value="#{review.userId.lastName}" />
-                        </p:column>
-                        
-                        <p:column filterBy="#{review.rating}" headerText="#{msgs.rating}" filterMatchMode="contains">
-                            <h:outputText value="#{review.rating}/5" />
-                        </p:column>
-                        
-                        <p:column filterBy="#{review.timestamp}" headerText="#{msgs.date}" filterMatchMode="contains">
-                            <h:outputText value="#{review.timestamp}" />
-                        </p:column>
-                        
-                        <p:column filterBy="#{review.review}" headerText="#{msgs.review}" filterMatchMode="contains">
-                            <h:outputText value="#{review.review}" />
-                        </p:column>
-                        
-                         <p:column>
-                            <p:commandButton value="#{msgs.approve}" action="#{managerReviews.editApprovalStatus(review.reviewId, true)}" />
-                        </p:column>
-                        
-                    </p:dataTable>
-                        </h:form>
+                        <p:dataTable var="review" value="#{reviewsJpaController.getReviewsOnApproved(false)}"
+                                     emptyMessage="#{msgs.noresults}" tableStyle="width:auto">
+
+                            <p:column filterBy="#{review.isbn.title}" headerText="#{msgs.title}" filterMatchMode="contains">
+                                <h:outputText value="#{review.isbn.title}" />
+                            </p:column>
+
+                            <p:column filterBy="#{review.userId.firstName}" headerText="#{msgs.firstname}" filterMatchMode="contains">
+                                <h:outputText value="#{review.userId.firstName}" />
+                            </p:column>
+
+                            <p:column filterBy="#{review.userId.lastName}" headerText="#{msgs.lastname}" filterMatchMode="contains">
+                                <h:outputText value="#{review.userId.lastName}" />
+                            </p:column>
+
+                            <p:column filterBy="#{review.rating}" headerText="#{msgs.rating}" filterMatchMode="contains">
+                                <h:outputText value="#{review.rating}/5" />
+                            </p:column>
+
+                            <p:column filterBy="#{review.timestamp}" headerText="#{msgs.date}" filterMatchMode="contains">
+                                <h:outputText value="#{review.timestamp}" />
+                            </p:column>
+
+                            <p:column filterBy="#{review.review}" headerText="#{msgs.review}" filterMatchMode="contains">
+                                <h:outputText value="#{review.review}" />
+                            </p:column>
+
+                            <p:column>
+                                <p:commandButton value="#{msgs.approve}">
+                                    <f:ajax listener="#{managerReviews.editApprovalStatus(review.reviewId, true, 1)}" render="allrevs" execute="@all" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
                 </p:tab>
             </p:tabView>
         </b:container>

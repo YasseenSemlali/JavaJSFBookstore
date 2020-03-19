@@ -11,13 +11,11 @@ import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Genres;
 import com.gb4w20.gb4w20.entities.Genres_;
-import com.gb4w20.gb4w20.entities.Orders;
-import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -51,7 +49,7 @@ public class GenresJpaController implements Serializable {
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
 
-    public void create(Genres genres) {
+    public void create(Genres genres) throws BackendException {
         if (genres.getBooksCollection() == null) {
             genres.setBooksCollection(new ArrayList<Books>());
         }
@@ -71,6 +69,7 @@ public class GenresJpaController implements Serializable {
             utx.commit();
         } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with create in authors controller method.", ex);
+            throw new BackendException("Error in create method in genres controller.");
         } 
     }
 
@@ -103,6 +102,7 @@ public class GenresJpaController implements Serializable {
             utx.commit();
         } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with edit in authors controller method.", ex);
+            throw new BackendException("Error in edit method in genres controller.");
         } 
     }
 
@@ -153,32 +153,6 @@ public class GenresJpaController implements Serializable {
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
-    }
-    
-    public List<Books> getTopSelling(int maxResults) {
-        return this.getTopSellingForGenre(-1, maxResults);
-    }
-    
-    public List<Books> getTopSellingForGenre(long genreId, int maxResults) {
-        LOG.info("getting " + maxResults + " top selling books for genre " + genreId);
-        
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
-
-        Root<Books> book = cq.from(Books.class);
-        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
-
-        cq.select(book);
-        if(genreId != -1){
-            cq.where(cb.equal(book.get("genreId"), genreId));
-        }
-        cq.groupBy(book.get("isbn"));   
-        cq.orderBy(cb.desc(cb.count(bookorder)));
-
-        Query query = em.createQuery(cq);
-        query.setMaxResults(maxResults);
-
-        return query.getResultList();
     }
     
     /**

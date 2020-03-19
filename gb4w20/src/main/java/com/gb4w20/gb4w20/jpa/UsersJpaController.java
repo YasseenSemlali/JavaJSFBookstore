@@ -18,6 +18,7 @@ import com.gb4w20.gb4w20.entities.Users_;
 import com.gb4w20.gb4w20.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
@@ -472,10 +473,10 @@ public class UsersJpaController implements Serializable {
      * @return the report of top sellers of the names of the users and their total sales
      * @author Jeffrey Boisvert
      */
-    public List<NameAndNumberBean> findTopUsersBySales(String startDate, String endDate){
+    public List<NameTotalAndCountBean> findTopUsersBySales(String startDate, String endDate){
         
         LOG.info("Looking for top users by sales between " + startDate + " and " + endDate);
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameAndNumberBean.class);
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameTotalAndCountBean.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         Root<Users> bookorder = cq.from(Bookorder.class);
@@ -487,7 +488,9 @@ public class UsersJpaController implements Serializable {
                         cb.concat(user.get(Users_.firstName), " "),
                             user.get(Users_.lastName)
                     ), 
-                cb.sum(bookorder.get("amountPaidPretax")))
+                cb.sum(bookorder.get("amountPaidPretax")),
+                cb.count(bookorder.get("orderId"))
+                )
                 .groupBy(user.get(Users_.userId))
                 .where(
                         cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")

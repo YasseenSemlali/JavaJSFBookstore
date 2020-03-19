@@ -2,6 +2,7 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.jpa.ReviewsJpaController;
+import java.io.IOException;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -19,28 +20,42 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class ManagerReviews implements Serializable {
     
-    private final static Logger LOG = LoggerFactory.getLogger(ManagerInventory.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ManagerReviews.class);
     
     @Inject
     private ReviewsJpaController reviewController;
+    
+    private Integer activeTabIndex = 0;
 
     /**
      * Method to set the status of a review
      * 
      * @param revId
      * @param status
+     * @param activeTabIndex
+     * @throws java.io.IOException
      */
-    public void editApprovalStatus(Long revId, boolean status) {
+    public void editApprovalStatus(Long revId, boolean status, Integer activeTabIndex) throws IOException {
         try {
             Reviews review = reviewController.findReviews(revId);
             review.setApprovedStatus(status);
             reviewController.edit(review);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("manager-reviews.xhtml");
+            
+            this.activeTabIndex = activeTabIndex;
+            
         } catch (Exception ex) {
             LOG.info(ex.toString());
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/action-responses/action-failure.xhtml");
         }
     }
 
-    
+    public Integer getActiveTabIndex() {
+        return activeTabIndex;
+    }
 
+    public void setActiveTabIndex(Integer activeTabIndex) {
+        this.activeTabIndex = activeTabIndex;
+    }
+    
+    
 }

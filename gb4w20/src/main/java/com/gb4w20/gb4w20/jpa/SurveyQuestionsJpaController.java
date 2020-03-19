@@ -7,6 +7,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.SurveyResponses;
+import com.gb4w20.gb4w20.exceptions.BackendException;
+import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
@@ -16,9 +18,13 @@ import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +32,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Used to interact with survey questions table in the database.
  *
- * @author Jeffrey Boisvert, Yasseen Semlali
+ * @author Jeffrey Boisvert, Yasseen Semlali, Jean Robatto
  */
 @Named
 @SessionScoped
@@ -40,11 +46,12 @@ public class SurveyQuestionsJpaController implements Serializable {
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
 
-    public void create(SurveyQuestions surveyQuestions) {
+    public void create(SurveyQuestions surveyQuestions) throws BackendException {
+        try {
         if (surveyQuestions.getSurveyResponsesCollection() == null) {
             surveyQuestions.setSurveyResponsesCollection(new ArrayList<SurveyResponses>());
         }
-        em.getTransaction().begin();
+        utx.begin();
         Collection<SurveyResponses> attachedSurveyResponsesCollection = new ArrayList<SurveyResponses>();
         for (SurveyResponses surveyResponsesCollectionSurveyResponsesToAttach : surveyQuestions.getSurveyResponsesCollection()) {
             surveyResponsesCollectionSurveyResponsesToAttach = em.getReference(surveyResponsesCollectionSurveyResponsesToAttach.getClass(), surveyResponsesCollectionSurveyResponsesToAttach.getId());
@@ -61,12 +68,16 @@ public class SurveyQuestionsJpaController implements Serializable {
                 oldSurveyQuestionIdOfSurveyResponsesCollectionSurveyResponses = em.merge(oldSurveyQuestionIdOfSurveyResponsesCollectionSurveyResponses);
             }
         }
-        em.getTransaction().commit();
+        utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with create in authors controller method.", ex);
+            throw new BackendException("Error in create method in authors controller.");
+        }
     }
 
     public void edit(SurveyQuestions surveyQuestions) throws IllegalOrphanException, NonexistentEntityException, Exception {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             SurveyQuestions persistentSurveyQuestions = em.find(SurveyQuestions.class, surveyQuestions.getId());
             Collection<SurveyResponses> surveyResponsesCollectionOld = persistentSurveyQuestions.getSurveyResponsesCollection();
             Collection<SurveyResponses> surveyResponsesCollectionNew = surveyQuestions.getSurveyResponsesCollection();
@@ -101,16 +112,17 @@ public class SurveyQuestionsJpaController implements Serializable {
                     }
                 }
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            String msg = ex.getLocalizedMessage();
-            if (msg == null || msg.length() == 0) {
-                Long id = surveyQuestions.getId();
-                if (findSurveyQuestions(id) == null) {
-                    throw new NonexistentEntityException("The surveyQuestions with id " + id + " no longer exists.");
-                }
+            utx.commit();
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            try {
+                utx.rollback();
+                LOG.error("Rollback");
+                throw new BackendException("Error in edit method in survey questions controller.");
+            } catch (IllegalStateException | SecurityException | SystemException re) {
+                LOG.error("Rollback2");
+
+                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
-            throw ex;
         }
     }
 

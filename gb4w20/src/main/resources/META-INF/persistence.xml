@@ -19,7 +19,7 @@
     <class>com.gb4w20.gb4w20.entities.SurveyResponses</class>
     <class>com.gb4w20.gb4w20.entities.Taxes</class>
     <class>com.gb4w20.gb4w20.entities.Users</class>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
   <!-- For tests --> 
 <!--  <persistence-unit name="BookPUTest" transaction-type="JTA">

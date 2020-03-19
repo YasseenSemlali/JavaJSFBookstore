@@ -6,16 +6,19 @@ package com.gb4w20.gb4w20.backingbeans;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.ReviewsJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -77,9 +80,17 @@ public class BookReviewBackingBean implements Serializable{
      * @param reviews
      * @throws RollbackFailureException 
      */
-    private void saveReview(Reviews reviews) throws RollbackFailureException{
-        this.reviewsJpaController.create(reviews);
-        LOG.debug("<<<<<<<<<<<<<<<<SUCCESS>>>>>>>>>>>>>>>>>");
+    private void saveReview(Reviews reviews) {
+        try {
+            this.reviewsJpaController.create(reviews);
+        } catch (BackendException | RollbackFailureException ex) {
+            LOG.info(ex.toString());
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/action-responses/action-failure.xhtml");
+            } catch (IOException ioex) {
+                LOG.info("Problem with redirection: " + ioex.toString());
+            }
+        }
     }
   
     /**

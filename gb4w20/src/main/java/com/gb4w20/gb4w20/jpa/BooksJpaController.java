@@ -30,6 +30,7 @@ import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.jpa.exceptions.PreexistingEntityException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
@@ -57,7 +58,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Yasseen Semlali
+ * @author Yasseen Semlali, Jean Robatto
  */
 @Named
 @SessionScoped
@@ -355,10 +356,6 @@ public class BooksJpaController implements Serializable {
                 }
             }
             throw ex;
-        } finally {
-            if (em != null) {
-
-            }
         }
     }
 
@@ -600,6 +597,33 @@ public class BooksJpaController implements Serializable {
         return query.getResultList();
     }
 
+    public List<Books> getBooksForUser(Long id) {
+        LOG.info("getting books for user " + id);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+
+        Root<Books> book = cq.from(Books.class);
+        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
+        Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
+        Join<Orders, Users> user = order.join("userId", JoinType.INNER);
+
+        // TODO get email from session
+        cq.select(book);
+        
+        List<Predicate> predicates = new ArrayList();
+        predicates.add(cb.isTrue(book.get(Books_.active)));
+        
+        predicates.add(cb.equal(user.get("userId"), id));
+        
+        cq.where(cb.and(predicates.toArray(new Predicate[0])));
+        cq.orderBy(cb.asc(book.get(Books_.title)));
+
+        Query query = em.createQuery(cq);
+
+        return query.getResultList();
+    }
+    
     public int getBooksCount() {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         Root<Books> rt = cq.from(Books.class
@@ -618,12 +642,11 @@ public class BooksJpaController implements Serializable {
      * @return the report of book titles and total sales of the book.
      * @author Jeffrey Boisvert
      */
-    public List<NameAndNumberBean> findTopSellers(String startDate, String endDate) {
+    public List<NameTotalAndCountBean> findTopSellers(String startDate, String endDate) {
 
         LOG.info("Looking for top sellering books between " + startDate + " and " + endDate);
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery cq = cb.createQuery(NameAndNumberBean.class
-        );
+        CriteriaQuery cq = cb.createQuery(NameTotalAndCountBean.class);
 
         Root<Books> book = cq.from(Books.class );
         Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
@@ -631,7 +654,8 @@ public class BooksJpaController implements Serializable {
 
         cq.multiselect(
                 book.get(Books_.title),
-                em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax"))
+                cb.sum(bookorder.get("amountPaidPretax")),
+                cb.count(bookorder.get("orderId"))
         )
                 .groupBy(book.get(Books_.title))
                 .where(
