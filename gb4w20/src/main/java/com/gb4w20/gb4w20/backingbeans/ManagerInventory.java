@@ -17,6 +17,7 @@ import com.gb4w20.gb4w20.jpa.PublishersJpaController;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -24,6 +25,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
@@ -46,24 +48,27 @@ import org.slf4j.LoggerFactory;
 @Named
 @SessionScoped
 public class ManagerInventory implements Serializable {
-
+    
     private final static Logger LOG = LoggerFactory.getLogger(ManagerInventory.class);
-
+    
+    @Inject
+    private UserSessionBean userSessionBean;
+    
     @Inject
     private BooksJpaController booksController;
-
+    
     @Inject
     private AuthorsJpaController authorsController;
-
+    
     @Inject
     private PublishersJpaController publishersController;
-
+    
     @Inject
     private GenresJpaController genresController;
-
+    
     @Inject
     private BookorderJpaController bookorderController;
-
+    
     @Inject
     private BookFilesJpaController bookfilesController;
     
@@ -72,7 +77,7 @@ public class ManagerInventory implements Serializable {
 
     //Private fields
     private boolean edit;
-
+    
     private Date today = new Date();
 
     //Book
@@ -95,11 +100,11 @@ public class ManagerInventory implements Serializable {
     private Collection<Authors> bookAuthor = new ArrayList<>();
     private Collection<Genres> bookGenre = new ArrayList<>();
     private Collection<Publishers> bookPublisher = new ArrayList<>();
-
+    
     private Long authorToAdd;
     private Long genreToAdd;
     private Long publisherToAdd;
-
+    
     private Collection<String> newBookfiles = new ArrayList<>();
 
     //Author
@@ -121,11 +126,25 @@ public class ManagerInventory implements Serializable {
 
     //Total sales
     private BigDecimal totalSales = new BigDecimal(0);
-    
+
     //Variabls
     private final long EPUB_ID = 1L;
     private final long PDF_ID = 2L;
     private final long MOBI_ID = 3L;
+
+    //INIT
+    @PostConstruct
+    private void init() {
+        //Redirect if not manager
+        try {
+            if (!userSessionBean.isLoggedInManager()) {
+                LOG.info("Must be logged in as manager to access this page.");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/index.xhtml");
+            }
+        } catch (IOException ex) {
+            LOG.debug(ex.toString());
+        }
+    }
 
     //LISTENERS
     /**
@@ -494,7 +513,7 @@ public class ManagerInventory implements Serializable {
         LOG.debug("Adding new book to database");
         try {
             Books newBook = new Books();
-
+            
             newBook.setIsbn(isbn);
             newBook.setTitle(title);
             newBook.setDateOfPublication(dateOfPublication);
@@ -509,16 +528,16 @@ public class ManagerInventory implements Serializable {
             newBook.setAuthorsCollection(bookAuthor);
             newBook.setGenresCollection(bookGenre);
             newBook.setPublishersCollection(bookPublisher);
-
-            booksController.create(newBook);
             
+            booksController.create(newBook);
+
             //Book files
-            for (String fileName: newBookfiles) {
+            for (String fileName : newBookfiles) {
                 createBookFile(fileName, newBook);
             }
             
             newBookfiles = new ArrayList<>();
-
+            
             return "/action-responses/action-success";
         } catch (RollbackFailureException ex) {
             LOG.debug(ex.toString());
@@ -548,16 +567,16 @@ public class ManagerInventory implements Serializable {
             editBook.setAuthorsCollection(bookAuthor);
             editBook.setGenresCollection(bookGenre);
             editBook.setPublishersCollection(bookPublisher);
-
-            booksController.edit(editBook);
             
+            booksController.edit(editBook);
+
             //Book files
-            for (String fileName: newBookfiles) {
+            for (String fileName : newBookfiles) {
                 createBookFile(fileName, editBook);
             }
             
             newBookfiles = new ArrayList<>();
-
+            
             return "/action-responses/action-success";
         } catch (Exception ex) {
             LOG.debug(ex.toString());
@@ -566,8 +585,7 @@ public class ManagerInventory implements Serializable {
     }
 
     /**
-     * Method to create a book file.
-     * NOTE: Not persisted to database
+     * Method to create a book file. NOTE: Not persisted to database
      *
      * @param fileName
      * @author Jean Robatto
@@ -575,34 +593,41 @@ public class ManagerInventory implements Serializable {
     private void createBookFile(String fileName, Books book) {
         LOG.debug("Creating bookfile entry for " + fileName);
         BookFiles file = new BookFiles();
-
+        
         file.setIsbn(book);
         file.setFileLocation("./" + fileName);
-
+        
         String format = fileName.split("\\.")[1];
         
         Long format_id;
-
+        
         switch (format) {
             case "pdf":
-            case "PDF": format_id = PDF_ID; break;
+            case "PDF":
+                format_id = PDF_ID;
+                break;
             case "mobi":
-            case "MOBI": format_id = MOBI_ID; break;
+            case "MOBI":
+                format_id = MOBI_ID;
+                break;
             case "epub":
-            case "EPUB": format_id = EPUB_ID; break;
-            default: format_id = -1L;
-
+            case "EPUB":
+                format_id = EPUB_ID;
+                break;
+            default:
+                format_id = -1L;
+            
         }
-
+        
         file.setFileFormatId(fileformatsController.findFileFormats(format_id));
         
         bookfilesController.create(file);
-
+        
     }
     
     public void removeBookFile(Long id) {
         try {
-           bookfilesController.destroy(id);
+            bookfilesController.destroy(id);
         } catch (NonexistentEntityException ex) {
             LOG.debug(ex.toString());
         }
@@ -620,9 +645,9 @@ public class ManagerInventory implements Serializable {
             Authors newAuthor = new Authors();
             newAuthor.setFirstName(authorFirstName);
             newAuthor.setLastName(authorLastName);
-
+            
             authorsController.create(newAuthor);
-
+            
             return "/action-responses/action-success";
         } catch (BackendException ex) {
             LOG.debug(ex.toString());
@@ -642,9 +667,9 @@ public class ManagerInventory implements Serializable {
             Authors editAuthor = authorsController.findAuthors(authorId);
             editAuthor.setFirstName(authorFirstName);
             editAuthor.setLastName(authorLastName);
-
+            
             authorsController.edit(editAuthor);
-
+            
             return "/action-responses/action-success";
         } catch (Exception ex) {
             LOG.debug(ex.toString());
@@ -663,9 +688,9 @@ public class ManagerInventory implements Serializable {
         try {
             Genres newGenre = new Genres();
             newGenre.setGenre(genre);
-
+            
             genresController.create(newGenre);
-
+            
             return "/action-responses/action-success";
         } catch (BackendException ex) {
             LOG.debug(ex.toString());
@@ -684,9 +709,9 @@ public class ManagerInventory implements Serializable {
         try {
             Genres editGenre = genresController.findGenres(genreId);
             editGenre.setGenre(genre);
-
+            
             genresController.edit(editGenre);
-
+            
             return "/action-responses/action-success";
         } catch (Exception ex) {
             LOG.debug(ex.toString());
@@ -705,9 +730,9 @@ public class ManagerInventory implements Serializable {
         try {
             Publishers newPublisher = new Publishers();
             newPublisher.setName(publisherName);
-
+            
             publishersController.create(newPublisher);
-
+            
             return "/action-responses/action-success";
         } catch (BackendException ex) {
             LOG.debug(ex.toString());
@@ -726,9 +751,9 @@ public class ManagerInventory implements Serializable {
         try {
             Publishers editPulisher = publishersController.findPublishers(publisherId);
             editPulisher.setName(publisherName);
-
+            
             publishersController.edit(editPulisher);
-
+            
             return "/action-responses/action-success";
         } catch (Exception ex) {
             LOG.debug(ex.toString());
@@ -740,246 +765,242 @@ public class ManagerInventory implements Serializable {
     public void setIsbn(Long isbn) {
         this.isbn = isbn;
     }
-
+    
     public void setTitle(String title) {
         this.title = title;
     }
-
+    
     public void setDateOfPublication(Date dateOfPublication) {
         this.dateOfPublication = dateOfPublication;
     }
-
+    
     public void setPages(int pages) {
         this.pages = pages;
     }
-
+    
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
     }
-
+    
     public void setCover(String cover) {
         this.cover = cover;
     }
-
+    
     public void setWholesalePrice(BigDecimal wholesalePrice) {
         this.wholesalePrice = wholesalePrice;
     }
-
+    
     public void setListPrice(BigDecimal listPrice) {
         this.listPrice = listPrice;
     }
-
+    
     public void setSalePrice(BigDecimal salePrice) {
         this.salePrice = salePrice;
     }
-
+    
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
-
+    
     public void setActive(boolean active) {
         this.active = active;
     }
-
+    
     public void setSelectIsbn(Long selectIsbn) {
         this.selectIsbn = selectIsbn;
     }
-
+    
     public void setAuthorId(Long authorId) {
         this.authorId = authorId;
     }
-
+    
     public void setPublisherId(Long publisherId) {
         this.publisherId = publisherId;
     }
-
+    
     public void setGenreId(Long genreId) {
         this.genreId = genreId;
     }
-
+    
     public void setAuthorFirstName(String authorFirstName) {
         this.authorFirstName = authorFirstName;
     }
-
+    
     public void setAuthorLastName(String authorLastName) {
         this.authorLastName = authorLastName;
     }
-
+    
     public void setPublisherName(String publisherName) {
         this.publisherName = publisherName;
     }
-
+    
     public void setGenre(String genre) {
         this.genre = genre;
     }
-
+    
     public void setEdit(boolean edit) {
         this.edit = edit;
     }
-
+    
     public void setAuthorToAdd(Long authorToAdd) {
         this.authorToAdd = authorToAdd;
     }
-
+    
     public void setGenreToAdd(Long genreToAdd) {
         this.genreToAdd = genreToAdd;
     }
-
+    
     public void setPublisherToAdd(Long publisherToAdd) {
         this.publisherToAdd = publisherToAdd;
     }
-
+    
     public void setBookAuthor(Collection<Authors> bookAuthor) {
         this.bookAuthor = bookAuthor;
     }
-
+    
     public void setBookGenre(Collection<Genres> bookGenre) {
         this.bookGenre = bookGenre;
     }
-
+    
     public void setBookPublisher(Collection<Publishers> bookPublisher) {
         this.bookPublisher = bookPublisher;
     }
-
+    
     public void setTotalSales(BigDecimal totalSales) {
         this.totalSales = totalSales;
     }
-
+    
     public void setToday(Date today) {
         this.today = today;
     }
-
+    
     public void setUploadedCover(UploadedFile uploadedCover) {
         this.uploadedCover = uploadedCover;
     }
-
+    
     public void setNewBookfiles(Collection<String> newBookfiles) {
         this.newBookfiles = newBookfiles;
     }
-    
-    
 
     //Getters
     public Long getIsbn() {
         return isbn;
     }
-
+    
     public String getTitle() {
         return title;
     }
-
+    
     public Date getDateOfPublication() {
         return dateOfPublication;
     }
-
+    
     public int getPages() {
         return pages;
     }
-
+    
     public String getSynopsis() {
         return synopsis;
     }
-
+    
     public String getCover() {
         return cover;
     }
-
+    
     public BigDecimal getWholesalePrice() {
         return wholesalePrice;
     }
-
+    
     public BigDecimal getListPrice() {
         return listPrice;
     }
-
+    
     public BigDecimal getSalePrice() {
         return salePrice;
     }
-
+    
     public Date getTimestamp() {
         return timestamp;
     }
-
+    
     public boolean isActive() {
         return active;
     }
-
+    
     public Long getSelectIsbn() {
         return selectIsbn;
     }
-
+    
     public Long getAuthorId() {
         return authorId;
     }
-
+    
     public Long getPublisherId() {
         return publisherId;
     }
-
+    
     public Long getGenreId() {
         return genreId;
     }
-
+    
     public String getAuthorFirstName() {
         return authorFirstName;
     }
-
+    
     public String getAuthorLastName() {
         return authorLastName;
     }
-
+    
     public String getPublisherName() {
         return publisherName;
     }
-
+    
     public String getGenre() {
         return genre;
     }
-
+    
     public boolean isEdit() {
         return edit;
     }
-
+    
     public Long getAuthorToAdd() {
         return authorToAdd;
     }
-
+    
     public Long getGenreToAdd() {
         return genreToAdd;
     }
-
+    
     public Long getPublisherToAdd() {
         return publisherToAdd;
     }
-
+    
     public Collection<Authors> getBookAuthor() {
         return bookAuthor;
     }
-
+    
     public Collection<Genres> getBookGenre() {
         return bookGenre;
     }
-
+    
     public Collection<Publishers> getBookPublisher() {
         return bookPublisher;
     }
-
+    
     public BigDecimal getTotalSales() {
         return totalSales;
     }
-
+    
     public Date getToday() {
         return today;
     }
-
+    
     public UploadedFile getUploadedCover() {
         return uploadedCover;
     }
-
+    
     public Collection<String> getNewBookfiles() {
         return newBookfiles;
     }
     
-    
-
 }

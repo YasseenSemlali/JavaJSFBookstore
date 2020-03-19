@@ -26,6 +26,9 @@ import org.slf4j.LoggerFactory;
 public class ManagerAds implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(ManagerAds.class);
+    
+    @Inject
+    private UserSessionBean userSessionBean;
 
     @Inject
     private AdsJpaController adsController;
@@ -51,6 +54,15 @@ public class ManagerAds implements Serializable {
             locations[i] = "";
             urls[i] = "";
             this.enabled[i] = Boolean.FALSE;
+        }
+        //Redirect if not manager
+        try {
+            if (!userSessionBean.isLoggedInManager()) {
+                LOG.info("Must be logged in as manager to access this page.");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/index.xhtml");
+            }
+        } catch (IOException ex) {
+            LOG.debug(ex.toString());
         }
     }
 

@@ -4,6 +4,7 @@ import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.jpa.ReviewsJpaController;
 import java.io.IOException;
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -23,9 +24,26 @@ public class ManagerReviews implements Serializable {
     private final static Logger LOG = LoggerFactory.getLogger(ManagerReviews.class);
     
     @Inject
+    private UserSessionBean userSessionBean;
+    
+    @Inject
     private ReviewsJpaController reviewController;
     
     private Integer activeTabIndex = 0;
+    
+    //INIT
+    @PostConstruct
+    private void init() {
+        //Redirect if not manager
+        try {
+            if (!userSessionBean.isLoggedInManager()) {
+                LOG.info("Must be logged in as manager to access this page.");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/index.xhtml");
+            }
+        } catch (IOException ex) {
+            LOG.debug(ex.toString());
+        }
+    }
 
     /**
      * Method to set the status of a review

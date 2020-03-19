@@ -11,6 +11,7 @@ import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.OrdersJpaController;
 import com.gb4w20.gb4w20.jpa.TaxesJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -19,6 +20,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
@@ -39,6 +41,9 @@ import org.slf4j.LoggerFactory;
 public class ManagerOrders implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(ManagerOrders.class);
+    
+    @Inject
+    private UserSessionBean userSessionBean;
 
     @Inject
     private BooksJpaController booksController;
@@ -75,6 +80,20 @@ public class ManagerOrders implements Serializable {
     //Info
     private String address;
     private Long selectedUserId;
+    
+    //INIT
+    @PostConstruct
+    private void init() {
+        //Redirect if not manager
+        try {
+            if (!userSessionBean.isLoggedInManager()) {
+                LOG.info("Must be logged in as manager to access this page.");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/index.xhtml");
+            }
+        } catch (IOException ex) {
+            LOG.debug(ex.toString());
+        }
+    }
 
     //Actions
     /**
