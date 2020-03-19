@@ -642,121 +642,189 @@ INSERT INTO users(user_id,title,first_name,last_name,company_name,address_1,addr
 INSERT INTO users(user_id,title,first_name,last_name,company_name,address_1,address_2,city,province,country,postal_code,home_phone,cell_phone,email, password, is_manager) VALUES( '2', 'Mrs', 'Jane', 'Doe', 'Bookify', '456 avenue boulevard', '', 'toronto', 'TO', 'Canada', 'h2h2h2', '3333333333', '4444444444', 'cst.receive@gmail.com', 'collegedawson', true);
 ALTER TABLE users AUTO_INCREMENT=3;
 
-insert into orders(order_id, user_id, billing_address) VALUES( 1, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 1, 9784757518087, 15, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 1, 9781250133731, 14, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 1, 9781421501680, 13, null, 5, 9.975, false );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 1, 9781612620244, 18, null, 5, 6, false );
-insert into orders(order_id, user_id, billing_address) VALUES( 2, 1, '123 road avenue');
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 1, 1, '123 road avenue', '2020-01-06 16:58:45');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 1, 9784757518087, 15, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 1, 9781250133731, 14, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 1, 9781421501680, 13, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 1, 9781612620244, 18, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 2, 1, '123 road avenue', '2020-01-31 03:11:58');
 insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 2, 9781421527550, 18, null, 5, 6, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 3, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 3, 9780316251334, 18, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 3, 9780765326379, 10, null, 5, 6, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 4, 1, '123 road avenue');
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 3, 1, '123 road avenue', '2020-02-10 09:45:05');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 3, 9780316251334, 18, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 3, 9780765326379, 10, null, 5, 9.975, false );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 4, 1, '123 road avenue', '2020-01-04 16:21:06');
 insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 4, 9780000000013, 10, 13, null, null, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 5, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 5, 9781569319475, 19, 13, null, null, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 6, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9781591826033, 16, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9781421501086, 17, null, 5, 9.975, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 7, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 7, 9780812550702, 16, 13, null, null, false );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 7, 9780000000012, 19, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 7, 9780000000003, 10, null, 5, 6, false );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 7, 9780345418906, 14, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 7, 9780450040184, 10, 13, null, null, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 8, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 8, 9780000000008, 16, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 8, 9780062200570, 19, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 8, 9780345470577, 17, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 8, 9780765326362, 17, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 8, 9780060929879, 16, null, 5, 9.975, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 9, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 9, 9781250301697, 12, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 9, 9781421505855, 18, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 9, 9780000000004, 13, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 9, 9780000000001, 14, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 9, 9780000000006, 12, 13, null, null, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 10, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 10, 9780345470584, 14, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 10, 9781427814036, 19, null, 5, 9.975, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 11, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 11, 9781591162209, 14, null, 5, 6, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 12, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 12, 9780450031069, 12, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 12, 9780451528957, 11, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 12, 9780450411434, 13, 13, null, null, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 13, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 13, 9780385603102, 12, 13, null, null, false );
-insert into orders(order_id, user_id, billing_address) VALUES( 14, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 14, 9780345476876, 15, null, 5, 9.975, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 15, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 15, 9780393970128, 10, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 15, 9780000000014, 17, null, 5, 6, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 16, 1, '123 road avenue');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 16, 9780061007224, 14, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 16, 9780062858085, 16, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 4, 9781569319475, 19, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 4, 9781591826033, 16, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 4, 9781421501086, 17, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 4, 9780812550702, 16, 13, null, null, false );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 5, 1, '123 road avenue', '2020-01-20 10:58:59');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 5, 9780000000012, 19, null, 5, 6, false );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 5, 9780000000003, 10, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 5, 9780345418906, 14, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 5, 9780450040184, 10, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 6, 1, '123 road avenue', '2020-01-11 03:19:33');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9780000000008, 16, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9780062200570, 19, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9780345470577, 17, null, 5, 6, false );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9780765326362, 17, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 7, 1, '123 road avenue', '2020-01-28 07:35:49');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 7, 9780060929879, 16, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 7, 9781250301697, 12, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 7, 9781421505855, 18, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 7, 9780000000004, 13, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 8, 1, '123 road avenue', '2020-02-02 22:09:00');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 8, 9780000000001, 14, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 8, 9780000000006, 12, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 9, 1, '123 road avenue', '2020-02-06 19:40:42');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 9, 9780345470584, 14, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 10, 1, '123 road avenue', '2020-02-17 00:57:49');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 10, 9781427814036, 19, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 10, 9781591162209, 14, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 10, 9780450031069, 12, null, 5, 9.975, false );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 10, 9780451528957, 11, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 10, 9780450411434, 13, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 11, 1, '123 road avenue', '2020-01-27 00:30:30');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 11, 9780385603102, 12, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 11, 9780345476876, 15, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 12, 1, '123 road avenue', '2020-02-05 17:45:13');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 12, 9780393970128, 10, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 12, 9780000000014, 17, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 12, 9780061007224, 14, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 13, 1, '123 road avenue', '2020-02-17 10:58:11');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 13, 9780062858085, 16, null, 5, 9.975, true );
 
-insert into orders(order_id, user_id, billing_address) VALUES( 17, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 17, 9780316251334, 18, null, 5, 9.975, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 18, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 18, 9780553803709, 18, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 18, 9780000000010, 20, null, 5, 9.975, false );
-insert into orders(order_id, user_id, billing_address) VALUES( 19, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 19, 9780062200570, 19, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 19, 9780062834300, 13, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 19, 9781538748466, 11, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 19, 9781421506234, 16, null, 5, 9.975, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 20, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 20, 9780756404734, 19, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 20, 9780345476876, 15, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 20, 9780385199575, 12, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 20, 9780000000003, 10, null, 5, 6, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 21, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 21, 9781421501680, 13, null, 5, 9.975, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 22, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 22, 9780439064866, 13, null, 5, 9.975, false );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 22, 9781569319017, 14, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 22, 9780439785969, 12, null, 5, 6, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 23, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 23, 9780316080842, 20, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 23, 9780000000004, 13, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 23, 9780756404079, 18, null, 5, 6, false );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 23, 9781591826033, 16, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 23, 9781476798622, 15, 13, null, null, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 24, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 24, 9780385603102, 12, null, 5, 6, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 25, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 25, 9781476727653, 10, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 25, 9781250133731, 14, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 25, 9781250317995, 12, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 25, 9780307346605, 16, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 25, 9781250066213, 12, 13, null, null, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 26, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 26, 9780060929879, 16, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 26, 9780143039983, 15, null, 5, 6, false );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 26, 9780545010221, 15, null, 5, 6, false );
-insert into orders(order_id, user_id, billing_address) VALUES( 27, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 27, 9780345379337, 13, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 27, 9781591164418, 12, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 27, 9780000000015, 16, null, 5, 6, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 27, 9780316485616, 20, null, 5, 6, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 28, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 28, 9781416524304, 17, null, 5, 6, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 29, 2, '456 avenue boulevard');
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 14, 2, '456 avenue boulevard', '2020-02-02 21:39:23');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 14, 9780000000003, 10, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 14, 9781421501680, 13, null, 5, 6, false );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 14, 9780439064866, 13, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 14, 9781569319017, 14, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 14, 9780439785969, 12, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 15, 2, '456 avenue boulevard', '2020-02-02 11:03:11');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 15, 9780316080842, 20, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 15, 9780000000004, 13, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 16, 2, '456 avenue boulevard', '2020-01-09 22:28:40');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 16, 9780756404079, 18, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 16, 9781591826033, 16, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 16, 9780316251334, 18, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 16, 9780385603102, 12, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 16, 9781476727653, 10, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 17, 2, '456 avenue boulevard', '2020-01-08 07:03:54');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 17, 9780062834300, 13, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 18, 2, '456 avenue boulevard', '2020-01-29 05:39:47');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 18, 9781542040358, 14, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 19, 2, '456 avenue boulevard', '2020-01-15 23:15:52');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 19, 9780307346605, 16, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 19, 9780385199575, 12, null, 5, 6, false );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 19, 9780060929879, 16, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 19, 9780143039983, 15, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 20, 2, '456 avenue boulevard', '2020-01-14 17:48:28');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 20, 9780545010221, 15, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 20, 9780345379337, 13, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 21, 2, '456 avenue boulevard', '2020-02-28 10:30:41');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 21, 9781591164418, 12, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 21, 9780553803709, 18, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 21, 9781501188770, 12, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 21, 9781416524304, 17, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 21, 9781250066213, 12, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 22, 2, '456 avenue boulevard', '2020-02-23 16:28:13');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 22, 9784757518087, 15, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 22, 9781401323585, 10, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 22, 9781476798622, 15, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 22, 9780062858085, 16, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 22, 9780143039976, 14, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 23, 2, '456 avenue boulevard', '2020-01-25 12:34:08');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 23, 9780765326355, 17, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 23, 9780345476876, 15, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 24, 2, '456 avenue boulevard', '2020-02-23 07:53:30');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 24, 9780316075558, 15, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 24, 9780316485616, 20, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 24, 9782253147695, 16, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 24, 9780307348241, 12, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 25, 2, '456 avenue boulevard', '2020-01-17 15:39:53');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 25, 9780812550702, 16, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 25, 9780000000010, 20, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 25, 9781421501086, 17, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 26, 2, '456 avenue boulevard', '2020-01-02 20:03:56');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 26, 9780000000006, 12, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 26, 9781250133731, 14, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 26, 9780345470584, 14, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 26, 9780385544238, 15, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 26, 9781501190100, 15, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 27, 2, '456 avenue boulevard', '2020-02-08 14:56:05');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 27, 9780316251303, 16, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 27, 9781421506234, 16, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 27, 9781569319000, 19, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 28, 2, '456 avenue boulevard', '2020-01-01 17:25:23');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 28, 9781591162209, 14, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 28, 9780439655484, 15, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 28, 9780765377104, 19, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 28, 9780450574580, 19, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 29, 2, '456 avenue boulevard', '2020-01-24 03:27:11');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 29, 9781892213013, 12, null, 5, 6, true );
 insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 29, 9781250301697, 12, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 29, 9784757518087, 15, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 29, 9781401323585, 10, null, 5, 9.975, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 30, 2, '456 avenue boulevard');
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 30, 2, '456 avenue boulevard', '2020-02-10 00:36:11');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 30, 9780000000014, 17, null, 5, 6, true );
 insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 30, 9781250120922, 14, 13, null, null, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 30, 9781524745141, 15, 13, null, null, false );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 30, 9782253147695, 16, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 30, 9780765326355, 17, null, 5, 9.975, true );
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 30, 9781427814036, 19, null, 5, 9.975, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 31, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 31, 9780450411434, 13, null, 5, 6, true );
-insert into orders(order_id, user_id, billing_address) VALUES( 32, 2, '456 avenue boulevard');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 32, 9780000000008, 16, 13, null, null, false );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 31, 2, '456 avenue boulevard', '2020-01-22 07:24:00');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 31, 9780316531269, 13, null, 5, 9.975, false );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 31, 9781421508221, 12, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 31, 9780393970128, 10, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 32, 2, '456 avenue boulevard', '2020-01-20 18:59:29');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 32, 9780450040184, 10, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 32, 9781591828785, 11, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 32, 9780062200570, 19, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 32, 9780000000015, 16, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 32, 9780451528957, 11, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 33, 2, '456 avenue boulevard', '2020-02-27 17:28:00');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 33, 9780765326362, 17, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 33, 9781250317995, 12, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 33, 9780000000000, 17, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 33, 9780450411434, 13, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 34, 2, '456 avenue boulevard', '2020-01-25 07:55:46');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 34, 9781591169208, 16, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 34, 9781250105684, 18, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 35, 2, '456 avenue boulevard', '2020-02-18 01:29:37');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 35, 9780765377067, 18, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 36, 2, '456 avenue boulevard', '2020-02-07 06:43:49');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 36, 9780374156022, 13, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 36, 9781421505855, 18, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 36, 9780000000001, 14, 13, null, null, false );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 37, 2, '456 avenue boulevard', '2020-01-09 18:39:05');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 37, 9780345418906, 14, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 37, 9780000000009, 10, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 37, 9780345501332, 19, 13, null, null, false );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 37, 9780000000005, 13, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 37, 9781427814036, 19, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 38, 2, '456 avenue boulevard', '2020-02-13 05:03:43');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 38, 9780765326379, 10, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 39, 2, '456 avenue boulevard', '2020-02-12 00:46:49');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 39, 9780439358071, 16, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 39, 9781524745141, 15, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 39, 9780804139021, 14, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 39, 9780756404734, 19, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 40, 2, '456 avenue boulevard', '2020-02-11 20:54:35');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 40, 9781421527550, 18, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 41, 2, '456 avenue boulevard', '2020-01-12 11:10:10');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 41, 9780061007224, 14, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 41, 9780000000012, 19, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 41, 9780450031069, 12, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 41, 9780593099322, 11, 13, null, null, false );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 42, 2, '456 avenue boulevard', '2020-02-21 07:10:31');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 42, 9781612620244, 18, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 42, 9781538748466, 11, null, 5, 9.975, false );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 43, 2, '456 avenue boulevard', '2020-01-24 12:27:29');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 43, 9780000000008, 16, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 43, 9780345470577, 17, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 43, 9780385333849, 20, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 43, 9780393312836, 18, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 43, 9780000000011, 18, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 44, 2, '456 avenue boulevard', '2020-02-13 08:10:45');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 44, 9780450417399, 18, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 44, 9780000000002, 20, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 44, 9780553804690, 11, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 45, 2, '456 avenue boulevard', '2020-01-21 06:52:39');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 45, 9780316079914, 12, 13, null, null, true );
 
 insert into file_formats(file_format_id, format) VALUES(1, "epub");
 insert into file_formats(file_format_id, format) VALUES(2, "pdf");
@@ -764,393 +832,440 @@ insert into file_formats(file_format_id, format) VALUES(3, "mobi");
 ALTER TABLE file_formats AUTO_INCREMENT=4;
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000000, 'Good_Omens_The_Nice_and_Accurate_Prophecies_of_Agnes_Nutter_Witch.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000000, 'Good_Omens_The_Nice_and_Accurate_Prophecies_of_Agnes_Nutter_Witch.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000000, 'Good_Omens_The_Nice_and_Accurate_Prophecies_of_Agnes_Nutter_Witch.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780765326355, 'The_Way_of_Kings.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780765326355, 'The_Way_of_Kings.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765326355, 'The_Way_of_Kings.mobi');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780765326362, 'Words_of_Radiance.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780765326362, 'Words_of_Radiance.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765326362, 'Words_of_Radiance.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780765326379, 'Oathbringer.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765326379, 'Oathbringer.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000001, 'Harry_Potter_and_the_Sorcerers_Stone.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000001, 'Harry_Potter_and_the_Sorcerers_Stone.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000001, 'Harry_Potter_and_the_Sorcerers_Stone.pdf');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780439064866, 'Harry_Potter_and_the_Chamber_of_Secrets.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780439064866, 'Harry_Potter_and_the_Chamber_of_Secrets.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780439655484, 'Harry_Potter_and_the_Prisoner_of_Azkaban.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780439655484, 'Harry_Potter_and_the_Prisoner_of_Azkaban.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780439655484, 'Harry_Potter_and_the_Prisoner_of_Azkaban.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780439655484, 'Harry_Potter_and_the_Prisoner_of_Azkaban.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000002, 'Harry_Potter_and_the_Goblet_of_Fire.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000002, 'Harry_Potter_and_the_Goblet_of_Fire.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000002, 'Harry_Potter_and_the_Goblet_of_Fire.pdf');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780439358071, 'Harry_Potter_and_the_Order_of_the_Phoenix.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780439358071, 'Harry_Potter_and_the_Order_of_the_Phoenix.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780439785969, 'Harry_Potter_and_the_HalfBlood_Prince.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780439785969, 'Harry_Potter_and_the_HalfBlood_Prince.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780439785969, 'Harry_Potter_and_the_HalfBlood_Prince.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780439785969, 'Harry_Potter_and_the_HalfBlood_Prince.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780545010221, 'Harry_Potter_and_the_Deathly_Hallows.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780545010221, 'Harry_Potter_and_the_Deathly_Hallows.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316075558, 'The_Black_Prism.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316075558, 'The_Black_Prism.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316075558, 'The_Black_Prism.epub');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316079914, 'The_Blinding_Knife.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316079914, 'The_Blinding_Knife.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316079914, 'The_Blinding_Knife.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000003, 'The_Broken_Eye.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000003, 'The_Broken_Eye.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000003, 'The_Broken_Eye.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000003, 'The_Broken_Eye.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316251334, 'The_Blood_Mirror.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316251334, 'The_Blood_Mirror.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316251334, 'The_Blood_Mirror.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316251334, 'The_Blood_Mirror.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316251303, 'The_Burning_White.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316251303, 'The_Burning_White.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316251303, 'The_Burning_White.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780756404079, 'The_Name_of_the_Wind.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780756404079, 'The_Name_of_the_Wind.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780756404079, 'The_Name_of_the_Wind.epub');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780756404734, 'The_Wise_Mans_Fear.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780756404734, 'The_Wise_Mans_Fear.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780756404734, 'The_Wise_Mans_Fear.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000004, 'The_Priory_of_the_Orange_Tree.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000004, 'The_Priory_of_the_Orange_Tree.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000004, 'The_Priory_of_the_Orange_Tree.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000004, 'The_Priory_of_the_Orange_Tree.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000005, 'The_Lies_of_Locke_Lamora.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000005, 'The_Lies_of_Locke_Lamora.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000005, 'The_Lies_of_Locke_Lamora.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000005, 'The_Lies_of_Locke_Lamora.epub');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000006, 'Red_Seas_Under_Red_Skies.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000006, 'Red_Seas_Under_Red_Skies.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000006, 'Red_Seas_Under_Red_Skies.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780553804690, 'The_Republic_of_Thieves.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780553804690, 'The_Republic_of_Thieves.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780553804690, 'The_Republic_of_Thieves.epub');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780593099322, 'Dune.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780593099322, 'Dune.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780593099322, 'Dune.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000007, '1984.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000007, '1984.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780812550702, 'Enders_Game.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780812550702, 'Enders_Game.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780812550702, 'Enders_Game.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780765377067, 'The_ThreeBody_Problem.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765377067, 'The_ThreeBody_Problem.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780765377067, 'The_ThreeBody_Problem.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780765377067, 'The_ThreeBody_Problem.pdf');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000008, 'The_Dark_Forest.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000008, 'The_Dark_Forest.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000008, 'The_Dark_Forest.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765377104, 'Deaths_End.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780765377104, 'Deaths_End.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780765377104, 'Deaths_End.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780060929879, 'Brave_New_World.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780060929879, 'Brave_New_World.pdf');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000009, 'Fahrenheit_451.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000009, 'Fahrenheit_451.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000009, 'Fahrenheit_451.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000010, 'The_Hitchhikers_Guide_to_the_Galaxy.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000010, 'The_Hitchhikers_Guide_to_the_Galaxy.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000010, 'The_Hitchhikers_Guide_to_the_Galaxy.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000010, 'The_Hitchhikers_Guide_to_the_Galaxy.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000011, 'The_Restaurant_at_the_End_of_the_Universe.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000011, 'The_Restaurant_at_the_End_of_the_Universe.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000011, 'The_Restaurant_at_the_End_of_the_Universe.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000011, 'The_Restaurant_at_the_End_of_the_Universe.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345418906, 'Life_the_Universe_and_Everything.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345418906, 'Life_the_Universe_and_Everything.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345418906, 'Life_the_Universe_and_Everything.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000012, 'So_Long_and_Thanks_for_All_the_Fish.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000012, 'So_Long_and_Thanks_for_All_the_Fish.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000012, 'So_Long_and_Thanks_for_All_the_Fish.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000012, 'So_Long_and_Thanks_for_All_the_Fish.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345379337, 'Mostly_Harmless.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345379337, 'Mostly_Harmless.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345379337, 'Mostly_Harmless.epub');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781401323585, 'And_Another_Thing.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781401323585, 'And_Another_Thing.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781401323585, 'And_Another_Thing.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780804139021, 'The_Martian.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780804139021, 'The_Martian.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780804139021, 'The_Martian.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780553803709, 'I_Robot.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780553803709, 'I_Robot.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780553803709, 'I_Robot.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780385333849, 'SlaughterhouseFive.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385333849, 'SlaughterhouseFive.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780385333849, 'SlaughterhouseFive.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780385333849, 'SlaughterhouseFive.epub');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000013, 'Flowers_for_Algernon.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000013, 'Flowers_for_Algernon.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780000000013, 'Flowers_for_Algernon.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780393312836, 'A_Clockwork_Orange.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780393312836, 'A_Clockwork_Orange.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780393312836, 'A_Clockwork_Orange.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421501680, 'Death_Note_Vol_1_Boredom.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421501680, 'Death_Note_Vol_1_Boredom.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421501680, 'Death_Note_Vol_1_Boredom.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421501680, 'Death_Note_Vol_1_Boredom.epub');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591169208, 'Fullmetal_Alchemist_Vol_1.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781591169208, 'Fullmetal_Alchemist_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781591169208, 'Fullmetal_Alchemist_Vol_1.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591826033, 'Fruits_Basket_Vol_1.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781591826033, 'Fruits_Basket_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781591826033, 'Fruits_Basket_Vol_1.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591169154, 'Ouran_High_School_Host_Club_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781591169154, 'Ouran_High_School_Host_Club_Vol_1.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421508221, 'Vampire_Knight_Vol_1.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421508221, 'Vampire_Knight_Vol_1.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421508221, 'Vampire_Knight_Vol_1.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421508221, 'Vampire_Knight_Vol_1.mobi');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781591164418, 'Bleach_Volume_01.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781591164418, 'Bleach_Volume_01.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591164418, 'Bleach_Volume_01.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781569319000, 'Naruto_Vol_01_Uzumaki_Naruto.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781569319000, 'Naruto_Vol_01_Uzumaki_Naruto.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781569319000, 'Naruto_Vol_01_Uzumaki_Naruto.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316080842, 'Black_Butler_Vol_1.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316080842, 'Black_Butler_Vol_1.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781569319475, 'InuYasha_Turning_Back_Time.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781569319475, 'InuYasha_Turning_Back_Time.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781569319475, 'InuYasha_Turning_Back_Time.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781569319475, 'InuYasha_Turning_Back_Time.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781569319475, 'InuYasha_Turning_Back_Time.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421505855, 'Skip_Beat_Vol_01.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421505855, 'Skip_Beat_Vol_01.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421505855, 'Skip_Beat_Vol_01.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781892213013, 'Sailor_Moon_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781892213013, 'Sailor_Moon_Vol_1.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781569319017, 'One_Piece_Volume_1_Romance_Dawn.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781569319017, 'One_Piece_Volume_1_Romance_Dawn.epub');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421501086, 'Nana_Vol_1.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421501086, 'Nana_Vol_1.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421501086, 'Nana_Vol_1.epub');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781591162209, 'Rurouni_Kenshin_Volume_01.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591162209, 'Rurouni_Kenshin_Volume_01.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345470577, 'Tsubasa_RESERVoir_CHRoNiCLE_Vol_1.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345470577, 'Tsubasa_RESERVoir_CHRoNiCLE_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345470577, 'Tsubasa_RESERVoir_CHRoNiCLE_Vol_1.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345470577, 'Tsubasa_RESERVoir_CHRoNiCLE_Vol_1.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781591828785, 'Cardcaptor_Sakura_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781591828785, 'Cardcaptor_Sakura_Vol_1.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345470584, 'xxxHolic_Vol_1.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345470584, 'xxxHolic_Vol_1.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345470584, 'xxxHolic_Vol_1.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9784757518087, 'Pandora_Hearts_1.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9784757518087, 'Pandora_Hearts_1.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345501332, 'Fairy_Tail_Vol_01.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780345501332, 'Fairy_Tail_Vol_01.epub');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421527550, 'Kimi_ni_Todoke_From_Me_to_You_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421527550, 'Kimi_ni_Todoke_From_Me_to_You_Vol_1.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421527550, 'Kimi_ni_Todoke_From_Me_to_You_Vol_1.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781413903171, 'Yotsuba_Vol_1.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781413903171, 'Yotsuba_Vol_1.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421506234, 'DGrayman_Vol_1.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781421506234, 'DGrayman_Vol_1.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781421506234, 'DGrayman_Vol_1.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781421506234, 'DGrayman_Vol_1.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781612620244, 'Attack_on_Titan_Vol_1.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781612620244, 'Attack_on_Titan_Vol_1.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781612620244, 'Attack_on_Titan_Vol_1.mobi');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781427814036, 'Maidsama_Vol_01.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781427814036, 'Maidsama_Vol_01.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781427814036, 'Maidsama_Vol_01.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780450040184, 'The_Shining.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780450040184, 'The_Shining.pdf');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780450411434, 'It.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780450411434, 'It.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780393970128, 'Dracula.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780393970128, 'Dracula.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781416524304, 'Carrie.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781416524304, 'Carrie.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781416524304, 'Carrie.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780450031069, 'Salems_Lot.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780450031069, 'Salems_Lot.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385199575, 'The_Stand.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780385199575, 'The_Stand.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385199575, 'The_Stand.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780385199575, 'The_Stand.epub');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780450417399, 'Misery.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780450417399, 'Misery.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780450417399, 'Misery.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780143039983, 'The_Haunting_of_Hill_House.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780143039983, 'The_Haunting_of_Hill_House.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780143039983, 'The_Haunting_of_Hill_House.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780307346605, 'World_War_Z_An_Oral_History_of_the_Zombie_War.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780307346605, 'World_War_Z_An_Oral_History_of_the_Zombie_War.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780345476876, 'Interview_with_the_Vampire.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780345476876, 'Interview_with_the_Vampire.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781476727653, 'Doctor_Sleep.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781476727653, 'Doctor_Sleep.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780307348241, 'Cujo.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780062200570, 'NOS4A2.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780062200570, 'NOS4A2.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780385603102, 'House_of_Leaves.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780385603102, 'House_of_Leaves.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385603102, 'House_of_Leaves.mobi');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780061147937, 'HeartShaped_Box.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780061147937, 'HeartShaped_Box.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9782253147695, 'Christine.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9782253147695, 'Christine.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9782253147695, 'Christine.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9782253147695, 'Christine.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9782253147695, 'Christine.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780450574580, 'Needful_Things.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780450574580, 'Needful_Things.epub');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780061007224, 'The_Exorcist.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780061007224, 'The_Exorcist.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780061007224, 'The_Exorcist.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780143039976, 'We_Have_Always_Lived_in_the_Castle.pdf');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780143039976, 'We_Have_Always_Lived_in_the_Castle.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780143039976, 'We_Have_Always_Lived_in_the_Castle.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780451528957, 'The_Strange_Case_of_Dr_Jekyll_and_Mr_Hyde.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780451528957, 'The_Strange_Case_of_Dr_Jekyll_and_Mr_Hyde.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780451528957, 'The_Strange_Case_of_Dr_Jekyll_and_Mr_Hyde.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780451528957, 'The_Strange_Case_of_Dr_Jekyll_and_Mr_Hyde.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250301697, 'The_Silent_Patient.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250301697, 'The_Silent_Patient.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250301697, 'The_Silent_Patient.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780385544238, 'My_Sister_the_Serial_Killer.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780385544238, 'My_Sister_the_Serial_Killer.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780385544238, 'My_Sister_the_Serial_Killer.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781501188770, 'The_Turn_of_the_Key.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781501188770, 'The_Turn_of_the_Key.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781501188770, 'The_Turn_of_the_Key.pdf');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250105684, 'The_Lost_Man.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250105684, 'The_Lost_Man.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250105684, 'The_Lost_Man.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250105684, 'The_Lost_Man.epub');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250133731, 'An_Anonymous_Girl.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250133731, 'An_Anonymous_Girl.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250133731, 'An_Anonymous_Girl.epub');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250317995, 'The_Whisper_Man.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250317995, 'The_Whisper_Man.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250317995, 'The_Whisper_Man.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781538748466, 'Run_Away.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781538748466, 'Run_Away.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781538748466, 'Run_Away.epub');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781524745141, 'Lock_Every_Door.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781524745141, 'Lock_Every_Door.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781524745141, 'Lock_Every_Door.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781524745141, 'Lock_Every_Door.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780374156022, 'Miracle_Creek.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780374156022, 'Miracle_Creek.mobi');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780374156022, 'Miracle_Creek.epub');
 
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250120922, 'The_MotherinLaw.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250120922, 'The_MotherinLaw.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781250066213, 'A_Better_Man.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781250066213, 'A_Better_Man.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781250066213, 'A_Better_Man.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781501190100, 'The_Family_Upstairs.mobi');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781501190100, 'The_Family_Upstairs.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781501190100, 'The_Family_Upstairs.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781501190100, 'The_Family_Upstairs.mobi');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316531269, 'The_Chain.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316531269, 'The_Chain.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000014, 'Disappearing_Earth.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780062834300, 'Searching_for_Sylvie_Lee.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780062834300, 'Searching_for_Sylvie_Lee.epub');
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780062834300, 'Searching_for_Sylvie_Lee.pdf');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781542040358, 'Ill_Never_Tell.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781542040358, 'Ill_Never_Tell.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781542040358, 'Ill_Never_Tell.epub');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316485616, 'The_Night_Fire.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780316485616, 'The_Night_Fire.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780316485616, 'The_Night_Fire.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780316485616, 'The_Night_Fire.mobi');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9780062858085, 'The_Last_Widow.pdf');
 
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9780000000015, 'My_Lovely_Wife.epub');
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9780000000015, 'My_Lovely_Wife.mobi');
 
-insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781476798622, 'The_Line_Between.mobi');
-insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781476798622, 'The_Line_Between.pdf');
 insert into book_files(file_format_id, isbn, file_location) VALUES(1, 9781476798622, 'The_Line_Between.epub');
+insert into book_files(file_format_id, isbn, file_location) VALUES(2, 9781476798622, 'The_Line_Between.pdf');
+insert into book_files(file_format_id, isbn, file_location) VALUES(3, 9781476798622, 'The_Line_Between.mobi');
 
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000014, 5, 'Disappearing Earth: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781612620244, 2, 'Attack on Titan, Vol. 1: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781421501086, 3, 'Nana, Vol. 1: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780765326362, 5, 'Words of Radiance: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780062200570, 2, 'NOS4A2: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781421505855, 2, 'Skip Beat!, Vol. 01: test review by John' , false );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780345418906, 4, 'Life, the Universe and Everything: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000012, 3, 'So Long, and Thanks for All the Fish: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780345476876, 4, 'Interview with the Vampire: test review by John' , false );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780451528957, 1, 'The Strange Case of Dr. Jekyll and Mr. Hyde: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781591162209, 2, 'Rurouni Kenshin, Volume 01: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781250133731, 3, 'An Anonymous Girl: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780345476876, 4, 'Interview with the Vampire: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780062200570, 4, 'NOS4A2: test review by John' , true );
 insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780316251334, 2, 'The Blood Mirror: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780450040184, 3, 'The Shining: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000006, 1, 'Red Seas Under Red Skies: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781569319475, 4, 'InuYasha: Turning Back Time: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780393970128, 4, 'Dracula: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780062858085, 2, 'The Last Widow: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000013, 1, 'Flowers for Algernon: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000001, 5, 'Harry Potter and the Sorcerer's Stone: test review by John' , false );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000004, 2, 'The Priory of the Orange Tree: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781250301697, 1, 'The Silent Patient: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9784757518087, 5, 'Pandora Hearts 1巻: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781591162209, 5, 'Rurouni Kenshin, Volume 01: test review by John' , false );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780385603102, 3, 'House of Leaves: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780450411434, 3, 'It: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780765326379, 5, 'Oathbringer: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000008, 2, 'The Dark Forest: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780061007224, 2, 'The Exorcist: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781421527550, 2, 'Kimi ni Todoke: From Me to You, Vol. 1: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780812550702, 4, 'Ender's Game: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781250133731, 2, 'An Anonymous Girl: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781421501680, 2, 'Death Note, Vol. 1: Boredom: test review by John' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000003, 3, 'The Broken Eye: test review by John' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000008, 4, 'The Dark Forest: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780060929879, 5, 'Brave New World: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781421501680, 5, 'Death Note, Vol. 1: Boredom: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781591826033, 5, 'Fruits Basket, Vol. 1: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780061007224, 1, 'The Exorcist: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781427814036, 3, 'Maid-sama! Vol. 01: test review by John' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000012, 2, 'So Long, and Thanks for All the Fish: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780062858085, 3, 'The Last Widow: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000004, 5, 'The Priory of the Orange Tree: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781569319475, 1, 'InuYasha: Turning Back Time: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781421501086, 3, 'Nana, Vol. 1: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781421527550, 5, 'Kimi ni Todoke: From Me to You, Vol. 1: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000001, 1, 'Harry Potter and the Sorcerer''s Stone: test review by John' , true );
 insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780345470584, 5, 'xxxHolic, Vol. 1: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9781612620244, 4, 'Attack on Titan, Vol. 1: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780450031069, 3, '''Salem''s Lot: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780345470577, 3, 'Tsubasa: RESERVoir CHRoNiCLE, Vol. 1: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780000000003, 5, 'The Broken Eye: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780450040184, 1, 'The Shining: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780385603102, 1, 'House of Leaves: test review by John' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 1, 9780450411434, 3, 'It: test review by John' , true );
 
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780307346605, 1, 'World War Z: An Oral History of the Zombie War: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781569319017, 2, 'One Piece, Volume 1: Romance Dawn: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780545010221, 3, 'Harry Potter and the Deathly Hallows: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000004, 1, 'The Priory of the Orange Tree: test review by Jane' , false );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781476727653, 1, 'Doctor Sleep: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780345470584, 5, 'xxxHolic, Vol. 1: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780316079914, 4, 'The Blinding Knife: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780345418906, 3, 'Life, the Universe and Everything: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781591826033, 4, 'Fruits Basket, Vol. 1: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780393970128, 2, 'Dracula: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780307348241, 1, 'Cujo: test review by Jane' , true );
 insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000015, 1, 'My Lovely Wife: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781250120922, 2, 'The Mother-in-Law: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780756404734, 3, 'The Wise Man's Fear: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780450411434, 2, 'It: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781538748466, 4, 'Run Away: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000010, 3, 'The Hitchhiker's Guide to the Galaxy: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780316251334, 3, 'The Blood Mirror: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780316485616, 2, 'The Night Fire: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780143039983, 1, 'The Haunting of Hill House: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780316080842, 5, 'Black Butler, Vol. 1: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000003, 3, 'The Broken Eye: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780439064866, 5, 'Harry Potter and the Chamber of Secrets: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781591826033, 5, 'Fruits Basket, Vol. 1: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780385199575, 5, 'The Stand: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781421506234, 3, 'D.Gray-man, Vol. 1: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781591164418, 4, 'Bleach, Volume 01: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781250301697, 2, 'The Silent Patient: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780450040184, 3, 'The Shining: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781569319000, 3, 'Naruto, Vol. 01: Uzumaki Naruto: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780439655484, 5, 'Harry Potter and the Prisoner of Azkaban: test review by Jane' , false );
 insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780385603102, 5, 'House of Leaves: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780062834300, 1, 'Searching for Sylvie Lee: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781524745141, 3, 'Lock Every Door: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781476798622, 5, 'The Line Between: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781250317995, 1, 'The Whisper Man: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9782253147695, 2, 'Christine: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780553803709, 2, 'I, Robot: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781250066213, 2, 'A Better Man: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000008, 4, 'The Dark Forest: test review by Jane' , false );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780765326355, 1, 'The Way of Kings: test review by Jane' , false );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781416524304, 1, 'Carrie: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780345379337, 5, 'Mostly Harmless: test review by Jane' , false );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781401323585, 5, 'And Another Thing...: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780756404079, 1, 'The Name of the Wind: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000009, 3, 'Fahrenheit 451: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780756404079, 4, 'The Name of the Wind: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780143039983, 5, 'The Haunting of Hill House: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000004, 5, 'The Priory of the Orange Tree: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781591169208, 5, 'Fullmetal Alchemist, Vol. 1: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780451528957, 4, 'The Strange Case of Dr. Jekyll and Mr. Hyde: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000002, 2, 'Harry Potter and the Goblet of Fire: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780316075558, 4, 'The Black Prism: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780345476876, 2, 'Interview with the Vampire: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780804139021, 2, 'The Martian: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781501190100, 1, 'The Family Upstairs: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000008, 5, 'The Dark Forest: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781591162209, 3, 'Rurouni Kenshin, Volume 01: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781892213013, 4, 'Sailor Moon, Vol. 1: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000006, 1, 'Red Seas Under Red Skies: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781591828785, 1, 'Cardcaptor Sakura, Vol. 1: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781427814036, 1, 'Maid-sama! Vol. 01: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781250105684, 3, 'The Lost Man: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781250317995, 3, 'The Whisper Man: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780553803709, 3, 'I, Robot: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781569319017, 4, 'One Piece, Volume 1: Romance Dawn: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780545010221, 3, 'Harry Potter and the Deathly Hallows: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781524745141, 4, 'Lock Every Door: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780062858085, 1, 'The Last Widow: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000012, 3, 'So Long, and Thanks for All the Fish: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780345470577, 4, 'Tsubasa: RESERVoir CHRoNiCLE, Vol. 1: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780450031069, 1, '''Salem''s Lot: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781476727653, 3, 'Doctor Sleep: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780765377104, 2, 'Death''s End: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781401323585, 3, 'And Another Thing...: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000005, 3, 'The Lies of Locke Lamora: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780765326379, 3, 'Oathbringer: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781421527550, 4, 'Kimi ni Todoke: From Me to You, Vol. 1: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780593099322, 3, 'Dune: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780061007224, 3, 'The Exorcist: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9782253147695, 4, 'Christine: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781421505855, 4, 'Skip Beat!, Vol. 01: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780765326362, 4, 'Words of Radiance: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781421506234, 1, 'D.Gray-man, Vol. 1: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000014, 2, 'Disappearing Earth: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781542040358, 2, 'I''ll Never Tell: test review by Jane' , true );
 insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780060929879, 1, 'Brave New World: test review by Jane' , true );
-insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780439785969, 5, 'Harry Potter and the Half-Blood Prince: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780439785969, 3, 'Harry Potter and the Half-Blood Prince: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781250133731, 4, 'An Anonymous Girl: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780812550702, 1, 'Ender''s Game: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780316485616, 2, 'The Night Fire: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780553804690, 1, 'The Republic of Thieves: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780316080842, 4, 'Black Butler, Vol. 1: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000001, 1, 'Harry Potter and the Sorcerer''s Stone: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780345501332, 2, 'Fairy Tail, Vol. 01: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780062200570, 4, 'NOS4A2: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000000, 1, 'Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781476798622, 1, 'The Line Between: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781421501680, 5, 'Death Note, Vol. 1: Boredom: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781416524304, 4, 'Carrie: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780439358071, 1, 'Harry Potter and the Order of the Phoenix: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780450411434, 3, 'It: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780385333849, 4, 'Slaughterhouse-Five: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780765377067, 1, 'The Three-Body Problem: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781538748466, 2, 'Run Away: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780345379337, 1, 'Mostly Harmless: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780385199575, 4, 'The Stand: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780765326355, 4, 'The Way of Kings: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781421501086, 5, 'Nana, Vol. 1: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780307346605, 4, 'World War Z: An Oral History of the Zombie War: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780374156022, 5, 'Miracle Creek: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000010, 4, 'The Hitchhiker''s Guide to the Galaxy: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780450574580, 2, 'Needful Things: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780143039976, 5, 'We Have Always Lived in the Castle: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780756404734, 2, 'The Wise Man''s Fear: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780439064866, 5, 'Harry Potter and the Chamber of Secrets: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780450417399, 4, 'Misery: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781250066213, 5, 'A Better Man: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780316531269, 4, 'The Chain: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000003, 5, 'The Broken Eye: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781501188770, 5, 'The Turn of the Key: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780000000011, 4, 'The Restaurant at the End of the Universe: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780393312836, 1, 'A Clockwork Orange: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780062834300, 3, 'Searching for Sylvie Lee: test review by Jane' , false );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9784757518087, 3, 'Pandora Hearts 1巻: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781250301697, 5, 'The Silent Patient: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9780385544238, 4, 'My Sister, the Serial Killer: test review by Jane' , true );
+insert into reviews(user_id, isbn, rating, review, approved_status) VALUES( 2, 9781421508221, 1, 'Vampire Knight, Vol. 1: test review by Jane' , true );
 
 
 insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'AB', null, 0.05, null );
