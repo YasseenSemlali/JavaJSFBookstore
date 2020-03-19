@@ -1,29 +1,32 @@
 package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Authors;
+import com.gb4w20.gb4w20.entities.BookFiles;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Genres;
 import com.gb4w20.gb4w20.entities.Publishers;
 import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.AuthorsJpaController;
+import com.gb4w20.gb4w20.jpa.BookFilesJpaController;
 import com.gb4w20.gb4w20.jpa.BookorderJpaController;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
+import com.gb4w20.gb4w20.jpa.FileFormatsJpaController;
 import com.gb4w20.gb4w20.jpa.GenresJpaController;
 import com.gb4w20.gb4w20.jpa.PublishersJpaController;
+import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIOutput;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -31,7 +34,6 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
-import org.primefaces.shaded.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,20 +64,29 @@ public class ManagerInventory implements Serializable {
     @Inject
     private BookorderJpaController bookorderController;
 
+    @Inject
+    private BookFilesJpaController bookfilesController;
+    
+    @Inject
+    private FileFormatsJpaController fileformatsController;
+
     //Private fields
     private boolean edit;
-    
+
     private Date today = new Date();
 
     //Book
     private Long selectIsbn;
     private Long isbn;
-    @Size(min = 1, max = 100) private String title;
-    @Past private Date dateOfPublication;
+    @Size(min = 1, max = 100)
+    private String title;
+    @Past
+    private Date dateOfPublication;
     private int pages;
-    @Size(min = 1, max = 1000) private String synopsis;
+    @Size(min = 1, max = 1000)
+    private String synopsis;
     private UploadedFile uploadedCover;
-    private String cover;
+    private String cover = "1984.jpg"; //Default
     private BigDecimal wholesalePrice;
     private BigDecimal listPrice;
     private BigDecimal salePrice;
@@ -89,21 +100,32 @@ public class ManagerInventory implements Serializable {
     private Long genreToAdd;
     private Long publisherToAdd;
 
+    private Collection<String> newBookfiles = new ArrayList<>();
+
     //Author
     private Long authorId;
-    @Size(min = 1, max = 50) private String authorFirstName;
-    @Size(min = 1, max = 50) private String authorLastName;
+    @Size(min = 1, max = 50)
+    private String authorFirstName;
+    @Size(min = 1, max = 50)
+    private String authorLastName;
 
     //Publisher
     private Long publisherId;
-    @Size(min = 1, max = 50) private String publisherName;
+    @Size(min = 1, max = 50)
+    private String publisherName;
 
     //Genre
     private Long genreId;
-    @Size(min = 1, max = 50) private String genre;
+    @Size(min = 1, max = 50)
+    private String genre;
 
     //Total sales
     private BigDecimal totalSales = new BigDecimal(0);
+    
+    //Variabls
+    private final long EPUB_ID = 1L;
+    private final long PDF_ID = 2L;
+    private final long MOBI_ID = 3L;
 
     //LISTENERS
     /**
@@ -123,7 +145,7 @@ public class ManagerInventory implements Serializable {
             dateOfPublication = null;
             pages = 0;
             synopsis = null;
-            cover = null;
+            cover = "1984.jpg"; //Default
             wholesalePrice = null;
             listPrice = null;
             salePrice = null;
@@ -221,32 +243,51 @@ public class ManagerInventory implements Serializable {
             genre = new_genre.getGenre();
         }
     }
-    
+
     /**
-     * Upload the cover image file to the server, if one is present.
+     * Upload the cover image file to the server.
+     *
+     * @author Jean Robatto
+     * @param event
+     */
+    public void handleImageUpload(FileUploadEvent event) {
+        String basePath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/../../src/main/webapp/resources/img/covers");
+        UploadedFile newFile = event.getFile();
+        cover = newFile.getFileName();
+        saveUploadedFile(newFile, basePath);
+    }
+
+    /**
+     * Upload a book file to the server.
+     *
      * @author Jean Robatto
      * @param event
      */
     public void handleFileUpload(FileUploadEvent event) {
-        LOG.info("IN METHOD");
+        String basePath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/../../src/main/webapp/resources/bookfiles");
         UploadedFile newFile = event.getFile();
-        String basePath = new File("").getAbsolutePath();
-        LOG.info("PATH");
-        LOG.info(basePath);
-//        try (InputStream input = newFile.getInputstream()) {
-//            cover = newFile.getFileName();
-//            //Save to folder
-//            Path folder = Paths.get("/resources/images/");
-//            String filename = FilenameUtils.getBaseName(newFile.getFileName()); 
-//            String extension = FilenameUtils.getExtension(newFile.getFileName());
-//            Path file = Files.createTempFile(folder, filename + "-", "." + extension);
-//            LOG.info(">>>>>>>>>>>>>>>>>>");
-//            Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
-//            LOG.info("Successfully uploaded file " + filename);
-//        } catch (Exception ex) {
-//            LOG.info(ex.toString());
-//            //TODO SHOW ERORR MESSAGE
-//        }
+        saveUploadedFile(newFile, basePath);
+
+        //Save bookfile name to persist it later
+        newBookfiles.add(newFile.getFileName());
+    }
+
+    /**
+     * Method to save a file into the project
+     *
+     * @author Jean Robatto
+     */
+    private void saveUploadedFile(UploadedFile newFile, String basePath) {
+        try (InputStream input = newFile.getInputstream()) {
+            File file = new File(basePath + "/" + newFile.getFileName());
+            byte[] buffer = new byte[input.available()];
+            input.read(buffer);
+            OutputStream outStream = new FileOutputStream(file);
+            outStream.write(buffer);
+            LOG.debug("Successfully uploaded file " + file.getName());
+        } catch (Exception ex) {
+            LOG.debug(ex.toString());
+        }
     }
 
     /**
@@ -459,7 +500,7 @@ public class ManagerInventory implements Serializable {
             newBook.setDateOfPublication(dateOfPublication);
             newBook.setTimestamp(timestamp);
             newBook.setSynopsis(synopsis);
-            newBook.setCover(cover); 
+            newBook.setCover(cover);
             newBook.setPages(pages);
             newBook.setWholesalePrice(wholesalePrice);
             newBook.setListPrice(listPrice);
@@ -468,12 +509,19 @@ public class ManagerInventory implements Serializable {
             newBook.setAuthorsCollection(bookAuthor);
             newBook.setGenresCollection(bookGenre);
             newBook.setPublishersCollection(bookPublisher);
-            
+
             booksController.create(newBook);
+            
+            //Book files
+            for (String fileName: newBookfiles) {
+                createBookFile(fileName, newBook);
+            }
+            
+            newBookfiles = new ArrayList<>();
 
             return "/action-responses/action-success";
         } catch (RollbackFailureException ex) {
-            LOG.info(ex.toString());
+            LOG.debug(ex.toString());
             return "/action-responses/action-failure.xhtml";
         }
     }
@@ -502,11 +550,61 @@ public class ManagerInventory implements Serializable {
             editBook.setPublishersCollection(bookPublisher);
 
             booksController.edit(editBook);
+            
+            //Book files
+            for (String fileName: newBookfiles) {
+                createBookFile(fileName, editBook);
+            }
+            
+            newBookfiles = new ArrayList<>();
 
             return "/action-responses/action-success";
         } catch (Exception ex) {
-            LOG.info(ex.toString());
+            LOG.debug(ex.toString());
             return "/action-responses/action-failure";
+        }
+    }
+
+    /**
+     * Method to create a book file.
+     * NOTE: Not persisted to database
+     *
+     * @param fileName
+     * @author Jean Robatto
+     */
+    private void createBookFile(String fileName, Books book) {
+        LOG.debug("Creating bookfile entry for " + fileName);
+        BookFiles file = new BookFiles();
+
+        file.setIsbn(book);
+        file.setFileLocation("./" + fileName);
+
+        String format = fileName.split("\\.")[1];
+        
+        Long format_id;
+
+        switch (format) {
+            case "pdf":
+            case "PDF": format_id = PDF_ID; break;
+            case "mobi":
+            case "MOBI": format_id = MOBI_ID; break;
+            case "epub":
+            case "EPUB": format_id = EPUB_ID; break;
+            default: format_id = -1L;
+
+        }
+
+        file.setFileFormatId(fileformatsController.findFileFormats(format_id));
+        
+        bookfilesController.create(file);
+
+    }
+    
+    public void removeBookFile(Long id) {
+        try {
+           bookfilesController.destroy(id);
+        } catch (NonexistentEntityException ex) {
+            LOG.debug(ex.toString());
         }
     }
 
@@ -527,7 +625,7 @@ public class ManagerInventory implements Serializable {
 
             return "/action-responses/action-success";
         } catch (BackendException ex) {
-            LOG.info(ex.toString());
+            LOG.debug(ex.toString());
             return "/action-responses/action-failure";
         }
     }
@@ -549,7 +647,7 @@ public class ManagerInventory implements Serializable {
 
             return "/action-responses/action-success";
         } catch (Exception ex) {
-            LOG.info(ex.toString());
+            LOG.debug(ex.toString());
             return "/action-responses/action-failure";
         }
     }
@@ -570,7 +668,7 @@ public class ManagerInventory implements Serializable {
 
             return "/action-responses/action-success";
         } catch (BackendException ex) {
-            LOG.info(ex.toString());
+            LOG.debug(ex.toString());
             return "/action-responses/action-failure";
         }
     }
@@ -591,7 +689,7 @@ public class ManagerInventory implements Serializable {
 
             return "/action-responses/action-success";
         } catch (Exception ex) {
-            LOG.info(ex.toString());
+            LOG.debug(ex.toString());
             return "/action-responses/action-failure";
         }
     }
@@ -612,7 +710,7 @@ public class ManagerInventory implements Serializable {
 
             return "/action-responses/action-success";
         } catch (BackendException ex) {
-            LOG.info(ex.toString());
+            LOG.debug(ex.toString());
             return "/action-responses/action-failure";
         }
     }
@@ -633,7 +731,7 @@ public class ManagerInventory implements Serializable {
 
             return "/action-responses/action-success";
         } catch (Exception ex) {
-            LOG.info(ex.toString());
+            LOG.debug(ex.toString());
             return "/action-responses/action-failure";
         }
     }
@@ -754,6 +852,11 @@ public class ManagerInventory implements Serializable {
     public void setUploadedCover(UploadedFile uploadedCover) {
         this.uploadedCover = uploadedCover;
     }
+
+    public void setNewBookfiles(Collection<String> newBookfiles) {
+        this.newBookfiles = newBookfiles;
+    }
+    
     
 
     //Getters
@@ -872,8 +975,10 @@ public class ManagerInventory implements Serializable {
     public UploadedFile getUploadedCover() {
         return uploadedCover;
     }
-    
-    
+
+    public Collection<String> getNewBookfiles() {
+        return newBookfiles;
+    }
     
     
 

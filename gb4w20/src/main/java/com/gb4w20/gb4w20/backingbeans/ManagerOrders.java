@@ -204,6 +204,7 @@ public class ManagerOrders implements Serializable {
             order.setBookorderCollection(bookOrders);
             order.setUserId(usersController.findUsersEntities().get(0));
             order.setTimestamp(new Date());
+            order.setEnabled(Boolean.TRUE);
 
             orderController.create(order);
 

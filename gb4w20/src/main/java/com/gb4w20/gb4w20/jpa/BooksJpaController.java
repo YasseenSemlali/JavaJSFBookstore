@@ -442,6 +442,7 @@ public class BooksJpaController implements Serializable {
     }
 
     public Books findBooks(Long id) {
+        if (id==null) return null;
         return em.find(Books.class, id);
     }
 

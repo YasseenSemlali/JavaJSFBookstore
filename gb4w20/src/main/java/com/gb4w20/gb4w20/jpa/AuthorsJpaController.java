@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Used to interact with the authors table.
  *
- * @author Jeffrey Boisvert, Jean Robatto
+ * @author Jeffrey Boisvert
  */
 @Named
 @SessionScoped
@@ -72,7 +72,6 @@ public class AuthorsJpaController implements Serializable {
             utx.commit();
         } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
             LOG.error("Error with create in authors controller method.", ex);
-            throw new BackendException("Error in create method in authors controller.");
         }
     }
 
