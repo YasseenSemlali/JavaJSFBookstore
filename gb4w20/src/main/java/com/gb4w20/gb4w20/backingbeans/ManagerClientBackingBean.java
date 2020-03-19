@@ -78,7 +78,6 @@ public class ManagerClientBackingBean implements Serializable {
     private boolean selectedIsManagerState; 
 
     //Total sales of selected User
-    
     private Double totalSales;
     //Used to validate if the email changed or not.
     @Size(min = 1, max = 50)

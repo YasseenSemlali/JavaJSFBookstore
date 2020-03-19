@@ -38,7 +38,6 @@ public class ClientReportBackingBean implements Serializable {
     private Long userId; 
     
     private java.util.Date startDate;
-    
     private java.util.Date endDate; 
     
     private List<Users> users; 

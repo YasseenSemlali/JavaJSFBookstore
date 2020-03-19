@@ -9,6 +9,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.Size;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -32,7 +33,9 @@ public class LoginBackingBean implements Serializable {
     @Inject 
     private JSFFormMessageValidator validator;
     
-    private String emailInput; 
+    @Size(min = 1, max = 50)
+    private String emailInput;
+    @Size(min = 1, max = 100)
     private String passwordInput;
     
     /**
