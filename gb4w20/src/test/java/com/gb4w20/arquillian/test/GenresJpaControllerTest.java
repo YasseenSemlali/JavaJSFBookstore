@@ -1,5 +1,7 @@
 package com.gb4w20.arquillian.test;
 
+import java.math.BigDecimal;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
