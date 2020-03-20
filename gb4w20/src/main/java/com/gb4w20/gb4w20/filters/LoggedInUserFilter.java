@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Filter checks if a user is a logged in manager and if not it
+ * Filter checks if a user is logged in and if not it
  * the user is redirected to the login.xhml page.
  *
  * @author itcuties http://www.itcuties.com/j2ee/jsf-2-login-filter-example/
@@ -30,10 +30,10 @@ import org.slf4j.LoggerFactory;
  * Changed to annotation from web.xml but uses mapping from the web.xml
  *
  */
-@WebFilter(filterName = "ManagerFilter")
-public class ManagerFilter implements Filter {
+@WebFilter(filterName = "LoggedInUserFilter")
+public class LoggedInUserFilter implements Filter {
     
-     private final static Logger LOG = LoggerFactory.getLogger(ManagerFilter.class);
+     private final static Logger LOG = LoggerFactory.getLogger(LoggedInUserFilter.class);
 
     @Inject
     private UserSessionBean userSessionBean;
@@ -54,14 +54,14 @@ public class ManagerFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
 
         LOG.info("In the manager filter");
-        if (!userSessionBean.isLoggedInManager()) {
-            LOG.info("User not logged in as a manager");
+        if (!userSessionBean.isLoggedIn()) {
+            LOG.info("User not logged in");
             String contextPath = ((HttpServletRequest) request)
                     .getContextPath();
             ((HttpServletResponse) response).sendRedirect(contextPath
                     + "/login.xhtml");
         } else {
-            LOG.info("Manager user logged in: "
+            LOG.info("User logged in: "
                     + userSessionBean.getUser().getEmail());
             chain.doFilter(request, response);
         }
