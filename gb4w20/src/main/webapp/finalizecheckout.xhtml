@@ -27,6 +27,7 @@ to be able to finalize the transaction.
                 <b:inputText id="creditcard" value="#{transaction.card}" span="6" required="true">
                     <f:converter converterId="com.gb4w20.gb4w20.jsf.validation.CreditCardConverter" />
                     <f:validator validatorId="com.gb4w20.gb4w20.jsf.validation.CreditCardValidator" />
+                    <f:ajax event="change" render="credcarderror"/>
                 </b:inputText>
                 <h:message id="credcarderror" for="creditcard" style="color: red" />
                 <br></br>
@@ -34,6 +35,7 @@ to be able to finalize the transaction.
                 <b:inputText id="cardexpiry" value="#{transaction.date}" 
                              validator="#{transaction.validateExpiryDate}" span="4" tooltip="MM/yyyy (e.g. 01/2020)">
                     <f:convertDateTime pattern="MM/yyyy" />
+                    <f:ajax event="change" render="cardexpireerror"/>
                 </b:inputText>
                 <h:message id="cardexpireerror" for="cardexpiry" style="color: red" />
                 <br></br>

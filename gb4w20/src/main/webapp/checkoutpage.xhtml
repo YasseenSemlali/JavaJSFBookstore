@@ -52,7 +52,14 @@ and finalize transactions
                         <b:commandButton value="#{msgs.backshopping}" action="index.xhtml" look="primary"/>
                         <c:choose>
                             <c:when test="#{userSession.loggedIn}">
-                                <b:commandButton value="#{msgs.finalize}" look="success" action="finalizecheckout.xhtml"/> <!--still need to make an action to finalize-->
+                                <c:choose>
+                                    <c:when test="#{cartSession.calculateTotalAmount() == 0}">
+                                        #{msgs.nopurchasedbook}
+                                    </c:when>
+                                    <c:otherwise>
+                                        <b:commandButton value="#{msgs.finalize}" look="success" action="finalizecheckout.xhtml"/> 
+                                    </c:otherwise>
+                                </c:choose>
                             </c:when>
                             <c:otherwise>
                                 <p:outputLabel>#{msgs.logintofinalize}</p:outputLabel>
