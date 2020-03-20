@@ -1,6 +1,5 @@
 -- create database bookstore;
 
-use gb4w20;
 -- Yasseen
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS books;
