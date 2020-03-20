@@ -54,7 +54,7 @@ public class ManagerFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
 
         LOG.info("In the manager filter");
-        if (userSessionBean == null || !userSessionBean.isLoggedInManager()) {
+        if (!userSessionBean.isLoggedInManager()) {
             LOG.info("User not logged in as a manager");
             String contextPath = ((HttpServletRequest) request)
                     .getContextPath();
