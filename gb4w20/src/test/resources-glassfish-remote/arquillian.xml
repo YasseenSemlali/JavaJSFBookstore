@@ -6,8 +6,8 @@
 
     <container qualifier="glassfish" default="true">
         <configuration>
-            <property name="adminUser">gb4w20</property>
-            <property name="adminPassword">pencil3tuna</property>
+            <property name="adminUser">admin</property>
+            <property name="adminPassword">dawscon</property>
         </configuration>
     </container>
 

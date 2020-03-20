@@ -1,0 +1,66 @@
+<web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+    <!-- Different error messages are displayed depending on the stage.
+    Choices are Development, Production, SystemTest & UnitTest -->
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
+    <!-- HTML commented code will not be delivered to the browser -->
+    <context-param>
+        <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <!-- Always run the Facelets compiler on pages during development. -1 in production -->
+    <context-param>
+        <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+        <param-value>0</param-value>
+    </context-param>
+    <!-- Blank styling for prime faces while maintaining the functionality -->
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>admin</param-value>
+    </context-param>
+    <!-- Global email parameters available to all servlets -->
+    <context-param>
+        <param-name>emailSender</param-name>
+        <param-value>bookify.mtl@gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>smtpServerName</param-name>
+        <param-value>smtp.gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>smtpPassword</param-name>
+        <param-value>bookifydawson123</param-value>
+    </context-param>
+    <!-- set the default timezone -->
+    <context-param>
+        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-value>true</param-value>
+    </context-param>    
+    <!-- Absolute location for files. Modify this location to meet your needs -->
+    <context-param>
+        <param-name>EmailFile</param-name>
+        <param-value>\temp\EmailList.txt</param-value>
+    </context-param>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404-error.xhtml</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/500-error.xhtml</location>
+    </error-page>
+    <!-- Time in minutes until the session object is invalidated -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.xhtml</welcome-file>
+    </welcome-file-list>
+    
+    <context-param>
+        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+        <param-value>/WEB-INF/bookify.taglib.xml</param-value>
+    </context-param>
+</web-app>
