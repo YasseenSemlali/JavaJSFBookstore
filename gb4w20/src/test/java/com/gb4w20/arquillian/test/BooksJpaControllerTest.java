@@ -9,7 +9,7 @@ import org.junit.Test;
  *
  * @author Yasseen
  */
-public class BooksJpaControllerTest extends ArquillianTestBase{
+public class BooksJpaControllerTest extends ArquillianTestBase {
 
     @Test
     public void test() {
