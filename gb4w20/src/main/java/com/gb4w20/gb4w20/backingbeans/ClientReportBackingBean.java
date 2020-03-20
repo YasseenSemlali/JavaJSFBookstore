@@ -5,6 +5,7 @@ import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -37,7 +38,6 @@ public class ClientReportBackingBean implements Serializable {
     private Long userId; 
     
     private java.util.Date startDate;
-    
     private java.util.Date endDate; 
     
     private List<Users> users; 
@@ -89,7 +89,7 @@ public class ClientReportBackingBean implements Serializable {
                 
             }
             catch (Exception ex){
-                LOG.debug("Error running report ", ex);
+                LOG.debug("Error running report " + ex.getMessage(), ex);
                 validator.createFacesMessageFromKey("error_running_report");
             }
         

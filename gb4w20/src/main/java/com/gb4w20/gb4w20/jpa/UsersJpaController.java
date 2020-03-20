@@ -411,13 +411,16 @@ public class UsersJpaController implements Serializable {
         Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
         Join<Orders, Users> user = order.join("userId", JoinType.INNER);
         
-        cq.multiselect(book.get(Books_.title), em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+        cq.multiselect(
+                book.get(Books_.title), 
+                cb.sum(bookorder.get("amountPaidPretax")
+                ))
                 .groupBy(book.get(Books_.title))
                 .where(cb.and(
                         cb.equal(user.get("userId"), id),
                         cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
                 ))
-                .orderBy(cb.asc(em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax"))));
+                .orderBy(cb.asc(cb.sum(bookorder.get("amountPaidPretax"))));
 
         Query query = em.createQuery(cq);
         return query.getResultList();

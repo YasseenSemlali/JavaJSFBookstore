@@ -146,7 +146,7 @@ public class UserSessionBean implements Serializable {
         this.user = null; 
         LOG.info("User is null");
         clearSessionState();
-        return "index.xhtml"; 
+        return "/index.xhtml"; 
     }
     
     /**

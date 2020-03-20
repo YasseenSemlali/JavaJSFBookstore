@@ -34,7 +34,6 @@ public class AuthorReportBackingBean implements Serializable {
     private Long authorId; 
     
     private java.util.Date startDate;
-    
     private java.util.Date endDate; 
     
     private List<Authors> authors; 
