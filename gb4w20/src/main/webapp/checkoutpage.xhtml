@@ -49,7 +49,7 @@ and finalize transactions
             <b:jumbotron>
                 <h:form>
                     <b:panelGrid columns="2">
-                        <b:commandButton value="#{msgs.backshopping}" action="#{request.contextPath}/index.xhtml" look="primary"/>
+                        <b:commandButton value="#{msgs.backshopping}" action="index.xhtml" look="primary"/>
                         <c:choose>
                             <c:when test="#{userSession.loggedIn}">
                                 <b:commandButton value="#{msgs.finalize}" look="success" action="#{request.contextPath}/user-secured/finalizecheckout.xhtml"/> <!--still need to make an action to finalize-->
