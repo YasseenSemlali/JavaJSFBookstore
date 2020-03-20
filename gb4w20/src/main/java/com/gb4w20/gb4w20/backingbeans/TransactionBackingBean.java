@@ -12,6 +12,7 @@ import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -29,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * @author Jasmar Badion
  */
 @Named("transaction")
-@RequestScoped
+@SessionScoped
 public class TransactionBackingBean implements Serializable {
 
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(TransactionBackingBean.class);
@@ -41,9 +42,6 @@ public class TransactionBackingBean implements Serializable {
 
     @Inject
     private JSFFormMessageValidator validator;
-
-    @Inject
-    private TaxesJpaController taxesJpaController;
 
     /**
      * Getter for card
@@ -158,6 +156,7 @@ public class TransactionBackingBean implements Serializable {
         int index = 0;
         String mask = "##xx-xxxx-xxxx-xx##"; //format of how it will be displayed masked
         StringBuilder maskedNumber = new StringBuilder();
+        LOG.debug(this.card.toString());
         for (int i = 0; i < mask.length(); i++) {
             char c = mask.charAt(i);
             switch (c) {

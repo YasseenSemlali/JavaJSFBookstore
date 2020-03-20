@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
  * This class supports custom converters and validators Its purpose if to return
  * the appropriate string from a specified bundle.
  * </p>
+ *
  * @author Jasmar Badion
  */
 public class CreditCardMessages {
@@ -144,4 +145,3 @@ public class CreditCardMessages {
         return loader;
     }
 }
-

@@ -20,38 +20,34 @@ Java Server Faces page that displays the frontpage of the app
 
     <ui:define name="content">
         <b:container fluid="true">
-            <c:choose>
-                <c:when test="#{param['id'] != null}">
-                    <c:set var="genre" value="#{genresJpaController.findGenres(param['id'])}"/>
-                    <h1>#{genre.getGenre()}</h1>
-                    <p:carousel numVisible="5" value="#{booksJpaController.getTopSellingForGenre(genre.getGenreId(),5)}" headerText="${msgs.best_sellers}" var="book" itemStyle="text-align:center" responsive="true" >
-                        <ui:decorate template="/templates/book.xhtml">
-                            <ui:param name="book" value="#{book}"></ui:param>
-                            <ui:param name="showPrice" value="true"></ui:param>
-                            <ui:param name="showOldPrice" value="true"></ui:param>
-                        </ui:decorate>
-                    </p:carousel>
+            <f:metadata>
+                <f:viewParam id="id" name="id" value="#{bookAndGenre.id}" />
+            </f:metadata>
 
-                    <h2>
-                        <h:outputFormat value="#{msgs.all_genre_books}">
-                            <f:param value="#{genre.getGenre()}" />
-                        </h:outputFormat>
-                    </h2>
-                    <b:panelGrid columns="6">
-                        <c:forEach items="#{booksJpaController.getAllBooksForGenre(genre.getGenreId())}" var="book">
-                            <ui:decorate template="/templates/book.xhtml">
-                                <ui:param name="book" value="#{book}"></ui:param>
-                                <ui:param name="showPrice" value="true"></ui:param>
-                                <ui:param name="showOldPrice" value="true"></ui:param>
-                            </ui:decorate>
-                        </c:forEach>
-                    </b:panelGrid>
-                </c:when>
+            <c:set var="genre" value="#{genresJpaController.findGenres(bookAndGenre.id)}"/>
+            <h1>#{genre.getGenre()}</h1>
+            <p:carousel numVisible="5" value="#{booksJpaController.getTopSellingForGenre(genre.getGenreId(),5)}" headerText="${msgs.best_sellers}" var="book" itemStyle="text-align:center" responsive="true" >
+                <ui:decorate template="/templates/book.xhtml">
+                    <ui:param name="book" value="#{book}"></ui:param>
+                    <ui:param name="showPrice" value="true"></ui:param>
+                    <ui:param name="showOldPrice" value="true"></ui:param>
+                </ui:decorate>
+            </p:carousel>
 
-                <c:otherwise>
-                    No genre specified
-                </c:otherwise>
-            </c:choose>
+            <h2>
+                <h:outputFormat value="#{msgs.all_genre_books}">
+                    <f:param value="#{genre.getGenre()}" />
+                </h:outputFormat>
+            </h2>
+            <b:panelGrid columns="6">
+                <c:forEach items="#{booksJpaController.getAllBooksForGenre(genre.getGenreId())}" var="book">
+                    <ui:decorate template="/templates/book.xhtml">
+                        <ui:param name="book" value="#{book}"></ui:param>
+                        <ui:param name="showPrice" value="true"></ui:param>
+                        <ui:param name="showOldPrice" value="true"></ui:param>
+                    </ui:decorate>
+                </c:forEach>
+            </b:panelGrid>
         </b:container>
     </ui:define>
 </ui:composition>
