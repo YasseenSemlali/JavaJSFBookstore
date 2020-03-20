@@ -24,9 +24,6 @@ import org.slf4j.LoggerFactory;
 public class ManagerSurveys implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(ManagerSurveys.class);
-    
-    @Inject
-    private UserSessionBean userSessionBean;
 
     @Inject
     private SurveyQuestionsJpaController surveysController;
@@ -48,15 +45,6 @@ public class ManagerSurveys implements Serializable {
         for (int i = 0; i < size; i++) {
             questions[i] = "";
             enabled[i] = Boolean.FALSE;
-        }
-        //Redirect if not manager
-        try {
-            if (!userSessionBean.isLoggedInManager()) {
-                LOG.info("Must be logged in as manager to access this page.");
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/index.xhtml");
-            }
-        } catch (IOException ex) {
-            LOG.debug(ex.toString());
         }
     }
 

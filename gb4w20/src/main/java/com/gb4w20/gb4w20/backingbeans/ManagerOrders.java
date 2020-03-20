@@ -41,9 +41,6 @@ import org.slf4j.LoggerFactory;
 public class ManagerOrders implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(ManagerOrders.class);
-    
-    @Inject
-    private UserSessionBean userSessionBean;
 
     @Inject
     private BooksJpaController booksController;
@@ -80,20 +77,6 @@ public class ManagerOrders implements Serializable {
     //Info
     private String address;
     private Long selectedUserId;
-    
-    //INIT
-    @PostConstruct
-    private void init() {
-        //Redirect if not manager
-        try {
-            if (!userSessionBean.isLoggedInManager()) {
-                LOG.info("Must be logged in as manager to access this page.");
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/index.xhtml");
-            }
-        } catch (IOException ex) {
-            LOG.debug(ex.toString());
-        }
-    }
 
     //Actions
     /**

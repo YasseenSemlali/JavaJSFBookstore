@@ -25,9 +25,6 @@ import org.slf4j.LoggerFactory;
 public class ManagerNews implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(ManagerNews.class);
-    
-    @Inject
-    private UserSessionBean userSessionBean;
 
     @Inject
     private RssFeedsJpaController newsController;
@@ -49,15 +46,6 @@ public class ManagerNews implements Serializable {
         for (int i = 0; i < size; i++) {
             urls[i] = "";
             enabled[i] = Boolean.FALSE;
-        }
-        //Redirect if not manager
-        try {
-            if (!userSessionBean.isLoggedInManager()) {
-                LOG.info("Must be logged in as manager to access this page.");
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/index.xhtml");
-            }
-        } catch (IOException ex) {
-            LOG.debug(ex.toString());
         }
     }
 

@@ -26,9 +26,6 @@ public class ManagerSales implements Serializable {
     private final static Logger LOG = LoggerFactory.getLogger(ManagerSales.class);
     
     @Inject
-    private UserSessionBean userSessionBean;
-    
-    @Inject
     private BooksJpaController booksController;
     
     @Inject
@@ -48,15 +45,6 @@ public class ManagerSales implements Serializable {
         newSalePrice = new BigDecimal[size];
         for (int i = 0; i < size; i++) {
             newSalePrice[i] = new BigDecimal(0);
-        }
-        //Redirect if not manager
-        try {
-            if (!userSessionBean.isLoggedInManager()) {
-                LOG.info("Must be logged in as manager to access this page.");
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/index.xhtml");
-            }
-        } catch (IOException ex) {
-            LOG.debug(ex.toString());
         }
     }
     
