@@ -12,6 +12,7 @@ import org.junit.Test;
  */
 public class GenresJpaControllerTest extends ArquillianTestBase{
     
+    
     @Test
     public void test() {
         System.out.println("test");

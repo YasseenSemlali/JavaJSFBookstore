@@ -43,7 +43,7 @@ import org.junit.runner.RunWith;
 public class ArquillianTestBase {
 
     
-    @Resource(lookup = "java:app/jdbc/bookstore")
+    @Resource(lookup = "java:app/jdbc/bookstore_test")
     private DataSource dataSource;
 
     @Deployment
