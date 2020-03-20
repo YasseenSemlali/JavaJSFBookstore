@@ -18,6 +18,7 @@ import com.gb4w20.gb4w20.entities.Users_;
 import com.gb4w20.gb4w20.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
@@ -410,13 +411,16 @@ public class UsersJpaController implements Serializable {
         Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
         Join<Orders, Users> user = order.join("userId", JoinType.INNER);
         
-        cq.multiselect(book.get(Books_.title), em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax")))
+        cq.multiselect(
+                book.get(Books_.title), 
+                cb.sum(bookorder.get("amountPaidPretax")
+                ))
                 .groupBy(book.get(Books_.title))
                 .where(cb.and(
                         cb.equal(user.get("userId"), id),
                         cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
                 ))
-                .orderBy(cb.asc(em.getCriteriaBuilder().sum(bookorder.get("amountPaidPretax"))));
+                .orderBy(cb.asc(cb.sum(bookorder.get("amountPaidPretax"))));
 
         Query query = em.createQuery(cq);
         return query.getResultList();
@@ -472,10 +476,10 @@ public class UsersJpaController implements Serializable {
      * @return the report of top sellers of the names of the users and their total sales
      * @author Jeffrey Boisvert
      */
-    public List<NameAndNumberBean> findTopUsersBySales(String startDate, String endDate){
+    public List<NameTotalAndCountBean> findTopUsersBySales(String startDate, String endDate){
         
         LOG.info("Looking for top users by sales between " + startDate + " and " + endDate);
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameAndNumberBean.class);
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery(NameTotalAndCountBean.class);
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         Root<Users> bookorder = cq.from(Bookorder.class);
@@ -487,7 +491,9 @@ public class UsersJpaController implements Serializable {
                         cb.concat(user.get(Users_.firstName), " "),
                             user.get(Users_.lastName)
                     ), 
-                cb.sum(bookorder.get("amountPaidPretax")))
+                cb.sum(bookorder.get("amountPaidPretax")),
+                cb.count(bookorder.get("orderId"))
+                )
                 .groupBy(user.get(Users_.userId))
                 .where(
                         cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")

@@ -15,7 +15,7 @@
                     <b:navLink value="" href="#{request.contextPath}/index.xhtml" styleClass="logomenuitem"/>
                 </b:navbarLinks>
                 <form id="nav-search" class="navbar-form navbar-left " role="search" action="search.xhtml" name="test" method="GET">
-                    <input type="text" class="form-control" placeholder="Title" name="title"/>
+                    <input type="text" class="form-control" placeholder="${msgs.title}" name="title"/>
                     <button type="submit" class="btn btn-default">${msgs.search}</button>
                     <div><a href="#{request.contextPath}/advanced_search.xhtml"><small>${msgs.advanced_search}</small></a></div>
                 </form>
@@ -28,19 +28,18 @@
                                 <b:navCommandLink  value="${msgs.logout}" action="#{userSession.logout}" />
                             </c:when>
                             <c:otherwise>
-                                <b:navLink value="${msgs.login}" href="login.xhtml" />
+                                <b:navLink value="${msgs.login}" href="#{request.contextPath}/login.xhtml" />
                                 <b:navLink value="${msgs.register_page}" href="#{request.contextPath}/register.xhtml" />
                             </c:otherwise>
                         </c:choose>
                         <h:panelGroup rendered="#{userSession.loggedInManager}"> 
-                            <b:navLink value="${msgs.dashboard}" href="#{request.contextPath}/manager-frontpage.xhtml"/>
+                            <b:navLink value="${msgs.dashboard}" href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml"/>
                         </h:panelGroup>
                         
                         <b:navLink href="#{request.contextPath}/checkoutpage.xhtml">
                             <b:icon value="shopping-cart" size="2x">#{msgs.cart}</b:icon>
                         </b:navLink>
                         <b:navLink rendered="#{userSession.loggedIn}" value="${msgs.downloads}" href="#{request.contextPath}/book-downloads.xhtml"/>
-                        <!--<b:navLink value="FR" href="www.google.com"/>-->
                     </b:navbarLinks>
                     <c:choose>
                         <c:when test="#{localeBackingBean.setToFrench}">

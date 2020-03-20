@@ -25,6 +25,19 @@
         <param-name>primefaces.UPLOADER</param-name>
         <param-value>auto</param-value>
     </context-param>
+    <!-- Global email parameters available to all servlets -->
+    <context-param>
+        <param-name>emailSender</param-name>
+        <param-value>bookify.mtl@gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>smtpServerName</param-name>
+        <param-value>smtp.gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>smtpPassword</param-name>
+        <param-value>bookifydawson123</param-value>
+    </context-param>
     <!-- set the default timezone -->
     <context-param>
         <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
@@ -35,9 +48,23 @@
         <param-name>EmailFile</param-name>
         <param-value>\temp\EmailList.txt</param-value>
     </context-param>
+    <!-- Used to filter only managers in the manager secured folder --> 
+    <filter-mapping>
+        <filter-name>ManagerFilter</filter-name>
+        <url-pattern>/manager-secured/*</url-pattern>
+    </filter-mapping>
+    <!-- Used to filter out aspects of the site only logged in users can access." -->
+    <filter-mapping>
+        <filter-name>LoggedInUserFilter</filter-name>
+        <url-pattern>/user-secured/*</url-pattern>
+    </filter-mapping>
     <error-page>
         <error-code>404</error-code>
         <location>/404-error.xhtml</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/500-error.xhtml</location>
     </error-page>
     <!-- Time in minutes until the session object is invalidated -->
     <session-config>

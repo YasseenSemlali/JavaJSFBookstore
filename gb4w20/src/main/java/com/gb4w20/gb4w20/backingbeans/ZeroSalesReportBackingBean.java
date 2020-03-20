@@ -14,6 +14,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +40,6 @@ public class ZeroSalesReportBackingBean implements Serializable {
     private JSFFormMessageValidator validator;
     
     private java.util.Date startDate;
-    
     private java.util.Date endDate; 
     
     private List<Books> bookSales; 

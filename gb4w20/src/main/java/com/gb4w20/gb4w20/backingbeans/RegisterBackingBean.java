@@ -13,6 +13,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.Size;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -37,19 +38,33 @@ public class RegisterBackingBean implements Serializable {
     private FormValues values;
     
     //Inputs
-    private String titleInput; 
+    @Size(min = 1, max = 5)
+    private String titleInput;
+    @Size(min = 1, max = 30)
     private String firstNameInput;
+    @Size(min = 1, max = 30)
     private String lastNameInput;
+    @Size(max = 20)
     private String companyInput; 
+    @Size(min = 1, max = 50)
     private String firstAddressInput;
+    @Size(max = 50)
     private String secondAddressInput;
+    @Size(min = 1, max = 20)
     private String cityInput; 
+    @Size(min = 1, max = 2)
     private String provinceInput;
+    @Size(min = 1, max = 10)
     private String countryInput;
+    @Size(min = 1, max = 10)
     private String postalInput;
-    private String mobilePhoneInput; 
+    @Size(min = 1, max = 10)
+    private String mobilePhoneInput;
+    @Size(min = 1, max = 10)
     private String homePhoneInput;
+    @Size(min = 1, max = 50)
     private String emailInput; 
+    @Size(min = 1, max = 100)
     private String passwordInput;
     
     /**

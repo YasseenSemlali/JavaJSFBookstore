@@ -5,6 +5,7 @@ import com.gb4w20.gb4w20.entities.Authors;
 import com.gb4w20.gb4w20.jpa.AuthorsJpaController;
 import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
@@ -33,14 +34,13 @@ public class AuthorReportBackingBean implements Serializable {
     private Long authorId; 
     
     private java.util.Date startDate;
-    
     private java.util.Date endDate; 
     
     private List<Authors> authors; 
     
     private Double totalSales; 
     
-    private List<NameAndNumberBean> purchasedProducts; 
+    private List<NameTotalAndCountBean> purchasedProducts; 
     
     /**
      * Used to get a list of all the authors in the database. 
@@ -85,7 +85,7 @@ public class AuthorReportBackingBean implements Serializable {
                 
             }
             catch (Exception ex){
-                LOG.debug("Error running report ", ex);
+                LOG.debug("Error running report " + ex.getMessage(), ex);
                 validator.createFacesMessageFromKey("error_running_report");
             }
         
@@ -113,7 +113,7 @@ public class AuthorReportBackingBean implements Serializable {
      * Used to retrieve the list of products by the author that have been purchased. 
      * @return the list of products. 
      */
-    public List<NameAndNumberBean> getPurchasedProducts() {
+    public List<NameTotalAndCountBean> getPurchasedProducts() {
         return purchasedProducts;
     }
     

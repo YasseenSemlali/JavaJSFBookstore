@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-Java Server Faces page that displays the top clients report. 
-This will list the clients based on sales along with the total amount of purchases. 
+Java Server Faces page that displays the top sellers report. 
+This will list the books based on sales along with the total amount of sales. 
 
 @author Jeffrey Boisvert
 -->
@@ -15,55 +15,56 @@ This will list the clients based on sales along with the total amount of purchas
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
-        <title>#{msgs.topClientsReport}</title>
+        <title>#{msgs.topSellersReport}</title>
+        <h:outputStylesheet library="css" name="report.css" />
     </ui:define>
-    <ui:define name="content">
-    <h:outputStylesheet library="css" name="report.css" />
+   <ui:define name="content">
     <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
              <li class="breadcrumb-item"><a href="../manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
              <li class="breadcrumb-item"><a href="../reports-page.xhtml">#{msgs.reportsLower}</a></li>
-             <li class="breadcrumb-item active" aria-current="page">#{msgs.topClientsReport}</li>
+             <li class="breadcrumb-item active" aria-current="page">#{msgs.topSellersReport}</li>
           </ol>
     </nav>
         <h:panelGroup layout="block" class="jumbotron">
-        <h:panelGroup layout="block" class="h2 report-title">#{msgs.topClientsReport}</h:panelGroup>
+        <h:panelGroup layout="block" class="h2 report-title">#{msgs.topSellersReport}</h:panelGroup>
         <h:form class="report-form" >
             <h:messages id="report-error" class="alert alert-danger" globalOnly="true" />
             <h:panelGroup layout="block">
                     <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
-                    <p:calendar class="datepicker" value="#{topClientsReportBackingBean.startDate}"
+                    <p:calendar class="datepicker" value="#{topSellersReportBackingBean.startDate}"
                         id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
             </h:panelGroup>
             <h:panelGroup layout="block">
                     <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
-                    <p:calendar class="datepicker" value="#{topClientsReportBackingBean.endDate}"
+                    <p:calendar class="datepicker" value="#{topSellersReportBackingBean.endDate}"
                         id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
                     </p:calendar>
             </h:panelGroup>
-
-            <b:commandButton update="report-result @form"
+             <b:commandButton update="report-result @form"
                               class="btn btn-primary run-report-button" 
                               value="#{msgs.runReport}"
-                              action="#{topClientsReportBackingBean.runReport}"/>
+                              action="#{topSellersReportBackingBean.runReport}"/>
 
         </h:form>
         </h:panelGroup>
-        <!-- Report --> 
+        <!-- Report -->
         <h:panelGroup id="report-result" layout="block">
-            <h:panelGroup layout="block" class="jumbotron" rendered="#{not empty topClientsReportBackingBean.clientsSales}">
-                  <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.topClients}</h:panelGroup>
-                  <h:panelGroup class="report-result" layout="block">
-                    <h:panelGrid class="table table-hover" columns="2" border="1">
-                        <h:panelGroup class="column-header">#{msgs.clientName}</h:panelGroup>
-                        <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
-                        <c:forEach items="#{topClientsReportBackingBean.clientsSales}" var="clientSales">
-                                  <h:panelGroup>#{clientSales.name}</h:panelGroup>
-                                  <h:panelGroup>$#{clientSales.amount}</h:panelGroup>
-                              </c:forEach>
+            <h:panelGroup layout="block" class="jumbotron" rendered="#{not empty topSellersReportBackingBean.bookSales}">
+                <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.topSellers}</h:panelGroup>
+                <h:panelGroup class="report-result" layout="block">
+                    <h:panelGrid class="table table-hover" columns="3" border="1">
+                          <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
+                          <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
+                          <h:panelGroup class="column-header">#{msgs.number_of_orders}</h:panelGroup>
+                          <c:forEach items="#{topSellersReportBackingBean.bookSales}" var="bookSales">
+                                    <h:panelGroup>#{bookSales.name}</h:panelGroup>
+                                    <h:panelGroup>$#{bookSales.amount}</h:panelGroup>
+                                    <h:panelGroup>#{bookSales.count}</h:panelGroup>
+                          </c:forEach>
                     </h:panelGrid>
-                  </h:panelGroup>
+                </h:panelGroup>
             </h:panelGroup>
         </h:panelGroup>
     </ui:define>
