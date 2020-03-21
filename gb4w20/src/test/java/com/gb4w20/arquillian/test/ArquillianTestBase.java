@@ -26,6 +26,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import javax.transaction.UserTransaction;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -68,6 +69,7 @@ public abstract class ArquillianTestBase {
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Users.class.getPackage())
                 .addPackage(ArquillianTestBase.class.getPackage())
+                .addPackage(Pair.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")

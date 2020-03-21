@@ -1,5 +1,6 @@
 package com.gb4w20.arquillian.test;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Rule;
@@ -31,12 +32,12 @@ public class BooksJpaControllerTest {
     public static class SampleParametrized extends ArquillianTestBase {
 
         @Rule
-        public ParameterRule<String> rule = new ParameterRule<String>("param",
-                "test1", 
-                "test2", 
-                "test3");
+        public ParameterRule<Pair<String, String>> rule = new ParameterRule<Pair<String, String>>("param",
+                Pair.of("test1", "test2"),
+                Pair.of("test3", "test4"),
+                Pair.of("test5", "test6"));
         
-        private String param;
+        private Pair<String, String> param;
         
         @Test
         public void test() {
