@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.2" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
   <!-- Define Persistence Unit -->
   <persistence-unit name="BookPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>java:app/jdbc/bookstore</jta-data-source>
-    <class>com.gb4w20.gb4w20.entities.Ads</class>
+    <jta-data-source>java:app/jdbc/bookstore_test</jta-data-source>
+        <class>com.gb4w20.gb4w20.entities.Ads</class>
     <class>com.gb4w20.gb4w20.entities.Authors</class>
     <class>com.gb4w20.gb4w20.entities.BookFiles</class>
     <class>com.gb4w20.gb4w20.entities.Bookorder</class>
@@ -20,11 +19,5 @@
     <class>com.gb4w20.gb4w20.entities.Taxes</class>
     <class>com.gb4w20.gb4w20.entities.Users</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
-  </persistence-unit>
-  <!-- For tests --> 
-  <persistence-unit name="BookPUTest" transaction-type="JTA">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>java:app/jdbc/bookstore_test</jta-data-source>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
   </persistence-unit>
 </persistence>

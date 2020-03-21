@@ -78,8 +78,8 @@ public abstract class ArquillianTestBase {
                 .addPackage(ArquillianTestBase.class.getPackage())
                 .addPackage(Pair.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
-                .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
+                .addAsWebInfResource(new File("src/test/resources/WEB-INF/payara-resources.xml"), "payara-resources.xml")
+                .addAsResource(new File("src/test/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
                 .addAsResource(new File("src/main/resources/log4j2.xml"), "log4j2.xml")
                 .addAsResource("testseed.sql")
                 .addAsLibraries(dependencies);
