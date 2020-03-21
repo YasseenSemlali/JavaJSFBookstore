@@ -6,10 +6,11 @@
 package com.gb4w20.arquillian.test;
 
 import com.gb4w20.gb4w20.entities.Users;
-import com.gb4w20.gb4w20.exceptions.NonexistentEntityException;
+import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.filters.LoggedInUserFilter;
 import com.gb4w20.gb4w20.filters.ManagerFilter;
+import com.gb4w20.gb4w20.jpa.GenresJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import java.io.BufferedReader;
 import java.io.File;
@@ -66,11 +67,12 @@ public abstract class ArquillianTestBase {
         // The SQL script to create the database is in src/test/resources
         final WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war")
                 .setWebXML(new File("src/main/webapp/WEB-INF/web-test.xml"))
+                .addPackage(NonexistentEntityException.class.getPackage())
                 .addPackage(UsersJpaController.class.getPackage())
+                .addPackage(GenresJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Users.class.getPackage())
                 .addPackage(ArquillianTestBase.class.getPackage())
-                .addPackage(NonexistentEntityException.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")

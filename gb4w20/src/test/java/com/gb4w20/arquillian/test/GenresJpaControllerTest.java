@@ -30,7 +30,7 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //isbn, genreId, authorId, maxResults, expected resultset size
-                new Quintet<Long, Long, Long, Integer, Integer>(1l, 1l, 1l, 0, 0) 
+                new Quintet<Long, Long, Long, Integer, Integer>(1l, 1l, 1l, 2, 2) 
                 );
         
         private Quintet<Long, Long, Long, Integer, Integer> param;
@@ -53,7 +53,7 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
             
             List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genreId, authorId, maxResults);
             
-            assertEquals("Expected number of books returned " + books.size() + " did not match the expected result of " + expectedResultSetSize, books.size(), expectedResultSetSize);
+            assertEquals("Expected number of books found was incorrect", books.size(), expectedResultSetSize);
             
         }
     }
