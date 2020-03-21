@@ -4,8 +4,8 @@ import com.gb4w20.gb4w20.entities.Bookorder;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.entities.Taxes;
-import com.gb4w20.gb4w20.exceptions.BackendException;
-import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
+import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
+import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.BookorderJpaController;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.OrdersJpaController;
@@ -130,8 +130,8 @@ public class ManagerOrders implements Serializable {
      *
      * @param e
      * @author Jean Robatto
-     * @throws com.gb4w20.gb4w20.exceptions.RollbackFailureException
-     * @throws com.gb4w20.gb4w20.exceptions.BackendException
+     * @throws com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException
+     * @throws com.gb4w20.gb4w20.jpa.exceptions.BackendException
      */
     public void addBookToCollection(AjaxBehaviorEvent e) throws RollbackFailureException, BackendException {
         Long isbn = ((Long) ((UIOutput) e.getSource()).getValue());
@@ -171,7 +171,7 @@ public class ManagerOrders implements Serializable {
      * @param selected_order
      * @return redirection
      * @author Jean Robatto
-     * @throws com.gb4w20.gb4w20.exceptions.BackendException
+     * @throws com.gb4w20.gb4w20.jpa.exceptions.BackendException
      */
     public String selectOrder(Orders selected_order) throws BackendException {
         if (selected_order == null) {

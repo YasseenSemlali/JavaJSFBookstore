@@ -6,7 +6,8 @@
 package com.gb4w20.arquillian.test;
 
 import com.gb4w20.gb4w20.entities.Users;
-import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
+import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
+import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.filters.LoggedInUserFilter;
 import com.gb4w20.gb4w20.filters.ManagerFilter;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
@@ -26,6 +27,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import javax.transaction.UserTransaction;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -57,7 +59,8 @@ public abstract class ArquillianTestBase {
                         "org.assertj:assertj-core",
                         "org.slf4j:slf4j-api",
                         "org.apache.logging.log4j:log4j-slf4j-impl",
-                        "org.apache.logging.log4j:log4j-web"
+                        "org.apache.logging.log4j:log4j-web",
+                        "org.javatuples:javatuples"
                 ).withTransitivity()
                 .asFile();
 
@@ -68,6 +71,7 @@ public abstract class ArquillianTestBase {
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Users.class.getPackage())
                 .addPackage(ArquillianTestBase.class.getPackage())
+                .addPackage(Pair.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
