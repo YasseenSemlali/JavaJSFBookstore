@@ -30,7 +30,11 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //isbn, genreId, authorId, maxResults, expected resultset size
-                new Quintet<Long, Long, Long, Integer, Integer>(1l, 1l, 1l, 2, 2) 
+                new Quintet<Long, Long, Long, Integer, Integer>(1l, 1l, 1l, 2, 2),
+                new Quintet<Long, Long, Long, Integer, Integer>(9780000000000l, 1l, 2l, 100, 4),
+                new Quintet<Long, Long, Long, Integer, Integer>(9780765377067l, 2l, 7l, 100, 2),
+                new Quintet<Long, Long, Long, Integer, Integer>(9780439064866l, 1l, 4l, 1, 1),
+                new Quintet<Long, Long, Long, Integer, Integer>(9780545010221l, 1l, 1l, 100, 3)
                 );
         
         private Quintet<Long, Long, Long, Integer, Integer> param;
