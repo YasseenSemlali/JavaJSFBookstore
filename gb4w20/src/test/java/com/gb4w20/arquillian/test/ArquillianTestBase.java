@@ -6,6 +6,7 @@
 package com.gb4w20.arquillian.test;
 
 import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.filters.LoggedInUserFilter;
 import com.gb4w20.gb4w20.filters.ManagerFilter;
@@ -58,7 +59,8 @@ public abstract class ArquillianTestBase {
                         "org.assertj:assertj-core",
                         "org.slf4j:slf4j-api",
                         "org.apache.logging.log4j:log4j-slf4j-impl",
-                        "org.apache.logging.log4j:log4j-web"
+                        "org.apache.logging.log4j:log4j-web",
+                        "org.javatuples:javatuples"
                 ).withTransitivity()
                 .asFile();
 
