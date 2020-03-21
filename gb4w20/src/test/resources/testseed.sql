@@ -63,6 +63,7 @@ insert into bookauthor(author_id, isbn) VALUES(2, 9780000000000);
 insert into bookauthor(author_id, isbn) VALUES(3, 9780439064866);
 insert into bookauthor(author_id, isbn) VALUES(4, 9780439064866);
 insert into bookauthor(author_id, isbn) VALUES(3, 9780545010221);
+insert into bookauthor(author_id, isbn) VALUES(1, 9780545010221);
 insert into bookauthor(author_id, isbn) VALUES(5, 9780316251303);
 insert into bookauthor(author_id, isbn) VALUES(6, 9780000000006);
 insert into bookauthor(author_id, isbn) VALUES(7, 9780765377067);
