@@ -249,12 +249,11 @@ public class AuthorsJpaController implements Serializable {
      * page
      *
      * @param isbn
-     * @param authorId
+     * @param authors
      * @param maxResults
      * @return
      * @author Jasmar
      */
-//    public List<Books> getOtherBooksBySameAuthor(long isbn, long authorId, int maxResults) {
     public List<Books> getOtherBooksBySameAuthor(long isbn, Collection<Authors> authors, int maxResults) {
         LOG.info("getting " + maxResults + " books from the same author");
 
