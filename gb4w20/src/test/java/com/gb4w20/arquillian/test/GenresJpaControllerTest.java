@@ -33,7 +33,7 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //test number, isbn, genreId, authorId, maxResults, expected resultset size
-                new Sextet<Integer, Long, Long, Long, Integer, Integer>(1, 1l, 1l, 1l, 2, 2),
+                new Sextet<Integer, Long, Long, Long, Integer, Integer>(1, 9780000000006l, 1l, 6l, 2, 2),
                 new Sextet<Integer, Long, Long, Long, Integer, Integer>(2, 9780000000000l, 1l, 2l, 100, 4),
                 new Sextet<Integer, Long, Long, Long, Integer, Integer>(3, 9780765377067l, 2l, 7l, 100, 2),
                 new Sextet<Integer, Long, Long, Long, Integer, Integer>(4, 9780439064866l, 1l, 4l, 1, 1),
@@ -57,7 +57,7 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
             long genreId = param.getValue2();
             long authorId = param.getValue3(); 
             int maxResults = param.getValue4();
-            int expectedResultSetSize = param.getValue4();
+            int expectedResultSetSize = param.getValue5();
             
             List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genreId, authorId, maxResults);
             
@@ -77,7 +77,6 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
             long genreId = param.getValue2();
             long authorId = param.getValue3(); 
             int maxResults = param.getValue4();
-            int expectedResultSetSize = param.getValue4();
             
             List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genreId, authorId, maxResults);
             
@@ -98,6 +97,42 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
                     if(author.getAuthorId() == authorId){
                         return false; 
                     }
+                }
+            }
+            
+            return true; 
+        }
+        
+        /**
+         * Used to test the result set never contains the same book
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testResultSetDoesNotContainSameBook() {
+            
+            int testNumber = param.getValue0();
+            long isbn = param.getValue1();
+            long genreId = param.getValue2();
+            long authorId = param.getValue3(); 
+            int maxResults = param.getValue4();
+            
+            List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genreId, authorId, maxResults);
+            
+            assertTrue( "Test " + testNumber + ": The same book is present in the result set", booksDoNotContainTheGivenIsbn(books, isbn));
+
+        }
+        
+        /**
+         * Used to know if any of the books in the list have the isbn given
+         * @param books to check 
+         * @param isbn in question 
+         * @return true if none of the books have the same isbn and false otherwise
+         */
+        private boolean booksDoNotContainTheGivenIsbn(List<Books> books, long isbn){
+            
+            for(Books book : books){
+                if(book.getIsbn() == isbn) {
+                    return false;
                 }
             }
             
