@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 public class AdvancedSearchBackingBean implements Serializable {
     
     private final static Logger LOG = LoggerFactory.getLogger(AdvancedSearchBackingBean.class);
-
+    
     private String title;
     private String author;
     private String publisher;

@@ -52,6 +52,10 @@ public class Orders implements Serializable {
     private String billingAddress;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "enabled")
+    private Boolean enabled;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
@@ -68,10 +72,11 @@ public class Orders implements Serializable {
         this.orderId = orderId;
     }
 
-    public Orders(Long orderId, String billingAddress, Date timestamp) {
+    public Orders(Long orderId, String billingAddress, Date timestamp, Boolean enabled) {
         this.orderId = orderId;
         this.billingAddress = billingAddress;
         this.timestamp = timestamp;
+        this.enabled = enabled;
     }
 
     public Long getOrderId() {
@@ -93,7 +98,15 @@ public class Orders implements Serializable {
     public Date getTimestamp() {
         return timestamp;
     }
+    
+    public Boolean getEnabled() {
+        return enabled;
+    }
 
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+    
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }

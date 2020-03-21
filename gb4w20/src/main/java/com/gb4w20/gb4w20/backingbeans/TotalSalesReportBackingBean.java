@@ -40,7 +40,6 @@ public class TotalSalesReportBackingBean implements Serializable {
     private JSFFormMessageValidator validator;
     
     private java.util.Date startDate;
-    
     private java.util.Date endDate; 
     
     private Double totalSales; 

@@ -40,7 +40,6 @@ public class ZeroSalesReportBackingBean implements Serializable {
     private JSFFormMessageValidator validator;
     
     private java.util.Date startDate;
-    
     private java.util.Date endDate; 
     
     private List<Books> bookSales; 

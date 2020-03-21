@@ -20,6 +20,11 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>admin</param-value>
     </context-param>
+    <!-- Used for file uploads -->
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>auto</param-value>
+    </context-param>
     <!-- Global email parameters available to all servlets -->
     <context-param>
         <param-name>emailSender</param-name>
@@ -43,6 +48,16 @@
         <param-name>EmailFile</param-name>
         <param-value>\temp\EmailList.txt</param-value>
     </context-param>
+    <!-- Used to filter only managers in the manager secured folder --> 
+    <filter-mapping>
+        <filter-name>ManagerFilter</filter-name>
+        <url-pattern>/manager-secured/*</url-pattern>
+    </filter-mapping>
+    <!-- Used to filter out aspects of the site only logged in users can access." -->
+    <filter-mapping>
+        <filter-name>LoggedInUserFilter</filter-name>
+        <url-pattern>/user-secured/*</url-pattern>
+    </filter-mapping>
     <error-page>
         <error-code>404</error-code>
         <location>/404-error.xhtml</location>
