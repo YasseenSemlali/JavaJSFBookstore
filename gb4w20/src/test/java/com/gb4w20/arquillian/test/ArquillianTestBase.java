@@ -5,6 +5,7 @@
  */
 package com.gb4w20.arquillian.test;
 
+import com.gb4w20.gb4w20.entities.Authors;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
@@ -73,6 +74,7 @@ public abstract class ArquillianTestBase {
                 .addPackage(GenresJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Users.class.getPackage())
+                .addPackage(Authors.class.getPackage())
                 .addPackage(ArquillianTestBase.class.getPackage())
                 .addPackage(Pair.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
