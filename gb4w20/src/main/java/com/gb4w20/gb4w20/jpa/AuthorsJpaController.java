@@ -12,7 +12,7 @@ import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Orders;
-import com.gb4w20.gb4w20.exceptions.BackendException;
+import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;

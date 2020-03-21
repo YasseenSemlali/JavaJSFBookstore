@@ -12,7 +12,7 @@ import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Genres;
 import com.gb4w20.gb4w20.entities.Genres_;
-import com.gb4w20.gb4w20.exceptions.BackendException;
+import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -171,7 +171,6 @@ public class GenresJpaController implements Serializable {
 //    public List<Books> getOtherBooksOfSameGenre(long isbn, long genreId, long authorId, int maxResults){
     public List<Books> getOtherBooksOfSameGenre(long isbn, Collection<Genres> genres, Collection<Authors> authors, int maxResults){
         LOG.info("getting " + maxResults + " other books of same genre and different author");
-        
         CriteriaBuilder cb = em.getCriteriaBuilder();      
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
         Root<Books> book = cq.from(Books.class);
