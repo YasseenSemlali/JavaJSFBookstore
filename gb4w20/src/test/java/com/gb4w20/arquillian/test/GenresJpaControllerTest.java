@@ -2,11 +2,8 @@ package com.gb4w20.arquillian.test;
 
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.jpa.GenresJpaController;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.inject.Inject;
-import org.javatuples.Pair;
-import org.javatuples.Quartet;
 import org.javatuples.Quintet;
 import static org.junit.Assert.assertEquals;
 import org.junit.Rule;
@@ -33,10 +30,10 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //isbn, genreId, authorId, maxResults, expected resultset size
-                new Quintet<Long, Long, Long, Integer, Integer>(1l, 1l, 1l, 0, 0) 
+                new Object[] {1l, 1l, 1l, 0, 0} 
                 );
         
-        private Quintet<Long, Long, Long, Integer, Integer> param;
+        private Object[] param;
         
         @Inject
         GenresJpaController genresJpaController;
@@ -48,11 +45,11 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
         @Test
         public void testCorrectDataSetSize() {
             
-            long isbn = param.getValue0();
-            long genreId = param.getValue1();
-            long authorId = param.getValue2(); 
-            int maxResults = param.getValue3();
-            int expectedResultSetSize = param.getValue4();
+            long isbn = (long)param[0];
+            long genreId = (long)param[1];
+            long authorId = (long)param[2]; 
+            int maxResults = (int)param[3];
+            int expectedResultSetSize = (int)param[4];
             
             List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genreId, authorId, maxResults);
             
