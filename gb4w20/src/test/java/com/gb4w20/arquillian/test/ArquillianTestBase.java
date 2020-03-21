@@ -6,8 +6,8 @@
 package com.gb4w20.arquillian.test;
 
 import com.gb4w20.gb4w20.entities.Users;
-import com.gb4w20.gb4w20.exceptions.NonexistentEntityException;
-import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
+import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
+import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.filters.LoggedInUserFilter;
 import com.gb4w20.gb4w20.filters.ManagerFilter;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;

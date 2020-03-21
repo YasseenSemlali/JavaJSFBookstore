@@ -1,8 +1,8 @@
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.RssFeeds;
-import com.gb4w20.gb4w20.exceptions.BackendException;
-import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
+import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
+import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.entities.RssFeeds_;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package com.gb4w20.gb4w20.exceptions;
+package com.gb4w20.gb4w20.jpa.exceptions;
 
 /**
  * Custom exception for backend problems

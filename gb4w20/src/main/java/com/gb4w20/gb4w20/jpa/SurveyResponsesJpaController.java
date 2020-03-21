@@ -8,7 +8,7 @@ import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.SurveyQuestions;
 import com.gb4w20.gb4w20.entities.SurveyResponses;
 import com.gb4w20.gb4w20.entities.SurveyResponses_;
-import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
+import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
 import java.util.logging.Level;

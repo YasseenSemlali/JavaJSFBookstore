@@ -1,7 +1,5 @@
 package com.gb4w20.gb4w20.jpa.exceptions;
 
-import com.gb4w20.gb4w20.exceptions.*;
-
 public class RollbackFailureException extends Exception {
 
     public RollbackFailureException(String message, Throwable cause) {
