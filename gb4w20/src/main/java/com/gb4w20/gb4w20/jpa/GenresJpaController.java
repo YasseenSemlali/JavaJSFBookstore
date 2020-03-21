@@ -168,7 +168,6 @@ public class GenresJpaController implements Serializable {
      */
     public List<Books> getOtherBooksOfSameGenre(long isbn, long genreId, long authorId, int maxResults){
         LOG.info("getting " + maxResults + " other books of same genre and different author");
-        
         CriteriaBuilder cb = em.getCriteriaBuilder();      
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
         Root<Books> book = cq.from(Books.class);

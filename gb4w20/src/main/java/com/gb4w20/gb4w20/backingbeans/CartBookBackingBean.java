@@ -130,5 +130,12 @@ public class CartBookBackingBean implements Serializable {
         else{
             return new BigDecimal(0);
         }
-    } 
+    }
+    
+    /**
+     * Re-initializing a new cart
+     */
+    public void clearCart(){
+        this.books = new HashSet<Books>();
+    }
 }

@@ -35,7 +35,6 @@
         <property name="User" value="gb4w20"/>
         <property name="Password" value="pencil3tuna"/>
     </jdbc-connection-pool>
-    
     <jdbc-connection-pool allow-non-component-callers="false" 
                               associate-with-thread="false" 
                               connection-creation-retry-attempts="0"

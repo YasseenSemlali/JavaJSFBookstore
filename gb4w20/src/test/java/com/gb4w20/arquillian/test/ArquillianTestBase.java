@@ -7,6 +7,8 @@ package com.gb4w20.arquillian.test;
 
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
+import com.gb4w20.gb4w20.filters.LoggedInUserFilter;
+import com.gb4w20.gb4w20.filters.ManagerFilter;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import java.io.BufferedReader;
 import java.io.File;
@@ -61,7 +63,7 @@ public abstract class ArquillianTestBase {
 
         // The SQL script to create the database is in src/test/resources
         final WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war")
-                .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
+                .setWebXML(new File("src/main/webapp/WEB-INF/web-test.xml"))
                 .addPackage(UsersJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Users.class.getPackage())

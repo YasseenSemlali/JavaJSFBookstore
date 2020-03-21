@@ -36,7 +36,6 @@ public class TopSellersReportBackingBean implements Serializable {
     private JSFFormMessageValidator validator;
     
     private java.util.Date startDate;
-    
     private java.util.Date endDate; 
     
     private List<NameTotalAndCountBean> bookSales; 
