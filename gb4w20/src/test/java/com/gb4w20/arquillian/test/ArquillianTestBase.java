@@ -40,9 +40,7 @@ import org.junit.runner.RunWith;
  * @author Yasseen
  */
 @RunWith(Arquillian.class)
-public class ArquillianTestBase {
-
-    
+public abstract class ArquillianTestBase {    
     @Resource(lookup = "java:app/jdbc/bookstore_test")
     private DataSource dataSource;
 
@@ -115,7 +113,6 @@ public class ArquillianTestBase {
     private String loadAsString(final String path) {
         try (InputStream inputStream = Thread.currentThread()
                 .getContextClassLoader().getResourceAsStream(path)) {
-            System.out.println("test "+inputStream);
             return new Scanner(inputStream).useDelimiter("\\A").next();
         } catch (IOException e) {
             throw new RuntimeException("Unable to close input stream.", e);
@@ -138,7 +135,6 @@ public class ArquillianTestBase {
                 if (line.isEmpty() || isComment(line)) {
                     continue;
                 }
-                System.out.println(line);
                 sqlStatement.append(line);
                 if (line.endsWith(statementDelimiter)) {
                     statements.add(sqlStatement.toString());
