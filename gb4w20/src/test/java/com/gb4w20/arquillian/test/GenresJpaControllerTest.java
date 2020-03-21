@@ -30,10 +30,10 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //isbn, genreId, authorId, maxResults, expected resultset size
-                new Object[] {1l, 1l, 1l, 0, 0} 
+                new Quintet<Long, Long, Long, Integer, Integer>(1l, 1l, 1l, 0, 0) 
                 );
         
-        private Object[] param;
+        private Quintet<Long, Long, Long, Integer, Integer> param;
         
         @Inject
         GenresJpaController genresJpaController;
@@ -45,11 +45,11 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
         @Test
         public void testCorrectDataSetSize() {
             
-            long isbn = (long)param[0];
-            long genreId = (long)param[1];
-            long authorId = (long)param[2]; 
-            int maxResults = (int)param[3];
-            int expectedResultSetSize = (int)param[4];
+            long isbn = param.getValue0();
+            long genreId = param.getValue1();
+            long authorId = param.getValue2(); 
+            int maxResults = param.getValue3();
+            int expectedResultSetSize = param.getValue4();
             
             List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genreId, authorId, maxResults);
             
