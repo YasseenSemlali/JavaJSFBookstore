@@ -34,7 +34,7 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
                 new Quintet<Long, Long, Long, Integer, Integer>(9780000000000l, 1l, 2l, 100, 4),
                 new Quintet<Long, Long, Long, Integer, Integer>(9780765377067l, 2l, 7l, 100, 2),
                 new Quintet<Long, Long, Long, Integer, Integer>(9780439064866l, 1l, 4l, 1, 1),
-                new Quintet<Long, Long, Long, Integer, Integer>(9780545010221l, 1l, 1l, 100, 3)
+                new Quintet<Long, Long, Long, Integer, Integer>(9780545010221l, 1l, 1l, 3, 3)
                 );
         
         private Quintet<Long, Long, Long, Integer, Integer> param;
@@ -57,8 +57,8 @@ public class GenresJpaControllerTest extends ArquillianTestBase{
             
             List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genreId, authorId, maxResults);
             
-            assertEquals("Expected number of books found was incorrect", books.size(), expectedResultSetSize);
-            
+            assertEquals("Expected number of books found was incorrect", expectedResultSetSize, books.size());
+
         }
     }
     
