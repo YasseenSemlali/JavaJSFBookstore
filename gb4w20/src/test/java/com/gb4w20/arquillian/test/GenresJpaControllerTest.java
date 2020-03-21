@@ -21,7 +21,7 @@ import org.junit.runner.RunWith;
  * @author Jeffrey Boisvert
  */
 @RunWith(Enclosed.class)
-public class GenresJpaControllerTest extends ArquillianTestBase{
+public class GenresJpaControllerTest {
     
     /**
      * Used to run valid tests for the getOtherBooksOfSameGenres 
