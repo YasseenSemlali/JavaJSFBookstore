@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Used to interact with the authors table.
  *
- * @author Jeffrey Boisvert
+ * @author Jeffrey Boisvert, Jasmar Badion
  */
 @Named
 @SessionScoped

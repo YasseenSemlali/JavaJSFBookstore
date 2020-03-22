@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Jeffrey Boisvert, Yasseen Semlali
+ * @author Jeffrey Boisvert, Yasseen Semlali, Jasmar Badion
  */
 @Named
 @SessionScoped

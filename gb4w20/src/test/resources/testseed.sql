@@ -89,6 +89,10 @@ insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_
 insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 2, 2, '456 avenue boulevard', '2020-02-22 13:34:57');
 insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 2, 9780000000000, 17, null, 5, 9.975, true );
 
+-- SELECT SUM(bo.amount_paid_pretax) FROM authors a JOIN bookauthor ba ON a.author_id=ba.author_id JOIN books b 
+-- ON ba.isbn=b.isbn JOIN bookorder bo ON b.isbn=bo.isbn JOIN orders o ON o.order_id=bo.order_id 
+-- WHERE o.`timestamp` BETWEEN '2020-02-22 05:03:16' AND '2020-03-21 05:03:16' AND a.author_id='3';
+
 insert into file_formats(file_format_id, format) VALUES(1, "epub");
 insert into file_formats(file_format_id, format) VALUES(2, "pdf");
 insert into file_formats(file_format_id, format) VALUES(3, "mobi");
