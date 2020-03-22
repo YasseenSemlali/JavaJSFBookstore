@@ -2,6 +2,7 @@ package com.gb4w20.arquillian.test;
 
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
+import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,7 +21,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Test for Books queries
  *
- * @author Yasseen
+ * @author Yasseen, Jeffrey Boisvert
  */
 @RunWith(Enclosed.class)
 public class BooksJpaControllerTest {
@@ -79,7 +80,7 @@ public class BooksJpaControllerTest {
 //         * @author Jeffrey Boisvert
 //         */
 //        @Test
-//        public void TestCorrectNumberOfBooksAreReturned(){
+//        public void testCorrectNumberOfBooksAreReturned(){
 //            
 //            int testNumber = param.getValue0();
 //            String startDate = param.getValue1();
@@ -122,7 +123,7 @@ public class BooksJpaControllerTest {
 //         * @author Jeffrey Boisvert
 //         */
 //        @Test
-//        public void TestCorrectNumberOfBooksAreReturned(){
+//        public void testCorrectNumberOfBooksAreReturned(){
 //            
 //            int testNumber = param.getValue0();
 //            String startDate = param.getValue1();
@@ -140,7 +141,7 @@ public class BooksJpaControllerTest {
 //         * @author Jeffrey Boisvert
 //         */
 //        @Test
-//        public void TestIfFirstRecordIsCorrect(){
+//        public void testIfFirstRecordIsCorrect(){
 //            
 //            int testNumber = param.getValue0();
 //            String startDate = param.getValue1();
@@ -168,13 +169,120 @@ public class BooksJpaControllerTest {
      * in the BooksJpaContoller
      * @author Jeffrey Boisvert
      */
-    public static class GetActiveBooksTest extends ArquillianTestBase{
-        
-        @Inject
-        BooksJpaController booksJpaController; 
-        
-        
-        
-    }
+//    public static class GetActiveBooksTest extends ArquillianTestBase{
+//        
+//        @Inject
+//        BooksJpaController booksJpaController; 
+//        
+//        /**
+//         * Used to test if all the books that are active are returned. 
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test
+//        public void testIfAllActiveBooksReturned(){
+//            
+//            int expectedResultSetSize = 8; 
+//            
+//            List<Books> books = booksJpaController.getActiveBooks(); 
+//            
+//            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
+//            
+//        }
+//        
+//        /**
+//         * Used to test if all the books are returned
+//         * when giving a negative number
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test 
+//        public void testIfAllActiveBooksReturnedGivenANegativeParameter(){
+//            
+//            int expectedResultSetSize = 8; 
+//            
+//            List<Books> books = booksJpaController.getActiveBooks(-1); 
+//            
+//            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
+//
+//        }
+//        
+//        /**
+//         * Used to test if the max results 
+//         * are returned correcty
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test 
+//        public void testIfMaxResultReturned(){
+//            
+//            int expectedResultSetSize = 3; 
+//            
+//            List<Books> books = booksJpaController.getActiveBooks(3); 
+//            
+//            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
+//
+//        }
+//        
+//        /**
+//         * Used to test if the max results 
+//         * are returned correctly when asking for a maximum 
+//         * higher than the actual amount of active books
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test 
+//        public void testAllBooksReturnedWithHighMaxResult(){
+//            
+//            int expectedResultSetSize = 8; 
+//            
+//            List<Books> books = booksJpaController.getActiveBooks(123456); 
+//            
+//            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
+//
+//        }
+//        
+//        /**
+//         * Used to test if the correct amount of books is returned
+//         * even after disabling a book. 
+//         * @author Jeffrey Boisvert
+//         * @throws Exception 
+//         */
+//        @Test
+//        public void testReturnOnlyActiveBooksAfterDisablingABook() throws Exception {
+//            
+//            int expectedResultSetSize = 7; 
+//            
+//            Books book = booksJpaController.findBooks(9780000000000l);
+//            book.setActive(false);
+//            booksJpaController.edit(book);
+//            
+//            List<Books> books = booksJpaController.getActiveBooks();
+//            
+//            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
+//            
+//        }
+//        
+//        /**
+//         * Used to test if there no active books
+//         * @author Jeffrey Boisvert
+//         * @throws java.lang.Exception
+//         */
+//        @Test
+//        public void testNoActiveBooks() throws Exception {
+//            
+//            int expectedResultSetSize = 0; 
+//            
+//            List<Books> activeBooks = booksJpaController.getActiveBooks();
+//            for(Books book : activeBooks){
+//                book.setActive(false);
+//                booksJpaController.edit(book);
+//            }
+//            
+//            List<Books> books = booksJpaController.getActiveBooks();
+//            
+//            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
+//            
+//        }
+//        
+//    }
+    
+    
     
 }
