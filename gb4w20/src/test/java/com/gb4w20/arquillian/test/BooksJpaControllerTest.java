@@ -10,7 +10,9 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.tuple.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Septet;
+import org.javatuples.Triplet;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -283,6 +285,79 @@ public class BooksJpaControllerTest {
 //        
 //    }
     
-    
+    /**
+     * Used to hold tests for the getAllBooksForGenres method 
+     * in the BooksJpaContoller
+     * @author Jeffrey Boisvert
+     */
+    public static class GetAllBooksForGenres extends ArquillianTestBase{
+        
+        @Inject
+        BooksJpaController booksJpaController; 
+        
+        @Rule
+        public ParameterRule rule = new ParameterRule("param",
+                //test number, genreId, expected resultset size
+                new Triplet<Integer, Long, Integer>(1, 1l, 5),
+                new Triplet<Integer, Long, Integer>(2, 2l, 3),
+                new Triplet<Integer, Long, Integer>(3, 100l, 0)
+                );
+        
+        private Triplet<Integer, Long, Integer> param;
+        
+        /**
+         * Used to test if the correct number of books are returned
+         * in the result set. 
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testCorrectNumberOfBooksAreReturned(){
+            
+            int testNumber = param.getValue0();
+            long genreId = param.getValue1();
+            int expectedResultSetSize = param.getValue2();
+            
+            List<Books> books = booksJpaController.getAllBooksForGenre(genreId);
+            
+            assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
+            
+        }
+        
+        /**
+         * Used to test and ensure all the 
+         * results returned are active books. 
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testIfAllBooksReturnedAreActive(){
+            
+            int testNumber = param.getValue0();
+            long genreId = param.getValue1();
+            
+            List<Books> books = booksJpaController.getAllBooksForGenre(genreId);
+            
+            assertTrue("Test " + testNumber + " contained an inactive book", isAllBooksActive(books));
+            
+        }
+        
+        /**
+         * Used to test of the list of books are all active. 
+         * @param books given 
+         * @return true if books are active false otherwise
+         * @author Jeffrey Boisvert
+         */
+        private boolean isAllBooksActive(List<Books> books){
+            
+            for(Books book : books){
+                if (!book.getActive()){
+                    return false;
+                }
+            }
+            
+            return true; 
+            
+        }
+        
+    }
     
 }
