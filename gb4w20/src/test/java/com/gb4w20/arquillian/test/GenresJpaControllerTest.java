@@ -43,11 +43,8 @@
 //        private Sextet<Integer, Long, Long, Long, Integer, Integer> param;
 //        
 //        @Inject
-//<<<<<<< HEAD
-//        GenresJpaController genresJpaController;
-//=======
 //        private GenresJpaController genresJpaController;
-//>>>>>>> ffa54259a9ed80fbdf566cb19ac6ffefbe62f3f6
+//
 //        
 //        /**
 //         * Used to test the result set is always the correct size
