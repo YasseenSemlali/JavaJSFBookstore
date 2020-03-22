@@ -99,6 +99,18 @@ public class UserSessionBean implements Serializable {
     }
     
     /**
+     * Used to get the logged in user's id. 
+     * @return the id of the logged in user
+     * @author Yasseen Semlali
+     */
+    public Long getUserId(){
+        if(this.user == null){
+            return null; 
+        }
+        return this.user.getUserId(); 
+    }
+    
+    /**
      * Method to check whether the user is a manager or not
      * @return true if logged in manager and false otherwise
      * @author Jeffrey Boisvert

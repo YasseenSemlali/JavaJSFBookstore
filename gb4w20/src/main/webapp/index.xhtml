@@ -94,7 +94,7 @@ Java Server Faces page that displays the frontpage of the app
                     <c:choose>
                         <c:when test="#{userSession.loggedIn}">
                             <b:panelGrid columns="2">
-                                <c:forEach items="#{booksJpaController.getRecentlyBoughtBooks(3)}" var="book">
+                                <c:forEach items="#{booksJpaController.getRecentlyBoughtBooks(userSession.userId, 3)}" var="book">
                                    <bk:book value="#{book}"/>
                                 </c:forEach>
                             </b:panelGrid>
