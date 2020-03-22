@@ -726,7 +726,19 @@ public class BooksJpaController implements Serializable {
      * @author Jeffrey Boisvert
      */
     public List<Books> getActiveBooks() {
-        return this.getBooksOnSale(-1);
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+
+        Root<Books> book = cq.from(Books.class);
+
+        cq.select(book)
+        .where(cb.isTrue(book.get(Books_.active)));
+        
+        Query query = em.createQuery(cq);
+
+        return query.getResultList();
+        
     }
 
     /**

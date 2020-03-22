@@ -14,6 +14,7 @@ import com.gb4w20.gb4w20.filters.LoggedInUserFilter;
 import com.gb4w20.gb4w20.filters.ManagerFilter;
 import com.gb4w20.gb4w20.jpa.GenresJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.io.BufferedReader;
@@ -73,6 +74,7 @@ public abstract class ArquillianTestBase {
         final WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war")
                 .setWebXML(new File("src/main/webapp/WEB-INF/web-test.xml"))
                 .addClass(UserSessionBean.class)
+                .addPackage(IllegalOrphanException.class.getPackage())
                 .addPackage(NonexistentEntityException.class.getPackage())
                 .addPackage(UsersJpaController.class.getPackage())
                 .addPackage(GenresJpaController.class.getPackage())
