@@ -5,6 +5,9 @@ import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 import org.apache.commons.lang3.tuple.Pair;
@@ -285,25 +288,100 @@ public class BooksJpaControllerTest {
 //        
 //    }
     
+//    /**
+//     * Used to hold tests for the getAllBooksForGenres method 
+//     * in the BooksJpaContoller
+//     * @author Jeffrey Boisvert
+//     */
+//    public static class GetAllBooksForGenresTest extends ArquillianTestBase{
+//        
+//        @Inject
+//        BooksJpaController booksJpaController; 
+//        
+//        @Rule
+//        public ParameterRule rule = new ParameterRule("param",
+//                //test number, genreId, expected resultset size
+//                new Triplet<Integer, Long, Integer>(1, 1l, 5),
+//                new Triplet<Integer, Long, Integer>(2, 2l, 3),
+//                new Triplet<Integer, Long, Integer>(3, 100l, 0)
+//                );
+//        
+//        private Triplet<Integer, Long, Integer> param;
+//        
+//        /**
+//         * Used to test if the correct number of books are returned
+//         * in the result set. 
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test
+//        public void testCorrectNumberOfBooksAreReturned(){
+//            
+//            int testNumber = param.getValue0();
+//            long genreId = param.getValue1();
+//            int expectedResultSetSize = param.getValue2();
+//            
+//            List<Books> books = booksJpaController.getAllBooksForGenre(genreId);
+//            
+//            assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
+//            
+//        }
+//        
+//        /**
+//         * Used to test and ensure all the 
+//         * results returned are active books. 
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test
+//        public void testIfAllBooksReturnedAreActive(){
+//            
+//            int testNumber = param.getValue0();
+//            long genreId = param.getValue1();
+//            
+//            List<Books> books = booksJpaController.getAllBooksForGenre(genreId);
+//            
+//            assertTrue("Test " + testNumber + " contained an inactive book", isAllBooksActive(books));
+//            
+//        }
+//        
+//        /**
+//         * Used to test of the list of books are all active. 
+//         * @param books given 
+//         * @return true if books are active false otherwise
+//         * @author Jeffrey Boisvert
+//         */
+//        private boolean isAllBooksActive(List<Books> books){
+//            
+//            for(Books book : books){
+//                if (!book.getActive()){
+//                    return false;
+//                }
+//            }
+//            
+//            return true; 
+//            
+//        }
+//        
+//    }
+    
     /**
-     * Used to hold tests for the getAllBooksForGenres method 
+     * Used to hold tests for the getAllBooksForUser method 
      * in the BooksJpaContoller
      * @author Jeffrey Boisvert
      */
-    public static class GetAllBooksForGenres extends ArquillianTestBase{
+    public static class GetBooksForUserTest extends ArquillianTestBase{
         
         @Inject
         BooksJpaController booksJpaController; 
         
         @Rule
         public ParameterRule rule = new ParameterRule("param",
-                //test number, genreId, expected resultset size
-                new Triplet<Integer, Long, Integer>(1, 1l, 5),
-                new Triplet<Integer, Long, Integer>(2, 2l, 3),
-                new Triplet<Integer, Long, Integer>(3, 100l, 0)
+                //test number, userId, expected resultset size, list of isbns in order
+                new Quartet<Integer, Long, Integer, List<Long>>(1, 1l, 1, new ArrayList<Long>(Arrays.asList(9781401323585l))),
+                new Quartet<Integer, Long, Integer, List<Long>>(1, 2l, 1, new ArrayList<Long>(Arrays.asList(9781401323585l))),
+                new Quartet<Integer, Long, Integer, List<Long>>(1, 500l, 0, new ArrayList<Long>())
                 );
         
-        private Triplet<Integer, Long, Integer> param;
+        private Quartet<Integer, Long, Integer, List<Long>> param;
         
         /**
          * Used to test if the correct number of books are returned
@@ -314,12 +392,47 @@ public class BooksJpaControllerTest {
         public void testCorrectNumberOfBooksAreReturned(){
             
             int testNumber = param.getValue0();
-            long genreId = param.getValue1();
+            long userId = param.getValue1();
             int expectedResultSetSize = param.getValue2();
             
-            List<Books> books = booksJpaController.getAllBooksForGenre(genreId);
+            List<Books> books = booksJpaController.getBooksForUser(userId);
             
             assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
+            
+        }
+        
+        /**
+         * Tests if the books returned for the user
+         * are the correct books that were intended
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testIfAllBooksReturnedAreTheIntededBooks(){
+            
+            int testNumber = param.getValue0();
+            long userId = param.getValue1();
+            List<Long> expectedIsbns = param.getValue3();
+            
+            List<Books> books = booksJpaController.getBooksForUser(userId);
+            
+            assertTrue("Test " + testNumber + " does not contain expected books", expectedIsbns.containsAll( getIsbnsFromBooks(books)));
+            
+        }
+        
+        /**
+         * Helper method just to get all the isbns from the given list of books
+         * @param books given
+         * @return a list of the isbns of the books. 
+         */
+        private List<Long> getIsbnsFromBooks(List<Books> books){
+            
+            List<Long> isbns = new ArrayList<>(); 
+            
+            for (Books book : books){
+                isbns.add(book.getIsbn());
+            }
+            
+            return isbns;
             
         }
         
@@ -332,9 +445,9 @@ public class BooksJpaControllerTest {
         public void testIfAllBooksReturnedAreActive(){
             
             int testNumber = param.getValue0();
-            long genreId = param.getValue1();
+            long userId = param.getValue1();
             
-            List<Books> books = booksJpaController.getAllBooksForGenre(genreId);
+            List<Books> books = booksJpaController.getBooksForUser(userId);
             
             assertTrue("Test " + testNumber + " contained an inactive book", isAllBooksActive(books));
             
