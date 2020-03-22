@@ -61,7 +61,11 @@ public class BooksJpaControllerTest {
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //test number, startDate, endDate, expected resultset size
-                new Quartet<Integer, String, String, Integer>(1, "20200101", "20200303", 8)
+                new Quartet<Integer, String, String, Integer>(1, "2020-01-01", "2020-03-03", 6),
+                new Quartet<Integer, String, String, Integer>(2, "2019-01-01", "2019-03-03", 8),
+                new Quartet<Integer, String, String, Integer>(3, "2020-01-23", "2020-01-23", 7),
+                new Quartet<Integer, String, String, Integer>(4, "2020-02-22", "2020-02-22", 7),
+                new Quartet<Integer, String, String, Integer>(5, "1999-02-22", "2020-01-23", 7)
                 );
         
         private Quartet<Integer, String, String, Integer> param;
