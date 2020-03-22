@@ -94,28 +94,28 @@ public class BooksJpaControllerTest {
 //        
 //    }
 
-    /**
-     * Used to hold tests for the findTopSellersTest method 
-     * in the BooksJpaContoller
-     * @author Jeffrey Boisvert
-     */
-    public static class FindTopSellersTest extends ArquillianTestBase{
-        
-        @Inject
-        BooksJpaController booksJpaController; 
-        
-        @Rule
-        public ParameterRule rule = new ParameterRule("param",
-                //test number, startDate, endDate, expected resultset size, expected title, expected amount, expected count
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(1, "2020-01-01", "2020-03-03", 2, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l),
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(2, "2019-01-01", "2019-03-03", 0, "Test", new BigDecimal(5), 4l),
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(3, "2020-01-23", "2020-01-23", 1, "And Another Thing...", new BigDecimal(10), 1l),
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(4, "2020-02-22", "2020-02-22", 1, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l),
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(5, "1999-02-22", "2020-01-23", 1, "And Another Thing...", new BigDecimal(10), 1l)
-                );
-        
-        private Septet<Integer, String, String, Integer, String, BigDecimal, Long> param;
-        
+//    /**
+//     * Used to hold tests for the findTopSellersTest method 
+//     * in the BooksJpaContoller
+//     * @author Jeffrey Boisvert
+//     */
+//    public static class FindTopSellersTest extends ArquillianTestBase{
+//        
+//        @Inject
+//        BooksJpaController booksJpaController; 
+//        
+//        @Rule
+//        public ParameterRule rule = new ParameterRule("param",
+//                //test number, startDate, endDate, expected resultset size, expected title, expected amount, expected count
+//                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(1, "2020-01-01", "2020-03-03", 2, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l),
+//                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(2, "2019-01-01", "2019-03-03", 0, "Test", new BigDecimal(5), 4l),
+//                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(3, "2020-01-23", "2020-01-23", 1, "And Another Thing...", new BigDecimal(10), 1l),
+//                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(4, "2020-02-22", "2020-02-22", 1, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l),
+//                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(5, "1999-02-22", "2020-01-23", 1, "And Another Thing...", new BigDecimal(10), 1l)
+//                );
+//        
+//        private Septet<Integer, String, String, Integer, String, BigDecimal, Long> param;
+//        
 //        /**
 //         * Used to test if the correct number of books are returned
 //         * in the result set. 
@@ -134,32 +134,46 @@ public class BooksJpaControllerTest {
 //            assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, report.size());
 //            
 //        }
+//        
+//        /**
+//         * Used to test if the first record is the top intended record
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test
+//        public void TestIfFirstRecordIsCorrect(){
+//            
+//            int testNumber = param.getValue0();
+//            String startDate = param.getValue1();
+//            String endDate = param.getValue2();
+//            int expectedResultSetSize = param.getValue3();
+//
+//            String expectedName = param.getValue4();
+//            BigDecimal expectedAmount = param.getValue5();
+//            Long count = param.getValue6();
+//            NameTotalAndCountBean expectedFirstRecord = new NameTotalAndCountBean(expectedName, expectedAmount, count);
+//            
+//            List<NameTotalAndCountBean> report = booksJpaController.findTopSellers(startDate, endDate);
+//            
+//            //Only test this for the records that are expecting records
+//            if(expectedResultSetSize > 0){
+//               assertEquals("Test " + testNumber + " did not return the correct first row", expectedFirstRecord, report.get(0));
+//            }
+//            
+//        }
+//        
+//    }
+    
+    /**
+     * Used to hold tests for the getActiveBooks method 
+     * in the BooksJpaContoller
+     * @author Jeffrey Boisvert
+     */
+    public static class GetActiveBooksTest extends ArquillianTestBase{
         
-        /**
-         * Used to test if the first record is the top intended record
-         * @author Jeffrey Boisvert
-         */
-        @Test
-        public void TestIfFirstRecordIsCorrect(){
-            
-            int testNumber = param.getValue0();
-            String startDate = param.getValue1();
-            String endDate = param.getValue2();
-            int expectedResultSetSize = param.getValue3();
-
-            String expectedName = param.getValue4();
-            BigDecimal expectedAmount = param.getValue5();
-            Long count = param.getValue6();
-            NameTotalAndCountBean expectedFirstRecord = new NameTotalAndCountBean(expectedName, expectedAmount, count);
-            
-            List<NameTotalAndCountBean> report = booksJpaController.findTopSellers(startDate, endDate);
-            
-            //Only test this for the records that are expecting records
-            if(expectedResultSetSize > 0){
-               assertEquals("Test " + testNumber + " did not return the correct first row", expectedFirstRecord, report.get(0));
-            }
-            
-        }
+        @Inject
+        BooksJpaController booksJpaController; 
+        
+        
         
     }
     

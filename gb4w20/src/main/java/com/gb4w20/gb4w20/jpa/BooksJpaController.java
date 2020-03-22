@@ -727,17 +727,7 @@ public class BooksJpaController implements Serializable {
      */
     public List<Books> getActiveBooks() {
         
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
-
-        Root<Books> book = cq.from(Books.class);
-
-        cq.select(book)
-        .where(cb.isTrue(book.get(Books_.active)));
-        
-        Query query = em.createQuery(cq);
-
-        return query.getResultList();
+        return this.getActiveBooks(-1);
         
     }
 
@@ -749,7 +739,7 @@ public class BooksJpaController implements Serializable {
      * @author Jeffrey Boisvert
      */
     public List<Books> getActiveBooks(int maxResults) {
-        LOG.info("Getting all active books");
+        LOG.info("Getting " + maxResults + " active books");
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class
