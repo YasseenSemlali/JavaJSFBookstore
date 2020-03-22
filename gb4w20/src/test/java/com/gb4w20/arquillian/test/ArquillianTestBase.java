@@ -5,6 +5,7 @@
  */
 package com.gb4w20.arquillian.test;
 
+import com.gb4w20.gb4w20.backingbeans.UserSessionBean;
 import com.gb4w20.gb4w20.entities.Authors;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
@@ -13,6 +14,8 @@ import com.gb4w20.gb4w20.filters.LoggedInUserFilter;
 import com.gb4w20.gb4w20.filters.ManagerFilter;
 import com.gb4w20.gb4w20.jpa.GenresJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -69,14 +72,17 @@ public abstract class ArquillianTestBase {
         // The SQL script to create the database is in src/test/resources
         final WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war")
                 .setWebXML(new File("src/main/webapp/WEB-INF/web-test.xml"))
+                .addClass(UserSessionBean.class)
                 .addPackage(NonexistentEntityException.class.getPackage())
-                .addPackage(UsersJpaController.class.getPackage())
-                .addPackage(GenresJpaController.class.getPackage())
-                .addPackage(RollbackFailureException.class.getPackage())
-                .addPackage(Users.class.getPackage())
-                .addPackage(Authors.class.getPackage())
-                .addPackage(ArquillianTestBase.class.getPackage())
-                .addPackage(Pair.class.getPackage())
+                .addClass(UsersJpaController.class)
+                .addClass(GenresJpaController.class)
+                .addClass(RollbackFailureException.class)
+                .addClass(NameTotalAndCountBean.class)
+                .addClass(NameAndNumberBean.class)
+                .addClass(Users.class)
+                .addClass(Authors.class)
+                .addClass(ArquillianTestBase.class)
+                .addClass(Pair.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/test/resources/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/test/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
