@@ -28,7 +28,7 @@ public class SurveyQuestionsJpaControllerTest {
     public static class GetActiveQuestions extends ArquillianTestBase {
         
         @Inject
-        SurveyQuestionsJpaController surveyQuestionsJpaController;
+        private SurveyQuestionsJpaController surveyQuestionsJpaController;
         
         /**
          * Used to test that expected active question is returned

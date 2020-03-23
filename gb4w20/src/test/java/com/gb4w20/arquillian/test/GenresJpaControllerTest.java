@@ -43,7 +43,7 @@ public class GenresJpaControllerTest {
         private Sextet<Integer, Long, Long, Long, Integer, Integer> param;
         
         @Inject
-        GenresJpaController genresJpaController;
+        private GenresJpaController genresJpaController;
         
         /**
          * Used to test the result set is always the correct size

@@ -4,7 +4,6 @@ package com.gb4w20.gb4w20.backingbeans;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import java.io.Serializable;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,8 +31,6 @@ public class UserSessionBean implements Serializable {
     
     //Default is false
     private boolean hasRespondedToSurvey;
-    
-    //PostConstruct -> after indepecndy inject 
     
     /**
      * Getter for user
@@ -157,16 +154,7 @@ public class UserSessionBean implements Serializable {
         LOG.info("Logging out user");
         this.user = null; 
         LOG.info("User is null");
-        clearSessionState();
         return "/index.xhtml"; 
-    }
-    
-    /**
-     * Used to clear cart and any other values associated to login state. 
-     * @author Jeffrey Boisvert
-     */
-    private void clearSessionState() {
-        LOG.info("Currently clearing session state");
     }
     
     

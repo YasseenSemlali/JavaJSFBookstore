@@ -33,6 +33,7 @@ import com.gb4w20.gb4w20.jpa.exceptions.PreexistingEntityException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
+import java.sql.SQLSyntaxErrorException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,6 +55,7 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import org.eclipse.persistence.exceptions.DatabaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -681,8 +683,7 @@ public class BooksJpaController implements Serializable {
         );
 
         //Get all the books sold
-        Root<Books> bookSold = booksSoldCriteraQuery.from(Books.class
-        );
+        Root<Books> bookSold = booksSoldCriteraQuery.from(Books.class);
         Join<Books, Bookorder> bookorder = bookSold.join("bookorderCollection", JoinType.INNER);
         Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
 
@@ -690,21 +691,27 @@ public class BooksJpaController implements Serializable {
                 .where(cb.between(order.get("timestamp"), startDate + " 00:00:00", endDate + " 23:59:59")
                 );
         Query booksSoldQuery = em.createQuery(booksSoldCriteraQuery);
-
+                
+        List<Books> books; 
+        try{
         //Find books not sold
-        CriteriaQuery booksNotSoldCriteraQuery = cb.createQuery(Books.class
-        );
-        Root<Books> booksNotSold = booksNotSoldCriteraQuery.from(Books.class
-        );
+        CriteriaQuery booksNotSoldCriteraQuery = cb.createQuery(Books.class);
+        Root<Books> booksNotSold = booksNotSoldCriteraQuery.from(Books.class);
         Predicate notSoldIsbns = booksNotSold.get(Books_.isbn).in(booksSoldQuery.getResultList()).not();
         booksNotSoldCriteraQuery.select(booksNotSold)
                 .where(
                         notSoldIsbns
                 )
                 .orderBy(cb.asc(booksNotSold.get("title")));
-        Query booksNotSoldQuery = em.createQuery(booksNotSoldCriteraQuery);
 
-        return booksNotSoldQuery.getResultList();
+            Query booksNotSoldQuery = em.createQuery(booksNotSoldCriteraQuery);
+            books = booksNotSoldQuery.getResultList();
+        }
+        catch (Exception e){
+            LOG.debug("No books were sold");
+            books = this.findBooksEntities();
+        }
+        return books;
     }
 
     /**
@@ -714,7 +721,9 @@ public class BooksJpaController implements Serializable {
      * @author Jeffrey Boisvert
      */
     public List<Books> getActiveBooks() {
-        return this.getBooksOnSale(-1);
+        
+        return this.getActiveBooks(-1);
+        
     }
 
     /**
@@ -725,7 +734,7 @@ public class BooksJpaController implements Serializable {
      * @author Jeffrey Boisvert
      */
     public List<Books> getActiveBooks(int maxResults) {
-        LOG.info("Getting all active books");
+        LOG.info("Getting " + maxResults + " active books");
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class
