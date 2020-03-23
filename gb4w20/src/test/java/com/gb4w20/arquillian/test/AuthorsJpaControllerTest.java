@@ -51,10 +51,10 @@ public class AuthorsJpaControllerTest {
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //test number, id, startDate, endDate, expected result
-                new Quintet<Integer, Long, String, String, Double>(1, 1l, "2020-01-23", "2020-03-21", 17.00),
-                new Quintet<Integer, Long, String, String, Double>(2, 2l, "2020-01-23", "2020-03-21", 17.00),
-                new Quintet<Integer, Long, String, String, Double>(3, 3l, "2020-01-23", "2020-03-21", 0.00),
-                new Quintet<Integer, Long, String, String, Double>(4, 6l, "2020-01-01", "2020-03-21", 0.00),
+                new Quintet<Integer, Long, String, String, Double>(1, 1l, "2020-01-23", "2020-03-21", 64.00),
+                new Quintet<Integer, Long, String, String, Double>(2, 2l, "2020-01-23", "2020-03-21", 34.00),
+                new Quintet<Integer, Long, String, String, Double>(3, 3l, "2020-01-23", "2020-03-21", 56.00),
+                new Quintet<Integer, Long, String, String, Double>(4, 6l, "2020-01-01", "2020-03-21", 24.00),
                 new Quintet<Integer, Long, String, String, Double>(5, 9l, "2020-01-01", "2020-03-21", 10.00)
                 );
         
@@ -92,10 +92,10 @@ public class AuthorsJpaControllerTest {
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //test number, id, startDate, endDate, expected result
-                new Quintet<Integer, Long, String, String, List<NameTotalAndCountBean>>(1, 1l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal("17.00"), 1l)))),
-                new Quintet<Integer, Long, String, String, List<NameTotalAndCountBean>>(2, 2l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal("17.00"), 1l)))),
-                new Quintet<Integer, Long, String, String, List<NameTotalAndCountBean>>(3, 3l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>()),
-                new Quintet<Integer, Long, String, String, List<NameTotalAndCountBean>>(4, 6l, "2020-01-01", "2020-03-21", new ArrayList<NameTotalAndCountBean>()),
+                new Quintet<Integer, Long, String, String, List<NameTotalAndCountBean>>(1, 1l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal("34.00"), 2l), new NameTotalAndCountBean("Harry Potter and the Deathly Hallows", new BigDecimal("30.00"), 2l)))),
+                new Quintet<Integer, Long, String, String, List<NameTotalAndCountBean>>(2, 2l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal("34.00"), 2l)))),
+                new Quintet<Integer, Long, String, String, List<NameTotalAndCountBean>>(3, 3l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("Harry Potter and the Chamber of Secrets", new BigDecimal("26.00"), 2l), new NameTotalAndCountBean("Harry Potter and the Deathly Hallows", new BigDecimal("30.00"), 2l)))),
+                new Quintet<Integer, Long, String, String, List<NameTotalAndCountBean>>(4, 6l, "2020-01-01", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("Red Seas Under Red Skies", new BigDecimal("24.00"), 2l)))),
                 new Quintet<Integer, Long, String, String, List<NameTotalAndCountBean>>(3, 9l, "2020-01-01", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("And Another Thing...", new BigDecimal("10.00"), 1l))))
                 );
         
