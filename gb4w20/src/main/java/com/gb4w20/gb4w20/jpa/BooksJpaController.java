@@ -25,6 +25,7 @@ import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.entities.Publishers_;
 import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.entities.Users_;
 import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
@@ -73,12 +74,6 @@ public class BooksJpaController implements Serializable {
 
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
-    
-    @Inject
-    UserSessionBean userSession;
-    
-    @Inject
-    OrdersJpaController ordersJpaController;
 
     public void create(Books books) throws RollbackFailureException {
         if (books.getGenresCollection() == null) {
@@ -479,7 +474,7 @@ public class BooksJpaController implements Serializable {
         return query.getResultList();
     }
 
-    public List<Books> getRecentlyBoughtBooks(int maxResults) {
+    public List<Books> getRecentlyBoughtBooks(Long id, int maxResults) {
         LOG.info("getting " + maxResults + " recent books");
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -496,7 +491,7 @@ public class BooksJpaController implements Serializable {
         List<Predicate> predicates = new ArrayList();
         predicates.add(cb.isTrue(book.get(Books_.active)));
         
-        predicates.add(cb.equal(user.get("email"), userSession.getEmail()));
+        predicates.add(cb.equal(user.get(Users_.userId), id)); 
         
         cq.where(cb.and(predicates.toArray(new Predicate[0])));
         cq.orderBy(cb.desc(order.get("timestamp")));
