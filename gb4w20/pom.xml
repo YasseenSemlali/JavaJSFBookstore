@@ -7,47 +7,34 @@
     <packaging>war</packaging>
     <name>${project.artifactId}</name>
     <description>The CSD Book Store for the Java Server Side course at Dawson College.</description>
-    
     <developers>
         <developer>
             <id>1610878</id>
             <name>Jeffrey Boisvert</name>
         </developer>
+        <developer>
+            <id>1533918</id>
+            <name>Jean Robatto</name>
+        </developer>
     </developers>
-
     <organization>
         <name>Dawson College</name>
     </organization>
-    
     <properties>
-        <skipTests>true</skipTests>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <failOnMissingWebXml>false</failOnMissingWebXml>
-        <jakartaee>8.0</jakartaee>
+        <skipTests>false</skipTests>
     </properties>
-    
     <!-- All of the sample code shares the same dependencies and build         -->
     <!-- The parent project named web_project_dependencies must be loaded into -->
     <!-- the IDE and you must Run Maven with a goal of install:install         -->
-    <!-- Now it can be the parent pom of all projects                          --> 
-    <!-- https://gitlab.com/omniprof/web_project_dependencies.git              --> 
+    <!-- Now it can be the parent pom of all projects                          -->
+    <!-- https://gitlab.com/omniprof/web_project_dependencies.git              -->
     <!-- Credit to Ken Fogel -->
     <parent>
         <groupId>com.kfwebstandard</groupId>
         <artifactId>web_project_dependencies</artifactId>
         <version>1.1</version>
     </parent>
-    
     <dependencies>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>${jakartaee}</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>net.bootsfaces</groupId>
             <artifactId>bootsfaces</artifactId>
@@ -63,7 +50,6 @@
             <groupId>com.github.adminfaces</groupId>
             <artifactId>admin-theme</artifactId>
             <version>1.0.0</version>
-            <!--<classifier>dev</classifier> uncompressed theme.css-->
         </dependency>
         <dependency>
             <groupId>org.highfaces</groupId>
@@ -81,55 +67,4 @@
             <version>5.1.4</version>
         </dependency>
     </dependencies>
-
-    
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <compilerArguments>
-                        <endorseddirs>${endorsed.dir}</endorseddirs>
-                    </compilerArguments>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${endorsed.dir}</outputDirectory>
-                            <silent>true</silent>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>javax</groupId>
-                                    <artifactId>javaee-api</artifactId>
-                                    <version>${jakartaee}</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>
