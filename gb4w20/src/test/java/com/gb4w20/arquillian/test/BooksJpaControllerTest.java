@@ -377,7 +377,7 @@ public class BooksJpaControllerTest {
         public ParameterRule rule = new ParameterRule("param",
                 //test number, userId, expected resultset size, list of isbns in order
                 new Quartet<Integer, Long, Integer, List<Long>>(1, 1l, 1, new ArrayList<Long>(Arrays.asList(9781401323585l))),
-                new Quartet<Integer, Long, Integer, List<Long>>(1, 2l, 1, new ArrayList<Long>(Arrays.asList(9781401323585l))),
+                new Quartet<Integer, Long, Integer, List<Long>>(1, 2l, 1, new ArrayList<Long>(Arrays.asList(9780000000000l))),
                 new Quartet<Integer, Long, Integer, List<Long>>(1, 500l, 0, new ArrayList<Long>())
                 );
         
