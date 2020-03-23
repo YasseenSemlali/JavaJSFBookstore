@@ -1,10 +1,14 @@
 package com.gb4w20.arquillian.test;
 
+import com.gb4w20.gb4w20.entities.Authors;
+import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.jpa.AuthorsJpaController;
+import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 import org.javatuples.Quintet;
@@ -147,6 +151,65 @@ public class AuthorsJpaControllerTest {
             }
             
             return titles;
+        }
+    }
+    
+    /**
+     * Used to run valid tests for the getOtherBooksBySameAuthor 
+     * method inside of the AuthorsJpaController class. 
+     * @author Jasmar Badion
+     */
+    public static class GetOtherBooksBySameAuthor extends ArquillianTestBase {
+
+        @Inject
+        private AuthorsJpaController authorsJpaController;
+        
+        @Rule
+        public ParameterRule rule = new ParameterRule("param",
+                //test number, isbn, authors, maxResult, expected result
+                new Quintet<Integer, Long, Collection<Authors>, Integer, List<Books>>(1, 9780000000000l, new ArrayList<Authors>(Arrays.asList(new Authors(1l), new Authors(2l))), 3, new ArrayList<Books>(Arrays.asList(new Books(9780545010221l)))),
+                new Quintet<Integer, Long, Collection<Authors>, Integer, List<Books>>(2, 9780439064866l, new ArrayList<Authors>(Arrays.asList(new Authors(3l), new Authors(4l))), 3, new ArrayList<Books>(Arrays.asList(new Books(9780545010221l)))),
+                new Quintet<Integer, Long, Collection<Authors>, Integer, List<Books>>(3, 9780545010221l, new ArrayList<Authors>(Arrays.asList(new Authors(3l), new Authors(1l))), 3, new ArrayList<Books>(Arrays.asList(new Books(9780000000000l), new Books(9780439064866l)))),
+                new Quintet<Integer, Long, Collection<Authors>, Integer, List<Books>>(4, 9780316251303l, new ArrayList<Authors>(Arrays.asList(new Authors(5l))), 3, new ArrayList<Books>()),
+                new Quintet<Integer, Long, Collection<Authors>, Integer, List<Books>>(5, 9781401323585l, new ArrayList<Authors>(Arrays.asList(new Authors(9l))), 1, new ArrayList<Books>())
+                );
+        
+        private Quintet<Integer, Long, Collection<Authors>, Integer, List<Books>> param;
+        
+        /**
+         * Used to test if the number of books by same author given is equals to
+         * the expected number of books by same author of a chosen book
+         * @author Jasmar Badion
+         */
+        @Test
+        public void testNumberOfBooksBySameAuthor(){
+            int testNumber = param.getValue0();
+            long isbn = param.getValue1();
+            Collection<Authors> authors = param.getValue2();
+            int maxResult = param.getValue3();
+            List<Books> expectedOtherBooks = param.getValue4();
+            
+            List<Books> otherBooks = authorsJpaController.getOtherBooksBySameAuthor(isbn, authors, maxResult);
+            
+            assertEquals("Test " + testNumber + " did not return the correct number of books by same authors", expectedOtherBooks.size(), otherBooks.size());
+        }
+        
+        /**
+         * Used to test if the books by same author given is equals to
+         * the expected books by same author of a chosen book
+         * @author Jasmar Badion
+         */
+        @Test
+        public void testCorrectBooksBySameAuthor(){
+            int testNumber = param.getValue0();
+            long isbn = param.getValue1();
+            Collection<Authors> authors = param.getValue2();
+            int maxResult = param.getValue3();
+            List<Books> expectedOtherBooks = param.getValue4();
+            
+            List<Books> otherBooks = authorsJpaController.getOtherBooksBySameAuthor(isbn, authors, maxResult);
+            
+            assertEquals("Test " + testNumber + " did not return the correct other books by same authors", expectedOtherBooks, otherBooks);
         }
     }
 }

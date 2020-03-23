@@ -96,6 +96,9 @@ insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_
 -- SELECT b.title, SUM(bo.amount_paid_pretax), COUNT(bo.order_id) FROM books b JOIN bookauthor ba ON b.isbn = ba.isbn
 -- JOIN authors a ON ba.author_id=a.author_id JOIN bookorder bo ON b.isbn=bo.isbn JOIN orders o ON bo.order_id=o.order_id
 -- WHERE o.`timestamp` BETWEEN '2020-01-01 00:00:00' AND '2020-03-21 23:59:59' AND a.author_id='9' GROUP BY b.title ORDER BY b.title ASC;
+-- SELECT * FROM books b JOIN bookauthor ba ON b.isbn=ba.isbn JOIN authors a ON ba.author_id=a.author_id;
+-- SELECT * FROM books b JOIN bookauthor ba ON b.isbn=ba.isbn JOIN authors a ON ba.author_id=a.author_id
+-- WHERE b.isbn!='9781401323585' AND a.author_id IN ('9') LIMIT 1;
 
 insert into file_formats(file_format_id, format) VALUES(1, "epub");
 insert into file_formats(file_format_id, format) VALUES(2, "pdf");

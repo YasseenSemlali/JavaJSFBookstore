@@ -257,15 +257,6 @@ public class AuthorsJpaController implements Serializable {
     public List<Books> getOtherBooksBySameAuthor(long isbn, Collection<Authors> authors, int maxResults) {
         LOG.info("getting " + maxResults + " books from the same author");
 
-        /*CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
-        Root<Books> book = cq.from(Books.class);
-        Join author = book.join(Books_.authorsCollection);
-        cq.select(book)
-                .where(cb.and(
-                        cb.notEqual(book.get(Books_.isbn), isbn),
-                        cb.equal(author.get(Authors_.authorId), authorId)
-                ));*/
         List<Long> authIds = new ArrayList<>();
         authors.forEach((auth) -> {
             authIds.add(auth.getAuthorId());
