@@ -2,7 +2,11 @@ package com.gb4w20.arquillian.test;
 
 import com.gb4w20.gb4w20.entities.Authors;
 import com.gb4w20.gb4w20.entities.Books;
+import com.gb4w20.gb4w20.entities.Genres;
 import com.gb4w20.gb4w20.jpa.GenresJpaController;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 import org.javatuples.Quintet;
@@ -18,7 +22,7 @@ import org.junit.runner.RunWith;
  * Used to test various methods inside the GenresJpaController class. 
  * This does not include the methods that were auto generated 
  * by NetBeans (create, edit, delete). 
- * @author Jeffrey Boisvert
+ * @author Jeffrey Boisvert, Jasmar Badion
  */
 @RunWith(Enclosed.class)
 public class GenresJpaControllerTest {
@@ -26,21 +30,21 @@ public class GenresJpaControllerTest {
     /**
      * Used to run valid tests for the getOtherBooksOfSameGenres 
      * method inside of the GenresJpaController class. 
-     * @author Jeffrey Boisvert
+     * @author Jeffrey Boisvert, Jasmar Badion
      */
     public static class GetOtherBooksOfSameGenres extends ArquillianTestBase {
 
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //test number, isbn, genreId, authorId, maxResults, expected resultset size
-                new Sextet<Integer, Long, Long, Long, Integer, Integer>(1, 9780000000006l, 1l, 6l, 2, 2),
-                new Sextet<Integer, Long, Long, Long, Integer, Integer>(2, 9780000000000l, 1l, 2l, 100, 4),
-                new Sextet<Integer, Long, Long, Long, Integer, Integer>(3, 9780765377067l, 2l, 7l, 100, 2),
-                new Sextet<Integer, Long, Long, Long, Integer, Integer>(4, 9780439064866l, 1l, 4l, 1, 1),
-                new Sextet<Integer, Long, Long, Long, Integer, Integer>(5, 9780545010221l, 1l, 1l, 3, 3)
-                );
+                new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(1, 9780000000006l, new ArrayList<Genres>(Arrays.asList(new Genres(1l))), new ArrayList<Authors>(Arrays.asList(new Authors(6l))), 3, 3),
+                new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(2, 9780000000010l, new ArrayList<Genres>(Arrays.asList(new Genres(2l))), new ArrayList<Authors>(Arrays.asList(new Authors(8l))), 7, 2),
+                new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(3, 9780316251303l, new ArrayList<Genres>(Arrays.asList(new Genres(1l))), new ArrayList<Authors>(Arrays.asList(new Authors(5l))), 7, 4),
+                new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(4, 9780765377067l, new ArrayList<Genres>(Arrays.asList(new Genres(2l))), new ArrayList<Authors>(Arrays.asList(new Authors(7l))), 5, 2),
+                new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(5, 9781401323585l, new ArrayList<Genres>(Arrays.asList(new Genres(2l))), new ArrayList<Authors>(Arrays.asList(new Authors(9l))), 1, 1)
+        );
         
-        private Sextet<Integer, Long, Long, Long, Integer, Integer> param;
+        private Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer> param;
         
         @Inject
         private GenresJpaController genresJpaController;
@@ -55,12 +59,12 @@ public class GenresJpaControllerTest {
             
             int testNumber = param.getValue0();
             long isbn = param.getValue1();
-            long genreId = param.getValue2();
-            long authorId = param.getValue3(); 
+            Collection<Genres> genres = param.getValue2();
+            Collection<Authors> authors = param.getValue3(); 
             int maxResults = param.getValue4();
             int expectedResultSetSize = param.getValue5();
             
-            List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genreId, authorId, maxResults);
+            List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genres, authors, maxResults);
             
             assertEquals( "Test " + testNumber + ": Expected number of books found was incorrect", expectedResultSetSize, books.size());
 
@@ -75,13 +79,13 @@ public class GenresJpaControllerTest {
             
             int testNumber = param.getValue0();
             long isbn = param.getValue1();
-            long genreId = param.getValue2();
-            long authorId = param.getValue3(); 
+            Collection<Genres> genres = param.getValue2();
+            Collection<Authors> authors = param.getValue3(); 
             int maxResults = param.getValue4();
             
-            List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genreId, authorId, maxResults);
+            List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genres, authors, maxResults);
             
-            assertTrue( "Test " + testNumber + ": One of the books were written by the same author", booksAreNotByGivenAuthor(books, authorId));
+            assertTrue( "Test " + testNumber + ": One of the books were written by the same author", booksAreNotByGivenAuthor(books, authors));
 
         }
         
@@ -91,11 +95,11 @@ public class GenresJpaControllerTest {
          * @param authorId in question 
          * @return true if none of the books were written by the author and false otherwise
          */
-        private boolean booksAreNotByGivenAuthor(List<Books> books, long authorId){
+        private boolean booksAreNotByGivenAuthor(List<Books> books, Collection<Authors> authors){
             
             for(Books book : books){
                 for(Authors author : book.getAuthorsCollection()){
-                    if(author.getAuthorId() == authorId){
+                    if(authors.contains(author)){
                         return false; 
                     }
                 }
@@ -113,11 +117,11 @@ public class GenresJpaControllerTest {
             
             int testNumber = param.getValue0();
             long isbn = param.getValue1();
-            long genreId = param.getValue2();
-            long authorId = param.getValue3(); 
+            Collection<Genres> genres = param.getValue2();
+            Collection<Authors> authors = param.getValue3();
             int maxResults = param.getValue4();
             
-            List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genreId, authorId, maxResults);
+            List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genres, authors, maxResults);
             
             assertTrue( "Test " + testNumber + ": The same book is present in the result set", booksDoNotContainTheGivenIsbn(books, isbn));
 

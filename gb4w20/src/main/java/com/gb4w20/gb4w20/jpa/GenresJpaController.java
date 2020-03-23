@@ -175,13 +175,7 @@ public class GenresJpaController implements Serializable {
         Root<Books> book = cq.from(Books.class);
         Join genre = book.join(Books_.genresCollection);
         Join author = book.join(Books_.authorsCollection);
-        //List<Books> l = null;
-        /*cq.select(book)
-                .where(cb.and(
-                        cb.notEqual(book.get(Books_.isbn), isbn),
-                        cb.notEqual(author.get(Authors_.authorId), authorId),
-                        cb.equal(genre.get(Genres_.genreId), genreId)
-                )).distinct(true);*/
+        
         List<Long> genIds = new ArrayList<>();
         genres.forEach((gen) -> {
             genIds.add(gen.getGenreId());

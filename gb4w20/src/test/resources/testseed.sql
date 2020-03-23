@@ -89,17 +89,6 @@ insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_
 insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 2, 2, '456 avenue boulevard', '2020-02-22 13:34:57');
 insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 2, 9780000000000, 17, null, 5, 9.975, true );
 
---  SELECT SUM(bo.amount_paid_pretax) FROM authors a JOIN bookauthor ba ON a.author_id=ba.author_id JOIN books b 
---  ON ba.isbn=b.isbn JOIN bookorder bo ON b.isbn=bo.isbn JOIN orders o ON o.order_id=bo.order_id 
---  WHERE o.`timestamp` BETWEEN '2020-01-01 00:00:00' AND '2020-03-21 23:59:59' AND a.author_id='9';
--- select * from authors;
--- SELECT b.title, SUM(bo.amount_paid_pretax), COUNT(bo.order_id) FROM books b JOIN bookauthor ba ON b.isbn = ba.isbn
--- JOIN authors a ON ba.author_id=a.author_id JOIN bookorder bo ON b.isbn=bo.isbn JOIN orders o ON bo.order_id=o.order_id
--- WHERE o.`timestamp` BETWEEN '2020-01-01 00:00:00' AND '2020-03-21 23:59:59' AND a.author_id='9' GROUP BY b.title ORDER BY b.title ASC;
--- SELECT * FROM books b JOIN bookauthor ba ON b.isbn=ba.isbn JOIN authors a ON ba.author_id=a.author_id;
--- SELECT * FROM books b JOIN bookauthor ba ON b.isbn=ba.isbn JOIN authors a ON ba.author_id=a.author_id
--- WHERE b.isbn!='9781401323585' AND a.author_id IN ('9') LIMIT 1;
-
 insert into file_formats(file_format_id, format) VALUES(1, "epub");
 insert into file_formats(file_format_id, format) VALUES(2, "pdf");
 insert into file_formats(file_format_id, format) VALUES(3, "mobi");
