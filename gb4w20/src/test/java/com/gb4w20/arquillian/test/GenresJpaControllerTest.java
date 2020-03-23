@@ -37,6 +37,7 @@ public class GenresJpaControllerTest {
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //test number, isbn, genreId, authorId, maxResults, expected resultset size
+<<<<<<< HEAD
                 new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(1, 9780000000006l, new ArrayList<Genres>(Arrays.asList(new Genres(1l))), new ArrayList<Authors>(Arrays.asList(new Authors(6l))), 3, 3),
                 new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(2, 9780000000010l, new ArrayList<Genres>(Arrays.asList(new Genres(2l))), new ArrayList<Authors>(Arrays.asList(new Authors(8l))), 7, 2),
                 new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(3, 9780316251303l, new ArrayList<Genres>(Arrays.asList(new Genres(1l))), new ArrayList<Authors>(Arrays.asList(new Authors(5l))), 7, 4),
@@ -48,7 +49,6 @@ public class GenresJpaControllerTest {
         
         @Inject
         private GenresJpaController genresJpaController;
-
         
         /**
          * Used to test the result set is always the correct size
