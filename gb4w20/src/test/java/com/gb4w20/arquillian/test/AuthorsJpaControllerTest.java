@@ -15,6 +15,8 @@ import org.javatuples.Quintet;
 import org.javatuples.Sextet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -99,6 +101,22 @@ public class AuthorsJpaControllerTest {
         
         private Quintet<Integer, Long, String, String, List<NameTotalAndCountBean>> param;
         
+        //holds the result of the method being tested
+        private List<NameTotalAndCountBean> purchasedBooks;
+        
+        /**
+         * This method will hold the result of the method being tested
+         * @author Jasmar Badion
+         */
+        @Before
+        public void initializeTheTestedMethodResult(){
+            long authorId = param.getValue1();
+            String startDate = param.getValue2();
+            String endDate = param.getValue3();
+            
+            this.purchasedBooks = authorsJpaController.getPurchasedBooksByAuthor(authorId, startDate, endDate);
+        }
+        
         /**
          * Used to test if the number of books purchased given is equals to
          * the number of expected books purchased from a chosen author in given dates
@@ -107,14 +125,9 @@ public class AuthorsJpaControllerTest {
         @Test
         public void testNumberOfBooksPurchasedByAuthor(){
             int testNumber = param.getValue0();
-            long authorId = param.getValue1();
-            String startDate = param.getValue2();
-            String endDate = param.getValue3();
             List<NameTotalAndCountBean> expectedPurchasedBooks = param.getValue4();
             
-            List<NameTotalAndCountBean> purchasedBooks = authorsJpaController.getPurchasedBooksByAuthor(authorId, startDate, endDate);
-            
-            assertEquals("Test " + testNumber + " did not return the correct number of purchased books of this author", expectedPurchasedBooks.size(), purchasedBooks.size());
+            assertEquals("Test " + testNumber + " did not return the correct number of purchased books of this author", expectedPurchasedBooks.size(), this.purchasedBooks.size());
         }
         
         /**
@@ -125,16 +138,11 @@ public class AuthorsJpaControllerTest {
         @Test
         public void testCorerctBooksPurchasedByAuthor(){
             int testNumber = param.getValue0();
-            long authorId = param.getValue1();
-            String startDate = param.getValue2();
-            String endDate = param.getValue3();
             List<NameTotalAndCountBean> expectedPurchasedBooks = param.getValue4();
             
             List<String> expectedTitles = takeTitlesFromPurchasedBooks(expectedPurchasedBooks);
-            
-            List<NameTotalAndCountBean> purchasedBooks = authorsJpaController.getPurchasedBooksByAuthor(authorId, startDate, endDate);
            
-            assertTrue("Test " + testNumber + " does not contain expected books", expectedTitles.containsAll(takeTitlesFromPurchasedBooks(purchasedBooks)));
+            assertTrue("Test " + testNumber + " does not contain expected books", expectedTitles.containsAll(takeTitlesFromPurchasedBooks(this.purchasedBooks)));
         }
         
         /**
@@ -176,6 +184,22 @@ public class AuthorsJpaControllerTest {
         
         private Quintet<Integer, Long, Collection<Authors>, Integer, List<Books>> param;
         
+        //holds the result of the method being tested
+        private List<Books> otherBooks;
+        
+        /**
+         * This will initialize the result of the method being tested
+         * @author Jasmar Badion
+         */
+        @Before
+        public void initializeTheTestedMethodResult(){
+            long isbn = param.getValue1();
+            Collection<Authors> authors = param.getValue2();
+            int maxResult = param.getValue3();
+            
+            this.otherBooks = authorsJpaController.getOtherBooksBySameAuthor(isbn, authors, maxResult);
+        }
+        
         /**
          * Used to test if the number of books by same author given is equals to
          * the expected number of books by same author of a chosen book
@@ -184,14 +208,9 @@ public class AuthorsJpaControllerTest {
         @Test
         public void testNumberOfBooksBySameAuthor(){
             int testNumber = param.getValue0();
-            long isbn = param.getValue1();
-            Collection<Authors> authors = param.getValue2();
-            int maxResult = param.getValue3();
             List<Books> expectedOtherBooks = param.getValue4();
             
-            List<Books> otherBooks = authorsJpaController.getOtherBooksBySameAuthor(isbn, authors, maxResult);
-            
-            assertEquals("Test " + testNumber + " did not return the correct number of books by same authors", expectedOtherBooks.size(), otherBooks.size());
+            assertEquals("Test " + testNumber + " did not return the correct number of books by same authors", expectedOtherBooks.size(), this.otherBooks.size());
         }
         
         /**
@@ -202,14 +221,39 @@ public class AuthorsJpaControllerTest {
         @Test
         public void testCorrectBooksBySameAuthor(){
             int testNumber = param.getValue0();
-            long isbn = param.getValue1();
-            Collection<Authors> authors = param.getValue2();
-            int maxResult = param.getValue3();
             List<Books> expectedOtherBooks = param.getValue4();
             
-            List<Books> otherBooks = authorsJpaController.getOtherBooksBySameAuthor(isbn, authors, maxResult);
+            assertEquals("Test " + testNumber + " did not return the correct other books by same authors", expectedOtherBooks, this.otherBooks);
+        }
+        
+        /**
+         * Tests if the result does not contain the same book given
+         * @author Jasmar Badion
+         */
+        @Test
+        public void testResultNotContainSameBook(){
+            int testNumber = param.getValue0();
+            long isbn = param.getValue1();
             
-            assertEquals("Test " + testNumber + " did not return the correct other books by same authors", expectedOtherBooks, otherBooks);
+            assertTrue( "Test " + testNumber + ": The same book is present in the result set", booksDoNotContainTheGivenIsbn(this.otherBooks, isbn));
+        }
+        
+        /**
+         * Helper method to check if the book chosen is not part of
+         * the result set
+         * @param books
+         * @param isbn
+         * @return 
+         */
+        private boolean booksDoNotContainTheGivenIsbn(List<Books> books, long isbn){
+            
+            for(Books book : books){
+                if(book.getIsbn() == isbn) {
+                    return false;
+                }
+            }
+            
+            return true; 
         }
     }
 }

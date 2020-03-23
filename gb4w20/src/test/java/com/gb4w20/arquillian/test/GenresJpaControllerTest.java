@@ -13,6 +13,8 @@ import org.javatuples.Quintet;
 import org.javatuples.Sextet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -49,42 +51,45 @@ public class GenresJpaControllerTest {
         @Inject
         private GenresJpaController genresJpaController;
         
+        //holds the result of the method being tested
+        private List<Books> books;
+        
         /**
-         * Used to test the result set is always the correct size
-         * @author Jeffrey Boisvert
+         * Holds the result of method being tested
+         * @author Jasmar Badion
          */
-        @Test
-        public void testCorrectDataSetSize() {
-            
-            int testNumber = param.getValue0();
+        @Before
+        public void initializeMethodResult(){
             long isbn = param.getValue1();
             Collection<Genres> genres = param.getValue2();
             Collection<Authors> authors = param.getValue3(); 
             int maxResults = param.getValue4();
+            
+            this.books = genresJpaController.getOtherBooksOfSameGenre(isbn, genres, authors, maxResults);
+        }
+        /**
+         * Used to test the result set is always the correct size
+         * @author Jeffrey Boisvert, Jasmar
+         */
+        @Test
+        public void testCorrectDataSetSize() {
+            int testNumber = param.getValue0();
             int expectedResultSetSize = param.getValue5();
             
-            List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genres, authors, maxResults);
-            
-            assertEquals( "Test " + testNumber + ": Expected number of books found was incorrect", expectedResultSetSize, books.size());
+            assertEquals( "Test " + testNumber + ": Expected number of books found was incorrect", expectedResultSetSize, this.books.size());
 
         }
         
         /**
          * Used to test the result set never contains the same author
-         * @author Jeffrey Boisvert
+         * @author Jeffrey Boisvert, Jasmar
          */
         @Test
         public void testResultSetDoesNotContainSameAuthor() {
-            
             int testNumber = param.getValue0();
-            long isbn = param.getValue1();
-            Collection<Genres> genres = param.getValue2();
             Collection<Authors> authors = param.getValue3(); 
-            int maxResults = param.getValue4();
             
-            List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genres, authors, maxResults);
-            
-            assertTrue( "Test " + testNumber + ": One of the books were written by the same author", booksAreNotByGivenAuthor(books, authors));
+            assertTrue( "Test " + testNumber + ": One of the books were written by the same author", booksAreNotByGivenAuthor(this.books, authors));
 
         }
         
@@ -109,20 +114,15 @@ public class GenresJpaControllerTest {
         
         /**
          * Used to test the result set never contains the same book
-         * @author Jeffrey Boisvert
+         * @author Jeffrey Boisvert, Jasmar
          */
         @Test
         public void testResultSetDoesNotContainSameBook() {
             
             int testNumber = param.getValue0();
             long isbn = param.getValue1();
-            Collection<Genres> genres = param.getValue2();
-            Collection<Authors> authors = param.getValue3();
-            int maxResults = param.getValue4();
             
-            List<Books> books = genresJpaController.getOtherBooksOfSameGenre(isbn, genres, authors, maxResults);
-            
-            assertTrue( "Test " + testNumber + ": The same book is present in the result set", booksDoNotContainTheGivenIsbn(books, isbn));
+            assertTrue( "Test " + testNumber + ": The same book is present in the result set", booksDoNotContainTheGivenIsbn(this.books, isbn));
 
         }
         
