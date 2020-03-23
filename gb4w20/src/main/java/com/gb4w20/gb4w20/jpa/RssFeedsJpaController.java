@@ -127,6 +127,10 @@ public class RssFeedsJpaController implements Serializable {
             return ((Long) q.getSingleResult()).intValue();
     }
     
+    /**
+     * Getting active feeds
+     * @return 
+     */
      public RssFeeds getActiveFeed() {
         LOG.info("getting active rssFeed");
         
