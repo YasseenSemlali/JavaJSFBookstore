@@ -4,6 +4,7 @@ import com.gb4w20.gb4w20.entities.RssFeeds;
 import com.gb4w20.gb4w20.jpa.RssFeedsJpaController;
 import javax.inject.Inject;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,12 +44,34 @@ public class RssFeedsJpaControllerTest {
         
         /**
          * Tests if it's returning the correct RSS feed
+         * @author Jasmar Badion
          */
         @Test
         public void testCorrectActiveFeeds(){
             String expectedRssUrl = "https://www.cbc.ca/cmlink/rss-topstories";
             
             assertEquals("Did not get the right RSS feed", expectedRssUrl, this.rssFeeds.getUrl());
+        }
+        
+        /**
+         * Testing when the only active RSS is set to disabled then 
+         * the method should return null
+         * @throws Exception 
+         * @author Jasmar Badion
+         */
+        @Test
+        public void testNullWhenNoActiveFeeds() throws Exception{
+            //disabling the only active RSS feed
+            this.rssFeeds.setEnabled(false);
+            this.rssFeedsJpaController.edit(rssFeeds);
+            
+            RssFeeds noActiveRss = this.rssFeedsJpaController.getActiveFeed();
+            
+            //enabling the previous RSS back to active
+            this.rssFeeds.setEnabled(true);
+            this.rssFeedsJpaController.edit(rssFeeds);
+            
+            assertNull("Supposed to return null but it's not", noActiveRss);
         }
     }
     
