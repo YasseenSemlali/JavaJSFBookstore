@@ -1,218 +1,140 @@
-//
-//package com.gb4w20.arquillian.test;
-//
-//import com.gb4w20.gb4w20.entities.Users;
-//import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
-//import com.gb4w20.gb4w20.jpa.UsersJpaController;
-//import java.io.BufferedReader;
-//import java.io.File;
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.io.Reader;
-//import java.io.StringReader;
-//import java.sql.Connection;
-//import java.sql.SQLException;
-//import java.util.LinkedList;
-//import java.util.List;
-//import java.util.Scanner;
-//import javax.annotation.Resource;
-//import javax.inject.Inject;
-//import javax.persistence.EntityManager;
-//import javax.persistence.PersistenceContext;
-//import javax.sql.DataSource;
-//import javax.transaction.UserTransaction;
-//import org.jboss.arquillian.container.test.api.Deployment;
-//import org.jboss.arquillian.junit.Arquillian;
-//import org.jboss.shrinkwrap.api.ShrinkWrap;
-//import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-//import org.jboss.shrinkwrap.api.spec.WebArchive;
-//import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertNotEquals;
-//import org.junit.Before;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//
-///**
-// * Used to conduct Arquillian tests on the UserActionBean. 
-// * Some of this code is based from the arquillian tests found in 
-// * many of Ken Fogel's web projects. 
-// * 
-// * @author Jeffrey Boisvert
-// */
-//@RunWith(Arquillian.class)
-//public class UserJpaControllerTests {
-//    
-//    private final static Logger LOG = LoggerFactory.getLogger(UserJpaControllerTests.class);
-//
-//    @Deployment
-//    public static WebArchive deploy() {
-//
-//        // Use an alternative to the JUnit assert library called AssertJ
-//        // Need to reference MySQL driver as it is not part of either
-//        // embedded or remote
-//        final File[] dependencies = Maven
-//                .resolver()
-//                .loadPomFromFile("pom.xml")
-//                .resolve("mysql:mysql-connector-java",
-//                        "org.assertj:assertj-core",
-//                        "org.slf4j:slf4j-api",
-//                        "org.apache.logging.log4j:log4j-slf4j-impl",
-//                        "org.apache.logging.log4j:log4j-web"
-//                ).withTransitivity()
-//                .asFile();
-//
-//        // The SQL script to create the database is in src/test/resources
-//        final WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war")
-//                .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
-//                .addPackage(UsersJpaController.class.getPackage())
-//                .addPackage(RollbackFailureException.class.getPackage())
-//                .addPackage(Users.class.getPackage())
-//                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-//                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
-//                .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
-//                .addAsResource(new File("src/main/resources/log4j2.xml"), "log4j2.xml")
-//                .addAsResource("createbookstore.sql")
-//                .addAsLibraries(dependencies);
-//
-//        return webArchive;
-//    }
-//
-//    @Inject
-//    private UsersJpaController usersJpaController; 
-//
-//    @Resource(lookup = "java:app/jdbc/bookstore_test")
-//    private DataSource dataSource;
-//
-//    @PersistenceContext(unitName = "BookPUTest")
-//    private EntityManager enitityManager;
-//
-//    @Resource
-//    private UserTransaction userTransaction;
-//    
-//    /**
-//     * Used to test if correct behaviour if not users have a similar last name
-//     * @throws RollbackFailureException
-//     * @author Jeffrey Boisvert
-//     */
-//    @Test
-//    public void testFindUsersByLastNameNoResult() throws RollbackFailureException, Exception {
-//        
-//        int expectedSize = 0; 
-//        
-//        Users user = createTestUser();
-//        usersJpaController.create(user);
-//        
-//        Users secondUser = createTestUser();
-//        usersJpaController.create(secondUser);
-//
-//        List<Users> returnedUser = usersJpaController.findUsersByLastName("I am not a real name");
-//        assertEquals("Found results even though there should be none", returnedUser.size(), expectedSize);
-//
-//    }
-//
-//    /**
-//     * Restore the database to a known state before testing. This is important
-//     * if the test is destructive. This routine is courtesy of Bartosz Majsak
-//     * who also solved my Arquillian remote server problem
-//     * @author Bartosz Majsak, Ken Fogel
-//     */
-//    @Before
-//    public void seedDatabase() {
-//        final String seedDataScript = loadAsString("createbookstore.sql");
-//        
-//        if (dataSource == null){
-//            System.out.println("Datasource is null");
-//        }
-//        
-//        try (Connection connection = dataSource.getConnection()) {
-//            for (String statement : splitStatements(new StringReader(
-//                    seedDataScript), ";")) {
-//                connection.prepareStatement(statement).execute();
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Failed seeding database", e);
-//        }
-//    }
-//    
-//    /**
-//     * Methods supporting the seedDatabse method
-//     * @author Bartosz Majsak, Ken Fogel
-//     */
-//    private String loadAsString(final String path) {
-//        try (InputStream inputStream = Thread.currentThread()
-//                .getContextClassLoader().getResourceAsStream(path)) {
-//            return new Scanner(inputStream).useDelimiter("\\A").next();
-//        } catch (IOException e) {
-//            throw new RuntimeException("Unable to close input stream.", e);
-//        }
-//    }
-//    
-//    /**
-//     * Methods supporting the seedDatabse method
-//     * @author Bartosz Majsak, Ken Fogel
-//     */
-//    private List<String> splitStatements(Reader reader,
-//            String statementDelimiter) {
-//        final BufferedReader bufferedReader = new BufferedReader(reader);
-//        final StringBuilder sqlStatement = new StringBuilder();
-//        final List<String> statements = new LinkedList<>();
-//        try {
-//            String line;
-//            while ((line = bufferedReader.readLine()) != null) {
-//                line = line.trim();
-//                if (line.isEmpty() || isComment(line)) {
-//                    continue;
-//                }
-//                sqlStatement.append(line);
-//                if (line.endsWith(statementDelimiter)) {
-//                    statements.add(sqlStatement.toString());
-//                    sqlStatement.setLength(0);
-//                }
-//            }
-//            return statements;
-//        } catch (IOException e) {
-//            throw new RuntimeException("Failed parsing sql", e);
-//        }
-//    }
-//    
-//    /**
-//     * Methods supporting the seedDatabse method
-//     * @author Bartosz Majsak, Ken Fogel
-//     */
-//    private boolean isComment(final String line) {
-//        return line.startsWith("--") || line.startsWith("//")
-//                || line.startsWith("/*");
-//    }
-//    
-//    /**
-//     * Used as a helper method to create a user with predefined 
-//     * values to be used for testing purposes. 
-//     * @return a user with predefined values
-//     * @author Jeffrey Boisvert
-//     */
-//    private Users createTestUser(){
-//        Users user = new Users();
-//        
-//        user.setAddress1("123 TestStreet");
-//        user.setAddress2("A");
-//        user.setCellPhone("1234567891");
-//        user.setCity("Testville");
-//        user.setCompanyName("Dawson College");
-//        user.setCountry("Canada");
-//        user.setEmail("test@test.com");
-//        user.setFirstName("Tester");
-//        user.setLastName("Testerson");
-//        user.setHomePhone("1234567891");
-//        user.setIsManager(false);
-//        user.setPassword("password");
-//        user.setPostalCode("J5L2C8");
-//        user.setProvince("QC");
-//        user.setTitle("Mr.");
-//        
-//        return user;
-//    }
-//    
-//}
+package com.gb4w20.arquillian.test;
+
+import com.gb4w20.arquillian.test.ArquillianTestBase;
+import com.gb4w20.arquillian.test.rules.ParameterRule;
+import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.inject.Inject;
+import javax.persistence.NoResultException;
+import org.javatuples.Quartet;
+import org.javatuples.Triplet;
+import org.javatuples.Pair;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
+import org.junit.runner.RunWith;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import org.junit.Ignore;
+
+/**
+ * Used to test various methods inside the UsersJpaController class. This does
+ * not include the methods that were auto generated by NetBeans (create, edit,
+ * delete, find).
+ *
+ * @author Yasseen Semlali
+ */
+@RunWith(Enclosed.class)
+public class UsersJpaControllerTest {
+
+    @Ignore
+    public static class TestFindUsers extends ArquillianTestBase {
+
+        @Inject
+        UsersJpaController controller;
+
+        @Rule
+        public ParameterRule<Triplet<String, String, Long>> rule = new ParameterRule<Triplet<String, String, Long>>("param",
+                Triplet.with("cst.send@gmail.com", "dawsoncollege", 1l),
+                Triplet.with("cst.receive@gmail.com", "collegedawson", 2l)
+        );
+
+        private Triplet<String, String, Long> param;
+
+        @Test
+        public void testFindByEmail() {
+            Users result = controller.findUsers(param.getValue0());
+
+            assertEquals(param.getValue2(), result.getUserId());
+        }
+
+        @Test
+        public void testFindByEmailAndPassword() {
+            Users result = controller.findUserByEmailAndPassword(param.getValue0(), param.getValue1());
+
+            assertEquals(param.getValue2(), result.getUserId());
+        }
+
+        @Test(expected = NoResultException.class)
+        public void testFindByEmailEmpty() {
+            Users result = controller.findUsers("unknownemail");
+        }
+
+        @Test(expected = NoResultException.class)
+        public void testFindByEmailAndPasswordEmpty() {
+            Users result = controller.findUserByEmailAndPassword(param.getValue0(), "wrongpassword");
+        }
+    }
+
+    public static class TestUserSalesBetweenDates extends ArquillianTestBase {
+
+        @Inject
+        private UsersJpaController controller;
+
+        private Quartet<Long, String, String, Double> param;
+        private Double result;
+
+        @Rule
+        public ParameterRule<Quartet<Long, String, String, Double>> rule = new ParameterRule("param", "result",
+                () -> controller.getUsersTotalSales(param.getValue0(), param.getValue1(), param.getValue2()),
+                Quartet.with(1l, "2020-01-31", "2020-02-10", 48d),
+                Quartet.with(1l, "2020-02-01", "2020-03-30", 74d),
+                Quartet.with(2l, "2020-01-31", "2020-02-10", 0d),
+                Quartet.with(2l, "2020-02-01", "2020-03-30", 121d));
+
+        @Test
+        public void testUserSalesBetweenDates() {
+            assertEquals(param.getValue3(), result, 0.01);
+        }
+    }
+
+    public static class TestUserSalesTotal extends ArquillianTestBase {
+
+        @Inject
+        private UsersJpaController controller;
+
+        private Pair<Long, Double> param;
+        public Double result;
+
+        @Rule
+        public ParameterRule<Pair<Long, Double>> rule = new ParameterRule("param", "result",
+                () -> controller.getUsersTotalSales(param.getValue0()),
+                Pair.with(1l, 91d),
+                Pair.with(2l, 121d));
+
+        @Test
+        public void testUserSalesTotal() {
+            assertEquals(param.getValue1(), result, 0.01);
+        }
+    }
+
+    public static class TestUserPurchasedBooks extends ArquillianTestBase {
+
+        @Inject
+        private UsersJpaController controller;
+
+        private Quartet<Long, String, String, Double> param;
+        private List<NameAndNumberBean> result;
+
+        @Rule
+        public ParameterRule<Quartet<Long, String, String, List<NameAndNumberBean>>> rule = new ParameterRule("param", "result",
+                () -> controller.getUserPurchasedBooks(param.getValue0(), param.getValue1(), param.getValue2()),
+                Quartet.with(1l, "2020-01-31", "2020-02-10", Arrays.asList(
+                        new NameAndNumberBean("Harry Potter and the Deathly Hallows", new BigDecimal(15.00)),
+                        new NameAndNumberBean("The Burning White", new BigDecimal(16.00)),
+                        new NameAndNumberBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17.00))
+                )),
+                Quartet.with(2l, "2020-01-31", "2020-02-10", new ArrayList<NameAndNumberBean>()));
+
+        @Test
+        public void testUserPurchasedBooks() {
+            assertEquals(param.getValue3(), result);
+        }
+    }
+
+}

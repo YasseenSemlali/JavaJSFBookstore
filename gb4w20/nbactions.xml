@@ -7,4 +7,14 @@
                 <goal>test</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-testusers</actionName>
+            <displayName>testusers</displayName>
+            <goals>
+                <goal>test</goal>
+            </goals>
+            <properties>
+                <test>UsersJpaControllerTest</test>
+            </properties>
+        </action>
     </actions>
