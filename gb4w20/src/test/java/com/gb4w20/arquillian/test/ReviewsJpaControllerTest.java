@@ -73,34 +73,100 @@ public class ReviewsJpaControllerTest {
      */
     public static class GetApprovedReviews extends ArquillianTestBase {
         
-        private Triplet<Integer, Long, List<Reviews>> param;
+        private Triplet<Integer, Long, List<String>> param;
         
         @Inject
         private ReviewsJpaController reviewsJpaController;
         
         //holds the result of the method being tested
-        private List<Reviews> result;
+        private List<String> result;
         
         @Rule
-        public ParameterRule<Triplet<Integer, Long, List<Reviews>>> rule = new ParameterRule("param", "result", 
-                () -> reviewsJpaController.getApprovedReviews(param.getValue1()),
-                Triplet.with(1, 9781401323585l, new ArrayList<Reviews>(Arrays.asList(reviewsJpaController.findReviews(2695l)))),
-                Triplet.with(2, 9780000000000l, new ArrayList<Reviews>(Arrays.asList(reviewsJpaController.findReviews(2696l)))),
-                Triplet.with(3, 9780316251303l, new ArrayList<Reviews>()),
-                Triplet.with(4, 9780765377067l, new ArrayList<Reviews>()),
-                Triplet.with(5, 9780545010221l, new ArrayList<Reviews>()));
+        public ParameterRule<Triplet<Integer, Long, List<String>>> rule = new ParameterRule("param", "result", 
+                () -> takeReviewsFrom(reviewsJpaController.getApprovedReviews(param.getValue1())),
+                Triplet.with(1, 9781401323585l, new ArrayList<String>(Arrays.asList("And Another Thing...: test review by John"))),
+                Triplet.with(2, 9780000000000l, new ArrayList<String>(Arrays.asList("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch: test review by Jane"))),
+                Triplet.with(3, 9780316251303l, new ArrayList<String>()),
+                Triplet.with(4, 9780765377067l, new ArrayList<String>()));
+        
+        /**
+         * Takes the actual reviews written as a String from the list of reviews 
+         * from the result of getApprovedReviews method of a specific book
+         * @param approvedRevs
+         * @return 
+         */
+        private List<String> takeReviewsFrom(List<Reviews> approvedRevs){
+            List<String> reviewsApproved = new ArrayList<>();
+            for(Reviews approvedRev : approvedRevs){
+                reviewsApproved.add(approvedRev.getReview());
+            }
+            return reviewsApproved;
+        }
         
         /**
          * Used to test if it returns the right approved
-         * reviews according to given ISBN
+         * reviews according to given ISBN by comparing the 
+         * reviews written and also checks if it gives
+         * an empty list of reviews
          * @author Jasmar Badion
          */
         @Test
         public void testCorrectBookApprovedReviews() {
             int testNumber = param.getValue0();
-            List<Reviews> expectedReviews = param.getValue2();
+            List<String> expectedReviews = param.getValue2();
             
             assertEquals( "Test " + testNumber + ": Expected approved reviews of book found was incorrect", expectedReviews, this.result);
+
+        }    
+    }
+    
+    /**
+     * Used to run valid tests for the getReviewsOnApproved 
+     * method inside of the ReviewsJpaController class. 
+     * @author Jasmar Badion
+     */
+    public static class GetReviewsOnApproved extends ArquillianTestBase {
+        
+        private Triplet<Integer, Boolean, List<String>> param;
+        
+        @Inject
+        private ReviewsJpaController reviewsJpaController;
+        
+        //holds the result of the method being tested
+        private List<String> result;
+        
+        @Rule
+        public ParameterRule<Triplet<Integer, Boolean, List<String>>> rule = new ParameterRule("param", "result", 
+                () -> takeReviewsFrom(reviewsJpaController.getReviewsOnApproved(param.getValue1())),
+                Triplet.with(1, true, new ArrayList<String>(Arrays.asList("And Another Thing...: test review by John", "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch: test review by Jane"))),
+                Triplet.with(2, false, new ArrayList<String>()));
+        
+        /**
+         * Takes the actual reviews written as a String from the list of reviews 
+         * from the result of getReviewsOnApproved method of a specific 
+         * approved status
+         * @param approvedRevs
+         * @return 
+         */
+        private List<String> takeReviewsFrom(List<Reviews> approvedRevs){
+            List<String> reviewsApproved = new ArrayList<>();
+            for(Reviews approvedRev : approvedRevs){
+                reviewsApproved.add(approvedRev.getReview());
+            }
+            return reviewsApproved;
+        }
+        
+        /**
+         * Used to test if it returns the right list of
+         * reviews based on if it is approved or not
+         * @author Jasmar Badion
+         */
+        @Test
+        public void testCorrectReviewsOnApproved() {
+            int testNumber = param.getValue0();
+            List<String> expectedReviews = param.getValue2();
+            
+            assertEquals( "Test " + testNumber + ": Expected list of reviews on approved found was incorrect", expectedReviews, this.result);
 
         }    
     }
