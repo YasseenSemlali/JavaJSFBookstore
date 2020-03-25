@@ -59,7 +59,7 @@ public class NameAndNumberBean implements Serializable {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.amount, other.amount)) {
+        if (this.amount.compareTo(other.amount) != 0) {
             return false;
         }
         return true;

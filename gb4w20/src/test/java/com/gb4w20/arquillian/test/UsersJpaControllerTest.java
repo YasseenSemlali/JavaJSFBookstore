@@ -5,6 +5,7 @@ import com.gb4w20.arquillian.test.rules.ParameterRule;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +33,6 @@ import org.junit.Ignore;
 @RunWith(Enclosed.class)
 public class UsersJpaControllerTest {
 
-    @Ignore
     public static class TestFindUsers extends ArquillianTestBase {
 
         @Inject
@@ -134,6 +134,26 @@ public class UsersJpaControllerTest {
         @Test
         public void testUserPurchasedBooks() {
             assertEquals(param.getValue3(), result);
+        }
+    }
+
+    public static class TestTopUsersBySales extends ArquillianTestBase {
+
+        @Inject
+        private UsersJpaController controller;
+
+        private Triplet<String, String, List<NameTotalAndCountBean>> param;
+        private List<NameTotalAndCountBean> result;
+
+        @Rule
+        public ParameterRule<Triplet<String, String, List<NameTotalAndCountBean>>> rule = new ParameterRule("param", "result",
+                () -> controller.findTopUsersBySales(param.getValue0(), param.getValue1()),
+                Triplet.with("2020-01-31", "2020-02-10", Arrays.asList(new NameTotalAndCountBean("John Doe", new BigDecimal(48), 3l))),
+                Triplet.with("2020-00-00", "2020-03-31", Arrays.asList(new NameTotalAndCountBean("Jane Doe", new BigDecimal(121), 8l), new NameTotalAndCountBean("John Doe", new BigDecimal(91), 6l))));
+
+        @Test
+        public void testUserPurchasedBooks() {
+            assertEquals(param.getValue2(), result);
         }
     }
 
