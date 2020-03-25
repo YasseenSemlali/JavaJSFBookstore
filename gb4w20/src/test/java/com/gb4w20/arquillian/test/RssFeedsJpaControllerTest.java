@@ -14,9 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * <h1>RSS Feeds JPA Controller Test</h1>
+ * <p>
  * Used to test various methods inside the RssFeedsJpaController class. 
  * This does not include the methods that were auto generated 
  * by NetBeans (create, edit, delete). 
+ * </p>
  * @author Jasmar Badion
  */
 @RunWith(Enclosed.class)
