@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Used to test various methods inside the RssFeedsJpaController class. 
@@ -19,6 +21,8 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Enclosed.class)
 public class RssFeedsJpaControllerTest {
+    
+    private final static Logger LOG = LoggerFactory.getLogger(RssFeedsJpaControllerTest.class);
     
     /**
      * Used to run valid tests for the GetActiveFeed 

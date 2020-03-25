@@ -185,3 +185,5 @@ INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'I 
 INSERT INTO rss_feeds(url, enabled) values ('https://www.cbc.ca/cmlink/rss-topstories', true);
 INSERT INTO rss_feeds(url, enabled) values ('http://www.ctvnews.ca/rss/ctvnews-ca-top-stories-public-rss-1.822009', false);
 INSERT INTO rss_feeds(url, enabled) values ('https://globalnews.ca/feed/', false);
+
+-- select * from reviews where isbn='9780000000000' and approved_status=true;
