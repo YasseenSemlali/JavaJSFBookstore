@@ -1,7 +1,9 @@
 
 package com.gb4w20.gb4w20.jpa;
 
+import static com.gb4w20.gb4w20.entities.Authors_.authorId;
 import com.gb4w20.gb4w20.entities.BookFiles;
+import com.gb4w20.gb4w20.entities.BookFiles_;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -12,9 +14,16 @@ import com.gb4w20.gb4w20.entities.FileFormats;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +31,10 @@ import org.slf4j.LoggerFactory;
 /**
  * Used to interact with the book files table. 
  * 
- * @author Jeffrey Boisvert
+ * @author Jeffrey Boisvert, Jean Robatto
  */
+@Named
+@SessionScoped
 public class BookFilesJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(BookFilesJpaController.class);
@@ -36,7 +47,7 @@ public class BookFilesJpaController implements Serializable {
 
     public void create(BookFiles bookFiles) {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             Books isbn = bookFiles.getIsbn();
             if (isbn != null) {
                 isbn = em.getReference(isbn.getClass(), isbn.getIsbn());
@@ -56,11 +67,9 @@ public class BookFilesJpaController implements Serializable {
                 fileFormatId.getBookFilesCollection().add(bookFiles);
                 fileFormatId = em.merge(fileFormatId);
             }
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with create in bookfiles controller method.", ex);
         }
     }
 
@@ -116,7 +125,7 @@ public class BookFilesJpaController implements Serializable {
 
     public void destroy(Long id) throws NonexistentEntityException {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             BookFiles bookFiles;
             try {
                 bookFiles = em.getReference(BookFiles.class, id);
@@ -135,11 +144,9 @@ public class BookFilesJpaController implements Serializable {
                 fileFormatId = em.merge(fileFormatId);
             }
             em.remove(bookFiles);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            utx.commit();
+       } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with delete in book files controller method.", ex);
         }
     }
 
@@ -172,6 +179,32 @@ public class BookFilesJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    /**
+     * Used to get a all bookfiles for a book
+     *
+     * @param isbn
+     * @return bookfiles for a specific book
+     * @author Jean Robatto
+     */
+    public List<BookFiles> getBookFilesForBook(Books isbn) {
+        if (isbn==null) {
+            return null;
+        }
+        
+        LOG.info("Getting all bookfiles for " + Long.toString(isbn.getIsbn()));
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<BookFiles> cq = cb.createQuery(BookFiles.class);
+
+        Root<BookFiles> bookfile = cq.from(BookFiles.class);
+        
+        cq.select(bookfile).where(cb.equal(bookfile.get(BookFiles_.isbn), isbn));
+        
+        Query query = em.createQuery(cq);
+
+        return query.getResultList();
     }
 
 }

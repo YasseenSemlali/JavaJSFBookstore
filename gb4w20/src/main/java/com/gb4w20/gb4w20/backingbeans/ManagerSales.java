@@ -40,6 +40,7 @@ public class ManagerSales implements Serializable {
      */
     @PostConstruct
     private void init() {
+        LOG.debug("Initializing Manager Sales variables");
         int size = booksController.getBooksCount();
         newSalePrice = new BigDecimal[size];
         for (int i = 0; i < size; i++) {
@@ -51,11 +52,14 @@ public class ManagerSales implements Serializable {
      * Method to alter the sale price of a book
      * based on input number bound to field
      * 
+     * Redirects on failure instead of returning a string because it is an ajax call
+     * 
      * @param isbn 
      * @param index 
      * @throws java.io.IOException 
      */
     public void editSalePrice(Long isbn, int index) throws IOException {
+        LOG.debug("Editing sale price of book with ISBN: " + Long.toString(isbn));
         
         BigDecimal inputSalePrice = newSalePrice[index];
         

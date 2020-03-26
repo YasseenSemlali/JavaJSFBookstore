@@ -42,6 +42,7 @@ public class ManagerAds implements Serializable {
      */
     @PostConstruct
     private void init() {
+        LOG.debug("Initializing manager ads backing bean");
         int size = adsController.getAdsCount();
         locations = new String[size];
         urls = new String[size];
@@ -61,6 +62,7 @@ public class ManagerAds implements Serializable {
      * @throws java.io.IOException
      */
     public void editAd(Long id, int index) throws IOException {
+        LOG.debug("Editing ad #" + Long.toString(id));
         try {
             Ads ad = adsController.findAds(id);
 
@@ -94,6 +96,7 @@ public class ManagerAds implements Serializable {
      * @return redirection
      */
     public String createAd() {
+        LOG.debug("Creating new ad");
         try {
             Ads ad = new Ads();
             ad.setFileLocation(newLocation);
