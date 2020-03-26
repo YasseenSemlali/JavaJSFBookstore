@@ -1,5 +1,6 @@
 package com.gb4w20.arquillian.test;
 
+import com.gb4w20.arquillian.test.rules.ParameterRule;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gb4w20.arquillian.test;
+package com.gb4w20.arquillian.test.rules;
 
 import java.lang.reflect.Field;
 
@@ -14,26 +14,43 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This code comes from https://gist.github.com/aslakknutsen/1358803
- * Unchanged except for replacing println with LOG
- * 
+ * This code comes from https://gist.github.com/aslakknutsen/1358803 Unchanged
+ * except for replacing println with LOG
+ * @param <T>
  */
 public class ParameterRule<T> implements MethodRule {
-    
+
     private final static Logger LOG = LoggerFactory.getLogger(ParameterRule.class);
 
     private final T[] params;
     private final String fieldName;
+    private final String resultFieldName;
+    private final ResultInitializer getResult;
 
-    public ParameterRule(String fieldName, T... params) {
+    public interface ResultInitializer {
+
+        public Object getResult();
+    }
+
+    public ParameterRule(String fieldName, String resultFieldName, ResultInitializer getResult, T... params) {
         if (fieldName == null) {
             throw new IllegalArgumentException("fieldName must be specified");
         }
         if (params == null || params.length == 0) {
             throw new IllegalArgumentException("params must be specified and have more then zero length");
         }
+        if ((resultFieldName == null || getResult == null) && !(resultFieldName == null && getResult == null)) {
+            throw new IllegalArgumentException("resultFieldName or getResult can't be null");
+        }
+        
         this.fieldName = fieldName;
+        this.resultFieldName = resultFieldName;
         this.params = params;
+        this.getResult = getResult;
+    }
+
+    public ParameterRule(String fieldName, T... params) {
+        this(fieldName, null, null, params);
     }
 
     @Override
@@ -44,12 +61,19 @@ public class ParameterRule<T> implements MethodRule {
                 LOG.debug("rule - before " + target.hashCode());
                 if (isInContainer()) {
                     for (Object param : params) {
-                        Field targetField = target.getClass().getDeclaredField(fieldName);
+
+                        Field paramField = target.getClass().getDeclaredField(fieldName);
+                        Field resultField = target.getClass().getDeclaredField(resultFieldName);
                         // Need to find a better way to do this with canAccess
-                        if (!targetField.isAccessible()) {
-                            targetField.setAccessible(true);
+                        if (!paramField.isAccessible()) {
+                            paramField.setAccessible(true);
                         }
-                        targetField.set(target, param);
+                        if (!resultField.isAccessible()) {
+                            resultField.setAccessible(true);
+                        }
+                        paramField.set(target, param);
+                        Object result = getResult.getResult();
+                        resultField.set(target, result);
                         base.evaluate();
                     }
                 } else {
