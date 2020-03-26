@@ -43,7 +43,7 @@ necessary to manage inventory of our store.
                                     <div class="col-lg-6 text-left">
                                         <p:selectOneMenu id="selectbook" class="custom-select" value="#{managerInventory.selectIsbn}" style="width:30%;">
                                             <p:ajax event="change" 
-                                                    update="isbn title synopsis cover pubdate numpages wholeprice listprice saleprice active allauthors allgenres allpublishers totalsaleslabel"
+                                                    update="isbn title synopsis cover_img bookfiles pubdate numpages wholeprice listprice saleprice active allauthors allgenres allpublishers totalsaleslabel"
                                                     listener="#{managerInventory.bookChanged}" />
                                             <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
                                             <f:selectItems value="#{booksJpaController.findBooksEntities()}" var="book" itemValue="#{book.isbn}" itemLabel="#{book.title}"/>
@@ -130,14 +130,6 @@ necessary to manage inventory of our store.
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 text-right-mobile">
-                                        <p:outputLabel value="${msgs.cover}:" styleClass="formComponent"/>
-                                    </div>
-                                    <div class="col-lg-6 text-left">
-                                        <p:inputText id="cover" value="#{managerInventory.cover}" styleClass="formComponent"/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.pubdate}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
@@ -155,6 +147,84 @@ necessary to manage inventory of our store.
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.cover}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg-6 text-left">    
+                                        <p:fileUpload 
+                                            fileUploadListener="#{managerInventory.handleImageUpload}" 
+                                            allowTypes="/(\.|\/)(jpe?g|png)$/" 
+                                            dragDropSupport="true"
+                                            style="width: 40%; margin: 5%"
+                                            update="cover_img"
+                                            validatorMessage="#{msgs.invalid_cover}"
+                                            />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <h:graphicImage 
+                                            id="cover_img" 
+                                            library="img" 
+                                            name="covers/#{managerInventory.cover}" 
+                                            height="200px" 
+                                            style="margin: 20px"
+                                            /> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.book_files}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg-6 text-left">    
+                                        <p:fileUpload 
+                                            fileUploadListener="#{managerInventory.handleFileUpload}" 
+                                            allowTypes="/(\.|\/)(pdf|epub|mobi)$/" 
+                                            dragDropSupport="true"
+                                            style="width: 40%; margin: 5%"
+                                            update="file_upload_msg"
+                                            validatorMessage="#{msgs.invalid_file}"
+                                            />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">  
+                                        <p:panelGrid id="file_upload_msg">
+                                        <p:outputLabel 
+                                            value="#{msgs.file_uploaded}" 
+                                            rendered="#{managerInventory.newBookfiles.size()>0}" />
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+                                 <div class="row">
+                                     <div class="col-lg-6 text-right-mobile">
+                                         <p:outputLabel value="${msgs.existing_book_files}:" styleClass="formComponent"/>
+                                     </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:dataTable 
+                                            id="bookfiles" 
+                                            emptyMessage="#{msgs.noresults}" 
+                                            value="#{bookFilesJpaController.getBookFilesForBook(booksJpaController.findBooks(managerInventory.isbn))}" 
+                                            var="file" 
+                                            style="width:50%; 
+                                            text-align: center;
+                                            margin: 3%;"
+                                            tableStyle="width:auto"
+                                            >
+                                             <p:column>
+                                                 <p:commandButton value="X">
+                                                     <f:ajax listener="#{managerInventory.removeBookFile(file.bookFileId)}" render="bookfiles" execute="@all" />
+                                                 </p:commandButton>
+                                            </p:column>
+                                            <p:column>
+                                                #{file.fileLocation}
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
                                         <p:outputLabel value="${msgs.num_pages}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
@@ -168,7 +238,7 @@ necessary to manage inventory of our store.
                                             >
                                             <f:validateLongRange minimum="0" maximum="2000" />
                                             <f:ajax event="blur" render="numpages_msg" />
-                                            </p:inputNumber>
+                                        </p:inputNumber>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -194,7 +264,7 @@ necessary to manage inventory of our store.
                                             >
                                             <f:validateDoubleRange minimum="1" maximum="2000" />
                                             <f:ajax event="blur" render="wholeprice_msg" />
-                                            </p:inputNumber>
+                                        </p:inputNumber>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -246,7 +316,7 @@ necessary to manage inventory of our store.
                                             >
                                             <f:validateDoubleRange minimum="0" maximum="2000" />
                                             <f:ajax event="blur" render="saleprice_msg" />
-                                            </p:inputNumber>
+                                        </p:inputNumber>
                                     </div>
                                 </div>
                                 <div class="row">

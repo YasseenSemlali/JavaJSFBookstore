@@ -39,6 +39,7 @@ public class ManagerNews implements Serializable {
      */
     @PostConstruct
     private void init() {
+        LOG.debug("Initializing Manager News variables");
         int size = newsController.getRssFeedsCount();
         urls = new String[size];
         enabled = new Boolean[size];
@@ -56,6 +57,7 @@ public class ManagerNews implements Serializable {
      * @throws java.io.IOException
      */
     public void editFeed(Long id, int index) throws IOException {
+        LOG.debug("Editing feed with id: " + Long.toString(id));
         try {
             RssFeeds feed = newsController.findRssFeeds(id);
 
@@ -84,6 +86,7 @@ public class ManagerNews implements Serializable {
      * @return redirection
      */
     public String createFeed() {
+        LOG.debug("Creating a new feed");
         try {
             RssFeeds feed = new RssFeeds();
             feed.setUrl(newUrl);

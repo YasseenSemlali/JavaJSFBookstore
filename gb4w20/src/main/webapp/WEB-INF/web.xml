@@ -20,6 +20,11 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>admin</param-value>
     </context-param>
+    <!-- Used for file uploads -->
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>auto</param-value>
+    </context-param>
     <!-- Global email parameters available to all servlets -->
     <context-param>
         <param-name>emailSender</param-name>

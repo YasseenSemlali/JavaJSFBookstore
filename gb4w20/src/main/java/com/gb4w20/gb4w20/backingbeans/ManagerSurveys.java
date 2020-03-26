@@ -38,6 +38,7 @@ public class ManagerSurveys implements Serializable {
      */
     @PostConstruct
     private void init() {
+        LOG.debug("Initializing Manager Survey variables");
         int size = surveysController.getSurveyQuestionsCount();
         questions = new String[size];
         enabled = new Boolean[size];
@@ -49,12 +50,15 @@ public class ManagerSurveys implements Serializable {
 
     /**
      * Method to alter the state of a survey question
+     * 
+     * Redirects on failure instead of returning a string because it is an ajax call
      *
      * @param id
      * @param index
      * @throws java.io.IOException
      */
     public void editSurvey(Long id, int index) throws IOException {
+        LOG.debug("Editing surbey with id: " + Long.toString(id));
         try {
             SurveyQuestions question = surveysController.findSurveyQuestions(id);
 
@@ -84,6 +88,7 @@ public class ManagerSurveys implements Serializable {
      * @return redirection
      */
     public String createSurvey() {
+        LOG.debug("Creating a new survey");
         try {
             SurveyQuestions survey = new SurveyQuestions();
             survey.setQuestion(newQuestion);
