@@ -110,7 +110,7 @@ Java Server Faces page that displays the frontpage of the app
                     <c:set var="question" value="#{surveyQuestionsJpaController.getActiveQuestion()}"/>
 
                     <h:panelGroup rendered="#{question != null}">
-                        <h:panelGroup rendered="#{userSession.isHasRespondedToSurvey()}">
+                        <h:panelGroup rendered="#{userSession.isHasRespondedToSurvey()}" id="survey-chart">
                             <hf:chart type="bar"  title="#{question.getQuestion()}">
                                 <hf:chartSerie value="#{question.getSurveyResponsesCollection()}" var="response" point="#{response.getCount()}" tickLabel="#{response.getResponse()}" />
                                 <hf:chartLegend position="ne" enabled="false"/>
@@ -120,7 +120,7 @@ Java Server Faces page that displays the frontpage of the app
                         <h:panelGroup rendered="#{!userSession.isHasRespondedToSurvey()}">
                             <h3>#{question.getQuestion()}</h3>
                             <h:form id="surveyform">
-                                <h:selectOneRadio value="#{surveyBackingBean.questionId}" layout="pageDirection">
+                                <h:selectOneRadio value="#{surveyBackingBean.questionId}" layout="pageDirection" id="survey-answers">
                                     <f:selectItems  value="#{question.getSurveyResponsesCollection()}" var="response" itemValue="#{response.getId()}" itemLabel="#{response.getResponse()}"/>
                                     <br/>
                                 </h:selectOneRadio>
