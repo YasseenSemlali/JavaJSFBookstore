@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Holds useful methods to send i18n FaceMessages based on validation method
  *
- * @author Jeffrey Boisvert
+ * @author Jeffrey Boisvert, Jasmar Badion
  */
 @Named
 @RequestScoped
