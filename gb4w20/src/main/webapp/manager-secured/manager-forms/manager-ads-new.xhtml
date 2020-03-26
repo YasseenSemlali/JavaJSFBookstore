@@ -36,31 +36,31 @@ necessary to add a new Ad
 
                 <div class="row">
                     <div class="col-lg-6 text-right-mobile">
-                        <p:outputLabel for="new_location" value="#{msgs.file_location}" styleClass="formComponent" />
+                        <p:outputLabel value="${msgs.image}:" styleClass="formComponent"/>
                     </div>
-                    <div class="col-lg-6 text-left">
-                        <p:inputText 
-                            id="new_location" 
-                            value="#{managerAds.newLocation}" 
-                            styleClass="formComponent" 
-                            required="true" 
-                            requiredMessage="#{msgs.no_empty}"
-                            validatorMessage="#{msgs.string_too_long}"
-                             >
-                            <f:validateLength minimum="1" maximum="200" />
-                            <f:ajax event="blur" render="new_location_msg" />
-                        </p:inputText>
+                    <div class="col-lg-6 text-left">    
+                        <p:fileUpload 
+                            fileUploadListener="#{managerAds.handleImageUpload}" 
+                            allowTypes="/(\.|\/)(jpe?g|png)$/" 
+                            dragDropSupport="true"
+                            style="width: 40%; margin: 5%"
+                            update="ad_img"
+                            validatorMessage="#{msgs.invalid_cover}"
+                            />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-6 text-right-mobile"></div>
                     <div class="col-lg-6 text-left">
-                        <p:message id="new_location_msg" for="new_location" style="width: 32%; margin: 2%">
-                            <p:autoUpdate />
-                        </p:message>
+                        <h:graphicImage 
+                            id="ad_img" 
+                            library="img" 
+                            name="ads/#{managerAds.image}" 
+                            height="200px" 
+                            style="margin: 20px"
+                            /> 
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-lg-6 text-right-mobile">
                         <p:outputLabel value="#{msgs.url}" styleClass="formComponent" />
@@ -73,7 +73,7 @@ necessary to add a new Ad
                             required="true" 
                             requiredMessage="#{msgs.no_empty}"
                             validatorMessage="#{msgs.string_too_long}"
-                             >
+                            >
                             <f:validateLength minimum="1" maximum="2048" />
                             <f:ajax event="blur" render="new_url_msg" />
                         </p:inputText>

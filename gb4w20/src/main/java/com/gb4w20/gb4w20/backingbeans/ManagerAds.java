@@ -4,15 +4,21 @@ import com.gb4w20.gb4w20.entities.Ads;
 import com.gb4w20.gb4w20.exceptions.BackendException;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.AdsJpaController;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Size;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,19 +28,20 @@ import org.slf4j.LoggerFactory;
  * @author Jean Robatto
  */
 @Named
-@RequestScoped
+@SessionScoped
 public class ManagerAds implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(ManagerAds.class);
 
     @Inject
     private AdsJpaController adsController;
+    
+    private String image;
 
     private String[] locations;
     private String[] urls;
     private Boolean[] enabled;
 
-    @Size(min = 1, max = 200) private String newLocation;
     @Size(min = 1, max = 2048) private String newUrl;
 
     /**
@@ -99,17 +106,48 @@ public class ManagerAds implements Serializable {
         LOG.debug("Creating new ad");
         try {
             Ads ad = new Ads();
-            ad.setFileLocation(newLocation);
+            ad.setFileLocation(image);
             ad.setUrl(newUrl);
             ad.setTimestamp(new Date());
             ad.setEnabled(Boolean.TRUE);
             
             adsController.create(ad);
 
-            return "/manager-forms/manager-ads";
+            return "/manager-secured/manager-forms/manager-ads";
         } catch (BackendException | RollbackFailureException ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";
+        }
+    }
+    
+    /**
+     * Upload the ad image file to the server.
+     *
+     * @author Jean Robatto
+     * @param event
+     */
+    public void handleImageUpload(FileUploadEvent event) {
+        String basePath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/../../src/main/webapp/resources/img/ads");
+        UploadedFile newFile = event.getFile();
+        image = newFile.getFileName();
+        saveUploadedFile(newFile, basePath);
+    }
+    
+    /**
+     * Method to save a file into the project
+     *
+     * @author Jean Robatto
+     */
+    private void saveUploadedFile(UploadedFile newFile, String basePath) {
+        try (InputStream input = newFile.getInputstream()) {
+            File file = new File(basePath + "/" + newFile.getFileName());
+            byte[] buffer = new byte[input.available()];
+            input.read(buffer);
+            OutputStream outStream = new FileOutputStream(file);
+            outStream.write(buffer);
+            LOG.debug("Successfully uploaded file " + file.getName());
+        } catch (Exception ex) {
+            LOG.debug(ex.toString());
         }
     }
 
@@ -125,12 +163,12 @@ public class ManagerAds implements Serializable {
         return enabled;
     }
 
-    public String getNewLocation() {
-        return newLocation;
-    }
-
     public String getNewUrl() {
         return newUrl;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public void setLocations(String[] locations) {
@@ -145,12 +183,12 @@ public class ManagerAds implements Serializable {
         this.enabled = enabled;
     }
 
-    public void setNewLocation(String newLocation) {
-        this.newLocation = newLocation;
-    }
-
     public void setNewUrl(String newUrl) {
         this.newUrl = newUrl;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 }

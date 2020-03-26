@@ -21,7 +21,7 @@ necessary to manage sales in the web app.
     <ui:define name="content">
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <h:form>
-                <p:dataTable id="salelist" var="book" value="#{booksJpaController.findBooksEntities()}"
+                <p:dataTable id="salelist" widgetVar="book_w" var="book" value="#{booksJpaController.findBooksEntities()}"
                              emptyMessage="#{msgs.noresults}" rowIndexVar="index" tableStyle="width:auto">
 
                     <p:column filterBy="#{book.isbn}" headerText="ISBN" filterMatchMode="contains">
@@ -52,12 +52,24 @@ necessary to manage sales in the web app.
                              <p:autoUpdate />
                          </p:message>
                         <!-- USED FOR CUSTOM VALIDATION -->
-                        <h:messages id="report-error" class="alert alert-danger" style="margin: 5%" globalOnly="true" rendered="#{index == managerSales.errorIndex}" />
+                        <h:messages 
+                            id="report-error" 
+                            class="alert alert-danger" 
+                            style="margin: 5%" 
+                            globalOnly="true" 
+                            rendered="#{index == managerSales.errorIndex}">
+                            <p:autoUpdate disabled="true"/>
+                        </h:messages>
                     </p:column>
 
                     <p:column>
                         <p:commandButton value="#{msgs.set_sale}">
-                            <f:ajax listener="#{managerSales.editSalePrice(book.isbn, index)}" render="salelist" execute="@all" />
+                            <p:ajax 
+                                listener="#{managerSales.editSalePrice(book.isbn, index)}" 
+                                update="salelist" 
+                                process="@all"
+                                oncomplete="PF('book_w').filter()"
+                                />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>

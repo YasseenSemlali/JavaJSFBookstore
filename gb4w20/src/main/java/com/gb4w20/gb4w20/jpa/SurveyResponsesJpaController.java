@@ -10,6 +10,7 @@ import com.gb4w20.gb4w20.entities.SurveyResponses;
 import com.gb4w20.gb4w20.entities.SurveyResponses_;
 import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import javax.annotation.Resource;
@@ -32,7 +33,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Used as a data access object between taxes entities.
  *
- * @author Jeffrey Boisvert
+ * @author Jeffrey Boisvert, Jean Robatto
  */
 @Named
 @SessionScoped
@@ -53,7 +54,7 @@ public class SurveyResponsesJpaController implements Serializable {
      */
     public void create(SurveyResponses surveyResponses) {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             SurveyQuestions surveyQuestionId = surveyResponses.getSurveyQuestionId();
             if (surveyQuestionId != null) {
                 surveyQuestionId = em.getReference(surveyQuestionId.getClass(), surveyQuestionId.getId());
@@ -64,11 +65,9 @@ public class SurveyResponsesJpaController implements Serializable {
                 surveyQuestionId.getSurveyResponsesCollection().add(surveyResponses);
                 surveyQuestionId = em.merge(surveyQuestionId);
             }
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with create in controller method.", ex);
         }
     }
 
@@ -81,7 +80,7 @@ public class SurveyResponsesJpaController implements Serializable {
      */
     public void edit(SurveyResponses surveyResponses) throws NonexistentEntityException, Exception {
         try {
-            em.getTransaction().begin();
+            utx.begin();
             SurveyResponses persistentSurveyResponses = em.find(SurveyResponses.class, surveyResponses.getId());
             SurveyQuestions surveyQuestionIdOld = persistentSurveyResponses.getSurveyQuestionId();
             SurveyQuestions surveyQuestionIdNew = surveyResponses.getSurveyQuestionId();
@@ -98,20 +97,10 @@ public class SurveyResponsesJpaController implements Serializable {
                 surveyQuestionIdNew.getSurveyResponsesCollection().add(surveyResponses);
                 surveyQuestionIdNew = em.merge(surveyQuestionIdNew);
             }
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            String msg = ex.getLocalizedMessage();
-            if (msg == null || msg.length() == 0) {
-                Long id = surveyResponses.getId();
-                if (findSurveyResponses(id) == null) {
-                    throw new NonexistentEntityException("The surveyResponses with id " + id + " no longer exists.");
-                }
-            }
+            utx.commit();
+        } catch (RollbackException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | SystemException | SecurityException | IllegalStateException ex) {
+            LOG.error("Error with edit in authors controller method.", ex);
             throw ex;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
         }
     }
 
@@ -228,5 +217,26 @@ public class SurveyResponsesJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
         }
+    }
+    
+    /**
+     * Returns a list of all answers for a question
+     * 
+     * @param question
+     * @return 
+     * @author Jean Robatto
+     */
+    public Collection<SurveyResponses> getResponsesFromQuestion(SurveyQuestions question) {
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<SurveyResponses> cq = cb.createQuery(SurveyResponses.class);
+
+        Root<SurveyResponses> response = cq.from(SurveyResponses.class);
+        
+        cq.select(response).where(cb.equal(response.get(SurveyResponses_.surveyQuestionId), question));
+        
+        Query query = em.createQuery(cq);
+
+        return query.getResultList();
     }
 }

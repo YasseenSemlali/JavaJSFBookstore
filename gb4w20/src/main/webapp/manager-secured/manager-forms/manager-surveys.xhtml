@@ -25,7 +25,7 @@ necessary to manage surveys for the web app
             </h:form>
             <div class="card">
             <h:form style="text-align: center">
-                <p:dataTable id="surveylist" var="survey" value="#{surveyQuestionsJpaController.findSurveyQuestionsEntities()}"
+                <p:dataTable id="surveylist" widgetVar="sur_w" var="survey" value="#{surveyQuestionsJpaController.findSurveyQuestionsEntities()}"
                              emptyMessage="#{msgs.noresults}" rowIndexVar="index" tableStyle="width:auto">
 
                     <p:column filterBy="#{survey.id}" headerText="ID" filterMatchMode="contains">
@@ -65,11 +65,22 @@ necessary to manage surveys for the web app
 
                     <p:column>
                         <p:commandButton value="#{msgs.edit}">
-                            <f:ajax listener="#{managerSurveys.editSurvey(survey.id, index)}" render="surveylist" execute="@all" />
+                            <p:ajax 
+                                listener="#{managerSurveys.editSurvey(survey.id, index)}" 
+                                update="surveylist" 
+                                process="@all" 
+                                oncomplete="PF('sur_w').filter()"
+                                />
                         </p:commandButton>
                     </p:column>
-                </p:dataTable>
-            </h:form>       
+                    <p:column>
+                        <p:commandButton 
+                            action="#{managerSurveys.selectSurvey(survey)}" 
+                            value="#{msgs.edit_answers}"
+                            ajax="false" />
+                    </p:column>
+                </p:dataTable> 
+                </h:form>
             </div>
         </b:container>
     </ui:define>                
