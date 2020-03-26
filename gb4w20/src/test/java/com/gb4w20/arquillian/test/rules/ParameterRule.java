@@ -42,7 +42,7 @@ public class ParameterRule<T> implements MethodRule {
         if ((resultFieldName == null || getResult == null) && !(resultFieldName == null && getResult == null)) {
             throw new IllegalArgumentException("resultFieldName or getResult can't be null");
         }
-        
+
         this.fieldName = fieldName;
         this.resultFieldName = resultFieldName;
         this.params = params;
@@ -63,17 +63,20 @@ public class ParameterRule<T> implements MethodRule {
                     for (Object param : params) {
 
                         Field paramField = target.getClass().getDeclaredField(fieldName);
-                        Field resultField = target.getClass().getDeclaredField(resultFieldName);
                         // Need to find a better way to do this with canAccess
                         if (!paramField.isAccessible()) {
                             paramField.setAccessible(true);
                         }
-                        if (!resultField.isAccessible()) {
-                            resultField.setAccessible(true);
-                        }
                         paramField.set(target, param);
-                        Object result = getResult.getResult();
-                        resultField.set(target, result);
+
+                        if (resultFieldName != null) {
+                            Field resultField = target.getClass().getDeclaredField(resultFieldName);
+                            if (!resultField.isAccessible()) {
+                                resultField.setAccessible(true);
+                            }
+                            Object result = getResult.getResult();
+                            resultField.set(target, result);
+                        }
                         base.evaluate();
                     }
                 } else {

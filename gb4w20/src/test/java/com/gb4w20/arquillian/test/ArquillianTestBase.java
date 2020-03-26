@@ -50,7 +50,7 @@ import org.junit.runner.RunWith;
  * @author Yasseen
  */
 @RunWith(Arquillian.class)
-public abstract class ArquillianTestBase {    
+public abstract class ArquillianTestBase extends TestBase{    
     @Resource(lookup = "java:app/jdbc/bookstore_test")
     private DataSource dataSource;
 
@@ -99,81 +99,8 @@ public abstract class ArquillianTestBase {
         return webArchive;
     }
 
-    @Before
-    public void setup() {
-        this.seedDatabase();
-    }
-    
-    /**
-     * Restore the database to a known state before testing. This is important
-     * if the test is destructive. This routine is courtesy of Bartosz Majsak
-     * who also solved my Arquillian remote server problem
-     * @author Bartosz Majsak, Ken Fogel
-     */
-    public void seedDatabase() {
-        final String seedDataScript = loadAsString("testseed.sql");
-        
-        if (dataSource == null){
-            System.out.println("Datasource is null");
-        }
-        
-        try (Connection connection = dataSource.getConnection()) {
-            for (String statement : splitStatements(new StringReader(
-                    seedDataScript), ";")) {
-                connection.prepareStatement(statement).execute();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed seeding database", e);
-        }
-    }
-    
-    /**
-     * Methods supporting the seedDatabse method
-     * @author Bartosz Majsak, Ken Fogel
-     */
-    private String loadAsString(final String path) {
-        try (InputStream inputStream = Thread.currentThread()
-                .getContextClassLoader().getResourceAsStream(path)) {
-            return new Scanner(inputStream).useDelimiter("\\A").next();
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to close input stream.", e);
-        }
-    }
-    
-    /**
-     * Methods supporting the seedDatabse method
-     * @author Bartosz Majsak, Ken Fogel
-     */
-    private List<String> splitStatements(Reader reader,
-            String statementDelimiter) {
-        final BufferedReader bufferedReader = new BufferedReader(reader);
-        final StringBuilder sqlStatement = new StringBuilder();
-        final List<String> statements = new LinkedList<>();
-        try {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty() || isComment(line)) {
-                    continue;
-                }
-                sqlStatement.append(line);
-                if (line.endsWith(statementDelimiter)) {
-                    statements.add(sqlStatement.toString());
-                    sqlStatement.setLength(0);
-                }
-            }
-            return statements;
-        } catch (IOException e) {
-            throw new RuntimeException("Failed parsing sql", e);
-        }
-    }
-    
-    /**
-     * Methods supporting the seedDatabse method
-     * @author Bartosz Majsak, Ken Fogel
-     */
-    private boolean isComment(final String line) {
-        return line.startsWith("--") || line.startsWith("//")
-                || line.startsWith("/*");
+    @Override
+    protected DataSource getDatasource() {
+        return dataSource;
     }
 }
