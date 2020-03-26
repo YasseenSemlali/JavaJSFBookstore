@@ -73,8 +73,14 @@ necessary to manage surveys for the web app
                                 />
                         </p:commandButton>
                     </p:column>
-                </p:dataTable>
-            </h:form>       
+                    <p:column>
+                        <p:commandButton 
+                            action="#{managerSurveys.selectSurvey(survey)}" 
+                            value="#{msgs.edit_answers}"
+                            ajax="false" />
+                    </p:column>
+                </p:dataTable> 
+                </h:form>
             </div>
         </b:container>
     </ui:define>                
