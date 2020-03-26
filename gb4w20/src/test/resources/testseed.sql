@@ -105,7 +105,6 @@ insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_
 insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9780439064866, 13, null, 5, 9.975, true );
 insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9780000000010, 20, null, 5, 6, true );
 
-
 insert into file_formats(file_format_id, format) VALUES(1, "epub");
 insert into file_formats(file_format_id, format) VALUES(2, "pdf");
 insert into file_formats(file_format_id, format) VALUES(3, "mobi");

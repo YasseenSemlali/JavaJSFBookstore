@@ -1,5 +1,6 @@
 package com.gb4w20.gb4w20.jpa;
 
+import com.gb4w20.gb4w20.entities.Authors;
 import com.gb4w20.gb4w20.entities.Authors_;
 import com.gb4w20.gb4w20.entities.Bookorder;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import com.gb4w20.gb4w20.entities.Genres_;
 import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.Resource;
@@ -35,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Jeffrey Boisvert, Yasseen Semlali
+ * @author Jeffrey Boisvert, Yasseen Semlali, Jasmar Badion
  */
 @Named
 @SessionScoped
@@ -160,25 +162,33 @@ public class GenresJpaController implements Serializable {
      * to be displayed on the book page
      * 
      * @param isbn
-     * @param genreId
-     * @param authorId
+     * @param genres
+     * @param authors
      * @param maxResults
      * @return 
      * @author Jasmar
      */
-    public List<Books> getOtherBooksOfSameGenre(long isbn, long genreId, long authorId, int maxResults){
+    public List<Books> getOtherBooksOfSameGenre(long isbn, Collection<Genres> genres, Collection<Authors> authors, int maxResults){
         LOG.info("getting " + maxResults + " other books of same genre and different author");
         CriteriaBuilder cb = em.getCriteriaBuilder();      
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
         Root<Books> book = cq.from(Books.class);
         Join genre = book.join(Books_.genresCollection);
         Join author = book.join(Books_.authorsCollection);
-        List<Books> l = null;
+        
+        List<Long> genIds = new ArrayList<>();
+        genres.forEach((gen) -> {
+            genIds.add(gen.getGenreId());
+        });
+        List<Long> authIds = new ArrayList<>();
+        authors.forEach((auth) -> {
+            authIds.add(auth.getAuthorId());
+        });
         cq.select(book)
                 .where(cb.and(
                         cb.notEqual(book.get(Books_.isbn), isbn),
-                        cb.notEqual(author.get(Authors_.authorId), authorId),
-                        cb.equal(genre.get(Genres_.genreId), genreId)
+                        author.get(Authors_.authorId).in(authIds).not(),
+                        genre.get(Genres_.genreId).in(genIds)
                 )).distinct(true);
         
         Query query = em.createQuery(cq); 

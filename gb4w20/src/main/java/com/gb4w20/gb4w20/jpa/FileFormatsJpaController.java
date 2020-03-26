@@ -7,6 +7,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.BookFiles;
+import com.gb4w20.gb4w20.entities.BookFiles_;
+import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.FileFormats;
 import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
@@ -14,9 +16,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +30,8 @@ import org.slf4j.LoggerFactory;
  * Used to interact with the file formats table in the database. 
  * @author Jeffrey Boisvert
  */
+@Named
+@SessionScoped
 public class FileFormatsJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(FileFormatsJpaController.class);
@@ -173,11 +180,7 @@ public class FileFormatsJpaController implements Serializable {
     }
 
     public FileFormats findFileFormats(Long id) {
-        try {
             return em.find(FileFormats.class, id);
-        } finally {
-            em.close();
-        }
     }
 
     public int getFileFormatsCount() {

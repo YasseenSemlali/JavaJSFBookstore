@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Used to interact with the reviews table in the database. 
- * @author Jeffrey Boisvert, Jean Robatto
+ * @author Jeffrey Boisvert, Jean Robatto, Jasmar Badion
  */
 @Named
 @SessionScoped
