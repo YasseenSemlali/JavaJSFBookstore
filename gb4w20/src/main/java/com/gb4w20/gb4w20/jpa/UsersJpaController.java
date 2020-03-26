@@ -425,49 +425,7 @@ public class UsersJpaController implements Serializable {
         Query query = em.createQuery(cq);
         return query.getResultList();
     }
-    
-     /**
-     * Used to return a list of all the users who match the given firs name
-     * @param firstName of the user
-     * @return collection of users who have that name or similar
-     * @author Jeffrey Boisvert
-     */
-    public List<Users> findUsersByFirstName(String firstName){
-
-          CriteriaBuilder cb = em.getCriteriaBuilder();
-          CriteriaQuery<Users> cq = cb.createQuery(Users.class);
-          Root<Users> user = cq.from(Users.class);
-          
-          cq.select(user);
-          cq.where(cb.like(user.get(Users_.firstName), "%" + firstName + "%"));
-          cq.orderBy(cb.asc(user.get((Users_.firstName))));
-          
-          TypedQuery<Users> query = em.createQuery(cq);
-          return query.getResultList();
-          
-    }
-    
-    /**
-     * Used to return a list of all the users who match the given last name
-     * @param lastName of the user
-     * @return collection of users who have that name or similar
-     * @author Jeffrey Boisvert
-     */
-    public List<Users> findUsersByLastName(String lastName){
-
-          CriteriaBuilder cb = em.getCriteriaBuilder();
-          CriteriaQuery<Users> cq = cb.createQuery(Users.class);
-          Root<Users> user = cq.from(Users.class);
-          
-          cq.select(user);
-          cq.where(cb.like(user.get(Users_.lastName), "%" + lastName + "%"));
-          cq.orderBy(cb.asc(user.get((Users_.lastName))));
-          
-          TypedQuery<Users> query = em.createQuery(cq);
-          return query.getResultList();
-          
-    }
-    
+     
     /**
      * Used to the top clients (based on sales) within the 
      * given start and end dates. 

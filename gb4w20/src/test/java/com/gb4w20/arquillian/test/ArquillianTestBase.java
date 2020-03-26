@@ -5,12 +5,14 @@
  */
 package com.gb4w20.arquillian.test;
 
+import com.gb4w20.arquillian.test.rules.ParameterRule;
 import com.gb4w20.gb4w20.backingbeans.UserSessionBean;
 import com.gb4w20.gb4w20.entities.Authors;
 import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.filters.LoggedInUserFilter;
+import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.filters.ManagerFilter;
 import com.gb4w20.gb4w20.jpa.GenresJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
@@ -81,9 +83,11 @@ public abstract class ArquillianTestBase {
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(NameTotalAndCountBean.class.getPackage())
                 .addPackage(NameAndNumberBean.class.getPackage())
+                .addPackage(Books_.class.getPackage())
                 .addPackage(Users.class.getPackage())
                 .addPackage(Authors.class.getPackage())
                 .addPackage(ArquillianTestBase.class.getPackage())
+                .addPackage(ParameterRule.class.getPackage())
                 .addPackage(Pair.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/test/resources/WEB-INF/payara-resources.xml"), "payara-resources.xml")
@@ -96,7 +100,7 @@ public abstract class ArquillianTestBase {
     }
 
     @Before
-    public void setupDatabase() {
+    public void setup() {
         this.seedDatabase();
     }
     
