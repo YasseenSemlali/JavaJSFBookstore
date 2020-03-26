@@ -83,11 +83,28 @@ INSERT INTO users(user_id,title,first_name,last_name,company_name,address_1,addr
 INSERT INTO users(user_id,title,first_name,last_name,company_name,address_1,address_2,city,province,country,postal_code,home_phone,cell_phone,email, password, is_manager) VALUES( '2', 'Mrs', 'Jane', 'Doe', 'Bookify', '456 avenue boulevard', '', 'toronto', 'TO', 'Canada', 'h2h2h2', '3333333333', '4444444444', 'cst.receive@gmail.com', 'collegedawson', true);
 ALTER TABLE users AUTO_INCREMENT=3;
 
-insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 1, 1, '123 road avenue', '2020-01-23 05:03:16');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 1, 9781401323585, 10, 13, null, null, false );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 1, 1, '123 road avenue', '2020-01-31 19:39:52');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 1, 9780000000000, 17, null, 5, 9.975, false );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 2, 1, '123 road avenue', '2020-02-22 13:34:57');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 2, 9780765377067, 18, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 3, 1, '123 road avenue', '2020-02-10 23:36:10');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 3, 9780316251303, 16, 13, null, null, false );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 3, 9780545010221, 15, 13, null, null, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 4, 1, '123 road avenue', '2020-02-18 03:19:34');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 4, 9780439064866, 13, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 4, 9780000000006, 12, null, 5, 6, true );
 
-insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 2, 2, '456 avenue boulevard', '2020-02-22 13:34:57');
-insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 2, 9780000000000, 17, null, 5, 9.975, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 5, 2, '456 avenue boulevard', '2020-02-18 14:56:52');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 5, 9781401323585, 10, null, 5, 6, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 5, 9780545010221, 15, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 5, 9780000000000, 17, null, 5, 6, true );
+insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 6, 2, '456 avenue boulevard', '2020-02-18 11:35:52');
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9780316251303, 16, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9780765377067, 18, 13, null, null, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9780000000006, 12, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9780439064866, 13, null, 5, 9.975, true );
+insert into bookorder(order_id, isbn, amount_paid_pretax, HST_TAX, PST_TAX, GST_TAX, enabled) VALUES( 6, 9780000000010, 20, null, 5, 6, true );
+
 
 insert into file_formats(file_format_id, format) VALUES(1, "epub");
 insert into file_formats(file_format_id, format) VALUES(2, "pdf");
