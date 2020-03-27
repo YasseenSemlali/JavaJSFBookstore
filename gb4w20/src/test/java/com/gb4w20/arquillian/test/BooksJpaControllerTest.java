@@ -49,9 +49,9 @@ public class BooksJpaControllerTest {
                 //test number, startDate, endDate, expected resultset size
                 new Quartet<Integer, String, String, Integer>(1, "2020-01-01", "2020-03-03", 0),
                 new Quartet<Integer, String, String, Integer>(2, "2019-01-01", "2019-03-03", 8),
-                new Quartet<Integer, String, String, Integer>(3, "2020-01-23", "2020-01-23", 7),
+                new Quartet<Integer, String, String, Integer>(3, "2020-01-31", "2020-01-31", 7),
                 new Quartet<Integer, String, String, Integer>(4, "2020-02-22", "2020-02-22", 7),
-                new Quartet<Integer, String, String, Integer>(5, "1999-02-22", "2020-01-23", 7)
+                new Quartet<Integer, String, String, Integer>(5, "1999-02-22", "2020-01-31", 7)
                 );
         
         private Quartet<Integer, String, String, Integer> param;
@@ -92,9 +92,9 @@ public class BooksJpaControllerTest {
                 //test number, startDate, endDate, expected resultset size, expected title, expected amount, expected count
                 new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(1, "2020-01-01", "2020-03-03", 8, "The Three-Body Problem", new BigDecimal(36), 2l),
                 new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(2, "2019-01-01", "2019-03-03", 0, "Test", new BigDecimal(5), 4l),
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(3, "2020-01-23", "2020-01-23", 1, "And Another Thing...", new BigDecimal(10), 1l),
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(4, "2020-02-22", "2020-02-22", 1, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l),
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(5, "1999-02-22", "2020-01-23", 1, "And Another Thing...", new BigDecimal(10), 1l)
+                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(3, "2020-01-31", "2020-01-31", 1, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l),
+                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(4, "2020-02-22", "2020-02-22", 1, "The Three-Body Problem", new BigDecimal(18), 1l),
+                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(5, "1999-02-22", "2020-01-31", 1, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l)
                 );
         
         private Septet<Integer, String, String, Integer, String, BigDecimal, Long> param;
@@ -332,7 +332,7 @@ public class BooksJpaControllerTest {
         public ParameterRule rule = new ParameterRule("param",
                 //test number, userId, expected resultset size, list of isbns in order
                 new Quartet<Integer, Long, Integer, List<Long>>(1, 1l, 6, new ArrayList<Long>(Arrays.asList(9780000000000l, 9780765377067l, 9780316251303l, 9780545010221l, 9780439064866l, 9780000000006l))),
-                new Quartet<Integer, Long, Integer, List<Long>>(1, 2l, 1, new ArrayList<Long>(Arrays.asList(9781401323585l, 9780545010221l, 9780000000000l, 9780316251303l, 9780765377067l, 9780000000006l, 9780439064866l, 9780000000010l))),
+                new Quartet<Integer, Long, Integer, List<Long>>(1, 2l, 8, new ArrayList<Long>(Arrays.asList(9781401323585l, 9780545010221l, 9780000000000l, 9780316251303l, 9780765377067l, 9780000000006l, 9780439064866l, 9780000000010l))),
                 new Quartet<Integer, Long, Integer, List<Long>>(1, 500l, 0, new ArrayList<Long>())
                 );
         

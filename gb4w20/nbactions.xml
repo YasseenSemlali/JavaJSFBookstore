@@ -17,6 +17,16 @@
                 <test>UsersJpaControllerTest</test>
             </properties>
         </action>
+                <action>
+            <actionName>CUSTOM-testbooks</actionName>
+            <displayName>testbooks</displayName>
+            <goals>
+                <goal>test</goal>
+            </goals>
+            <properties>
+                <test>BooksJpaControllerTest</test>
+            </properties>
+        </action>
         <action>
             <actionName>CUSTOM-SeleniumTest</actionName>
             <displayName>SeleniumTest</displayName>
