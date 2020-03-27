@@ -428,4 +428,101 @@ public class BooksJpaControllerTest {
         
     }
     
+     /**
+     * Used to hold tests for the getBooksOnSale method 
+     * in the BooksJpaContoller
+     * @author Jeffrey Boisvert
+     */
+    public static class GetBooksOnSale extends ArquillianTestBase{
+        
+        @Inject
+        BooksJpaController booksJpaController; 
+        
+        /**
+         * Used to test if all the books that are active are returned. 
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testIfAllActiveBooksReturned(){
+            
+            int expectedResultSetSize = 4; 
+            
+            List<Books> books = booksJpaController.getBooksOnSale(); 
+            
+            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
+            
+        }
+        
+        /**
+         * Used to test if all the books are returned
+         * when giving a negative number
+         * @author Jeffrey Boisvert
+         */
+        @Test 
+        public void testIfAllActiveBooksReturnedGivenANegativeParameter(){
+            
+            int expectedResultSetSize = 4; 
+            
+            List<Books> books = booksJpaController.getBooksOnSale(-1); 
+            
+            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
+
+        }
+        
+        /**
+         * Used to test if the max results 
+         * are returned correctly
+         * @author Jeffrey Boisvert
+         */
+        @Test 
+        public void testIfMaxResultReturned(){
+            
+            int expectedResultSetSize = 3; 
+            
+            List<Books> books = booksJpaController.getBooksOnSale(3); 
+            
+            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
+
+        }
+        
+        /**
+         * Used to test if the max results 
+         * are returned correctly when asking for a maximum 
+         * higher than the actual amount of active books
+         * @author Jeffrey Boisvert
+         */
+        @Test 
+        public void testAllBooksReturnedWithHighMaxResult(){
+            
+            int expectedResultSetSize = 4; 
+            
+            List<Books> books = booksJpaController.getBooksOnSale(123456); 
+            
+            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
+
+        }
+        
+        /**
+         * Used to test if the correct amount of books is returned
+         * even after disabling a book. 
+         * @author Jeffrey Boisvert
+         * @throws Exception 
+         */
+        @Test
+        public void testReturnOnlyActiveBooksAfterDisablingABook() throws Exception {
+            
+            int expectedResultSetSize = 3; 
+            
+            Books book = booksJpaController.findBooks(9780316251303l);
+            book.setActive(false);
+            booksJpaController.edit(book);
+            
+            List<Books> books = booksJpaController.getBooksOnSale();
+            
+            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
+            
+        }
+        
+    }
+    
 }
