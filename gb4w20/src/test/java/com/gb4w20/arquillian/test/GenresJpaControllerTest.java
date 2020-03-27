@@ -36,16 +36,6 @@ public class GenresJpaControllerTest {
      * @author Jeffrey Boisvert, Jasmar Badion
      */
     public static class GetOtherBooksOfSameGenres extends ArquillianTestBase {
-
-        @Rule
-        public ParameterRule rule = new ParameterRule("param",
-                //test number, isbn, genreId, authorId, maxResults, expected resultset size
-                new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(1, 9780000000006l, new ArrayList<Genres>(Arrays.asList(new Genres(1l))), new ArrayList<Authors>(Arrays.asList(new Authors(6l))), 3, 3),
-                new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(2, 9780000000010l, new ArrayList<Genres>(Arrays.asList(new Genres(2l))), new ArrayList<Authors>(Arrays.asList(new Authors(8l))), 7, 2),
-                new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(3, 9780316251303l, new ArrayList<Genres>(Arrays.asList(new Genres(1l))), new ArrayList<Authors>(Arrays.asList(new Authors(5l))), 7, 4),
-                new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(4, 9780765377067l, new ArrayList<Genres>(Arrays.asList(new Genres(2l))), new ArrayList<Authors>(Arrays.asList(new Authors(7l))), 5, 2),
-                new Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>(5, 9781401323585l, new ArrayList<Genres>(Arrays.asList(new Genres(2l))), new ArrayList<Authors>(Arrays.asList(new Authors(9l))), 1, 1)
-        );
         
         private Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer> param;
         
@@ -53,21 +43,17 @@ public class GenresJpaControllerTest {
         private GenresJpaController genresJpaController;
         
         //holds the result of the method being tested
-        private List<Books> books;
+        private List<Books> result;
         
-        /**
-         * Holds the result of method being tested
-         * @author Jasmar Badion
-         */
-        @Before
-        public void initializeMethodResult(){
-            long isbn = param.getValue1();
-            Collection<Genres> genres = param.getValue2();
-            Collection<Authors> authors = param.getValue3(); 
-            int maxResults = param.getValue4();
-            
-            this.books = genresJpaController.getOtherBooksOfSameGenre(isbn, genres, authors, maxResults);
-        }
+        @Rule
+        public ParameterRule<Sextet<Integer, Long, Collection<Genres>, Collection<Authors>, Integer, Integer>> rule = new ParameterRule("param", "result", 
+                () -> genresJpaController.getOtherBooksOfSameGenre(param.getValue1(), param.getValue2(), param.getValue3(), param.getValue4()),
+                Sextet.with(1, 9780000000006l, new ArrayList<Genres>(Arrays.asList(new Genres(1l))), new ArrayList<Authors>(Arrays.asList(new Authors(6l))), 3, 3),
+                Sextet.with(2, 9780000000010l, new ArrayList<Genres>(Arrays.asList(new Genres(2l))), new ArrayList<Authors>(Arrays.asList(new Authors(8l))), 7, 2),
+                Sextet.with(3, 9780316251303l, new ArrayList<Genres>(Arrays.asList(new Genres(1l))), new ArrayList<Authors>(Arrays.asList(new Authors(5l))), 7, 4),
+                Sextet.with(4, 9780765377067l, new ArrayList<Genres>(Arrays.asList(new Genres(2l))), new ArrayList<Authors>(Arrays.asList(new Authors(7l))), 5, 2),
+                Sextet.with(5, 9781401323585l, new ArrayList<Genres>(Arrays.asList(new Genres(2l))), new ArrayList<Authors>(Arrays.asList(new Authors(9l))), 1, 1));
+        
         /**
          * Used to test the result set is always the correct size
          * @author Jeffrey Boisvert, Jasmar
@@ -77,7 +63,7 @@ public class GenresJpaControllerTest {
             int testNumber = param.getValue0();
             int expectedResultSetSize = param.getValue5();
             
-            assertEquals( "Test " + testNumber + ": Expected number of books found was incorrect", expectedResultSetSize, this.books.size());
+            assertEquals( "Test " + testNumber + ": Expected number of books found was incorrect", expectedResultSetSize, this.result.size());
 
         }
         
@@ -90,7 +76,7 @@ public class GenresJpaControllerTest {
             int testNumber = param.getValue0();
             Collection<Authors> authors = param.getValue3(); 
             
-            assertTrue( "Test " + testNumber + ": One of the books were written by the same author", booksAreNotByGivenAuthor(this.books, authors));
+            assertTrue( "Test " + testNumber + ": One of the books were written by the same author", booksAreNotByGivenAuthor(this.result, authors));
 
         }
         
@@ -123,7 +109,7 @@ public class GenresJpaControllerTest {
             int testNumber = param.getValue0();
             long isbn = param.getValue1();
             
-            assertTrue( "Test " + testNumber + ": The same book is present in the result set", booksDoNotContainTheGivenIsbn(this.books, isbn));
+            assertTrue( "Test " + testNumber + ": The same book is present in the result set", booksDoNotContainTheGivenIsbn(this.result, isbn));
 
         }
         
