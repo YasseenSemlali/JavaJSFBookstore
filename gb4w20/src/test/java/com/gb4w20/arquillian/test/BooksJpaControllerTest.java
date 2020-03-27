@@ -34,30 +34,6 @@ public class BooksJpaControllerTest {
 
     private final static Logger LOG = LoggerFactory.getLogger(BooksJpaControllerTest.class);
     
-    public static class NonParametrized extends ArquillianTestBase {
-
-        @Test
-        public void test() {
-            System.out.println("test");
-        }
-    }
-
-    public static class SampleParametrized extends ArquillianTestBase {
-
-        @Rule
-        public ParameterRule<Pair<String, String>> rule = new ParameterRule<Pair<String, String>>("param",
-                Pair.of("test1", "test2"),
-                Pair.of("test3", "test4"),
-                Pair.of("test5", "test6"));
-        
-        private Pair<String, String> param;
-        
-        @Test
-        public void test() {
-            System.out.println(param);
-        }
-    }
-    
     /**
      * Used to hold tests for the findBooksThatWereNeverSold method 
      * in the BooksJpaContoller
@@ -71,7 +47,7 @@ public class BooksJpaControllerTest {
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //test number, startDate, endDate, expected resultset size
-                new Quartet<Integer, String, String, Integer>(1, "2020-01-01", "2020-03-03", 6),
+                new Quartet<Integer, String, String, Integer>(1, "2020-01-01", "2020-03-03", 0),
                 new Quartet<Integer, String, String, Integer>(2, "2019-01-01", "2019-03-03", 8),
                 new Quartet<Integer, String, String, Integer>(3, "2020-01-23", "2020-01-23", 7),
                 new Quartet<Integer, String, String, Integer>(4, "2020-02-22", "2020-02-22", 7),
@@ -114,7 +90,7 @@ public class BooksJpaControllerTest {
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //test number, startDate, endDate, expected resultset size, expected title, expected amount, expected count
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(1, "2020-01-01", "2020-03-03", 2, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l),
+                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(1, "2020-01-01", "2020-03-03", 8, "The Three-Body Problem", new BigDecimal(36), 2l),
                 new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(2, "2019-01-01", "2019-03-03", 0, "Test", new BigDecimal(5), 4l),
                 new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(3, "2020-01-23", "2020-01-23", 1, "And Another Thing...", new BigDecimal(10), 1l),
                 new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(4, "2020-02-22", "2020-02-22", 1, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l),
@@ -265,28 +241,6 @@ public class BooksJpaControllerTest {
             
         }
         
-        /**
-         * Used to test if there no active books
-         * @author Jeffrey Boisvert
-         * @throws java.lang.Exception
-         */
-        @Test
-        public void testNoActiveBooks() throws Exception {
-            
-            int expectedResultSetSize = 0; 
-            
-            List<Books> activeBooks = booksJpaController.getActiveBooks();
-            for(Books book : activeBooks){
-                book.setActive(false);
-                booksJpaController.edit(book);
-            }
-            
-            List<Books> books = booksJpaController.getActiveBooks();
-            
-            assertEquals("Incorrect amount of books", expectedResultSetSize, books.size());
-            
-        }
-        
     }
     
     /**
@@ -377,8 +331,8 @@ public class BooksJpaControllerTest {
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //test number, userId, expected resultset size, list of isbns in order
-                new Quartet<Integer, Long, Integer, List<Long>>(1, 1l, 1, new ArrayList<Long>(Arrays.asList(9781401323585l))),
-                new Quartet<Integer, Long, Integer, List<Long>>(1, 2l, 1, new ArrayList<Long>(Arrays.asList(9780000000000l))),
+                new Quartet<Integer, Long, Integer, List<Long>>(1, 1l, 6, new ArrayList<Long>(Arrays.asList(9780000000000l, 9780765377067l, 9780316251303l, 9780545010221l, 9780439064866l, 9780000000006l))),
+                new Quartet<Integer, Long, Integer, List<Long>>(1, 2l, 1, new ArrayList<Long>(Arrays.asList(9781401323585l, 9780545010221l, 9780000000000l, 9780316251303l, 9780765377067l, 9780000000006l, 9780439064866l, 9780000000010l))),
                 new Quartet<Integer, Long, Integer, List<Long>>(1, 500l, 0, new ArrayList<Long>())
                 );
         
