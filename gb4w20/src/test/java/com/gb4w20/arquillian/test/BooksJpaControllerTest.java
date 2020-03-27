@@ -525,4 +525,81 @@ public class BooksJpaControllerTest {
         
     }
     
+    /**
+     * Used to hold tests for the getTopSelling method 
+     * in the BooksJpaContoller
+     * @author Jeffrey Boisvert
+     */
+    public static class GetTopSelling extends ArquillianTestBase{
+        
+        @Inject
+        BooksJpaController booksJpaController; 
+        
+        @Rule
+        public ParameterRule rule = new ParameterRule("param",
+                //test number, max result givn, expected result
+                new Triplet<Integer, Integer, Integer>(1, 6, 6),
+                new Triplet<Integer, Integer, Integer>(2, 8, 8),
+                new Triplet<Integer, Integer, Integer>(3, 0, 8),
+                new Triplet<Integer, Integer, Integer>(4, -1, 8),
+                new Triplet<Integer, Integer, Integer>(5, 120, 8)
+                );
+        
+        private Triplet<Integer, Integer, Integer> param;
+        
+        /**
+         * Used to test if the correct number of books are returned
+         * in the result set. 
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testCorrectNumberOfBooksAreReturned(){
+            
+            int testNumber = param.getValue0();
+            int maxResult = param.getValue1();
+            int expectedResultSetSize = param.getValue2();
+            
+            List<Books> books = booksJpaController.getTopSelling(maxResult);
+            
+            assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
+            
+        }
+        
+        /**
+         * Used to test and ensure all the 
+         * results returned are active books. 
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testIfAllBooksReturnedAreActive(){
+            
+            int testNumber = param.getValue0();
+            int maxResult = param.getValue1();
+            
+            List<Books> books = booksJpaController.getTopSelling(maxResult);
+            
+            assertTrue("Test " + testNumber + " contained an inactive book", isAllBooksActive(books));
+            
+        }
+        
+        /**
+         * Used to test of the list of books are all active. 
+         * @param books given 
+         * @return true if books are active false otherwise
+         * @author Jeffrey Boisvert
+         */
+        private boolean isAllBooksActive(List<Books> books){
+            
+            for(Books book : books){
+                if (!book.getActive()){
+                    return false;
+                }
+            }
+            
+            return true; 
+            
+        }
+        
+    }
+    
 }
