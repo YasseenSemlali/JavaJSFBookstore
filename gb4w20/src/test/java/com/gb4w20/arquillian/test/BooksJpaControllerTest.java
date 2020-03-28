@@ -260,8 +260,10 @@ public class BooksJpaControllerTest {
         public ParameterRule rule = new ParameterRule("param",
                 //test number, genreId, expected resultset size
                 new Triplet<Integer, Long, Integer>(1, 1l, 5),
-                new Triplet<Integer, Long, Integer>(2, 2l, 3),
-                new Triplet<Integer, Long, Integer>(3, 100l, 0)
+                new Triplet<Integer, Long, Integer>(1, 2l, 3),
+                new Triplet<Integer, Long, Integer>(1, 5l, 0),
+                new Triplet<Integer, Long, Integer>(1, -1l, 0),
+                new Triplet<Integer, Long, Integer>(1, 3l, 1)
                 );
         
         private Triplet<Integer, Long, Integer> param;
@@ -539,11 +541,11 @@ public class BooksJpaControllerTest {
     }
     
     /**
-     * Used to hold tests for the getAllBooksForGenre method 
+     * Used to hold tests for the getTopSellingForGenre method 
      * in the BooksJpaContoller
      * @author Jeffrey Boisvert
      */
-    public static class GetAllBooksForGenre extends ArquillianTestBase{
+    public static class GetTopSellingForGenre extends ArquillianTestBase {
         
         @Inject
         private BooksJpaController booksJpaController; 
@@ -552,15 +554,16 @@ public class BooksJpaControllerTest {
         
         @Rule
         public ParameterRule rule = new ParameterRule("param",
-                //test number, genre id, expected result
-                new Triplet<Integer, Long, Integer>(1, 1l, 5),
-                new Triplet<Integer, Long, Integer>(1, 2l, 3),
-                new Triplet<Integer, Long, Integer>(1, 5l, 0),
-                new Triplet<Integer, Long, Integer>(1, -1l, 0),
-                new Triplet<Integer, Long, Integer>(1, 3l, 1)
+                //test number, genre id, max result given, expected result
+                new Quartet<Integer, Long, Integer, Integer>(1, 1l, 1, 1),
+                new Quartet<Integer, Long, Integer, Integer>(1, 1l, 6, 5),
+                new Quartet<Integer, Long, Integer, Integer>(1, 1l, -1, 5),
+                new Quartet<Integer, Long, Integer, Integer>(1, 2l, 2, 2),
+                new Quartet<Integer, Long, Integer, Integer>(1, 3l, -1, 1),
+                new Quartet<Integer, Long, Integer, Integer>(1, -1l, -1, 0)
                 );
         
-        private Triplet<Integer, Long, Integer> param;
+        private Quartet<Integer, Long, Integer, Integer> param;
         
         /**
          * Used to test if the correct number of books are returned
@@ -571,10 +574,11 @@ public class BooksJpaControllerTest {
         public void testCorrectNumberOfBooksAreReturned(){
             
             int testNumber = param.getValue0();
-            Long genreId = param.getValue1();
-            int expectedResultSetSize = param.getValue2();
+            long genreId = param.getValue1(); 
+            int maxResult = param.getValue2();
+            int expectedResultSetSize = param.getValue3();
             
-            List<Books> books = booksJpaController.getAllBooksForGenre(genreId);
+            List<Books> books = booksJpaController.getTopSellingForGenre(genreId, maxResult);
             
             assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
             
@@ -589,9 +593,10 @@ public class BooksJpaControllerTest {
         public void testIfAllBooksReturnedAreActive(){
             
             int testNumber = param.getValue0();
-            int maxResult = param.getValue1();
+            long genreId = param.getValue1(); 
+            int maxResult = param.getValue2();
             
-            List<Books> books = booksJpaController.getTopSelling(maxResult);
+            List<Books> books = booksJpaController.getTopSellingForGenre(genreId, maxResult);
             
             assertTrue("Test " + testNumber + " contained an inactive book", UTILITIES.areAllBooksActive(books));
             
