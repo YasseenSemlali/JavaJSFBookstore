@@ -515,7 +515,7 @@ public class BooksJpaController implements Serializable {
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
 
         Root<Books> book = cq.from(Books.class);
-        Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
+        //Join<Books, Bookorder> bookorder = book.join("bookorderCollection", JoinType.INNER);
 
         cq.select(book);
         
