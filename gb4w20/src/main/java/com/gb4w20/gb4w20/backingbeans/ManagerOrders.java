@@ -221,10 +221,10 @@ public class ManagerOrders implements Serializable {
             bookOrders = order.getBookorderCollection();
 
             //Set taxes and prices
-            pricePreTax = bookorderController.getTotalSalesForOrderPreTax(order);
-            hstTax = (bookorderController.getHSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getHSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
-            gstTax = (bookorderController.getGSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getGSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
-            pstTax = (bookorderController.getPSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getPSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
+            pricePreTax = bookorderController.getTotalSalesForOrderPreTax(order.getOrderId());
+            hstTax = (bookorderController.getHSTForOrder(order.getOrderId()) == null) ? new BigDecimal(0) : bookorderController.getHSTForOrder(order.getOrderId()).setScale(2, RoundingMode.HALF_EVEN);
+            gstTax = (bookorderController.getGSTForOrder(order.getOrderId()) == null) ? new BigDecimal(0) : bookorderController.getGSTForOrder(order.getOrderId()).setScale(2, RoundingMode.HALF_EVEN);
+            pstTax = (bookorderController.getPSTForOrder(order.getOrderId()) == null) ? new BigDecimal(0) : bookorderController.getPSTForOrder(order.getOrderId()).setScale(2, RoundingMode.HALF_EVEN);
             totalTax = hstTax.add(pstTax).add(gstTax).setScale(2, RoundingMode.HALF_EVEN);
             totalPrice = pricePreTax.add(totalTax).setScale(2, RoundingMode.HALF_EVEN);
 

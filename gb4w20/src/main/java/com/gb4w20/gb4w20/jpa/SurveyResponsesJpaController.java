@@ -11,7 +11,6 @@ import com.gb4w20.gb4w20.entities.SurveyResponses_;
 import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
-import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -25,7 +24,6 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import org.eclipse.persistence.exceptions.TransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -196,13 +194,15 @@ public class SurveyResponsesJpaController implements Serializable {
      * @return SurveyResponses of the given survey.
      */
     public SurveyResponses findSurveyResponses(Long id) {
-        try {
             return em.find(SurveyResponses.class, id);
-        } finally {
-            em.close();
-        }
     }
 
+    /**
+     * PLEASE SOMEONE COMMENT THIS!
+     * WE DONT NEED THIS: CAN JUST FIND ENTRY, USE SETTERS AND COMMIT
+     * @param id
+     * @throws RollbackFailureException 
+     */
     public void voteForQuestion(long id) throws RollbackFailureException {
         try {
             LOG.debug("Voting for " + id);

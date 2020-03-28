@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,6 +44,12 @@ public class BookorderJpaController implements Serializable {
 
     @Resource
     private UserTransaction utx;
+    
+    @Inject
+    private BooksJpaController booksJpaController;
+    
+    @Inject
+    private OrdersJpaController ordersJpaController;
 
     @PersistenceContext(unitName = "BookPU")
     private EntityManager em;
@@ -202,7 +209,8 @@ public class BookorderJpaController implements Serializable {
      * @param isbn
      * @return 
      */
-    public BigDecimal getTotalSalesForBook(Books isbn) {
+    public BigDecimal getTotalSalesForBook(Long isbn) {
+        Books book = booksJpaController.findBooks(isbn);
         try {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<BigDecimal> cq = cb.createQuery(BigDecimal.class);
@@ -212,7 +220,7 @@ public class BookorderJpaController implements Serializable {
             cq.select(
                 cb.sum(order.get(Bookorder_.amountPaidPretax)))
                 .groupBy(order.get(Bookorder_.isbn))
-                .where(cb.equal(order.get(Bookorder_.isbn), isbn), cb.equal(order.get(Bookorder_.enabled), Boolean.TRUE));
+                .where(cb.equal(order.get(Bookorder_.isbn), book), cb.equal(order.get(Bookorder_.enabled), Boolean.TRUE));
                 
             Query query = em.createQuery(cq);
             
@@ -227,10 +235,11 @@ public class BookorderJpaController implements Serializable {
      * Returns the total sales for a specific order
      * 
      * @author Jean Robatto
-     * @param inputOrder
+     * @param inputOrderId
      * @return 
      */
-    public BigDecimal getTotalSalesForOrderPreTax(Orders inputOrder) {
+    public BigDecimal getTotalSalesForOrderPreTax(Long inputOrderId) {
+        Orders inputOrder = ordersJpaController.findOrders(inputOrderId);
         try {
             
             CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -255,10 +264,11 @@ public class BookorderJpaController implements Serializable {
      * Returns the total HST tax for a specific order
      * 
      * @author Jean Robatto
-     * @param inputOrder
+     * @param inputOrderId
      * @return 
      */
-    public BigDecimal getHSTForOrder(Orders inputOrder) {
+    public BigDecimal getHSTForOrder(Long inputOrderId) {
+        Orders inputOrder = ordersJpaController.findOrders(inputOrderId);
         try {
             
             CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -283,10 +293,11 @@ public class BookorderJpaController implements Serializable {
      * Returns the total GST tax for a specific order
      * 
      * @author Jean Robatto
-     * @param inputOrder
+     * @param inputOrderId
      * @return 
      */
-    public BigDecimal getGSTForOrder(Orders inputOrder) {
+    public BigDecimal getGSTForOrder(Long inputOrderId) {
+        Orders inputOrder = ordersJpaController.findOrders(inputOrderId);
         try {
             
             CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -311,10 +322,11 @@ public class BookorderJpaController implements Serializable {
      * Returns the total PST tax for a specific order
      * 
      * @author Jean Robatto
-     * @param inputOrder
+     * @param inputOrderId
      * @return 
      */
-    public BigDecimal getPSTForOrder(Orders inputOrder) {
+    public BigDecimal getPSTForOrder(Long inputOrderId) {
+        Orders inputOrder = ordersJpaController.findOrders(inputOrderId);
         try {
             
             CriteriaBuilder cb = em.getCriteriaBuilder();

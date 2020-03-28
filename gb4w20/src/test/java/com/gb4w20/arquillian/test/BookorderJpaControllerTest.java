@@ -1,11 +1,7 @@
 package com.gb4w20.arquillian.test;
 
 import com.gb4w20.arquillian.test.rules.ParameterRule;
-import com.gb4w20.gb4w20.entities.Books;
-import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.jpa.BookorderJpaController;
-import com.gb4w20.gb4w20.jpa.BooksJpaController;
-import com.gb4w20.gb4w20.jpa.OrdersJpaController;
 import javax.inject.Inject;
 import org.javatuples.Triplet;
 import static org.junit.Assert.assertEquals;
@@ -31,14 +27,6 @@ public class BookorderJpaControllerTest {
     
     private final static Logger LOG = LoggerFactory.getLogger(BookorderJpaControllerTest.class);
     
-    /*
-        NEED TO TEST:
-    
-        getHSTForOrder
-        getGSTForOrder
-        getPSTForOrder
-    */
-    
     /**
      * Used to run valid tests for the getTotalSalesForBook 
      * method inside of the BookorderJpaController class. 
@@ -49,17 +37,17 @@ public class BookorderJpaControllerTest {
         @Inject
         private BookorderJpaController bookorderJpaController;
         
-        private Triplet<Integer, Books, Double> param;
+        private Triplet<Integer, Long, Double> param;
         
         //holds the result of the method being tested
         private double result;
         
         @Rule
-        public ParameterRule<Triplet<Integer, Books, Double>> rule = new ParameterRule("param", "result",
-                () -> bookorderJpaController.getTotalSalesForBook(param.getValue1()),
-                Triplet.with(1, bookorderJpaController.findBookorder(1L).getIsbn(), 32.0),
-                Triplet.with(2, bookorderJpaController.findBookorder(2L).getIsbn(), 36.0),
-                Triplet.with(3, bookorderJpaController.findBookorder(3L).getIsbn(), 32.0));
+        public ParameterRule<Triplet<Integer, Long, Double>> rule = new ParameterRule("param", "result",
+                () -> bookorderJpaController.getTotalSalesForBook(param.getValue1()).doubleValue(),
+                Triplet.with(1, 9780000000000L, 17.0), //Other order is disabled
+                Triplet.with(2, 9780765377067L, 36.0),
+                Triplet.with(3, 9780316251303L, 16.0));
         
         /**
          * Used to test if the total sales given is equals to
@@ -67,8 +55,7 @@ public class BookorderJpaControllerTest {
          * @author Jean Robatto
          */
         @Test
-        public void testCorrectTotalSales(){
-            LOG.info(Long.toString(param.getValue1().getIsbn()));
+        public void testCorrectTotal(){
             double expectedTotalSales = param.getValue2();
             assertEquals("Test " + param.getValue0() + " did not return the correct total sales", expectedTotalSales, this.result, 0.01f);
         }
@@ -84,20 +71,17 @@ public class BookorderJpaControllerTest {
         @Inject
         private BookorderJpaController bookorderJpaController;
         
-        @Inject
-        private OrdersJpaController ordersJpaController;
-        
-        private Triplet<Integer, Orders, Double> param;
+        private Triplet<Integer, Long, Double> param;
         
         //holds the result of the method being tested
         private double result;
         
         @Rule
-        public ParameterRule<Triplet<Integer, Orders, Double>> rule = new ParameterRule("param", "result",
-                () -> bookorderJpaController.getTotalSalesForOrderPreTax(param.getValue1()),
-                Triplet.with(1, ordersJpaController.findOrders(1L), 17.0),
-                Triplet.with(2, ordersJpaController.findOrders(2L), 18.0),
-                Triplet.with(3, ordersJpaController.findOrders(3L), 31.0));
+        public ParameterRule<Triplet<Integer, Long, Double>> rule = new ParameterRule("param", "result",
+                () -> bookorderJpaController.getTotalSalesForOrderPreTax(param.getValue1()).doubleValue(),
+                Triplet.with(1, 2L, 18.0),
+                Triplet.with(2, 4L, 25.0),
+                Triplet.with(3, 5L, 42.0));
         
         /**
          * Used to test if the total sales given is equals to
@@ -105,7 +89,7 @@ public class BookorderJpaControllerTest {
          * @author Jean Robatto
          */
         @Test
-        public void testNumberOfBooksPurchasedByAuthor(){
+        public void testCorrectTotal(){
             int testNumber = param.getValue0();
             double expectedTotalSales = param.getValue2();
             
@@ -125,20 +109,17 @@ public class BookorderJpaControllerTest {
         @Inject
         private BookorderJpaController bookorderJpaController;
         
-        @Inject
-        private OrdersJpaController ordersJpaController;
-        
-        private Triplet<Integer, Orders, Double> param;
+        private Triplet<Integer, Long, Double> param;
         
         //holds the result of the method being tested
         private double result;
         
         @Rule
-        public ParameterRule<Triplet<Integer, Orders, Double>> rule = new ParameterRule("param", "result",
-                () -> bookorderJpaController.getHSTForOrder(param.getValue1()),
-                Triplet.with(1, ordersJpaController.findOrders(1L), null),
-                Triplet.with(2, ordersJpaController.findOrders(2L), null),
-                Triplet.with(3, ordersJpaController.findOrders(3L), 26.0));
+        public ParameterRule<Triplet<Integer, Long, Double>> rule = new ParameterRule("param", "result",
+                () -> bookorderJpaController.getHSTForOrder(param.getValue1()).doubleValue(),
+                Triplet.with(1, 5L, 13.0),
+                Triplet.with(2, 4L, 13.0),
+                Triplet.with(3, 3L, 13.0));
         
         /**
          * Used to test if the total sales given is equals to
@@ -146,15 +127,87 @@ public class BookorderJpaControllerTest {
          * @author Jean Robatto
          */
         @Test
-        public void testNumberOfBooksPurchasedByAuthor(){
+        public void testCorrectTotal(){
             int testNumber = param.getValue0();
             double expectedTotalTax = param.getValue2();
             
-            assertEquals("Test " + testNumber + " did not return the correct total sales", expectedTotalTax, this.result, 0.01f);
+            assertEquals("Test " + testNumber + " did not return the correct total tax", expectedTotalTax, this.result, 0.01f);
         }
 
     }
     
-    //TODO Repeat fot GST and PST
+    /**
+     * Used to run valid tests for the getPSTForOrder 
+     * method inside of the BookorderJpaController class. 
+     * @author Jean Robatto
+     */
+    public static class GetPSTForOrder extends ArquillianTestBase {
+        
+        @Inject
+        private BookorderJpaController bookorderJpaController;
+        
+        private Triplet<Integer, Long, Double> param;
+        
+        //holds the result of the method being tested
+        private double result;
+        
+        @Rule
+        public ParameterRule<Triplet<Integer, Long, Double>> rule = new ParameterRule("param", "result",
+                () -> bookorderJpaController.getPSTForOrder(param.getValue1()).doubleValue(),
+                Triplet.with(1, 5L, 10.0),
+                Triplet.with(2, 6L, 15.0),
+                Triplet.with(3, 1L, 0.0)); //Disabled
+        
+        /**
+         * Used to test if the total sales given is equals to
+         * the expected total sales from a chosen order
+         * @author Jean Robatto
+         */
+        @Test
+        public void testCorrectTotal(){
+            int testNumber = param.getValue0();
+            double expectedTotalTax = param.getValue2();
+            
+            assertEquals("Test " + testNumber + " did not return the correct total tax", expectedTotalTax, this.result, 0.01f);
+        }
+
+    }
+    
+    /**
+     * Used to run valid tests for the getGSTForOrder 
+     * method inside of the BookorderJpaController class. 
+     * @author Jean Robatto
+     */
+    public static class GetGSTForOrder extends ArquillianTestBase {
+        
+        @Inject
+        private BookorderJpaController bookorderJpaController;
+        
+        private Triplet<Integer, Long, Double> param;
+        
+        //holds the result of the method being tested
+        private double result;
+        
+        @Rule
+        public ParameterRule<Triplet<Integer, Long, Double>> rule = new ParameterRule("param", "result",
+                () -> bookorderJpaController.getGSTForOrder(param.getValue1()).doubleValue(),
+                Triplet.with(1, 4L, 6.0),
+                Triplet.with(2, 5L, 12.0),
+                Triplet.with(3, 2L, 9.975));
+        
+        /**
+         * Used to test if the total sales given is equals to
+         * the expected total sales from a chosen order
+         * @author Jean Robatto
+         */
+        @Test
+        public void testCorrectTotal(){
+            int testNumber = param.getValue0();
+            double expectedTotalTax = param.getValue2();
+            
+            assertEquals("Test " + testNumber + " did not return the correct total tax", expectedTotalTax, this.result, 0.01f);
+        }
+
+    }
     
 }

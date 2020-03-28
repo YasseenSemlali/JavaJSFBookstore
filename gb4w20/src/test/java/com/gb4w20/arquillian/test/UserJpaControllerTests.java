@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -99,7 +100,6 @@ public class UserJpaControllerTests {
      * @author Jeffrey Boisvert
      */
     @Test
-    @Ignore
     public void testFindUsersByLastNameNoResult() throws RollbackFailureException, Exception {
         
         int expectedSize = 0; 
@@ -110,7 +110,7 @@ public class UserJpaControllerTests {
         Users secondUser = createTestUser();
         usersJpaController.create(secondUser);
 
-        List<Users> returnedUser = null; //usersJpaController.findUsersByLastName("I am not a real name");
+        List<Users> returnedUser = usersJpaController.findUsersByLastName("I am not a real name");
         assertEquals("Found results even though there should be none", returnedUser.size(), expectedSize);
 
     }
