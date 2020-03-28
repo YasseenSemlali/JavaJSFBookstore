@@ -103,7 +103,7 @@ public class OrdersJpaControllerTest {
                 Quartet.with(3, "2020-02-01", "2020-02-29", 
                         new ArrayList<NameTotalAndCountBean>() {{ 
                            add(new NameTotalAndCountBean("And Another Thing...", new BigDecimal(10), 1L));
-                            add(new NameTotalAndCountBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(34), 2L));
+                            add(new NameTotalAndCountBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1L));
                             add(new NameTotalAndCountBean("Harry Potter and the Chamber of Secrets", new BigDecimal(26), 2L));
                             add(new NameTotalAndCountBean("Harry Potter and the Deathly Hallows", new BigDecimal(30), 2L));
                             add(new NameTotalAndCountBean("Red Seas Under Red Skies", new BigDecimal(24), 2L));
