@@ -1,6 +1,7 @@
 package com.gb4w20.arquillian.test;
 
 import com.gb4w20.arquillian.test.rules.ParameterRule;
+import com.gb4w20.arquillian.test.utils.TestUtilities;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
@@ -42,7 +43,7 @@ public class BooksJpaControllerTest {
     public static class FindBooksThatWereNeverSoldTest extends ArquillianTestBase{
         
         @Inject
-        BooksJpaController booksJpaController; 
+        private BooksJpaController booksJpaController; 
         
         @Rule
         public ParameterRule rule = new ParameterRule("param",
@@ -85,7 +86,7 @@ public class BooksJpaControllerTest {
     public static class FindTopSellersTest extends ArquillianTestBase{
         
         @Inject
-        BooksJpaController booksJpaController; 
+        private BooksJpaController booksJpaController; 
         
         @Rule
         public ParameterRule rule = new ParameterRule("param",
@@ -154,7 +155,7 @@ public class BooksJpaControllerTest {
     public static class GetActiveBooksTest extends ArquillianTestBase{
         
         @Inject
-        BooksJpaController booksJpaController; 
+        private BooksJpaController booksJpaController; 
         
         /**
          * Used to test if all the books that are active are returned. 
@@ -251,7 +252,9 @@ public class BooksJpaControllerTest {
     public static class GetAllBooksForGenresTest extends ArquillianTestBase{
         
         @Inject
-        BooksJpaController booksJpaController; 
+        private BooksJpaController booksJpaController; 
+        
+        private final TestUtilities UTILITIES = new TestUtilities();
         
         @Rule
         public ParameterRule rule = new ParameterRule("param",
@@ -294,25 +297,7 @@ public class BooksJpaControllerTest {
             
             List<Books> books = booksJpaController.getAllBooksForGenre(genreId);
             
-            assertTrue("Test " + testNumber + " contained an inactive book", isAllBooksActive(books));
-            
-        }
-        
-        /**
-         * Used to test of the list of books are all active. 
-         * @param books given 
-         * @return true if books are active false otherwise
-         * @author Jeffrey Boisvert
-         */
-        private boolean isAllBooksActive(List<Books> books){
-            
-            for(Books book : books){
-                if (!book.getActive()){
-                    return false;
-                }
-            }
-            
-            return true; 
+            assertTrue("Test " + testNumber + " contained an inactive book", UTILITIES.areAllBooksActive(books));
             
         }
         
@@ -326,7 +311,9 @@ public class BooksJpaControllerTest {
     public static class GetBooksForUserTest extends ArquillianTestBase{
         
         @Inject
-        BooksJpaController booksJpaController; 
+        private BooksJpaController booksJpaController; 
+        
+        private final TestUtilities UTILITIES = new TestUtilities();
         
         @Rule
         public ParameterRule rule = new ParameterRule("param",
@@ -370,24 +357,7 @@ public class BooksJpaControllerTest {
             
             List<Books> books = booksJpaController.getBooksForUser(userId);
             
-            assertTrue("Test " + testNumber + " does not contain expected books", expectedIsbns.containsAll( getIsbnsFromBooks(books)));
-            
-        }
-        
-        /**
-         * Helper method just to get all the isbns from the given list of books
-         * @param books given
-         * @return a list of the isbns of the books. 
-         */
-        private List<Long> getIsbnsFromBooks(List<Books> books){
-            
-            List<Long> isbns = new ArrayList<>(); 
-            
-            for (Books book : books){
-                isbns.add(book.getIsbn());
-            }
-            
-            return isbns;
+            assertTrue("Test " + testNumber + " does not contain expected books", expectedIsbns.containsAll(UTILITIES.getIsbnsFromBooks(books)));
             
         }
         
@@ -404,25 +374,7 @@ public class BooksJpaControllerTest {
             
             List<Books> books = booksJpaController.getBooksForUser(userId);
             
-            assertTrue("Test " + testNumber + " contained an inactive book", isAllBooksActive(books));
-            
-        }
-        
-        /**
-         * Used to test of the list of books are all active. 
-         * @param books given 
-         * @return true if books are active false otherwise
-         * @author Jeffrey Boisvert
-         */
-        private boolean isAllBooksActive(List<Books> books){
-            
-            for(Books book : books){
-                if (!book.getActive()){
-                    return false;
-                }
-            }
-            
-            return true; 
+            assertTrue("Test " + testNumber + " contained an inactive book", UTILITIES.areAllBooksActive(books));
             
         }
         
@@ -533,7 +485,70 @@ public class BooksJpaControllerTest {
     public static class GetTopSelling extends ArquillianTestBase{
         
         @Inject
-        BooksJpaController booksJpaController; 
+        private BooksJpaController booksJpaController; 
+        
+        private final TestUtilities UTILITIES = new TestUtilities();
+        
+        @Rule
+        public ParameterRule rule = new ParameterRule("param",
+                //test number, max result givn, expected result
+                new Triplet<Integer, Integer, Integer>(1, 6, 6),
+                new Triplet<Integer, Integer, Integer>(2, 8, 8),
+                new Triplet<Integer, Integer, Integer>(3, 0, 8),
+                new Triplet<Integer, Integer, Integer>(4, -1, 8),
+                new Triplet<Integer, Integer, Integer>(5, 120, 8)
+                );
+        
+        private Triplet<Integer, Integer, Integer> param;
+        
+        /**
+         * Used to test if the correct number of books are returned
+         * in the result set. 
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testCorrectNumberOfBooksAreReturned(){
+            
+            int testNumber = param.getValue0();
+            int maxResult = param.getValue1();
+            int expectedResultSetSize = param.getValue2();
+            
+            List<Books> books = booksJpaController.getTopSelling(maxResult);
+            
+            assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
+            
+        }
+        
+        /**
+         * Used to test and ensure all the 
+         * results returned are active books. 
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testIfAllBooksReturnedAreActive(){
+            
+            int testNumber = param.getValue0();
+            int maxResult = param.getValue1();
+            
+            List<Books> books = booksJpaController.getTopSelling(maxResult);
+            
+            assertTrue("Test " + testNumber + " contained an inactive book", UTILITIES.areAllBooksActive(books));
+            
+        }
+        
+    }
+    
+    /**
+     * Used to hold tests for the getAllBooksForGenre method 
+     * in the BooksJpaContoller
+     * @author Jeffrey Boisvert
+     */
+    public static class GetAllBooksForGenre extends ArquillianTestBase{
+        
+        @Inject
+        private BooksJpaController booksJpaController; 
+        
+        private final TestUtilities UTILITIES = new TestUtilities();
         
         @Rule
         public ParameterRule rule = new ParameterRule("param",
@@ -579,24 +594,6 @@ public class BooksJpaControllerTest {
             List<Books> books = booksJpaController.getTopSelling(maxResult);
             
             assertTrue("Test " + testNumber + " contained an inactive book", isAllBooksActive(books));
-            
-        }
-        
-        /**
-         * Used to test of the list of books are all active. 
-         * @param books given 
-         * @return true if books are active false otherwise
-         * @author Jeffrey Boisvert
-         */
-        private boolean isAllBooksActive(List<Books> books){
-            
-            for(Books book : books){
-                if (!book.getActive()){
-                    return false;
-                }
-            }
-            
-            return true; 
             
         }
         
