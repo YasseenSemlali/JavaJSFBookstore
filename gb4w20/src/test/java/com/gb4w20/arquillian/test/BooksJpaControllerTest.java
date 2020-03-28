@@ -1,7 +1,7 @@
 package com.gb4w20.arquillian.test;
 
 import com.gb4w20.arquillian.test.rules.ParameterRule;
-import com.gb4w20.arquillian.test.utils.TestUtilities;
+import com.gb4w20.arquillian.test.utils.BooksUtilities;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
@@ -254,7 +254,7 @@ public class BooksJpaControllerTest {
         @Inject
         private BooksJpaController booksJpaController; 
         
-        private final TestUtilities UTILITIES = new TestUtilities();
+        private final BooksUtilities UTILITIES = new BooksUtilities();
         
         @Rule
         public ParameterRule rule = new ParameterRule("param",
@@ -313,7 +313,7 @@ public class BooksJpaControllerTest {
         @Inject
         private BooksJpaController booksJpaController; 
         
-        private final TestUtilities UTILITIES = new TestUtilities();
+        private final BooksUtilities UTILITIES = new BooksUtilities();
         
         @Rule
         public ParameterRule rule = new ParameterRule("param",
@@ -487,7 +487,7 @@ public class BooksJpaControllerTest {
         @Inject
         private BooksJpaController booksJpaController; 
         
-        private final TestUtilities UTILITIES = new TestUtilities();
+        private final BooksUtilities UTILITIES = new BooksUtilities();
         
         @Rule
         public ParameterRule rule = new ParameterRule("param",
@@ -548,19 +548,19 @@ public class BooksJpaControllerTest {
         @Inject
         private BooksJpaController booksJpaController; 
         
-        private final TestUtilities UTILITIES = new TestUtilities();
+        private final BooksUtilities UTILITIES = new BooksUtilities();
         
         @Rule
         public ParameterRule rule = new ParameterRule("param",
-                //test number, max result givn, expected result
-                new Triplet<Integer, Integer, Integer>(1, 6, 6),
-                new Triplet<Integer, Integer, Integer>(2, 8, 8),
-                new Triplet<Integer, Integer, Integer>(3, 0, 8),
-                new Triplet<Integer, Integer, Integer>(4, -1, 8),
-                new Triplet<Integer, Integer, Integer>(5, 120, 8)
+                //test number, genre id, expected result
+                new Triplet<Integer, Long, Integer>(1, 1l, 5),
+                new Triplet<Integer, Long, Integer>(1, 2l, 3),
+                new Triplet<Integer, Long, Integer>(1, 5l, 0),
+                new Triplet<Integer, Long, Integer>(1, -1l, 0),
+                new Triplet<Integer, Long, Integer>(1, 3l, 1)
                 );
         
-        private Triplet<Integer, Integer, Integer> param;
+        private Triplet<Integer, Long, Integer> param;
         
         /**
          * Used to test if the correct number of books are returned
@@ -571,10 +571,10 @@ public class BooksJpaControllerTest {
         public void testCorrectNumberOfBooksAreReturned(){
             
             int testNumber = param.getValue0();
-            int maxResult = param.getValue1();
+            Long genreId = param.getValue1();
             int expectedResultSetSize = param.getValue2();
             
-            List<Books> books = booksJpaController.getTopSelling(maxResult);
+            List<Books> books = booksJpaController.getAllBooksForGenre(genreId);
             
             assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
             
@@ -593,7 +593,7 @@ public class BooksJpaControllerTest {
             
             List<Books> books = booksJpaController.getTopSelling(maxResult);
             
-            assertTrue("Test " + testNumber + " contained an inactive book", isAllBooksActive(books));
+            assertTrue("Test " + testNumber + " contained an inactive book", UTILITIES.areAllBooksActive(books));
             
         }
         

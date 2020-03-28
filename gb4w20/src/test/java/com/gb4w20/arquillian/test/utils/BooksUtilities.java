@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class used to hold helpful methods to conduct tests.
- * 
+ * Class used to hold helpful methods dealing with Books. 
+ * This class is mainly used to conduct tests. 
  * @author Jeffrey Boisvert
  */
-public class TestUtilities {
+public class BooksUtilities {
    
         /**
          * Used to test of the list of books are all active. 
