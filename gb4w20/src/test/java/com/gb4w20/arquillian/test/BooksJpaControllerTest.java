@@ -712,7 +712,7 @@ public class BooksJpaControllerTest {
                 //Just publisher
                 new Septet<Integer, Integer, Long, String, String, String, Boolean>(11, 1, null, null, null, "William Morrow", false),
                 new Septet<Integer, Integer, Long, String, String, String, Boolean>(12, 1, null, null, null, "William", false),
-                new Septet<Integer, Integer, Long, String, String, String, Boolean>(13, 2, null, null, null, "Books", false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(13, 3, null, null, null, "Books", false),
                 new Septet<Integer, Integer, Long, String, String, String, Boolean>(14, 0, null, null, null, "Costco", false),
                 new Septet<Integer, Integer, Long, String, String, String, Boolean>(15, 8, null, null, null, "", false),
                 //All true and giving all values
@@ -722,10 +722,10 @@ public class BooksJpaControllerTest {
                 new Septet<Integer, Integer, Long, String, String, String, Boolean>(19, 0, 9780000000000l, "Bad", "Terry Pratchett", "William Morrow", true),
                 new Septet<Integer, Integer, Long, String, String, String, Boolean>(20, 0, 11l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Terry Pratchett", "William Morrow", true),
                 //All given but not all true
-                new Septet<Integer, Integer, Long, String, String, String, Boolean>(21, 1, 9780000000000l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Terry Pratchett", "Bad", false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(21, 2, 9780000000000l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Terry Pratchett", "Bad", false),
                 new Septet<Integer, Integer, Long, String, String, String, Boolean>(22, 1, 9780000000000l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Bad", "William Morrow", false),
-                new Septet<Integer, Integer, Long, String, String, String, Boolean>(23, 1, 9780000000000l, "Bad", "Terry Pratchett", "William Morrow", false),
-                new Septet<Integer, Integer, Long, String, String, String, Boolean>(24, 1, 11l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Terry Pratchett", "William Morrow", false)
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(23, 2, 9780000000000l, "Bad", "Terry Pratchett", "William Morrow", false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(24, 2, 11l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Terry Pratchett", "William Morrow", false)
                 );
         
         private Septet<Integer, Integer, Long, String, String, String, Boolean> param;

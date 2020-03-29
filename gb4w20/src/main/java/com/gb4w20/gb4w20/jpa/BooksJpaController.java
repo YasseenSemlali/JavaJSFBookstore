@@ -614,7 +614,8 @@ public class BooksJpaController implements Serializable {
         if (publisher != null && !publisher.isEmpty()) {
             Expression publisherName = book.join(Books_.publishersCollection).get(Publishers_.name);
 
-            searchPredicates.add(cb.isMember(publisher, publisherName));
+            //searchPredicates.add(cb.isMember(publisher, publisherName));
+            searchPredicates.add(cb.like(publisherName.as(String.class), "%" + publisher + "%"));
         }
 
         allTrue = allTrue == null ? false : allTrue;
