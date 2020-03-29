@@ -478,132 +478,132 @@ public class BooksJpaControllerTest {
 //        }
 //        
 //    }
-    
-    /**
-     * Used to hold tests for the getTopSelling method 
-     * in the BooksJpaContoller
-     * @author Jeffrey Boisvert
-     */
-    public static class GetTopSelling extends ArquillianTestBase{
-        
-        @Inject
-        private BooksJpaController booksJpaController; 
-        
-        private final BooksUtilities UTILITIES = new BooksUtilities();
-        
-        @Rule
-        public ParameterRule rule = new ParameterRule("param",
-                //test number, max result givn, expected result
-                new Triplet<Integer, Integer, Integer>(1, 6, 6),
-                new Triplet<Integer, Integer, Integer>(2, 8, 8),
-                new Triplet<Integer, Integer, Integer>(3, 0, 8),
-                new Triplet<Integer, Integer, Integer>(4, -1, 8),
-                new Triplet<Integer, Integer, Integer>(5, 120, 8)
-                );
-        
-        private Triplet<Integer, Integer, Integer> param;
-        
-        /**
-         * Used to test if the correct number of books are returned
-         * in the result set. 
-         * @author Jeffrey Boisvert
-         */
-        @Test
-        public void testCorrectNumberOfBooksAreReturned(){
-            
-            int testNumber = param.getValue0();
-            int maxResult = param.getValue1();
-            int expectedResultSetSize = param.getValue2();
-            
-            List<Books> books = booksJpaController.getTopSelling(maxResult);
-            
-            assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
-            
-        }
-        
-        /**
-         * Used to test and ensure all the 
-         * results returned are active books. 
-         * @author Jeffrey Boisvert
-         */
-        @Test
-        public void testIfAllBooksReturnedAreActive(){
-            
-            int testNumber = param.getValue0();
-            int maxResult = param.getValue1();
-            
-            List<Books> books = booksJpaController.getTopSelling(maxResult);
-            
-            assertTrue("Test " + testNumber + " contained an inactive book", UTILITIES.areAllBooksActive(books));
-            
-        }
-        
-    }
-    
-    /**
-     * Used to hold tests for the getTopSellingForGenre method 
-     * in the BooksJpaContoller
-     * @author Jeffrey Boisvert
-     */
-    public static class GetTopSellingForGenreTest extends ArquillianTestBase {
-        
-        @Inject
-        private BooksJpaController booksJpaController; 
-        
-        private final BooksUtilities UTILITIES = new BooksUtilities();
-        
-        @Rule
-        public ParameterRule rule = new ParameterRule("param",
-                //test number, genre id, max result given, expected result
-                new Quartet<Integer, Long, Integer, Integer>(1, 1l, 1, 1),
-                new Quartet<Integer, Long, Integer, Integer>(2, 1l, 6, 5),
-                new Quartet<Integer, Long, Integer, Integer>(3, 1l, -1, 5),
-                new Quartet<Integer, Long, Integer, Integer>(4, 2l, 2, 2),
-                new Quartet<Integer, Long, Integer, Integer>(5, 3l, -1, 1),
-                new Quartet<Integer, Long, Integer, Integer>(6, -1l, -1, 0)
-                );
-        
-        private Quartet<Integer, Long, Integer, Integer> param;
-        
-        /**
-         * Used to test if the correct number of books are returned
-         * in the result set. 
-         * @author Jeffrey Boisvert
-         */
-        @Test
-        public void testCorrectNumberOfBooksAreReturned(){
-            
-            int testNumber = param.getValue0();
-            long genreId = param.getValue1(); 
-            int maxResult = param.getValue2();
-            int expectedResultSetSize = param.getValue3();
-            
-            List<Books> books = booksJpaController.getTopSellingForGenre(genreId, maxResult);
-            
-            assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
-            
-        }
-        
-        /**
-         * Used to test and ensure all the 
-         * results returned are active books. 
-         * @author Jeffrey Boisvert
-         */
-        @Test
-        public void testIfAllBooksReturnedAreActive(){
-            
-            int testNumber = param.getValue0();
-            long genreId = param.getValue1(); 
-            int maxResult = param.getValue2();
-            
-            List<Books> books = booksJpaController.getTopSellingForGenre(genreId, maxResult);
-            
-            assertTrue("Test " + testNumber + " contained an inactive book", UTILITIES.areAllBooksActive(books));
-            
-        }
-        
-    }
-    
+//    
+//    /**
+//     * Used to hold tests for the getTopSelling method 
+//     * in the BooksJpaContoller
+//     * @author Jeffrey Boisvert
+//     */
+//    public static class GetTopSelling extends ArquillianTestBase{
+//        
+//        @Inject
+//        private BooksJpaController booksJpaController; 
+//        
+//        private final BooksUtilities UTILITIES = new BooksUtilities();
+//        
+//        @Rule
+//        public ParameterRule rule = new ParameterRule("param",
+//                //test number, max result givn, expected result
+//                new Triplet<Integer, Integer, Integer>(1, 6, 6),
+//                new Triplet<Integer, Integer, Integer>(2, 8, 8),
+//                new Triplet<Integer, Integer, Integer>(3, 0, 8),
+//                new Triplet<Integer, Integer, Integer>(4, -1, 8),
+//                new Triplet<Integer, Integer, Integer>(5, 120, 8)
+//                );
+//        
+//        private Triplet<Integer, Integer, Integer> param;
+//        
+//        /**
+//         * Used to test if the correct number of books are returned
+//         * in the result set. 
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test
+//        public void testCorrectNumberOfBooksAreReturned(){
+//            
+//            int testNumber = param.getValue0();
+//            int maxResult = param.getValue1();
+//            int expectedResultSetSize = param.getValue2();
+//            
+//            List<Books> books = booksJpaController.getTopSelling(maxResult);
+//            
+//            assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
+//            
+//        }
+//        
+//        /**
+//         * Used to test and ensure all the 
+//         * results returned are active books. 
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test
+//        public void testIfAllBooksReturnedAreActive(){
+//            
+//            int testNumber = param.getValue0();
+//            int maxResult = param.getValue1();
+//            
+//            List<Books> books = booksJpaController.getTopSelling(maxResult);
+//            
+//            assertTrue("Test " + testNumber + " contained an inactive book", UTILITIES.areAllBooksActive(books));
+//            
+//        }
+//        
+//    }
+//    
+//    /**
+//     * Used to hold tests for the getTopSellingForGenre method 
+//     * in the BooksJpaContoller
+//     * @author Jeffrey Boisvert
+//     */
+//    public static class GetTopSellingForGenreTest extends ArquillianTestBase {
+//        
+//        @Inject
+//        private BooksJpaController booksJpaController; 
+//        
+//        private final BooksUtilities UTILITIES = new BooksUtilities();
+//        
+//        @Rule
+//        public ParameterRule rule = new ParameterRule("param",
+//                //test number, genre id, max result given, expected result
+//                new Quartet<Integer, Long, Integer, Integer>(1, 1l, 1, 1),
+//                new Quartet<Integer, Long, Integer, Integer>(2, 1l, 6, 5),
+//                new Quartet<Integer, Long, Integer, Integer>(3, 1l, -1, 5),
+//                new Quartet<Integer, Long, Integer, Integer>(4, 2l, 2, 2),
+//                new Quartet<Integer, Long, Integer, Integer>(5, 3l, -1, 1),
+//                new Quartet<Integer, Long, Integer, Integer>(6, -1l, -1, 0)
+//                );
+//        
+//        private Quartet<Integer, Long, Integer, Integer> param;
+//        
+//        /**
+//         * Used to test if the correct number of books are returned
+//         * in the result set. 
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test
+//        public void testCorrectNumberOfBooksAreReturned(){
+//            
+//            int testNumber = param.getValue0();
+//            long genreId = param.getValue1(); 
+//            int maxResult = param.getValue2();
+//            int expectedResultSetSize = param.getValue3();
+//            
+//            List<Books> books = booksJpaController.getTopSellingForGenre(genreId, maxResult);
+//            
+//            assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
+//            
+//        }
+//        
+//        /**
+//         * Used to test and ensure all the 
+//         * results returned are active books. 
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test
+//        public void testIfAllBooksReturnedAreActive(){
+//            
+//            int testNumber = param.getValue0();
+//            long genreId = param.getValue1(); 
+//            int maxResult = param.getValue2();
+//            
+//            List<Books> books = booksJpaController.getTopSellingForGenre(genreId, maxResult);
+//            
+//            assertTrue("Test " + testNumber + " contained an inactive book", UTILITIES.areAllBooksActive(books));
+//            
+//        }
+//        
+//    }
+//    
 //    /**
 //     * Used to hold tests for the getRecentlyBoughtBooks method 
 //     * in the BooksJpaContoller
@@ -680,5 +680,99 @@ public class BooksJpaControllerTest {
 //        }
 //        
 //    }
+    
+    /**
+     * Used to hold tests for the searchBooks method 
+     * in the BooksJpaContoller
+     * @author Jeffrey Boisvert
+     */
+    public static class SearchBooksTest extends ArquillianTestBase {
+        
+        @Inject
+        private BooksJpaController booksJpaController; 
+        
+        private final BooksUtilities UTILITIES = new BooksUtilities();
+        
+        @Rule
+        public ParameterRule rule = new ParameterRule("param",
+                //test number, expected result set size, isbn, title, author, publisher, all true
+                //Just isbn
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(1, 1, 9780000000000l, null, null, null, false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(2, 0, 11l, null, null, null, false),
+                //Just title
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(3, 1, null, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", null, null, false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(4, 2, null, "Harry Potter", null, null, false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(5, 8, null, "", null, null, false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(6, 0, null, "Computer science", null, null, false),
+                //Just author
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(7, 2, null, null, "Terry Pratchett", null, false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(8, 2, null, null, "Terry", null, false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(9, 8, null, null, "", null, false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(10, 0, null, null, "Jeffrey Boisvert", null, false),
+                //Just publisher
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(11, 1, null, null, null, "William Morrow", false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(12, 1, null, null, null, "William", false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(13, 2, null, null, null, "Books", false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(14, 0, null, null, null, "Costco", false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(15, 8, null, null, null, "", false),
+                //All true and giving all values
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(16, 1, 9780000000000l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Terry Pratchett", "William Morrow", true),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(17, 0, 9780000000000l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Terry Pratchett", "Bad", true),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(18, 0, 9780000000000l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Bad", "William Morrow", true),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(19, 0, 9780000000000l, "Bad", "Terry Pratchett", "William Morrow", true),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(20, 0, 11l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Terry Pratchett", "William Morrow", true),
+                //All given but not all true
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(21, 1, 9780000000000l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Terry Pratchett", "Bad", false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(22, 1, 9780000000000l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Bad", "William Morrow", false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(23, 1, 9780000000000l, "Bad", "Terry Pratchett", "William Morrow", false),
+                new Septet<Integer, Integer, Long, String, String, String, Boolean>(24, 1, 11l, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", "Terry Pratchett", "William Morrow", false)
+                );
+        
+        private Septet<Integer, Integer, Long, String, String, String, Boolean> param;
+        
+        /**
+         * Used to test if the correct number of books are returned
+         * in the result set. 
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testCorrectNumberOfBooksAreReturned(){
+            
+            int testNumber = param.getValue0(); 
+            int expectedResultSetSize = param.getValue1(); 
+            Long isbn = param.getValue2(); 
+            String title = param.getValue3(); 
+            String author = param.getValue4();
+            String publisher = param.getValue5(); 
+            Boolean allTrue = param.getValue6(); 
+            
+            List<Books> books = booksJpaController.searchBooks(isbn, title, author, publisher, allTrue);
+            
+            assertEquals("Test " + testNumber + " did not return the correct number of books", expectedResultSetSize, books.size());
+            
+        }
+        
+        /**
+         * Used to test and ensure all the 
+         * results returned are active books. 
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testIfAllBooksReturnedAreActive(){
+            
+            int testNumber = param.getValue0();
+            Long isbn = param.getValue2(); 
+            String title = param.getValue3(); 
+            String author = param.getValue4();
+            String publisher = param.getValue5(); 
+            Boolean allTrue = param.getValue6(); 
+            
+            List<Books> books = booksJpaController.searchBooks(isbn, title, author, publisher, allTrue);
+            
+            assertTrue("Test " + testNumber + " contained an inactive book", UTILITIES.areAllBooksActive(books));
+            
+        }
+        
+    }
     
 }
