@@ -6,6 +6,7 @@
 package com.gb4w20.arquillian.test;
 
 import com.gb4w20.arquillian.test.rules.ParameterRule;
+import com.gb4w20.arquillian.test.utils.BooksUtilities;
 import com.gb4w20.gb4w20.backingbeans.UserSessionBean;
 import com.gb4w20.gb4w20.entities.Authors;
 import com.gb4w20.gb4w20.entities.Users;
@@ -83,6 +84,7 @@ public abstract class ArquillianTestBase extends TestBase{
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(NameTotalAndCountBean.class.getPackage())
                 .addPackage(NameAndNumberBean.class.getPackage())
+                .addPackage(BooksUtilities.class.getPackage())
                 .addPackage(Books_.class.getPackage())
                 .addPackage(Users.class.getPackage())
                 .addPackage(Authors.class.getPackage())

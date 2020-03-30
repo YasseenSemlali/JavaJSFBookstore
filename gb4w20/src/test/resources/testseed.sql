@@ -19,7 +19,8 @@ DELETE FROM users;
 
 insert into genres(genre_id, genre) VALUES(1, "Fantasy");
 insert into genres(genre_id, genre) VALUES(2, "Science Fiction");
-ALTER TABLE genres AUTO_INCREMENT=3;
+insert into genres(genre_id, genre) VALUES(3, "Horror");
+ALTER TABLE genres AUTO_INCREMENT=4;
 
 insert into publishers(publisher_id, name) VALUES(1, "William Morrow");
 insert into publishers(publisher_id, name) VALUES(2, "Arthur A. Levine Books / Scholastic Inc.");
@@ -57,6 +58,7 @@ insert into bookgenre(genre_id, isbn) VALUES(1, 9780000000006);
 insert into bookgenre(genre_id, isbn) VALUES(2, 9780765377067);
 insert into bookgenre(genre_id, isbn) VALUES(2, 9780000000010);
 insert into bookgenre(genre_id, isbn) VALUES(2, 9781401323585);
+insert into bookgenre(genre_id, isbn) VALUES(3, 9781401323585);
 
 insert into bookauthor(author_id, isbn) VALUES(1, 9780000000000);
 insert into bookauthor(author_id, isbn) VALUES(2, 9780000000000);

@@ -64,34 +64,6 @@ public class SurveyQuestionsJpaControllerTest {
             
         }
         
-        /**
-         * Used to test that if a survey question is disabled and 
-         * another one is then enabled
-         * then the newly enabled question is returned. 
-         * @author Jeffrey Boisvert
-         */
-        @Test
-        public void testDisableAndEnableAnotherQuestion() throws Exception {
-            
-            //Disable the only active question
-            SurveyQuestions activeQuestion = surveyQuestionsJpaController.getActiveQuestion();
-            activeQuestion.setEnabled(false);
-            surveyQuestionsJpaController.edit(activeQuestion);
-            
-            //Enable a new question
-            SurveyQuestions newActiveQuestion = surveyQuestionsJpaController.findSurveyQuestions(2l);
-            newActiveQuestion.setEnabled(true);
-            surveyQuestionsJpaController.edit(newActiveQuestion);
-            
-            SurveyQuestions question = surveyQuestionsJpaController.getActiveQuestion();
-            
-            //Ensure the result is not null and it is the correct one
-            //Multiple asserts were done for more clear results if the question is null (meaning no active results)
-            assertNotNull("Question was null even though there should be a active question", question);
-            assertEquals("Did not get the expected active question", newActiveQuestion.getId(), question.getId());
-            
-        }
-        
     }
     
 }

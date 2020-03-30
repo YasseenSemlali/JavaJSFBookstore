@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This code comes from https://gist.github.com/aslakknutsen/1358803 Unchanged
  * except for replacing println with LOG
- *
+ * @param <T>
  */
 public class ParameterRule<T> implements MethodRule {
 
