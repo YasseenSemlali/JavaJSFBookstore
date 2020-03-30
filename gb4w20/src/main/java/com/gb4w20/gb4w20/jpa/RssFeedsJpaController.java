@@ -1,8 +1,8 @@
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.RssFeeds;
-import com.gb4w20.gb4w20.exceptions.BackendException;
-import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
+import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
+import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.entities.RssFeeds_;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.io.Serializable;
@@ -27,15 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-<<<<<<< HEAD
  * Used to interact with the rssfeeds table in the database. 
  * 
  * @author Jeffrey Boisvert, Jean Robatto
-=======
- * Used to interact with the rssfeeds table in the database.
- *
- * @author Jeffrey Boisvert
->>>>>>> bd3be3eacfbc6a83d032579efce43def73b8ea3f
  */
 @Named
 @SessionScoped
@@ -127,6 +121,10 @@ public class RssFeedsJpaController implements Serializable {
             return ((Long) q.getSingleResult()).intValue();
     }
     
+    /**
+     * Getting active feeds
+     * @return 
+     */
      public RssFeeds getActiveFeed() {
         LOG.info("getting active rssFeed");
         
