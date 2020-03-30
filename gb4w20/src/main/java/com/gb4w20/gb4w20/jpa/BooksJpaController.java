@@ -502,17 +502,14 @@ public class BooksJpaController implements Serializable {
 
         return query.getResultList();
     }
-
+    /**
+     * Used to get the top selling books. 
+     * @param maxResults if 0 or less will return all books. 
+     * @return A list of books ordered by best selling to least best selling
+     * @author Yasseen, Jeffrey Boisvert
+     */
     public List<Books> getTopSelling(int maxResults) {
-        return this.getTopSellingForGenre(-1l, maxResults);
-    }
-
-    public List<Books> getAllBooksForGenre(Long genreId) {
-        return this.getTopSellingForGenre(genreId, -1);
-    }
-
-    public List<Books> getTopSellingForGenre(Long genreId, int maxResults) {
-        LOG.info("getting " + maxResults + " top selling books for genre " + genreId);
+        LOG.info("getting " + maxResults + " top selling books");
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
@@ -524,17 +521,52 @@ public class BooksJpaController implements Serializable {
         
         List<Predicate> predicates = new ArrayList();
         predicates.add(cb.isTrue(book.get(Books_.active)));
-        
-        if (genreId != -1) {
-            predicates.add(book.get(Books_.genresCollection).in(genreId));
-        }
+
         
         cq.where(cb.and(predicates.toArray(new Predicate[0])));
         cq.orderBy(cb.desc(cb.size(book.get(Books_.bookorderCollection))));
 
         Query query = em.createQuery(cq);
 
-        if (maxResults != -1) {
+        if (maxResults > 0) {
+            query.setMaxResults(maxResults);
+        }
+
+        return query.getResultList();
+    }
+
+    public List<Books> getAllBooksForGenre(Long genreId) {
+        return this.getTopSellingForGenre(genreId, -1);
+    }
+    
+    /**
+     * Used to get the top selling books of a given genre
+     * @param genreId
+     * @param maxResults
+     * @return a list of books ordered by the best selling to least for a genre.
+     * @author Yasseen, Jeffrey Boisvert
+     */
+    public List<Books> getTopSellingForGenre(Long genreId, int maxResults) {
+        LOG.info("getting " + maxResults + " top selling books for genre " + genreId);
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+
+        Root<Books> book = cq.from(Books.class);
+
+        cq.select(book);
+        
+        List<Predicate> predicates = new ArrayList();
+        predicates.add(cb.isTrue(book.get(Books_.active)));
+        
+        predicates.add(book.get(Books_.genresCollection).in(genreId));
+        
+        cq.where(cb.and(predicates.toArray(new Predicate[0])));
+        cq.orderBy(cb.desc(cb.size(book.get(Books_.bookorderCollection))));
+
+        Query query = em.createQuery(cq);
+
+        if (maxResults > 0) {
             query.setMaxResults(maxResults);
         }
 
@@ -582,7 +614,8 @@ public class BooksJpaController implements Serializable {
         if (publisher != null && !publisher.isEmpty()) {
             Expression publisherName = book.join(Books_.publishersCollection).get(Publishers_.name);
 
-            searchPredicates.add(cb.isMember(publisher, publisherName));
+            //searchPredicates.add(cb.isMember(publisher, publisherName));
+            searchPredicates.add(cb.like(publisherName.as(String.class), "%" + publisher + "%"));
         }
 
         allTrue = allTrue == null ? false : allTrue;
