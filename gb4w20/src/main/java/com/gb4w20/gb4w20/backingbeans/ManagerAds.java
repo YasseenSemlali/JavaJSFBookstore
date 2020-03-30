@@ -1,8 +1,6 @@
 package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Ads;
-import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
-import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.AdsJpaController;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,6 +22,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A java bean to edit ads.
+ * 
+ * NOTE: For some exceptions, the full path was required.
+ * I assume Netbeans had a little issue.
  *
  * @author Jean Robatto
  */
@@ -91,7 +92,7 @@ public class ManagerAds implements Serializable {
             urls[index] = "";
             enabled[index] = Boolean.FALSE;
 
-        } catch (BackendException ex) {
+        } catch (com.gb4w20.gb4w20.exceptions.BackendException ex) {
             LOG.info(ex.toString());
             FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/action-responses/action-failure.xhtml");
         }
@@ -114,7 +115,7 @@ public class ManagerAds implements Serializable {
             adsController.create(ad);
 
             return "/manager-secured/manager-forms/manager-ads";
-        } catch (BackendException | RollbackFailureException ex) {
+        } catch (com.gb4w20.gb4w20.exceptions.BackendException | com.gb4w20.gb4w20.exceptions.RollbackFailureException ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";
         }
