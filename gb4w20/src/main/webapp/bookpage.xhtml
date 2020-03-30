@@ -101,41 +101,43 @@ add it to the shopping cart.
         </b:container>
         <b:container>
             <b:jumbotron> 
-                <c:forEach items="#{authorbooks}" var="auth">
-                    <h3>#{msgs.otherbooksby} #{auth.getFirstName()} #{auth.getLastName()}</h3>
-                    <b:row> 
-                        <b:column col-md="6">
-                            <b:panelGrid columns="3"> 
-                                <c:forEach items="#{authorsJpaController.getOtherBooksBySameAuthor(book.getIsbn(), auth.getAuthorId(), 3)}" var="sameauthor">
-                                    <ui:decorate template="/templates/book.xhtml">
-                                        <ui:param name="book" value="#{sameauthor}"></ui:param>
-                                    </ui:decorate>
-                                </c:forEach>
-                            </b:panelGrid>
-                        </b:column>
-                    </b:row>
-                </c:forEach>
+                <h3>#{msgs.otherbooksby}
+                    <br></br>
+                    <c:forEach items="#{authorbooks}" var="auth">
+                        #{auth.getFirstName()} #{auth.getLastName()}
+                        <br></br>
+                    </c:forEach>
+                </h3>
+                <b:row> 
+                    <b:column col-md="6">
+                        <b:panelGrid columns="3"> 
+                            <c:forEach items="#{authorsJpaController.getOtherBooksBySameAuthor(book.getIsbn(), authorbooks, 3)}" var="sameauthor">
+                                <ui:decorate template="/templates/book.xhtml">
+                                    <ui:param name="book" value="#{sameauthor}"></ui:param>
+                                </ui:decorate>
+                            </c:forEach>
+                        </b:panelGrid>
+                    </b:column>
+                </b:row>
             </b:jumbotron>
         </b:container>
 
         <b:container>
             <b:jumbotron>
                 <c:forEach items="#{genrebooks}" var="gen">
-                    <c:forEach items="#{authorbooks}" var="auth">
-                        <h3>#{msgs.otherbooksof} #{gen.getGenre()} #{msgs.genre}</h3>
-                        <b:row>
-                            <b:column col-md="6">
-                                <b:panelGrid columns="3">
-                                    <c:forEach items="#{genresJpaController.getOtherBooksOfSameGenre(book.getIsbn(), gen.getGenreId(), auth.getAuthorId(), 3)}" var="samegenre">
-                                        <ui:decorate template="/templates/book.xhtml">
-                                            <ui:param name="book" value="#{samegenre}"></ui:param>
-                                        </ui:decorate>
-                                    </c:forEach>
-                                </b:panelGrid>
-                            </b:column>
-                        </b:row>
-                    </c:forEach>
+                    <h3>#{msgs.otherbooksof} #{gen.getGenre()} #{msgs.genre}</h3>
                 </c:forEach>
+                <b:row>
+                    <b:column col-md="6">
+                        <b:panelGrid columns="3">
+                            <c:forEach items="#{genresJpaController.getOtherBooksOfSameGenre(book.getIsbn(), genrebooks, authorbooks, 3)}" var="samegenre">
+                                <ui:decorate template="/templates/book.xhtml">
+                                    <ui:param name="book" value="#{samegenre}"></ui:param>
+                                </ui:decorate>
+                            </c:forEach>
+                        </b:panelGrid>
+                    </b:column>
+                </b:row>
             </b:jumbotron>
         </b:container>
         <!--SUBMIT REVIEW-->
@@ -167,4 +169,3 @@ add it to the shopping cart.
         <ui:include src="/templates/footer.xhtml"></ui:include>
     </ui:define>
 </ui:composition>
-

@@ -32,8 +32,6 @@ public class UserSessionBean implements Serializable {
     //Default is false
     private boolean hasRespondedToSurvey;
     
-    //PostConstruct -> after indepecndy inject 
-    
     /**
      * Getter for user
      * @return 
@@ -98,6 +96,18 @@ public class UserSessionBean implements Serializable {
     }
     
     /**
+     * Used to get the logged in user's id. 
+     * @return the id of the logged in user
+     * @author Yasseen Semlali
+     */
+    public Long getUserId(){
+        if(this.user == null){
+            return null; 
+        }
+        return this.user.getUserId(); 
+    }
+    
+    /**
      * Method to check whether the user is a manager or not
      * @return true if logged in manager and false otherwise
      * @author Jeffrey Boisvert
@@ -144,16 +154,7 @@ public class UserSessionBean implements Serializable {
         LOG.info("Logging out user");
         this.user = null; 
         LOG.info("User is null");
-        clearSessionState();
         return "/index.xhtml"; 
-    }
-    
-    /**
-     * Used to clear cart and any other values associated to login state. 
-     * @author Jeffrey Boisvert
-     */
-    private void clearSessionState() {
-        LOG.info("Currently clearing session state");
     }
     
     

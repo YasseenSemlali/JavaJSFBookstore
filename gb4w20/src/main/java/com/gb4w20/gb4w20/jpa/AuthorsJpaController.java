@@ -12,7 +12,7 @@ import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Books_;
 import com.gb4w20.gb4w20.entities.Orders;
-import com.gb4w20.gb4w20.exceptions.BackendException;
+import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Used to interact with the authors table.
  *
- * @author Jeffrey Boisvert
+ * @author Jeffrey Boisvert, Jasmar Badion
  */
 @Named
 @SessionScoped
@@ -249,14 +249,18 @@ public class AuthorsJpaController implements Serializable {
      * page
      *
      * @param isbn
-     * @param authorId
+     * @param authors
      * @param maxResults
      * @return
      * @author Jasmar
      */
-    public List<Books> getOtherBooksBySameAuthor(long isbn, long authorId, int maxResults) {
+    public List<Books> getOtherBooksBySameAuthor(long isbn, Collection<Authors> authors, int maxResults) {
         LOG.info("getting " + maxResults + " books from the same author");
 
+        List<Long> authIds = new ArrayList<>();
+        authors.forEach((auth) -> {
+            authIds.add(auth.getAuthorId());
+        });
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Books> cq = cb.createQuery(Books.class);
         Root<Books> book = cq.from(Books.class);
@@ -264,7 +268,7 @@ public class AuthorsJpaController implements Serializable {
         cq.select(book)
                 .where(cb.and(
                         cb.notEqual(book.get(Books_.isbn), isbn),
-                        cb.equal(author.get(Authors_.authorId), authorId)
+                        author.get(Authors_.authorId).in(authIds)
                 ));
 
         Query query = em.createQuery(cq);

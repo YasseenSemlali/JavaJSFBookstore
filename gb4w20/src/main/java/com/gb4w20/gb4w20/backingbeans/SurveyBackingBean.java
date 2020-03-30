@@ -1,6 +1,6 @@
 package com.gb4w20.gb4w20.backingbeans;
 
-import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
+import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.SurveyResponsesJpaController;
 import java.util.ResourceBundle;
 import java.util.logging.Level;

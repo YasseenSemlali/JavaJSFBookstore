@@ -1,7 +1,7 @@
 package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.RssFeeds;
-import com.gb4w20.gb4w20.exceptions.BackendException;
+import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.RssFeedsJpaController;
 import java.io.IOException;
 import java.io.Serializable;

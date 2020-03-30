@@ -5,8 +5,8 @@ import com.gb4w20.gb4w20.entities.BookFiles;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Genres;
 import com.gb4w20.gb4w20.entities.Publishers;
-import com.gb4w20.gb4w20.exceptions.BackendException;
-import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
+import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
+import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.AuthorsJpaController;
 import com.gb4w20.gb4w20.jpa.BookFilesJpaController;
 import com.gb4w20.gb4w20.jpa.BookorderJpaController;
@@ -192,7 +192,7 @@ public class ManagerInventory implements Serializable {
             bookAuthor = book.getAuthorsCollection();
             bookGenre = book.getGenresCollection();
             bookPublisher = book.getPublishersCollection();
-            totalSales = bookorderController.getTotalSalesForBook(book);
+            totalSales = bookorderController.getTotalSalesForBook(isbn);
         }
     }
 

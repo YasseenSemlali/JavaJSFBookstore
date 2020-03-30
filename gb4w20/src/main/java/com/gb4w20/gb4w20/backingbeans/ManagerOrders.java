@@ -4,8 +4,8 @@ import com.gb4w20.gb4w20.entities.Bookorder;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Orders;
 import com.gb4w20.gb4w20.entities.Taxes;
-import com.gb4w20.gb4w20.exceptions.BackendException;
-import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
+import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
+import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.BookorderJpaController;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.OrdersJpaController;
@@ -133,8 +133,8 @@ public class ManagerOrders implements Serializable {
      *
      * @param e
      * @author Jean Robatto
-     * @throws com.gb4w20.gb4w20.exceptions.RollbackFailureException
-     * @throws com.gb4w20.gb4w20.exceptions.BackendException
+     * @throws com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException
+     * @throws com.gb4w20.gb4w20.jpa.exceptions.BackendException
      */
     public void addBookToCollection(AjaxBehaviorEvent e) throws RollbackFailureException, BackendException {
         Long isbn = ((Long) ((UIOutput) e.getSource()).getValue());
@@ -177,7 +177,7 @@ public class ManagerOrders implements Serializable {
      * @param selected_order
      * @return redirection
      * @author Jean Robatto
-     * @throws com.gb4w20.gb4w20.exceptions.BackendException
+     * @throws com.gb4w20.gb4w20.jpa.exceptions.BackendException
      */
     public String selectOrder(Orders selected_order) throws BackendException {
         if (selected_order == null) {
@@ -219,10 +219,10 @@ public class ManagerOrders implements Serializable {
             bookOrders = order.getBookorderCollection();
 
             //Set taxes and prices
-            pricePreTax = bookorderController.getTotalSalesForOrderPreTax(order);
-            hstTax = (bookorderController.getHSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getHSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
-            gstTax = (bookorderController.getGSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getGSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
-            pstTax = (bookorderController.getPSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getPSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
+            pricePreTax = bookorderController.getTotalSalesForOrderPreTax(order.getOrderId());
+            hstTax = bookorderController.getHSTForOrder(order.getOrderId()).setScale(2, RoundingMode.HALF_EVEN);
+            gstTax = bookorderController.getGSTForOrder(order.getOrderId()).setScale(2, RoundingMode.HALF_EVEN);
+            pstTax = bookorderController.getPSTForOrder(order.getOrderId()).setScale(2, RoundingMode.HALF_EVEN);
             totalTax = hstTax.add(pstTax).add(gstTax).setScale(2, RoundingMode.HALF_EVEN);
             totalPrice = pricePreTax.add(totalTax).setScale(2, RoundingMode.HALF_EVEN);
 
