@@ -32,7 +32,7 @@ import org.junit.Ignore;
  */
 @RunWith(Enclosed.class)
 public class UsersJpaControllerTest {
-
+    @Ignore
     public static class TestFindUsers extends ArquillianTestBase {
 
         @Inject
@@ -71,6 +71,7 @@ public class UsersJpaControllerTest {
         }
     }
 
+    @Ignore
     public static class TestUserSalesBetweenDates extends ArquillianTestBase {
 
         @Inject
@@ -93,6 +94,7 @@ public class UsersJpaControllerTest {
         }
     }
 
+    @Ignore
     public static class TestUserSalesTotal extends ArquillianTestBase {
 
         @Inject
@@ -100,12 +102,13 @@ public class UsersJpaControllerTest {
 
         private Pair<Long, Double> param;
         public Double result;
-
+        
         @Rule
         public ParameterRule<Pair<Long, Double>> rule = new ParameterRule("param", "result",
                 () -> controller.getUsersTotalSales(param.getValue0()),
                 Pair.with(1l, 91d),
                 Pair.with(2l, 121d));
+        
 
         @Test
         public void testUserSalesTotal() {
@@ -113,6 +116,7 @@ public class UsersJpaControllerTest {
         }
     }
 
+    @Ignore
     public static class TestUserPurchasedBooks extends ArquillianTestBase {
 
         @Inject
@@ -137,6 +141,7 @@ public class UsersJpaControllerTest {
         }
     }
 
+    @Ignore
     public static class TestTopUsersBySales extends ArquillianTestBase {
 
         @Inject
