@@ -16,6 +16,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.io.File;
 import javax.sql.DataSource;
+import junit.framework.Assert;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -32,7 +33,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -82,6 +85,7 @@ public class FrontPageIT extends TestBase {
     }
 
     @Test
+    @Ignore
     public void testSurvey() throws Exception {
 
         // And now use this to visit a web site
@@ -96,7 +100,13 @@ public class FrontPageIT extends TestBase {
         driver.findElement(By.id("surveyform:surveysubmit")).click();
 
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("survey-chart")));
-        System.out.println("asdf1");
+        
+        Actions action = new Actions(driver);
+        action.moveToElement(driver.findElement(By.cssSelector(".highcharts-series > rect:nth-child(2)"))).build().perform();        
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("survey-chart")));        
+        String greenCount = driver.findElement(By.cssSelector(".highcharts-label > text > tspan:nth-child(4)")).getText();
+        
+        assertEquals("501", greenCount);
     }
 
     @Test

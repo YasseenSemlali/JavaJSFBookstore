@@ -32,7 +32,6 @@ import org.junit.Ignore;
  */
 @RunWith(Enclosed.class)
 public class UsersJpaControllerTest {
-    @Ignore
     public static class TestFindUsers extends ArquillianTestBase {
 
         @Inject
@@ -71,7 +70,6 @@ public class UsersJpaControllerTest {
         }
     }
 
-    @Ignore
     public static class TestUserSalesBetweenDates extends ArquillianTestBase {
 
         @Inject
@@ -94,7 +92,6 @@ public class UsersJpaControllerTest {
         }
     }
 
-    @Ignore
     public static class TestUserSalesTotal extends ArquillianTestBase {
 
         @Inject
@@ -116,7 +113,6 @@ public class UsersJpaControllerTest {
         }
     }
 
-    @Ignore
     public static class TestUserPurchasedBooks extends ArquillianTestBase {
 
         @Inject
@@ -141,7 +137,6 @@ public class UsersJpaControllerTest {
         }
     }
 
-    @Ignore
     public static class TestTopUsersBySales extends ArquillianTestBase {
 
         @Inject
