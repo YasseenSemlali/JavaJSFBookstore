@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gb4w20</groupId>
     <artifactId>gb4w20</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-TEST1-FINAL</version>
     <packaging>war</packaging>
     <name>${project.artifactId}</name>
     <description>The CSD Book Store for the Java Server Side course at Dawson College.</description>
@@ -21,8 +21,13 @@
         <name>Dawson College</name>
     </organization>
     <properties>
-        <skipTests>false</skipTests>
+        <skipTests>true</skipTests>
     </properties>
+    <build>
+        <finalName>
+            gb4w20-test
+        </finalName>
+    </build>
     <!-- All of the sample code shares the same dependencies and build         -->
     <!-- The parent project named web_project_dependencies must be loaded into -->
     <!-- the IDE and you must Run Maven with a goal of install:install         -->
