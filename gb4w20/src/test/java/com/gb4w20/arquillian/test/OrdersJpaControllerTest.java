@@ -52,7 +52,9 @@ public class OrdersJpaControllerTest {
                 () -> ordersJpaController.getTotalSales(param.getValue1(), param.getValue2()),
                 Quartet.with(1, "2000-01-01", "3000-01-01", 212.0), //All total sales
                 Quartet.with(2, "2020-01-01", "2020-01-30", 0.0), //Jan
-                Quartet.with(3, "2000-02-01", "2020-02-29", 212.0)); //Feb
+                Quartet.with(3, "2000-02-01", "2020-02-29", 212.0), //Feb
+                Quartet.with(4, "2000-02-01", "2020-02-14", 48.0), 
+                Quartet.with(5, "2000-02-10", "2020-02-29", 212.0)); 
 
         /**
          * Used to test if the total sales given is equals to the expected total
@@ -107,7 +109,18 @@ public class OrdersJpaControllerTest {
                     }
                 }
                 ), //Jan
-                Quartet.with(3, "2020-02-01", "2020-02-29",
+                Quartet.with(3, "2020-02-04", "2020-02-10",
+                        new ArrayList<NameTotalAndCountBean>() {
+                    {
+                       add(new NameTotalAndCountBean("Harry Potter and the Deathly Hallows", new BigDecimal(15), 1L));
+                       add(new NameTotalAndCountBean("The Burning White", new BigDecimal(16), 1L));
+                    }
+                }
+                ), 
+                Quartet.with(4, "2020-01-01", "2020-01-12",
+                        new ArrayList<NameTotalAndCountBean>()
+                ), 
+                Quartet.with(5, "2020-02-01", "2020-02-29",
                         new ArrayList<NameTotalAndCountBean>() {
                     {
                         add(new NameTotalAndCountBean("And Another Thing...", new BigDecimal(10), 1L));

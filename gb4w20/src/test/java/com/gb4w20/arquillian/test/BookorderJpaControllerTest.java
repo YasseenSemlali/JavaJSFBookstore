@@ -48,7 +48,9 @@ public class BookorderJpaControllerTest {
                 () -> bookorderJpaController.getTotalSalesForBook(param.getValue1()).doubleValue(),
                 Triplet.with(1, 9780000000000L, 17.0), //Other order is disabled
                 Triplet.with(2, 9780765377067L, 36.0),
-                Triplet.with(3, 9780316251303L, 16.0));
+                Triplet.with(3, 9780545010221L, 30.0), 
+                Triplet.with(4, 9780439064866L, 26.0), 
+                Triplet.with(5, 9780316251303L, 16.0));
 
         /**
          * Used to test if the total sales given is equals to the expected total
@@ -82,9 +84,11 @@ public class BookorderJpaControllerTest {
         @Rule
         public ParameterRule<Triplet<Integer, Long, Double>> rule = new ParameterRule("param", "result",
                 () -> bookorderJpaController.getTotalSalesForOrderPreTax(param.getValue1()).doubleValue(),
-                Triplet.with(1, 2L, 18.0),
-                Triplet.with(2, 4L, 25.0),
-                Triplet.with(3, 5L, 42.0));
+                Triplet.with(1, 1L, 0.0),
+                Triplet.with(2, 2L, 18.0),
+                Triplet.with(3, 3L, 15.0), 
+                Triplet.with(4, 4L, 25.0), 
+                Triplet.with(5, 5L, 42.0));
 
         /**
          * Used to test if the total sales given is equals to the expected total
@@ -121,9 +125,11 @@ public class BookorderJpaControllerTest {
         @Rule
         public ParameterRule<Triplet<Integer, Long, Double>> rule = new ParameterRule("param", "result",
                 () -> bookorderJpaController.getHSTForOrder(param.getValue1()).doubleValue(),
-                Triplet.with(1, 5L, 13.0),
-                Triplet.with(2, 4L, 13.0),
-                Triplet.with(3, 3L, 13.0));
+                Triplet.with(1, 1L, 0.0),
+                Triplet.with(2, 2L, 0.0),
+                Triplet.with(3, 3L, 13.0), 
+                Triplet.with(4, 4L, 13.0), 
+                Triplet.with(5, 5L, 13.0));
 
         /**
          * Used to test if the total sales given is equals to the expected total
@@ -160,9 +166,11 @@ public class BookorderJpaControllerTest {
         @Rule
         public ParameterRule<Triplet<Integer, Long, Double>> rule = new ParameterRule("param", "result",
                 () -> bookorderJpaController.getPSTForOrder(param.getValue1()).doubleValue(),
-                Triplet.with(1, 5L, 10.0),
-                Triplet.with(2, 6L, 15.0),
-                Triplet.with(3, 1L, 0.0)); //Disabled
+                Triplet.with(1, 1L, 0.0), //Disabled
+                Triplet.with(2, 2L, 5.0),
+                Triplet.with(3, 3L, 0.0), 
+                Triplet.with(4, 4L, 5.0), 
+                Triplet.with(5, 5L, 10.0));
 
         /**
          * Used to test if the total sales given is equals to the expected total
@@ -199,9 +207,11 @@ public class BookorderJpaControllerTest {
         @Rule
         public ParameterRule<Triplet<Integer, Long, Double>> rule = new ParameterRule("param", "result",
                 () -> bookorderJpaController.getGSTForOrder(param.getValue1()).doubleValue(),
-                Triplet.with(1, 4L, 6.0),
-                Triplet.with(2, 5L, 12.0),
-                Triplet.with(3, 2L, 9.975));
+                Triplet.with(1, 1L, 0.0),
+                Triplet.with(2, 2L, 9.975),
+                Triplet.with(3, 3L, 0.0), 
+                Triplet.with(4, 4L, 6.0), 
+                Triplet.with(5, 5L, 12.0));
 
         /**
          * Used to test if the total sales given is equals to the expected total

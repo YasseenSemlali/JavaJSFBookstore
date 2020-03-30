@@ -224,7 +224,7 @@ public class BookorderJpaController implements Serializable {
                 
             Query query = em.createQuery(cq);
             
-            return (BigDecimal) query.getSingleResult();
+            return (query.getSingleResult()!=null) ? (BigDecimal) query.getSingleResult() : new BigDecimal(0);
         } catch (Exception e) {
             return new BigDecimal(0);
         }
@@ -253,7 +253,7 @@ public class BookorderJpaController implements Serializable {
                 .where(cb.equal(order.get(Bookorder_.orderId), inputOrder), cb.equal(order.get(Bookorder_.enabled), Boolean.TRUE));
                 
             Query query = em.createQuery(cq);
-            return (BigDecimal) query.getSingleResult();
+            return (query.getSingleResult()!=null) ? (BigDecimal) query.getSingleResult() : new BigDecimal(0);
         } catch (Exception e) {
             return new BigDecimal(0);
         }
@@ -282,7 +282,7 @@ public class BookorderJpaController implements Serializable {
                 .where(cb.equal(order.get(Bookorder_.orderId), inputOrder), cb.equal(order.get(Bookorder_.enabled), Boolean.TRUE));
                 
             Query query = em.createQuery(cq);
-            return (BigDecimal) query.getSingleResult();
+            return (query.getSingleResult()!=null) ? (BigDecimal) query.getSingleResult() : new BigDecimal(0);
         } catch (Exception e) {
             return new BigDecimal(0);
         }
@@ -311,7 +311,7 @@ public class BookorderJpaController implements Serializable {
                 .where(cb.equal(order.get(Bookorder_.orderId), inputOrder), cb.equal(order.get(Bookorder_.enabled), Boolean.TRUE));
                 
             Query query = em.createQuery(cq);
-            return (BigDecimal) query.getSingleResult();
+            return (query.getSingleResult()!=null) ? (BigDecimal) query.getSingleResult() : new BigDecimal(0);
         } catch (Exception e) {
             return new BigDecimal(0);
         }
@@ -340,7 +340,7 @@ public class BookorderJpaController implements Serializable {
                 .where(cb.equal(order.get(Bookorder_.orderId), inputOrder), cb.equal(order.get(Bookorder_.enabled), Boolean.TRUE));
                 
             Query query = em.createQuery(cq);
-            return (BigDecimal) query.getSingleResult();
+            return (query.getSingleResult()!=null) ? (BigDecimal) query.getSingleResult() : new BigDecimal(0);
         } catch (Exception e) {
             return new BigDecimal(0);
         }
