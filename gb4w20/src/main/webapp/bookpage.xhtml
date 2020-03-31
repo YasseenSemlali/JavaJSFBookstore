@@ -80,19 +80,28 @@ add it to the shopping cart.
             <h2>#{msgs.reviews}</h2>
             <p>
                 <!-- APPROVED REVIEWS -->
-                <c:forEach items="#{reviewsJpaController.getApprovedReviews(book.getIsbn())}" var="review">
-                    <div id="">
-                        <p>
-                            #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
-                        </p>
-                        <p>
-                            #{review.getReview()}
-                        </p>
-                        <p>
-                            #{msgs.rating} : #{review.getRating()}
-                        </p>
-                    </div>
-                </c:forEach>
+                <c:set var="approvedReviews" value="#{reviewsJpaController.getApprovedReviews(book.getIsbn())}"/>
+                <c:choose>
+                    <c:when test="#{empty approvedReviews}">
+                        #{msgs.no_approved_revs_yet}
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach items="#{approvedReviews}" var="review">
+                            <div id="apprvdRevs">
+                                <p>
+                                    #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
+                                </p>
+                                <p>
+                                    #{review.getReview()}
+                                </p>
+                                <p>
+                                    #{msgs.rating} : #{review.getRating()}
+                                </p>
+                            </div>
+                            <hr></hr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </p>
         </b:container>
         <!--Recommended book for same author and same genre-->

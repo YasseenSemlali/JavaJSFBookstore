@@ -133,9 +133,12 @@ public class CartBookBackingBean implements Serializable {
     }
     
     /**
-     * Re-initializing a new cart
+     * Re-initializing a new cart and returning
+     * back to the index page
+     * @return
      */
-    public void clearCart(){
+    public String clearCart(){
         this.books = new HashSet<Books>();
+        return "/index.xhtml";
     }
 }
