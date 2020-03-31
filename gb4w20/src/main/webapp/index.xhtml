@@ -34,6 +34,21 @@ Java Server Faces page that displays the frontpage of the app
                 input.onchange()
             }
         </script>
+        
+        <!-- BANNER AD 1 - AUTHOR: JEAN ROBATTO (only of the ad) -->
+        <c:set var="ad1" value="#{adsJpaController.getRandomActiveAd()}"/>
+        <div>
+            <a href="https://#{ad1.url}">
+            <p:graphicImage 
+                width="100%" 
+                height="200px" 
+                alt="ad_1" 
+                library="img" 
+                name="ads/#{ad1.fileLocation}" 
+                rendered="#{ad1!=null}"
+                style="cursor: pointer"/>
+            </a>
+        </div>
 
         <b:container fluid="true">
             <b:jumbotron>
@@ -150,6 +165,20 @@ Java Server Faces page that displays the frontpage of the app
                     </p:scrollPanel>
                 </b:column>
             </b:row>
+            <!-- BANNER AD 2 - AUTHOR: JEAN ROBATTO (only of the ad) -->
+        <c:set var="ad2" value="#{adsJpaController.getRandomActiveAd()}"/>
+        <div>
+            <a href="https://#{ad2.url}">
+            <p:graphicImage 
+                width="100%" 
+                height="200px" 
+                alt="ad_2" 
+                library="img" 
+                name="ads/#{ad2.fileLocation}" 
+                rendered="#{ad2!=null}"
+                style="cursor: pointer"/>
+            </a>
+        </div>
         </b:container>
     </ui:define>
 </ui:composition>

@@ -25,7 +25,7 @@ necessary to manage ads for the web app
             </h:form>
             <div class="card">
                 <h:form style="text-align: center">
-                    <p:dataTable id="adslist" var="ad" value="#{adsJpaController.findAdsEntities()}"
+                    <p:dataTable id="adslist" widgetVar="ad_w" var="ad" value="#{adsJpaController.findAdsEntities()}"
                                  emptyMessage="#{msgs.noresults}" rowIndexVar="index" tableStyle="width:auto">
 
                         <p:column filterBy="#{ad.id}" headerText="ID" filterMatchMode="contains">
@@ -86,7 +86,12 @@ necessary to manage ads for the web app
 
                         <p:column>
                             <p:commandButton value="#{msgs.edit}">
-                                <f:ajax listener="#{managerAds.editAd(ad.id, index)}" render="adslist" execute="@all" />
+                                <p:ajax 
+                                    listener="#{managerAds.editAd(ad.id, index)}" 
+                                    update="adslist" 
+                                    process="@all" 
+                                    oncomplete="PF('ad_w').filter()"
+                                    />
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>

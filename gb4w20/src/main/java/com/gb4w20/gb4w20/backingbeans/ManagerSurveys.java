@@ -1,12 +1,16 @@
 package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.SurveyQuestions;
+import com.gb4w20.gb4w20.entities.SurveyResponses;
 import com.gb4w20.gb4w20.jpa.SurveyQuestionsJpaController;
+import com.gb4w20.gb4w20.jpa.SurveyResponsesJpaController;
+import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * @author Jean Robatto
  */
 @Named
-@RequestScoped
+@SessionScoped
 public class ManagerSurveys implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(ManagerSurveys.class);
@@ -28,13 +32,25 @@ public class ManagerSurveys implements Serializable {
     @Inject
     private SurveyQuestionsJpaController surveysController;
 
+    @Inject
+    private SurveyResponsesJpaController answerController;
+
+    private SurveyQuestions survey;
+
     private String[] questions;
     private Boolean[] enabled;
 
-    @Size(min = 1, max = 1024)private String newQuestion;
-    
+    private Collection<SurveyResponses> responses;
+
+    @Size(min = 1, max = 1024)
+    private String newQuestion;
+    @Size(min = 1, max = 1024)
+    private String newAnswer;
+
     /**
      * Method to initialize variables
+     *
+     * @author Jean Robatto
      */
     @PostConstruct
     private void init() {
@@ -49,16 +65,31 @@ public class ManagerSurveys implements Serializable {
     }
 
     /**
+     * Sets the survey variable for the survey questions to be changed
+     *
+     * @param survey
+     * @author Jean Robatto
+     * @return redirection
+     */
+    public String selectSurvey(SurveyQuestions survey) {
+        this.survey = survey;
+        this.responses = answerController.getResponsesFromQuestion(survey);
+        return "/manager-secured/manager-forms/manager-surveys-answers";
+    }
+
+    /**
      * Method to alter the state of a survey question
-     * 
-     * Redirects on failure instead of returning a string because it is an ajax call
+     *
+     * Redirects on failure instead of returning a string because it is an ajax
+     * call
      *
      * @param id
      * @param index
      * @throws java.io.IOException
+     * @author Jean Robatto
      */
     public void editSurvey(Long id, int index) throws IOException {
-        LOG.debug("Editing surbey with id: " + Long.toString(id));
+        LOG.debug("Editing survey with id: " + Long.toString(id));
         try {
             SurveyQuestions question = surveysController.findSurveyQuestions(id);
 
@@ -81,11 +112,12 @@ public class ManagerSurveys implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/action-responses/action-failure.xhtml");
         }
     }
-    
+
     /**
      * Method to create a new survey.
      *
      * @return redirection
+     * @author Jean Robatto
      */
     public String createSurvey() {
         LOG.debug("Creating a new survey");
@@ -94,13 +126,62 @@ public class ManagerSurveys implements Serializable {
             survey.setQuestion(newQuestion);
             survey.setTimestamp(new Date());
             survey.setEnabled(Boolean.TRUE);
-            
+
             surveysController.create(survey);
 
-            return "/manager-forms/manager-surveys";
+            init();
+                    
+            return "/manager-secured/manager-forms/manager-surveys";
+        } catch (BackendException ex) {
+            LOG.info(ex.toString());
+            return "/action-responses/action-failure";
+        }
+    }
+
+    /**
+     * Method to alter the state of a survey answer
+     *
+     * @return Redirection
+     * @author Jean Robatto
+     */
+    public String editAnswers() {
+        LOG.debug("Editing answers for survey with id: " + Long.toString(survey.getId()));
+        try {
+            for (SurveyResponses response : responses) {
+                answerController.edit(response);
+                LOG.info(Boolean.toString(response.getEnabled()));
+                LOG.info(response.getResponse());
+            }
+            init();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/manager-secured/manager-forms/manager-surveys.xhtml"); //Fixes a display bug
+            return "/manager-secured/manager-forms/manager-surveys"; 
         } catch (Exception ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";
+        }
+    }
+
+    /**
+     * Method to create a new survey answer.
+     * 
+     * @author Jean Robatto
+     */
+    public void createAnswer() {
+        LOG.debug("Creating a new answer for survey " + Long.toString(survey.getId()));
+        try {
+            SurveyResponses answer = new SurveyResponses();
+            answer.setResponse(newAnswer);
+            answer.setTimestamp(new Date());
+            answer.setEnabled(Boolean.TRUE);
+            answer.setSurveyQuestionId(survey);
+
+            answerController.create(answer);
+            
+            responses.add(answer);
+
+        } catch (Exception ex) {
+            LOG.info(ex.toString());
+            //return "/action-responses/action-failure";
         }
     }
 
@@ -116,6 +197,18 @@ public class ManagerSurveys implements Serializable {
         return newQuestion;
     }
 
+    public String getNewAnswer() {
+        return newAnswer;
+    }
+
+    public SurveyQuestions getSurvey() {
+        return survey;
+    }
+
+    public Collection<SurveyResponses> getResponses() {
+        return responses;
+    }
+
     public void setQuestions(String[] questions) {
         this.questions = questions;
     }
@@ -126,6 +219,18 @@ public class ManagerSurveys implements Serializable {
 
     public void setNewQuestion(String newQuestion) {
         this.newQuestion = newQuestion;
+    }
+
+    public void setNewAnswer(String newAnswer) {
+        this.newAnswer = newAnswer;
+    }
+
+    public void setSurvey(SurveyQuestions survey) {
+        this.survey = survey;
+    }
+
+    public void setResponses(Collection<SurveyResponses> responses) {
+        this.responses = responses;
     }
 
 }

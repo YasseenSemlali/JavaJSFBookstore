@@ -2,11 +2,13 @@
 package com.gb4w20.gb4w20.jpa;
 
 import com.gb4w20.gb4w20.entities.Ads;
-import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
-import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
+import com.gb4w20.gb4w20.entities.Ads_;
+import com.gb4w20.gb4w20.exceptions.BackendException;
+import com.gb4w20.gb4w20.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -14,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.HeuristicMixedException;
@@ -118,6 +121,34 @@ public class AdsJpaController implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+    }
+    
+    /**
+     * Method to return a random ad from the database which is 
+     * currently active
+     * 
+     * @return A random ad
+     * @author Jean Robatto
+     */
+    public Ads getRandomActiveAd() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Ads> cq = cb.createQuery(Ads.class);
+
+        Root<Ads> ad = cq.from(Ads.class);
+        
+        cq.select(ad).where(cb.equal(ad.get(Ads_.enabled), Boolean.TRUE));
+        
+        Query query = em.createQuery(cq);
+        
+        List<Ads> result = query.getResultList();
+        
+        if (result.isEmpty()) {
+            return null;
+        }
+        
+        int randomNum = ThreadLocalRandom.current().nextInt(0, result.size());
+
+        return result.get(randomNum);
     }
     
 }
