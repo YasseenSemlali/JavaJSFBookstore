@@ -68,6 +68,9 @@ or print it or both.
                     <p:printer target="invoiceprint"/>
                 </p:commandButton>
             </p>
+            <p>
+                <b:commandButton action="#{cartSession.clearCart()}" value="#{msgs.shop_again_index}" look="info"/>
+            </p>
         </h:form>
     </ui:define>
 </ui:composition>
