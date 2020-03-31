@@ -1,6 +1,6 @@
-
 package com.gb4w20.arquillian.test;
 
+import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
@@ -16,9 +16,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static org.junit.Assert.assertEquals;
 
 /**
  * <h1>Selenium Test for the Front Page</h1>
@@ -51,9 +53,17 @@ public class FrontPageIT extends TestBase{
 
     @Override
     protected DataSource getDatasource() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        MysqlDataSource dataSource = new MysqlDataSource();
 
+        // Set dataSource Properties
+        dataSource.setServerName("localhost");
+        dataSource.setPortNumber(3306);
+        dataSource.setDatabaseName("gb4w20test");
+        dataSource.setUser("gb4w20");
+        dataSource.setPassword("pencil3tuna");
+        return dataSource;
+    }
+    
     @BeforeClass
     public static void setupClass() {
         // Normally an executable that matches the browser you are using must
@@ -81,6 +91,7 @@ public class FrontPageIT extends TestBase{
     }
 
     @Test
+    @Ignore
     public void testSurvey() throws Exception {
 
         // And now use this to visit a web site
@@ -90,15 +101,20 @@ public class FrontPageIT extends TestBase{
         WebDriverWait wait = new WebDriverWait(driver, 10);
         // Wait for the page to load, timeout after 10 seconds
         wait.until(ExpectedConditions.titleIs("Front page"));
-        
+
         driver.findElement(By.cssSelector("label[for='surveyform\\:survey-answers\\:1']")).click();
         driver.findElement(By.id("surveyform:surveysubmit")).click();
-        
+
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("survey-chart")));
-        System.out.println("asdf1");
+        
+        Actions action = new Actions(driver);
+        action.moveToElement(driver.findElement(By.cssSelector(".highcharts-series > rect:nth-child(2)"))).build().perform();        
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("survey-chart")));        
+        String greenCount = driver.findElement(By.cssSelector(".highcharts-label > text > tspan:nth-child(4)")).getText();
+        
+        assertEquals("501", greenCount);
     }
 
-    
     @Test
     @Ignore
     public void testLoginFormFill() throws Exception {
@@ -158,5 +174,5 @@ public class FrontPageIT extends TestBase{
         //Close the browser
         //driver.quit();
     }
-    
+
 }
