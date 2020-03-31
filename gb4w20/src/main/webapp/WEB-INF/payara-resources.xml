@@ -33,7 +33,7 @@
                           wrap-jdbc-objects="false">
         <property name="URL" value="jdbc:mysql://localhost:3306/gb4w20?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
         <property name="User" value="gb4w20"/>
-        <property name="Password" value="bendatree"/>
+        <property name="Password" value="pencil3tuna"/>
     </jdbc-connection-pool>
     <jdbc-connection-pool allow-non-component-callers="false" 
                               associate-with-thread="false" 
