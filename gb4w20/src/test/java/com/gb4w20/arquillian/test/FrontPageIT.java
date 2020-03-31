@@ -2,6 +2,9 @@
 package com.gb4w20.arquillian.test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 import org.junit.After;
 import org.junit.Test;
@@ -14,14 +17,37 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
- * @author Yasseen
+ * <h1>Selenium Test for the Front Page</h1>
+ * <p>
+ * To selenium test the front page functionalities 
+ * which are search, recently bought books, survey, logged in,
+ * clicking book, view cart and clicking ads.
+ * </p>
+ * @author Yasseen, Jasmar Badion
  */
 public class FrontPageIT extends TestBase{
     
+    private final static Logger LOG = LoggerFactory.getLogger(FrontPageIT.class);
+    
     private WebDriver driver;
+    
+    //Bundle for i18n
+    private ResourceBundle bundle;
+    
+    /**
+     * Mainly used to set the bundle.
+     *
+     * @author Jasmar Badion
+     */
+    @PostConstruct
+    public void init() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        this.bundle = context.getApplication().getResourceBundle(context, "msgs");
+    }
 
     @Override
     protected DataSource getDatasource() {
@@ -107,6 +133,26 @@ public class FrontPageIT extends TestBase{
         wait.until(ExpectedConditions.titleIs("Secured Selenium Welcome page"));
     }
 
+    /**
+     * Selenium test for viewing the cart page
+     * @throws Exception 
+     * @author Jasmar Badion
+     */
+    @Test
+    public void testViewCart() throws Exception{
+        //to visit our website
+        driver.get("http://localhost:8080/gb4w20");
+
+        // Wait for the page to load, timeout after 10 seconds
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Front page"));
+        
+        driver.findElement(By.id("bookcartlink")).click();
+        
+        wait.until(ExpectedConditions.titleIs(this.bundle.getString("cart")));
+        LOG.info("New Page title is " + this.bundle.getString("cart"));
+    }
+    
     @After
     public void shutdownTest() {
         //Close the browser

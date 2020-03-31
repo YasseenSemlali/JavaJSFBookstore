@@ -36,7 +36,7 @@
                             <b:navLink value="${msgs.dashboard}" href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml"/>
                         </h:panelGroup>
                         
-                        <b:navLink href="#{request.contextPath}/checkoutpage.xhtml">
+                        <b:navLink id="bookcartlink" href="#{request.contextPath}/checkoutpage.xhtml">
                             <b:icon value="shopping-cart" size="2x">#{msgs.cart}</b:icon>
                         </b:navLink>
                         <b:navLink rendered="#{userSession.loggedIn}" value="${msgs.downloads}" href="#{request.contextPath}/book-downloads.xhtml"/>
