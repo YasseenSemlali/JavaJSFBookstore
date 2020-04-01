@@ -2,9 +2,6 @@ package com.gb4w20.arquillian.test;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import java.util.ResourceBundle;
-import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 import org.junit.After;
 import org.junit.Test;
@@ -36,20 +33,6 @@ public class FrontPageIT extends TestBase{
     private final static Logger LOG = LoggerFactory.getLogger(FrontPageIT.class);
     
     private WebDriver driver;
-    
-    //Bundle for i18n
-    private ResourceBundle bundle;
-    
-    /**
-     * Mainly used to set the bundle.
-     *
-     * @author Jasmar Badion
-     */
-    @PostConstruct
-    public void init() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        this.bundle = context.getApplication().getResourceBundle(context, "msgs");
-    }
 
     @Override
     protected DataSource getDatasource() {
@@ -163,10 +146,8 @@ public class FrontPageIT extends TestBase{
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.titleIs("Front page"));
         
-        driver.findElement(By.id("bookcartlink")).click();
-        
-        wait.until(ExpectedConditions.titleIs(this.bundle.getString("cart")));
-        LOG.info("New Page title is " + this.bundle.getString("cart"));
+        driver.findElement(By.id("j_idt10:bookcartlink")).click();
+        wait.until(ExpectedConditions.titleIs("Cart"));
     }
     
     @After
