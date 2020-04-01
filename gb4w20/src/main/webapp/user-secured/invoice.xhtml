@@ -26,6 +26,9 @@ or print it or both.
                 <ul>
                     <c:forEach items="#{cartSession.books}" var="cartbooks">
                         <li>#{cartbooks.title}: $#{cartbooks.listPrice -  cartbooks.salePrice}</li>
+                        
+                        <!-- Adding those books purchased to the book order for this user -->
+                        #{cartSession.addBookToOrder(cartbooks)}
                     </c:forEach>
                 </ul>
             </p>

@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
  * which are search, recently bought books, survey, logged in,
  * clicking book, view cart and clicking ads.
  * </p>
- * @author Yasseen, Jasmar Badion
+ * @author Yasseen, Jasmar Badion, Jeffrey Boisvert, Jean
  */
 public class FrontPageIT extends TestBase{
     
