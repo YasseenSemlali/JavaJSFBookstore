@@ -103,19 +103,19 @@ Java Server Faces page that displays the frontpage of the app
             </h:panelGroup>
             
             <b:row>
-                <b:column col-md="4">
+                <b:column id="recently-bought-books-section" col-md="4">
                     <h2>${msgs.you_recently_bought}</h2>
 
                     <c:choose>
                         <c:when test="#{userSession.loggedIn}">
-                            <b:panelGrid columns="2">
+                            <b:panelGrid id="recently-bought-books" columns="2">
                                 <c:forEach items="#{booksJpaController.getRecentlyBoughtBooks(userSession.userId, 3)}" var="book">
                                    <bk:book value="#{book}"/>
                                 </c:forEach>
                             </b:panelGrid>
                         </c:when>
                         <c:otherwise>
-                            <p>${msgs.recently_bought_not_logged_in}</p>
+                            <p id="bought-books-not-logged-in-msg">${msgs.recently_bought_not_logged_in}</p>
                         </c:otherwise>
                     </c:choose>
                 </b:column>
