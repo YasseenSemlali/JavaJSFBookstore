@@ -2,6 +2,7 @@ package com.gb4w20.arquillian.test;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import java.util.List;
 import javax.sql.DataSource;
 import org.junit.After;
 import org.junit.Test;
@@ -22,15 +23,15 @@ import static org.junit.Assert.assertEquals;
 /**
  * <h1>Selenium Test for the Front Page</h1>
  * <p>
- * To selenium test the front page functionalities 
- * which are search, recently bought books, survey, logged in,
- * clicking book, view cart and clicking ads.
+ * To selenium test the front page components 
  * </p>
- * @author Yasseen, Jasmar Badion, Jeffrey Boisvert, Jean
+ * @author Yasseen, Jeffrey Boisvert, Jasmar Badion, Jean
  */
 public class FrontPageIT extends TestBase{
     
     private final static Logger LOG = LoggerFactory.getLogger(FrontPageIT.class);
+
+    private final static String FRONT_PAGE_TITLE = "Front page";
     
     private WebDriver driver;
 
@@ -57,6 +58,7 @@ public class FrontPageIT extends TestBase{
 
     @Before
     public void setupTest() {
+        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
     }
 
@@ -87,7 +89,7 @@ public class FrontPageIT extends TestBase{
 
         driver.findElement(By.cssSelector("label[for='surveyform\\:survey-answers\\:1']")).click();
         driver.findElement(By.id("surveyform:surveysubmit")).click();
-
+        
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("survey-chart")));
         
         Actions action = new Actions(driver);
@@ -171,11 +173,45 @@ public class FrontPageIT extends TestBase{
         driver.findElement(By.id("j_idt10:french-button")).click();
         driver.findElement(By.id("j_idt10:english-button")).click();
         
-        wait.until(ExpectedConditions.titleIs("Front page"));
+        wait.until(ExpectedConditions.titleIs(FRONT_PAGE_TITLE));
         
     }
     
+    /**
+     * Used to test that the recently bought books is empty 
+     * when the user has not logged in. 
+     * @throws Exception 
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void emptyRecentlyBoughtBooksWhenNotLoggedIn() throws Exception {
+
+        loadFrontPage();
+                
+        List<WebElement> elements = driver.findElements(By.id("bought-books-not-logged-in-msg"));
+        
+        assertEquals("Message that the user is not logged in is not shown", 1, elements.size());
+        
+    }
     
+    /**
+     * Used to test that correct elements are shown
+     * when logged in as a user and they have recently bought books
+     * @throws Exception 
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void recentlyBoughtBooksWhenLoggedIn() throws Exception {
+
+        loginUser();
+        loadFrontPage();
+                
+        List<WebElement> elements = driver.findElements(By.id("recently-bought-books"));
+        
+        assertEquals("Recently bought books not shown", 1, elements.size());
+        
+    }
+       
     /**
      * Helper method used to load the front page
      * @author Jeffrey Boisvert
@@ -184,9 +220,35 @@ public class FrontPageIT extends TestBase{
         
         driver.get("http://localhost:8080/gb4w20");
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.titleIs("Front page"));
-    }
 
+        wait.until(ExpectedConditions.titleIs(FRONT_PAGE_TITLE));
+        
+    }
+    
+    /**
+     * Helper method to login the user.
+     * 
+     * @author Jeffrey Boisvert
+     */
+    private void loginUser() {
+        
+        driver.get("http://localhost:8080/gb4w20/login.xhtml");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Login"));
+        
+        WebElement inputEmailElement = driver.findElement(By.id("login-form:email"));
+        inputEmailElement.clear();
+        inputEmailElement.sendKeys("cst.send@gmail.com");
+        
+        WebElement inputPasswordElement = driver.findElement(By.id("login-form:password"));
+        inputPasswordElement.clear();
+        inputPasswordElement.sendKeys("dawsoncollege");
+        
+        driver.findElement(By.id("login-form:login-btn")).click();
+        
+        wait.until(ExpectedConditions.titleIs("Login"));
+    }
+        
     /**
      * Selenium test for viewing the cart page
      * @throws Exception 
@@ -197,8 +259,8 @@ public class FrontPageIT extends TestBase{
         loadFrontPage();
         
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        
         driver.findElement(By.id("j_idt10:bookcartlink")).click();
+        
         wait.until(ExpectedConditions.titleIs("Cart"));
     }
     
