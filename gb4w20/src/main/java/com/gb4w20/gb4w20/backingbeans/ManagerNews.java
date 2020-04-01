@@ -95,7 +95,7 @@ public class ManagerNews implements Serializable {
             
             newsController.create(feed);
 
-            return "/manager-forms/manager-news";
+            return "/manager-secured/manager-forms/manager-news";
         } catch (BackendException ex) {
             LOG.info(ex.toString());
             return "/action-responses/action-failure";
