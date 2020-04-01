@@ -108,40 +108,6 @@ public class FrontPageIT extends TestBase {
         
         assertEquals("501", greenCount);
     }
-
-    @Test
-    @Ignore
-    public void testLoginFormFill() throws Exception {
-
-        // And now use this to visit a web site
-        driver.get("http://localhost:8080/JSFSample30FilterSelenium");
-
-        // Wait for the page to load, timeout after 10 seconds
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        // Check the title of the page
-        wait.until(ExpectedConditions.titleIs("Login form"));
-
-        // Find username input field
-        WebElement inputElement = driver.findElement(By.id("login-form:username"));
-        // Clear out anything currently in the field
-        inputElement.clear();
-        // Enter text into the input field
-        inputElement.sendKeys("ken");
-
-        // Find password input field
-        inputElement = driver.findElement(By.id("login-form:password"));
-        // Clear out anything currently in the field
-        inputElement.clear();
-        // Enter text into the input field
-        inputElement.sendKeys("moose");
-
-        // Click the submit button
-        driver.findElement(By.id("login-form:button")).click();
-
-        // If username and password are correct then a page with this title 
-        // should be loaded
-        wait.until(ExpectedConditions.titleIs("Secured Selenium Welcome page"));
-    }
     
     /**
      * Used to test that the user is brought to the correct page upon 
@@ -154,18 +120,75 @@ public class FrontPageIT extends TestBase {
 
         loadFrontPage();
         
-        // Find username input field
-        WebElement inputElement = driver.findElement(By.id("login-form:username"));
-        // Clear out anything currently in the field
+        WebElement inputElement = driver.findElement(By.id("search-input"));
         inputElement.clear();
-        // Enter text into the input field
-        inputElement.sendKeys("ken");
+        inputElement.sendKeys("harry");
         
+        driver.findElement(By.id("search-submit")).click();
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Search"));
         
     }
     
     /**
-     * Helper method used to simple load the front page
+     * Used to test that the user is brought to the advanced search
+     * page when clicking on the link 
+     * @throws Exception 
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testNavigateToAdvanceSearchPage() throws Exception {
+
+        loadFrontPage();
+        
+        driver.findElement(By.id("advanced-search-link")).click();
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Advanced search"));
+        
+    }
+
+    /**
+     * Used to test that the user can switch 
+     * the french language on the front page 
+     * @throws Exception 
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testSwitchToFrench() throws Exception {
+
+        loadFrontPage();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.findElement(By.id("j_idt10:french-button")).click();
+        
+        wait.until(ExpectedConditions.titleIs("Page de garde"));
+        
+    }
+    
+    /**
+     * Used to test that the user can switch 
+     * the English language on the front page 
+     * @throws Exception 
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testSwitchToEnglish() throws Exception {
+
+        loadFrontPage();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.findElement(By.id("j_idt10:french-button")).click();
+        driver.findElement(By.id("j_idt10:english-button")).click();
+        
+        wait.until(ExpectedConditions.titleIs("Front page"));
+        
+    }
+    
+    
+    /**
+     * Helper method used to load the front page
      * @author Jeffrey Boisvert
      */
     private void loadFrontPage(){
@@ -176,11 +199,14 @@ public class FrontPageIT extends TestBase {
 
         
     }
-
+    
+    /**
+     * Used to close the browser 
+     * after a test was conducted
+     */
     @After
     public void shutdownTest() {
-        //Close the browser
-        //driver.quit();
+        driver.quit();
     }
 
 }
