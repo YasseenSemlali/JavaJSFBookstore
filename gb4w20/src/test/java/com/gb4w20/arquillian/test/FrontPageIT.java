@@ -142,6 +142,40 @@ public class FrontPageIT extends TestBase {
         // should be loaded
         wait.until(ExpectedConditions.titleIs("Secured Selenium Welcome page"));
     }
+    
+    /**
+     * Used to test that the user is brought to the correct page upon 
+     * clicking on search giving a valid input
+     * @throws Exception 
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void testNavigateToSearchPage() throws Exception {
+
+        loadFrontPage();
+        
+        // Find username input field
+        WebElement inputElement = driver.findElement(By.id("login-form:username"));
+        // Clear out anything currently in the field
+        inputElement.clear();
+        // Enter text into the input field
+        inputElement.sendKeys("ken");
+        
+        
+    }
+    
+    /**
+     * Helper method used to simple load the front page
+     * @author Jeffrey Boisvert
+     */
+    private void loadFrontPage(){
+        
+        driver.get("http://localhost:8080/gb4w20");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Front page"));
+
+        
+    }
 
     @After
     public void shutdownTest() {
