@@ -54,6 +54,7 @@ public class FrontPageIT extends TestBase {
 
     @Before
     public void setupTest() {
+        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
     }
 
