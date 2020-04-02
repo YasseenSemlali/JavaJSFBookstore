@@ -265,6 +265,22 @@ public class FrontPageIT extends TestBase{
     }
     
     /**
+     * Selenium test for clicking the book if it
+     * goes to the right book page
+     * @throws Exception 
+     * @author Jasmar Badion
+     */
+    @Test
+    public void testClickBook() throws Exception{
+        loadFrontPage();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.findElement(By.id("booklinkpage")).click();
+        
+        wait.until(ExpectedConditions.urlMatches(".*bookpage.*"));
+    }
+    
+    /**
      * Used to close the browser 
      * after a test was conducted
      */

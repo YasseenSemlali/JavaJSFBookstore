@@ -3,21 +3,14 @@
  */
 package com.gb4w20.gb4w20.backingbeans;
 
-import com.gb4w20.gb4w20.entities.Bookorder;
 import com.gb4w20.gb4w20.entities.Books;
-import com.gb4w20.gb4w20.jpa.BookorderJpaController;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
-import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
-import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,9 +36,6 @@ public class CartBookBackingBean implements Serializable {
 
     @Inject
     private BooksJpaController bookJpaController;
-
-    @Inject
-    private BookorderJpaController bookorderJpaController;
 
     /**
      * Default constructor initializing the HashSet
@@ -115,7 +105,7 @@ public class CartBookBackingBean implements Serializable {
 
     /**
      * If there are books in the cart, this will calculate the total amount of
-     * the book or books in the cart that the user will need to pay
+     * the book or books in the cart that the user will need to pay before tax
      *
      * @return
      */
@@ -134,28 +124,7 @@ public class CartBookBackingBean implements Serializable {
             return new BigDecimal(0);
         }
     }
-
-    /**
-     * Adding a book purchased to the book order
-     * for the user who have purchased it
-     * @param book 
-     */
-    public void addBookToOrder(Books book) {
-        Bookorder bookorder = new Bookorder();
-        bookorder.setIsbn(book);
-
-        try {
-            this.bookorderJpaController.create(bookorder);
-        } catch (BackendException ex) {
-            LOG.info(ex.toString());
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/action-responses/action-failure.xhtml");
-            } catch (IOException ioex) {
-                LOG.info("Problem with redirection: " + ioex.toString());
-            }
-        }
-    }
-
+    
     /**
      * Re-initializing a new cart and returning back to the index page
      *
