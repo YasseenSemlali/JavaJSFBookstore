@@ -3,9 +3,7 @@
  */
 package com.gb4w20.gb4w20.backingbeans;
 
-import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Reviews;
-import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.exceptions.BackendException;
 import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;

@@ -10,11 +10,9 @@ import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import java.io.IOException;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
 
 /**
  * Backing bean for search functionality

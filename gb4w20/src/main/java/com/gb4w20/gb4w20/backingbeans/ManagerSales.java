@@ -37,6 +37,8 @@ public class ManagerSales implements Serializable {
     
     /**
      * Method to initialize variables
+     * 
+     * @author Jean Robatto
      */
     @PostConstruct
     private void init() {
@@ -57,6 +59,7 @@ public class ManagerSales implements Serializable {
      * @param isbn 
      * @param index 
      * @throws java.io.IOException 
+     * @author Jean Robatto
      */
     public void editSalePrice(Long isbn, int index) throws IOException {
         LOG.debug("Editing sale price of book with ISBN: " + Long.toString(isbn));

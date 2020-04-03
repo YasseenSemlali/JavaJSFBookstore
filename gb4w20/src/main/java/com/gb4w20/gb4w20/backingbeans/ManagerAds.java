@@ -47,6 +47,8 @@ public class ManagerAds implements Serializable {
 
     /**
      * Method to initialize variables
+     * 
+     * @author Jean Robatto
      */
     @PostConstruct
     private void init() {
@@ -68,6 +70,7 @@ public class ManagerAds implements Serializable {
      * @param id
      * @param index
      * @throws java.io.IOException
+     * @author Jean Robatto
      */
     public void editAd(Long id, int index) throws IOException {
         LOG.debug("Editing ad #" + Long.toString(id));
@@ -102,6 +105,7 @@ public class ManagerAds implements Serializable {
      * Method to create a new ad.
      *
      * @return redirection
+     * @author Jean Robatto
      */
     public String createAd() {
         LOG.debug("Creating new ad");
