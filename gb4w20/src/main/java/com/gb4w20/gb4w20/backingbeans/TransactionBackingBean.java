@@ -37,7 +37,7 @@ public class TransactionBackingBean implements Serializable {
 
     //Inputs
     private CreditCardBackingBean card = new CreditCardBackingBean("");
-    private String ownerName;
+    private String ownername;
     private Date date = new Date();
     private String cardSecurityCode;
 
@@ -66,16 +66,16 @@ public class TransactionBackingBean implements Serializable {
      * Getter for credit card owner name
      * @return 
      */
-    public String getOwnerName(){
-        return this.ownerName;
+    public String getOwnername(){
+        return this.ownername;
     }
     
     /**
      * Setter for credit card owner name
      * @param ownerName
      */
-    public void setOwnerName(String ownerName){
-        this.ownerName = ownerName;
+    public void setOwnername(String ownerName){
+        this.ownername = ownerName;
     }
 
     /**

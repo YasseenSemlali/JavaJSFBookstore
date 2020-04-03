@@ -266,7 +266,7 @@ public class FrontPageIT extends TestBase{
     
     /**
      * Selenium test for clicking the book if it
-     * goes to the right book page
+     * goes to the right page
      * @throws Exception 
      * @author Jasmar Badion
      */
@@ -278,6 +278,22 @@ public class FrontPageIT extends TestBase{
         driver.findElement(By.id("booklinkpage")).click();
         
         wait.until(ExpectedConditions.urlMatches(".*bookpage.*"));
+    }
+    
+    /**
+     * Selenium test for clicking genre if it
+     * goes to the right page
+     * @throws Exception 
+     * @author Jasmar Badion
+     */
+    @Test
+    public void testClickGenre() throws Exception{
+        loadFrontPage();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.findElement(By.id("genrelinkpage")).click();
+        
+        wait.until(ExpectedConditions.titleIs("Genre"));
     }
     
     /**

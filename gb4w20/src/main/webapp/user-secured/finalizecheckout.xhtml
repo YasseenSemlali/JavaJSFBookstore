@@ -33,8 +33,8 @@ to be able to finalize the transaction.
                     <h:message id="credcarderror" for="creditcard" style="color: red" />
                     <br></br>
                     <h:outputLabel for="credclientname" value="#{msgs.name}"/>
-                    <b:inputText id="credclientname" value="#{transaction.ownerName}" 
-                                 validator="#{transaction.validateCreditOwnerName}" span="10" required="true">
+                    <b:inputText id="credclientname" value="#{transaction.ownername}" 
+                                 validator="#{transaction.validateCreditOwnerName}" span="8" required="true">
                         <f:ajax event="change" render="credclientnameerror"/>
                     </b:inputText>
                     <h:message id="credclientnameerror" for="credclientname" style="color: red" />
