@@ -15,6 +15,9 @@ import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.sql.DataSource;
 import junit.framework.Assert;
 import org.apache.commons.lang3.tuple.Pair;
@@ -66,6 +69,14 @@ public class FrontPageIT extends TestBase {
         WebDriverManager.chromedriver().setup();
     }
 
+    private void login(String username, String password) {
+        driver.get("http://localhost:8080/gb4w20/login.xhtml");
+        driver.findElement(By.id("login-form:email")).sendKeys(username);
+        driver.findElement(By.id("login-form:password")).sendKeys(password);
+        driver.findElement(By.id("login-form:login-btn")).click();
+        
+    }
+    
     @Before
     public void setupTest() {
         driver = new ChromeDriver();
@@ -73,6 +84,36 @@ public class FrontPageIT extends TestBase {
 
     @Test
     @Ignore
+    public void testLoginRedirectNotManager() throws Exception {
+        this.login("cst.send@gmail.com", "dawsoncollege");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Front page"));
+    }
+    
+    @Test
+    public void testLoginRedirectIsManager() throws Exception {
+        this.login("cst.receive@gmail.com", "collegedawson");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Dashboard"));
+    }
+    
+    @Test
+    public void testRecentlyBought() throws Exception {
+        this.login("cst.send@gmail.com", "dawsoncollege");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Front page"));
+        
+        List<WebElement> books = driver.findElement(By.id("recently-bought")).findElements(By.tagName("strong"));
+        
+        List<String> results = new ArrayList<String>();
+        for(WebElement i: books) {
+            results.add(i.getText());
+        }
+        
+        assertEquals(Arrays.asList("The Three-Body Problem", "Red Seas Under Red Skies", "Harry Potter and the Chamber of Secrets"), results);
+    }
+    
+    @Test
     public void testTitle() throws Exception {
 
         // And now use this to visit a web site
@@ -85,7 +126,6 @@ public class FrontPageIT extends TestBase {
     }
 
     @Test
-    @Ignore
     public void testSurvey() throws Exception {
 
         // And now use this to visit a web site
@@ -110,7 +150,6 @@ public class FrontPageIT extends TestBase {
     }
 
     @Test
-    @Ignore
     public void testLoginFormFill() throws Exception {
 
         // And now use this to visit a web site
@@ -146,7 +185,7 @@ public class FrontPageIT extends TestBase {
     @After
     public void shutdownTest() {
         //Close the browser
-        //driver.quit();
+        driver.quit();
     }
 
 }
