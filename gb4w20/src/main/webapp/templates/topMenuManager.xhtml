@@ -13,7 +13,7 @@
             <p:menubar styleClass="topMenuBar">
                 <p:menuitem value="" url="index.xhtml" styleClass="logomenuitem"/>
                 <p:menuitem value="${msgs.companyName} ${userSession.loggedInUserName}" url="index.xhtml" style="text-size:1.5em; color:white;" styleClass="menuitem" />
-                <p:menuitem value="FR" style="position: absolute; right:30px;" url="www.google.com" styleClass="menuitem" />
+                <p:menuitem value="FR" style="position: absolute; right:30px;" styleClass="menuitem" />
                 <c:choose>
                 <c:when test="#{userSession.loggedIn}">
                     <p:menuitem value="${msgs.logout}" style="position: absolute; right:80px;" url="index.xhtml" styleClass="menuitem" actionListener="#{userSession.logout}" />

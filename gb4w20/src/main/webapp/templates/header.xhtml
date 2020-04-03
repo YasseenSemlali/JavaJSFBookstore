@@ -43,10 +43,10 @@
                     </b:navbarLinks>
                     <c:choose>
                         <c:when test="#{localeBackingBean.setToFrench}">
-                            <b:commandLink class="language-button btn btn-primary" action="#{localeBackingBean.setLanguage('en', 'CA')}" value="EN" />
+                            <b:commandButton class="language-button btn btn-primary" action="#{localeBackingBean.setLanguage('en', 'CA')}" value="EN" />
                         </c:when>
                         <c:otherwise>
-                            <b:commandLink class="language-button btn btn-primary" action="#{localeBackingBean.setLanguage('fr', 'CA')}" value="FR" />
+                            <b:commandButton class="language-button btn btn-primary" action="#{localeBackingBean.setLanguage('fr', 'CA')}" value="FR" />
                         </c:otherwise>
                     </c:choose>
                 </h:form>
