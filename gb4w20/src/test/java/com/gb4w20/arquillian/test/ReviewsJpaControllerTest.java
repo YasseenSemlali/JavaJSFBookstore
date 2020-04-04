@@ -13,8 +13,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <h1>Reviews JPA Controller Test</h1>
@@ -27,8 +25,6 @@ import org.slf4j.LoggerFactory;
  */
 @RunWith(Enclosed.class)
 public class ReviewsJpaControllerTest {
-    
-    private final static Logger LOG = LoggerFactory.getLogger(ReviewsJpaControllerTest.class);
     
     /**
      * Used to run valid tests for the getAverageRating 
@@ -61,10 +57,8 @@ public class ReviewsJpaControllerTest {
          */
         @Test
         public void testCorrectBookAverageRating() {
-            LOG.info("Testing book average rating");
             int testNumber = param.getValue0();
             double expectedAverage = param.getValue2();
-            LOG.info("Expected average of book is " + expectedAverage);
             
             assertEquals( "Test " + testNumber + ": Expected average rating of book found was incorrect", expectedAverage, this.result, 0.1f);
 
@@ -117,10 +111,8 @@ public class ReviewsJpaControllerTest {
          */
         @Test
         public void testCorrectBookApprovedReviews() {
-            LOG.info("Testing book approved reviews");
             int testNumber = param.getValue0();
             List<String> expectedReviews = param.getValue2();
-            LOG.info("Expected size of approved reviews is " + expectedReviews.size());
             
             assertEquals( "Test " + testNumber + ": Expected approved reviews of book found was incorrect", expectedReviews, this.result);
 
@@ -170,10 +162,8 @@ public class ReviewsJpaControllerTest {
          */
         @Test
         public void testCorrectReviewsOnApproved() {
-            LOG.info("Testing reviews on approved");
             int testNumber = param.getValue0();
             List<String> expectedReviews = param.getValue2();
-            LOG.info("Expected size of reviews on approved is " + expectedReviews.size());
             
             assertEquals( "Test " + testNumber + ": Expected list of reviews on approved found was incorrect", expectedReviews, this.result);
 
