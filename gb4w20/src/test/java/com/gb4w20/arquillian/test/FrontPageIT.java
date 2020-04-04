@@ -2,6 +2,7 @@ package com.gb4w20.arquillian.test;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import java.time.Duration;
 import java.util.List;
 import javax.sql.DataSource;
 import org.junit.After;
@@ -196,24 +197,6 @@ public class FrontPageIT extends TestBase{
     }
     
     /**
-     * Used to test that correct elements are shown
-     * when logged in as a user and they have recently bought books
-     * @throws Exception 
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void recentlyBoughtBooksWhenLoggedInTest() throws Exception {
-
-        loginUser();
-        loadFrontPage();
-                
-        List<WebElement> elements = driver.findElements(By.id("recently-bought-books"));
-        
-        assertEquals("Recently bought books not shown", 1, elements.size());
-        
-    }
-    
-    /**
      * Used to test that the news feed is present on the page
      * @throws Exception 
      * @author Jeffrey Boisvert
@@ -270,7 +253,7 @@ public class FrontPageIT extends TestBase{
      * 
      * @author Jeffrey Boisvert
      */
-    private void loginUser() {
+    private void loginUser() throws InterruptedException {
         
         driver.get("http://localhost:8080/gb4w20/login.xhtml");
         WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -286,7 +269,9 @@ public class FrontPageIT extends TestBase{
         
         driver.findElement(By.id("login-form:login-btn")).click();
         
-        wait.until(ExpectedConditions.titleIs("Login"));
+        //Give chance to login
+        wait.withTimeout(Duration.ofSeconds(5));
+        
     }
         
     /**
@@ -334,6 +319,24 @@ public class FrontPageIT extends TestBase{
         driver.findElement(By.id("genrelinkpage")).click();
         
         wait.until(ExpectedConditions.titleIs("Genre"));
+    }
+    
+    /**
+     * Used to test that correct elements are shown
+     * when logged in as a user and they have recently bought books
+     * @throws Exception 
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void recentlyBoughtBooksWhenLoggedInTest() throws Exception {
+
+        loginUser();
+        loadFrontPage();
+                
+        List<WebElement> elements = driver.findElements(By.id("recently-bought-books"));
+        
+        assertEquals("Recently bought books not shown", 1, elements.size());
+        
     }
     
     /**
