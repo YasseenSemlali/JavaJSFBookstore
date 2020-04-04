@@ -194,7 +194,7 @@ public class FrontPageIT extends TestBase {
      * @author Jeffrey Boisvert
      */
     @Test
-    public void recentlyBoughtBooksWhenLoggedIn() throws Exception {
+    public void recentlyBoughtBooksWhenLoggedInTest() throws Exception {
 
         loginUser();
         loadFrontPage();
@@ -202,6 +202,22 @@ public class FrontPageIT extends TestBase {
         List<WebElement> elements = driver.findElements(By.id("recently-bought-books"));
         
         assertEquals("Recently bought books not shown", 1, elements.size());
+        
+    }
+    
+    /**
+     * Used to test that the newsfeed is present on the page
+     * @throws Exception 
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void newsfeedIsPresentTest() throws Exception {
+
+        loadFrontPage();
+                
+        List<WebElement> elements = driver.findElements(By.id("recently-bought-books"));
+        
+        assertEquals("The newsfeed is not present on the page", 1, elements.size());
         
     }
        
