@@ -136,6 +136,16 @@ Java Server Faces page that displays the register user page of the app
                              </h:inputSecret>
                              <h:message id="password-error" for="password" style="color: red"/>               
                          </div>
+                         <div class="form-group">
+                            <h:outputLabel for="password-confirm" value="#{msgs.retype_password_to_confirm}" />
+                            <h:inputSecret id="password-confirm"
+                                           class="form-control" 
+                                           value="#{registerBackingBean.confirmPasswordInput}"
+                                           validator="#{registerBackingBean.validatePassword}">
+                                     <f:ajax event="change" render="password-error"/>
+                             </h:inputSecret>
+                             <h:message id="confirm-password-error" for="password-confirm" style="color: red"/>               
+                         </div>
                     <b:commandButton update="@form" 
                                      class="btn btn-primary" 
                                      value="#{msgs.register_page}" 

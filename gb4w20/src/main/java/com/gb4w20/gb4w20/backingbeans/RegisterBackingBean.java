@@ -9,8 +9,11 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Size;
@@ -66,6 +69,8 @@ public class RegisterBackingBean implements Serializable {
     private String emailInput; 
     @Size(min = 1, max = 100)
     private String passwordInput;
+    @Size(min = 1, max = 100)
+    private String confirmPasswordInput;
     
     /**
      * Mainly used to set default values.
@@ -379,6 +384,17 @@ public class RegisterBackingBean implements Serializable {
     public void setCompanyInput(String companyInput) {
         this.companyInput = companyInput;
     }
+    
+     public String getConfirmPasswordInput() {
+        if(this.confirmPasswordInput == null){
+            return ""; 
+        }
+        return confirmPasswordInput;
+    }
+
+    public void setConfirmPasswordInput(String confirmPasswordInput) {
+        this.confirmPasswordInput = confirmPasswordInput;
+    }
 
     /**
      * Used to get the provinceSelections value set
@@ -475,6 +491,30 @@ public class RegisterBackingBean implements Serializable {
      */
     public void validatePassword(FacesContext fc, UIComponent c, Object value) {
         this.validator.validatePassword((String)value);
+    }
+    
+    /**
+     * Used to validate if the password and retyped passwords match
+     * @param context
+     * @param component
+     * @param value
+     * @author Jeffrey Boisvert
+     */
+    public void validatePasswordsMatch(FacesContext context, UIComponent component, Object value) {
+
+        // Retrieve the value passed to this method
+        String confirmPassword = (String) value;
+        LOG.debug("Retyped password to confirm: " + confirmPassword);
+
+        // Retrieve the temporary value from the password field
+        UIInput passwordInput = (UIInput) component.findComponent("password");
+
+        String password = (String) passwordInput.getLocalValue();
+        LOG.debug("Actual password: " + password);
+        LOG.debug("Comparing passwords " + password + " and " + confirmPassword);
+        
+        this.validator.validateThatPasswordsMatch(password, confirmPassword);
+
     }
     
     /**
