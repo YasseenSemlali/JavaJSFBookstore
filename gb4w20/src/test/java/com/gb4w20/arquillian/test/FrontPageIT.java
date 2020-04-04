@@ -49,6 +49,7 @@ public class FrontPageIT extends TestBase{
         dataSource.setUser("gb4w20");
         dataSource.setPassword("pencil3tuna");
         return dataSource;
+        
     }
     
     @BeforeClass
