@@ -1,3 +1,4 @@
+
 package com.gb4w20.arquillian.test;
 
 import com.gb4w20.arquillian.test.ArquillianTestBase;

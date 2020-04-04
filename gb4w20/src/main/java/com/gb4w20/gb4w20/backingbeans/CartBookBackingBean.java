@@ -9,10 +9,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,14 +37,6 @@ public class CartBookBackingBean implements Serializable {
     @Inject
     private BooksJpaController bookJpaController;
 
-//    private Long isbn;
-//    
-//    public Long getIsbn(){
-//        return this.isbn;
-//    }
-//    public void setIsbn(Long isbn){
-//        this.isbn = isbn;
-//    }
     /**
      * Default constructor initializing the HashSet
      */
@@ -54,88 +44,94 @@ public class CartBookBackingBean implements Serializable {
         this.books = new HashSet<Books>();
         this.total = new BigDecimal(0);
     }
-    
+
     /**
      * Getter for books
-     * @return 
+     *
+     * @return
      */
     public HashSet<Books> getBooks() {
         return this.books;
     }
-    
+
     /**
      * Setter for the books
-     * @param books 
+     *
+     * @param books
      */
-    public void setBooks(HashSet<Books> books){
+    public void setBooks(HashSet<Books> books) {
         this.books = books;
     }
-    
+
     /**
      * Getter for total
-     * @return 
+     *
+     * @return
      */
-    public BigDecimal getTotal(){
+    public BigDecimal getTotal() {
         return this.total;
     }
-    
+
     /**
      * Setter for total
-     * @param total 
+     *
+     * @param total
      */
-    public void setTotal(BigDecimal total){
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
     /**
-     * Adding book to the books list that will be in 
-     * session scope
+     * Adding book to the books list that will be in session scope
+     *
      * @param isbn
-     * @return 
+     * @return
      */
     public boolean addBookToSession(Long isbn) {
         LOG.info(isbn + " being added to the cart");
         return this.books.add(this.bookJpaController.findBooks(isbn));
     }
-    
+
     /**
-     * Removing the book from the books list that will be in 
-     * session scope
+     * Removing the book from the books list that will be in session scope
+     *
      * @param book
-     * @return 
+     * @return
      */
-    public boolean removeBookFromSession(Books book){
+    public boolean removeBookFromSession(Books book) {
         LOG.info(book.getIsbn() + " being removed from the ccart");
         return this.books.remove(book);
     }
-    
+
     /**
-     * If there are books in the cart, this will calculate
-     * the total amount of the book or books in the cart
-     * that the user will need to pay
-     * @return 
+     * If there are books in the cart, this will calculate the total amount of
+     * the book or books in the cart that the user will need to pay before tax
+     *
+     * @return
      */
-    public BigDecimal calculateTotalAmount(){
-        if (!this.books.isEmpty()){
+    public BigDecimal calculateTotalAmount() {
+        if (!this.books.isEmpty()) {
             BigDecimal listSale;
             this.total = new BigDecimal(0);
-             for (Books book : this.books){
-                 listSale = book.getListPrice().subtract(book.getSalePrice());
-                 LOG.debug("listsale is " + listSale);
-                 this.total = this.total.add(listSale);
-                 LOG.debug("total is " + this.total);
-             }
-             return this.total;
-        }
-        else{
+            for (Books book : this.books) {
+                listSale = book.getListPrice().subtract(book.getSalePrice());
+                LOG.debug("listsale is " + listSale);
+                this.total = this.total.add(listSale);
+                LOG.debug("total is " + this.total);
+            }
+            return this.total;
+        } else {
             return new BigDecimal(0);
         }
     }
     
     /**
-     * Re-initializing a new cart
+     * Re-initializing a new cart and returning back to the index page
+     *
+     * @return
      */
-    public void clearCart(){
+    public String clearCart() {
         this.books = new HashSet<Books>();
+        return "/index.xhtml";
     }
 }

@@ -192,7 +192,7 @@ public class ManagerInventory implements Serializable {
             bookAuthor = book.getAuthorsCollection();
             bookGenre = book.getGenresCollection();
             bookPublisher = book.getPublishersCollection();
-            totalSales = bookorderController.getTotalSalesForBook(book);
+            totalSales = bookorderController.getTotalSalesForBook(isbn);
         }
     }
 

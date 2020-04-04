@@ -11,7 +11,6 @@ import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.OrdersJpaController;
 import com.gb4w20.gb4w20.jpa.TaxesJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,7 +19,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
@@ -221,10 +219,10 @@ public class ManagerOrders implements Serializable {
             bookOrders = order.getBookorderCollection();
 
             //Set taxes and prices
-            pricePreTax = bookorderController.getTotalSalesForOrderPreTax(order);
-            hstTax = (bookorderController.getHSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getHSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
-            gstTax = (bookorderController.getGSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getGSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
-            pstTax = (bookorderController.getPSTForOrder(order) == null) ? new BigDecimal(0) : bookorderController.getPSTForOrder(order).setScale(2, RoundingMode.HALF_EVEN);
+            pricePreTax = bookorderController.getTotalSalesForOrderPreTax(order.getOrderId());
+            hstTax = bookorderController.getHSTForOrder(order.getOrderId()).setScale(2, RoundingMode.HALF_EVEN);
+            gstTax = bookorderController.getGSTForOrder(order.getOrderId()).setScale(2, RoundingMode.HALF_EVEN);
+            pstTax = bookorderController.getPSTForOrder(order.getOrderId()).setScale(2, RoundingMode.HALF_EVEN);
             totalTax = hstTax.add(pstTax).add(gstTax).setScale(2, RoundingMode.HALF_EVEN);
             totalPrice = pricePreTax.add(totalTax).setScale(2, RoundingMode.HALF_EVEN);
 

@@ -19,7 +19,8 @@ DELETE FROM users;
 
 insert into genres(genre_id, genre) VALUES(1, "Fantasy");
 insert into genres(genre_id, genre) VALUES(2, "Science Fiction");
-ALTER TABLE genres AUTO_INCREMENT=3;
+insert into genres(genre_id, genre) VALUES(3, "Horror");
+ALTER TABLE genres AUTO_INCREMENT=4;
 
 insert into publishers(publisher_id, name) VALUES(1, "William Morrow");
 insert into publishers(publisher_id, name) VALUES(2, "Arthur A. Levine Books / Scholastic Inc.");
@@ -57,6 +58,7 @@ insert into bookgenre(genre_id, isbn) VALUES(1, 9780000000006);
 insert into bookgenre(genre_id, isbn) VALUES(2, 9780765377067);
 insert into bookgenre(genre_id, isbn) VALUES(2, 9780000000010);
 insert into bookgenre(genre_id, isbn) VALUES(2, 9781401323585);
+insert into bookgenre(genre_id, isbn) VALUES(3, 9781401323585);
 
 insert into bookauthor(author_id, isbn) VALUES(1, 9780000000000);
 insert into bookauthor(author_id, isbn) VALUES(2, 9780000000000);
@@ -169,19 +171,19 @@ INSERT INTO survey_questions(id, question, enabled) VALUES (2,'Do you prefer Moo
 INSERT INTO survey_questions(id, question, enabled) VALUES (3,'Do you e-books or physical books?', false); 
 ALTER TABLE survey_questions AUTO_INCREMENT=4;
 -- Survey Responses 
-INSERT INTO survey_responses(survey_question_id, response, count) VALUES (1, 'Blue', 5); 
-INSERT INTO survey_responses(survey_question_id, response, count) VALUES (1, 'Green', 500);
-INSERT INTO survey_responses(survey_question_id, response, count) VALUES (1, 'Yellow', 1);
+INSERT INTO survey_responses(id, survey_question_id, response, count) VALUES (1, 1, 'Blue', 5); 
+INSERT INTO survey_responses(id, survey_question_id, response, count) VALUES (2, 1, 'Green', 500);
+INSERT INTO survey_responses(id, survey_question_id, response, count) VALUES (3, 1, 'Yellow', 1);
 
-INSERT INTO survey_responses(survey_question_id, response, count) VALUES (2, 'Moose', 15);
-INSERT INTO survey_responses(survey_question_id, response, count) VALUES (2, 'Deer', 12);
-INSERT INTO survey_responses(survey_question_id, response, count) VALUES (2, 'Neither', 999);
+INSERT INTO survey_responses(id, survey_question_id, response, count) VALUES (4, 2, 'Moose', 15);
+INSERT INTO survey_responses(id, survey_question_id, response, count) VALUES (5, 2, 'Deer', 12);
+INSERT INTO survey_responses(id, survey_question_id, response, count) VALUES (6, 2, 'Neither', 999);
 
-INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'E-books', 500);
-INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'Physical Books', 500);
-INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'Neither', 250);  
-INSERT INTO survey_responses(survey_question_id, response, count) VALUES (3, 'I do not read', 1024);
+INSERT INTO survey_responses(id, survey_question_id, response, count) VALUES (7, 3, 'E-books', 500);
+INSERT INTO survey_responses(id, survey_question_id, response, count) VALUES (8, 3, 'Physical Books', 500);
+INSERT INTO survey_responses(id, survey_question_id, response, count) VALUES (9, 3, 'Neither', 250);  
+INSERT INTO survey_responses(id, survey_question_id, response, count) VALUES (10, 3, 'I do not read', 1024);
 
 INSERT INTO rss_feeds(url, enabled) values ('https://www.cbc.ca/cmlink/rss-topstories', true);
-INSERT INTO rss_feeds(url, enabled) values ('http://www.ctvnews.ca/rss/ctvnews-ca-top-stories-public-rss-1.822009', true);
-INSERT INTO rss_feeds(url, enabled) values ('https://globalnews.ca/feed/', true);
+INSERT INTO rss_feeds(url, enabled) values ('http://www.ctvnews.ca/rss/ctvnews-ca-top-stories-public-rss-1.822009', false);
+INSERT INTO rss_feeds(url, enabled) values ('https://globalnews.ca/feed/', false);
