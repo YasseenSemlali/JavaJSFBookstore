@@ -507,9 +507,9 @@ public class RegisterBackingBean implements Serializable {
         LOG.debug("Retyped password to confirm: " + confirmPassword);
 
         // Retrieve the temporary value from the password field
-        UIInput passwordInput = (UIInput) component.findComponent("password");
+        UIInput passwordInputFound = (UIInput) component.findComponent("password");
 
-        String password = (String) passwordInput.getLocalValue();
+        String password = (String) passwordInputFound.getLocalValue();
         LOG.debug("Actual password: " + password);
         LOG.debug("Comparing passwords " + password + " and " + confirmPassword);
         
