@@ -158,6 +158,7 @@ public class FrontPageIT extends TestBase {
      * @author Jeffrey Boisvert
      */
     @Test
+    @Ignore
     public void testSwitchToEnglish() throws Exception {
 
         loadFrontPage();
@@ -206,19 +207,42 @@ public class FrontPageIT extends TestBase {
     }
     
     /**
-     * Used to test that the newsfeed is present on the page
+     * Used to test that the news feed is present on the page
      * @throws Exception 
      * @author Jeffrey Boisvert
      */
     @Test
-    public void newsfeedIsPresentTest() throws Exception {
+    public void newsFeedIsPresentTest() throws Exception {
 
         loadFrontPage();
                 
-        List<WebElement> elements = driver.findElements(By.id("recently-bought-books"));
+        List<WebElement> elements = driver.findElements(By.id("news-feed"));
         
         assertEquals("The newsfeed is not present on the page", 1, elements.size());
         
+    }
+    
+    /**
+     * Used to test that the user can click on a news feed item
+     * @throws Exception 
+     * @author Jeffrey Boisvert
+     */
+    @Test
+    public void newsFeedItemClickTest() throws Exception {
+
+        loadFrontPage();
+                
+        List<WebElement> elements = driver.findElements(By.className("newsfeed-item"));
+        
+        //Grab first newsfeed item
+        WebElement newsFeedItem = elements.get(0); 
+        
+        String url = newsFeedItem.getAttribute("href");
+        newsFeedItem.click();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.urlToBe(url));   
+                
     }
        
     /**
