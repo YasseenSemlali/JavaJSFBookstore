@@ -61,8 +61,10 @@ public class ReviewsJpaControllerTest {
          */
         @Test
         public void testCorrectBookAverageRating() {
+            LOG.info("Testing book average rating");
             int testNumber = param.getValue0();
             double expectedAverage = param.getValue2();
+            LOG.info("Expected average of book is " + expectedAverage);
             
             assertEquals( "Test " + testNumber + ": Expected average rating of book found was incorrect", expectedAverage, this.result, 0.1f);
 
@@ -115,8 +117,10 @@ public class ReviewsJpaControllerTest {
          */
         @Test
         public void testCorrectBookApprovedReviews() {
+            LOG.info("Testing book approved reviews");
             int testNumber = param.getValue0();
             List<String> expectedReviews = param.getValue2();
+            LOG.info("Expected size of approved reviews is " + expectedReviews.size());
             
             assertEquals( "Test " + testNumber + ": Expected approved reviews of book found was incorrect", expectedReviews, this.result);
 
@@ -166,8 +170,10 @@ public class ReviewsJpaControllerTest {
          */
         @Test
         public void testCorrectReviewsOnApproved() {
+            LOG.info("Testing reviews on approved");
             int testNumber = param.getValue0();
             List<String> expectedReviews = param.getValue2();
+            LOG.info("Expected size of reviews on approved is " + expectedReviews.size());
             
             assertEquals( "Test " + testNumber + ": Expected list of reviews on approved found was incorrect", expectedReviews, this.result);
 

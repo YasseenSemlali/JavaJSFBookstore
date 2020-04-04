@@ -16,13 +16,20 @@ import org.junit.Ignore;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Used to test UI components on the front page
- * @author Yasseen, Jeffrey Boisvert
+ * <h1>Selenium Test for the Front Page</h1>
+ * <p>
+ * To selenium test the front page components 
+ * </p>
+ * @author Yasseen, Jeffrey Boisvert, Jasmar Badion, Jean
  */
-public class FrontPageIT extends TestBase {
+public class FrontPageIT extends TestBase{
+    
+    private final static Logger LOG = LoggerFactory.getLogger(FrontPageIT.class);
 
     private final static String FRONT_PAGE_TITLE = "Front page";
     
@@ -253,6 +260,7 @@ public class FrontPageIT extends TestBase {
         
         driver.get("http://localhost:8080/gb4w20");
         WebDriverWait wait = new WebDriverWait(driver, 10);
+
         wait.until(ExpectedConditions.titleIs(FRONT_PAGE_TITLE));
         
     }
@@ -279,7 +287,53 @@ public class FrontPageIT extends TestBase {
         driver.findElement(By.id("login-form:login-btn")).click();
         
         wait.until(ExpectedConditions.titleIs("Login"));
+    }
         
+    /**
+     * Selenium test for viewing the cart page
+     * @throws Exception 
+     * @author Jasmar Badion
+     */
+    @Test
+    public void testViewCart() throws Exception{
+        loadFrontPage();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.findElement(By.id("j_idt10:bookcartlink")).click();
+        
+        wait.until(ExpectedConditions.titleIs("Cart"));
+    }
+    
+    /**
+     * Selenium test for clicking the book if it
+     * goes to the right page
+     * @throws Exception 
+     * @author Jasmar Badion
+     */
+    @Test
+    public void testClickBook() throws Exception{
+        loadFrontPage();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.findElement(By.id("booklinkpage")).click();
+        
+        wait.until(ExpectedConditions.urlMatches(".*bookpage.*"));
+    }
+    
+    /**
+     * Selenium test for clicking genre if it
+     * goes to the right page
+     * @throws Exception 
+     * @author Jasmar Badion
+     */
+    @Test
+    public void testClickGenre() throws Exception{
+        loadFrontPage();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.findElement(By.id("genrelinkpage")).click();
+        
+        wait.until(ExpectedConditions.titleIs("Genre"));
     }
     
     /**
