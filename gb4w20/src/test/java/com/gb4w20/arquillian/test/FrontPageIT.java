@@ -2,6 +2,9 @@ package com.gb4w20.arquillian.test;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.sql.DataSource;
 import org.junit.After;
@@ -56,6 +59,14 @@ public class FrontPageIT extends TestBase{
         WebDriverManager.chromedriver().setup();
     }
 
+    private void login(String username, String password) {
+        driver.get("http://localhost:8080/gb4w20/login.xhtml");
+        driver.findElement(By.id("login-form:email")).sendKeys(username);
+        driver.findElement(By.id("login-form:password")).sendKeys(password);
+        driver.findElement(By.id("login-form:login-btn")).click();
+        
+    }
+    
     @Before
     public void setupTest() {
         WebDriverManager.chromedriver().setup();
@@ -64,6 +75,36 @@ public class FrontPageIT extends TestBase{
 
     @Test
     @Ignore
+    public void testLoginRedirectNotManager() throws Exception {
+        this.login("cst.send@gmail.com", "dawsoncollege");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Front page"));
+    }
+    
+    @Test
+    public void testLoginRedirectIsManager() throws Exception {
+        this.login("cst.receive@gmail.com", "collegedawson");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Dashboard"));
+    }
+    
+    @Test
+    public void testRecentlyBought() throws Exception {
+        this.login("cst.send@gmail.com", "dawsoncollege");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Front page"));
+        
+        List<WebElement> books = driver.findElement(By.id("recently-bought")).findElements(By.tagName("strong"));
+        
+        List<String> results = new ArrayList<String>();
+        for(WebElement i: books) {
+            results.add(i.getText());
+        }
+        
+        assertEquals(Arrays.asList("The Three-Body Problem", "Red Seas Under Red Skies", "Harry Potter and the Chamber of Secrets"), results);
+    }
+    
+    @Test
     public void testTitle() throws Exception {
 
         // And now use this to visit a web site
@@ -76,7 +117,6 @@ public class FrontPageIT extends TestBase{
     }
 
     @Test
-    @Ignore
     public void testSurvey() throws Exception {
 
         // And now use this to visit a web site
@@ -193,24 +233,6 @@ public class FrontPageIT extends TestBase{
         assertEquals("Message that the user is not logged in is not shown", 1, elements.size());
         
     }
-    
-    /**
-     * Used to test that correct elements are shown
-     * when logged in as a user and they have recently bought books
-     * @throws Exception 
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void recentlyBoughtBooksWhenLoggedIn() throws Exception {
-
-        loginUser();
-        loadFrontPage();
-                
-        List<WebElement> elements = driver.findElements(By.id("recently-bought-books"));
-        
-        assertEquals("Recently bought books not shown", 1, elements.size());
-        
-    }
        
     /**
      * Helper method used to load the front page
@@ -223,30 +245,6 @@ public class FrontPageIT extends TestBase{
 
         wait.until(ExpectedConditions.titleIs(FRONT_PAGE_TITLE));
         
-    }
-    
-    /**
-     * Helper method to login the user.
-     * 
-     * @author Jeffrey Boisvert
-     */
-    private void loginUser() {
-        
-        driver.get("http://localhost:8080/gb4w20/login.xhtml");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.titleIs("Login"));
-        
-        WebElement inputEmailElement = driver.findElement(By.id("login-form:email"));
-        inputEmailElement.clear();
-        inputEmailElement.sendKeys("cst.send@gmail.com");
-        
-        WebElement inputPasswordElement = driver.findElement(By.id("login-form:password"));
-        inputPasswordElement.clear();
-        inputPasswordElement.sendKeys("dawsoncollege");
-        
-        driver.findElement(By.id("login-form:login-btn")).click();
-        
-        wait.until(ExpectedConditions.titleIs("Login"));
     }
         
     /**
@@ -302,6 +300,7 @@ public class FrontPageIT extends TestBase{
      */
     @After
     public void shutdownTest() {
+        //Close the browser
         driver.quit();
     }
 
