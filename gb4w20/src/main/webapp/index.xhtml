@@ -108,7 +108,7 @@ Java Server Faces page that displays the frontpage of the app
 
                     <c:choose>
                         <c:when test="#{userSession.loggedIn}">
-                            <b:panelGrid id="recently-bought-books" columns="2">
+                            <b:panelGrid columns="2" id="recently-bought">
                                 <c:forEach items="#{booksJpaController.getRecentlyBoughtBooks(userSession.userId, 3)}" var="book">
                                    <bk:book value="#{book}"/>
                                 </c:forEach>
@@ -154,9 +154,9 @@ Java Server Faces page that displays the frontpage of the app
                 </b:column>
                 <b:column col-md="4">
                     <h2>${msgs.news2}</h2>
-                    <p:scrollPanel style="overflow-y: auto;height: 400px;">
+                    <p:scrollPanel id="news-feed" style="overflow-y: auto;height: 400px;">
                         <p:feedReader value="#{rssFeedsJpaController.getActiveFeed().url}" var="feed"  size="10" >
-                            <h:outputLink value="#{feed.link}">
+                            <h:outputLink class="newsfeed-item" value="#{feed.link}">
                                 <h:outputText value="#{feed.title}" style="font-weight: bold;display:block"/>
                             </h:outputLink>
                             <h:outputText value="#{feed.description.value}" escape="false" class="hide-images"/>
