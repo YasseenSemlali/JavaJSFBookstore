@@ -18,6 +18,8 @@ to be able to finalize the transaction.
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
         <title>#{msgs.finalize}</title>
+        <h:outputStylesheet library="css" name="clientpages.css" />
+        <h:outputStylesheet library="css" name="global.css" />
     </ui:define>
 
     <ui:define name="content">
@@ -30,42 +32,42 @@ to be able to finalize the transaction.
                         <f:validator validatorId="com.gb4w20.gb4w20.jsf.validation.CreditCardValidator" />
                         <f:ajax event="change" render="credcarderror"/>
                     </b:inputText>
-                    <h:message id="credcarderror" for="creditcard" style="color: red" />
+                    <h:message id="credcarderror" for="creditcard" class="finalize-redtexts" />
                     <br></br>
                     <h:outputLabel for="credclientname" value="#{msgs.name}"/>
                     <b:inputText id="credclientname" value="#{transaction.ownername}" 
-                                 validator="#{transaction.validateCreditOwnerName}" span="8" required="true">
+                                 validator="#{transaction.validateCreditOwnerName}" span="8">
                         <f:ajax event="change" render="credclientnameerror"/>
                     </b:inputText>
-                    <h:message id="credclientnameerror" for="credclientname" style="color: red" />
+                    <h:message id="credclientnameerror" for="credclientname" class="finalize-redtexts" />
                     <br></br>
                     <h:outputLabel for="cardexpiry" value="#{msgs.cardexpirydate}"/>
                     <b:inputText id="cardexpiry" value="#{transaction.date}" 
-                                 validator="#{transaction.validateExpiryDate}" span="4" required="true" tooltip="MM/yyyy (e.g. 01/2020)">
+                                 validator="#{transaction.validateExpiryDate}" span="4" tooltip="MM/yyyy (e.g. 01/2020)">
                         <f:convertDateTime pattern="MM/yyyy" />
                         <f:ajax event="change" render="cardexpireerror"/>
                     </b:inputText>
-                    <h:message id="cardexpireerror" for="cardexpiry" style="color: red" />
+                    <h:message id="cardexpireerror" for="cardexpiry" class="finalize-redtexts" />
                     <br></br>
                     <h:outputLabel for="cardsecuritycode" value="#{msgs.cardsecuritycode}"/>
-                    <b:inputText id="cardsecuritycode" a:maxlength="3" span="2" required="true"
+                    <b:inputText id="cardsecuritycode" a:maxlength="3" span="2"
                                  value="#{transaction.cardSecurityCode}"
                                  validator="#{transaction.validateCVV}">
                         <f:ajax event="change" render="cvverror"/>
                     </b:inputText>
-                    <h:message id="cvverror" for="cardsecuritycode" style="color: red"/>
+                    <h:message id="cvverror" for="cardsecuritycode" class="finalize-redtexts"/>
                 </b:panelGrid>
 
                 <h3>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h3>
                 <c:set var="taxprov" value="#{taxesJpaController.findByProvince(userSession.user.province)}"/>
-                <div style="color: green"> 
+                <div class="greentexts"> 
                     <h4>#{msgs.hst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getHSTpercentage())}</h4>
                     <h4>#{msgs.gst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getGSTpercentage())}</h4>
                     <h4>#{msgs.pst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getPSTpercentage())}</h4>
                 </div>
-                <h2 style="color: red">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxprov)}</h2>
+                <h2 class="finalize-redtexts">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxprov)}</h2>
 
-                <div style="text-align: center">
+                <div class="center-text">
                     <b:commandButton action="invoice" value="#{msgs.pay}" look="primary"/>
                 </div>
 

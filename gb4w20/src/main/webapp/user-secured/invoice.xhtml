@@ -17,13 +17,15 @@ or print it or both.
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="content">
         <title>#{msgs.invoice}</title>
-
+        <h:outputStylesheet library="css" name="clientpages.css" />
+        <h:outputStylesheet library="css" name="global.css" />
+        
         <!-- Creating a new order -->
         #{bookOrderBackingBean.createOrder()}
 
         <b:container>
             <p:outputPanel id="invoiceprint">
-                <h1>#{msgs.companyName} <span style="color: blue">#{msgs.invoice}</span></h1>
+                <h1>#{msgs.companyName} <span class="bluetexts">#{msgs.invoice}</span></h1>
                 <h3>#{msgs.thankinvoice}</h3>
                 <br></br>
                 <p>
@@ -43,12 +45,12 @@ or print it or both.
                     <p>#{msgs.hst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getHSTpercentage())}</p>
                     <p>#{msgs.gst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getGSTpercentage())}</p>
                     <p>#{msgs.pst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getPSTpercentage())}</p> 
-                    <h4><div style="color: red">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxesJpaController.findByProvince(userSession.user.province))}</div></h4>
+                    <h4><div class="finalize-redtexts">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxesJpaController.findByProvince(userSession.user.province))}</div></h4>
                 </p>
                 <hr></hr>
                 <p>
                     <h4>#{msgs.information}</h4>
-                    #{msgs.credcardnum}: <span style="color: green">#{transaction.hideCreditCardNum()}</span>
+                    #{msgs.credcardnum}: <span class="greentexts">#{transaction.hideCreditCardNum()}</span>
                     <br></br>
                     #{msgs.name}: #{userSession.user.firstName} #{userSession.user.lastName}
                     <br></br>
@@ -61,7 +63,7 @@ or print it or both.
             <!--Sending email and print-->
             <h:form>
                 <p>
-                    <b:icon value="envelope" size="lg" style="padding-right: 5px" />
+                    <b:icon value="envelope" size="lg" class="invoice-icons" />
                     <b:commandButton value="#{msgs.sendemail}" look="primary" action="#{emailBackingBean.perform()}" />
                     <p:dialog id="emailSuccess"  header="#{msgs.emailinvoice}" widgetVar="successEmail" modal="true" minHeight="40" responsive="true">
                         <h:outputText value="#{msgs.emailsucceed}" /> 
@@ -71,7 +73,7 @@ or print it or both.
                     </p:dialog>
                 </p>
                 <p>
-                    <b:icon value="print" size="lg" style="padding-right: 5px" />
+                    <b:icon value="print" size="lg" class="invoice-icons" />
                     <p:commandButton value="#{msgs.print}" type="button">
                         <p:printer target="invoiceprint"/>
                     </p:commandButton>
