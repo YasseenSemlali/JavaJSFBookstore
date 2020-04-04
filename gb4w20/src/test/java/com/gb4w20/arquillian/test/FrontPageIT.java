@@ -153,7 +153,7 @@ public class FrontPageIT extends TestBase{
         loadFrontPage();
         
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        driver.findElement(By.id("j_idt10:french-button")).click();
+        driver.findElement(By.id("nav-form:french-button")).click();
         
         wait.until(ExpectedConditions.titleIs("Page de garde"));
         
@@ -172,8 +172,8 @@ public class FrontPageIT extends TestBase{
         loadFrontPage();
         
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        driver.findElement(By.id("j_idt10:french-button")).click();
-        driver.findElement(By.id("j_idt10:english-button")).click();
+        driver.findElement(By.id("nav-form:french-button")).click();
+        driver.findElement(By.id("nav-form:english-button")).click();
         
         wait.until(ExpectedConditions.titleIs(FRONT_PAGE_TITLE));
         
@@ -270,7 +270,7 @@ public class FrontPageIT extends TestBase{
         driver.findElement(By.id("login-form:login-btn")).click();
         
         //Give chance to login
-        wait.withTimeout(Duration.ofSeconds(5));
+        wait.withTimeout(Duration.ofSeconds(10));
         
     }
         
@@ -284,7 +284,7 @@ public class FrontPageIT extends TestBase{
         loadFrontPage();
         
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        driver.findElement(By.id("j_idt10:bookcartlink")).click();
+        driver.findElement(By.id("nav-form:bookcartlink")).click();
         
         wait.until(ExpectedConditions.titleIs("Cart"));
     }
