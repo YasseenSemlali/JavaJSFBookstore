@@ -244,9 +244,9 @@ public class JSFFormMessageValidator implements Serializable {
         //Validate if the password retyped is even valid
         validatePassword(retypedPassword);
         
-        if (!password.equals(retypedPassword)) {
+        if (password == null || retypedPassword == null || !password.equals(retypedPassword)) {
             FacesMessage message = new FacesMessage(
-                    this.bundle.getString("passwords_do_not_match"));
+            this.bundle.getString("passwords_do_not_match"));
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
             throw new ValidatorException(message);
