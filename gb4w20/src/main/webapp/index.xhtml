@@ -102,7 +102,7 @@ Java Server Faces page that displays the frontpage of the app
                 </h:panelGroup>
             </h:panelGroup>
             
-            <b:row>
+            <b:row class="small-padding">
                 <b:column id="recently-bought-books-section" col-md="4">
                     <h2>${msgs.you_recently_bought}</h2>
 
@@ -154,7 +154,7 @@ Java Server Faces page that displays the frontpage of the app
                 </b:column>
                 <b:column col-md="4">
                     <h2>${msgs.news2}</h2>
-                    <p:scrollPanel id="news-feed" style="overflow-y: auto;height: 400px;">
+                    <p:scrollPanel id="news-feed" style="overflow-y: auto;height: 400px; padding: 1em;">
                         <p:feedReader value="#{rssFeedsJpaController.getActiveFeed().url}" var="feed"  size="10" >
                             <h:outputLink class="newsfeed-item" value="#{feed.link}">
                                 <h:outputText value="#{feed.title}" style="font-weight: bold;display:block"/>

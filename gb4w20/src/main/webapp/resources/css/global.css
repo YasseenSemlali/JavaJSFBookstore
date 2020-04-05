@@ -35,6 +35,9 @@ div.card{
     #main-nav_inner{
         padding: 2em;
     }
+    #search-input, #search-submit {
+        margin-bottom: 1em
+    }
 }
 
 .hide-images img{
@@ -63,6 +66,14 @@ div.card{
 
 .center-text{
     text-align: center;
+}
+
+#news-feed{
+  padding: 1em !important;
+}
+
+.small-padding{
+    padding: 1em;
 }
 
 .topMenuBar .logomenuitem a{
