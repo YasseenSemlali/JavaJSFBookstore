@@ -84,6 +84,14 @@ public class UserSessionBean implements Serializable {
     }
     
     /**
+     * Used to know if the user is logged in and already bought the book
+     * @return true if book already bought and false if not logged in or book not bought
+     */
+    public boolean hasBoughtBook(){
+        return this.isLoggedIn(); 
+    }
+    
+    /**
      * Used to get the logged in user's name. 
      * @return the name of the logged in user
      * @author Jeffrey Boisvert
