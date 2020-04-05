@@ -34,6 +34,7 @@ public class BooksUtilities {
          * Helper method just to get all the isbns from the given list of books
          * @param books given
          * @return a list of the isbns of the books. 
+         * @author Jeffrey Boisvert
          */
         public List<Long> getIsbnsFromBooks(List<Books> books){
             

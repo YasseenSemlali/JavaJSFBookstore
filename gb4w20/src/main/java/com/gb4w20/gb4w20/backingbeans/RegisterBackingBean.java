@@ -8,7 +8,7 @@ import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * @author Jeffrey Boisvert
  */
 @Named
-@RequestScoped
+@SessionScoped
 public class RegisterBackingBean implements Serializable {
     
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(RegisterBackingBean.class);
@@ -66,6 +66,8 @@ public class RegisterBackingBean implements Serializable {
     private String emailInput; 
     @Size(min = 1, max = 100)
     private String passwordInput;
+    @Size(min = 1, max = 100)
+    private String confirmPasswordInput;
     
     /**
      * Mainly used to set default values.
@@ -379,6 +381,17 @@ public class RegisterBackingBean implements Serializable {
     public void setCompanyInput(String companyInput) {
         this.companyInput = companyInput;
     }
+    
+     public String getConfirmPasswordInput() {
+        if(this.confirmPasswordInput == null){
+            return ""; 
+        }
+        return confirmPasswordInput;
+    }
+
+    public void setConfirmPasswordInput(String confirmPasswordInput) {
+        this.confirmPasswordInput = confirmPasswordInput;
+    }
 
     /**
      * Used to get the provinceSelections value set
@@ -400,8 +413,10 @@ public class RegisterBackingBean implements Serializable {
         Users user = generateUserBasedOnInput();
         LOG.info("Creating user " + user);
         this.userJpaController.create(user);
-            
-        //TODO show an alert saying register successful please login
+         
+        //Since user was created successfully reset values
+        clearValues();
+        
         return LOGIN_PAGE;
         
     }
@@ -478,6 +493,25 @@ public class RegisterBackingBean implements Serializable {
     }
     
     /**
+     * Used to validate if the password and retyped passwords match
+     * @param context
+     * @param component
+     * @param value
+     * @author Jeffrey Boisvert
+     */
+    public void validatePasswordsMatch(FacesContext context, UIComponent component, Object value) {
+
+        // Retrieve the value passed to this method
+        String confirmPassword = (String) value;
+        LOG.debug("Retyped password to confirm: " + confirmPassword);
+        LOG.debug("Actual password: " + this.passwordInput);
+        LOG.debug("Comparing passwords " + this.passwordInput + " and " + confirmPassword);
+        
+        this.validator.validateThatPasswordsMatch(this.passwordInput, confirmPassword);
+
+    }
+    
+    /**
      * Helper method to generate a user object based on the inputs 
      * set in the backing bean. 
      * @return user object with attributes reflecting what was entered in the form. 
@@ -501,6 +535,25 @@ public class RegisterBackingBean implements Serializable {
         user.setPassword(passwordInput);
         
         return user;
+    }
+    
+    /**
+     * Used to clear the attributes of the backing bean
+     * @author Jeffrey Boisvert
+     */
+    private void clearValues(){
+        firstNameInput = "";
+        lastNameInput = ""; 
+        companyInput = ""; 
+        firstAddressInput = ""; 
+        secondAddressInput = ""; 
+        cityInput = "";
+        postalInput = "";
+        mobilePhoneInput =""; 
+        homePhoneInput = "";
+        emailInput = ""; 
+        passwordInput = "";
+        confirmPasswordInput = ""; 
     }
     
 }
