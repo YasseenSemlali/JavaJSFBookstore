@@ -103,7 +103,7 @@ Java Server Faces page that displays the frontpage of the app
             </h:panelGroup>
             
             <b:row id="miscellaneous-items" class="small-padding">
-                <b:column id="recently-bought-books-section" col-md="4">
+                <b:column id="recently-bought-books-section" class="miscellaneous-item" col-md="4">
                     <h2>${msgs.you_recently_bought}</h2>
 
                     <c:choose>
@@ -121,7 +121,7 @@ Java Server Faces page that displays the frontpage of the app
                     </c:choose>
                 </b:column>
 
-                <b:column col-md="4" id="survey">
+                <b:column col-md="4" class="miscellaneous-item" id="survey">
                     <h2>${msgs.survey}</h2>
                     <c:set var="question" value="#{surveyQuestionsJpaController.getActiveQuestion()}"/>
 
@@ -153,7 +153,7 @@ Java Server Faces page that displays the frontpage of the app
                         ${msgs.no_survey_msg}
                     </h:panelGroup>
                 </b:column>
-                <b:column col-md="4">
+                <b:column col-md="4" class="miscellaneous-item">
                     <h2>${msgs.news2}</h2>
                     <p:scrollPanel id="news-feed" style="overflow-y: auto;height: 400px; padding: 1em;">
                         <p:feedReader value="#{rssFeedsJpaController.getActiveFeed().url}" var="feed"  size="10" >
