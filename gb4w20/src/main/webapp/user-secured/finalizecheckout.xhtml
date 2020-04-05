@@ -68,7 +68,7 @@ to be able to finalize the transaction.
                 <h2 class="finalize-redtexts">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxprov)}</h2>
 
                 <div class="center-text">
-                    <b:commandButton action="invoice" value="#{msgs.pay}" look="primary"/>
+                    <b:commandButton action="/user-secured/invoice" value="#{msgs.pay}" look="primary"/>
                 </div>
 
                 <b:iconAwesome value="fa-cc-mastercard" size="4x"></b:iconAwesome>
