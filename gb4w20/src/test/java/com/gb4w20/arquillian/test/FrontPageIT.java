@@ -2,8 +2,10 @@ package com.gb4w20.arquillian.test;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import java.sql.SQLException;
 import java.time.Duration;
 import java.util.List;
+import java.util.logging.Level;
 import javax.sql.DataSource;
 import org.junit.After;
 import org.junit.Test;
@@ -13,7 +15,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -26,7 +27,7 @@ import static org.junit.Assert.assertEquals;
  * <p>
  * To selenium test the front page components 
  * </p>
- * @author Yasseen, Jeffrey Boisvert, Jasmar Badion, Jean
+ * @author Yasseen, Jeffrey Boisvert, Jasmar Badion, Jean Robatto
  */
 public class FrontPageIT extends TestBase{
     
@@ -46,6 +47,13 @@ public class FrontPageIT extends TestBase{
         dataSource.setDatabaseName("gb4w20test");
         dataSource.setUser("gb4w20");
         dataSource.setPassword("pencil3tuna");
+        
+        //Attempt to set the timezone to utc - Jean 
+        try {
+            dataSource.setServerTimezone("UTC");
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(FrontPageIT.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return dataSource;
     }
     
@@ -64,7 +72,6 @@ public class FrontPageIT extends TestBase{
     }
 
     @Test
-    @Ignore
     public void testTitle() throws Exception {
 
         // And now use this to visit a web site
@@ -77,7 +84,6 @@ public class FrontPageIT extends TestBase{
     }
 
     @Test
-    @Ignore
     public void testSurvey() throws Exception {
 
         // And now use this to visit a web site
@@ -166,7 +172,6 @@ public class FrontPageIT extends TestBase{
      * @author Jeffrey Boisvert
      */
     @Test
-    @Ignore
     public void testSwitchToEnglish() throws Exception {
 
         loadFrontPage();
@@ -338,6 +343,71 @@ public class FrontPageIT extends TestBase{
         assertEquals("Recently bought books not shown", 1, elements.size());
         
     }
+    
+    /**
+     * Selenium test for clicking the first ad (top of the page)
+     * and verifying it goes to the correct link.
+     * 
+     * @throws Exception 
+     * @author Jean Robatto
+     */
+    @Test
+    public void testClickAd1() throws Exception{
+        loadFrontPage();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.findElement(By.id("j_idt21")).click();
+        
+        wait.until(ExpectedConditions.titleIs("Summer 2019 – Credit Programs"));
+    }
+    
+    /**
+     * Selenium test for clicking the second ad (bottom of the page)
+     * and verifying it goes to the correct link.
+     * 
+     * @throws Exception 
+     * @author Jean Robatto
+     */
+    @Test
+    public void testClickAd2() throws Exception{
+        loadFrontPage();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.findElement(By.id("j_idt86")).click();
+        
+        wait.until(ExpectedConditions.titleIs("Summer 2019 – Credit Programs"));
+    }
+    
+    /**
+     * Selenium test ensuring the recommended books cookie is empty
+     * at first.
+     * 
+     * @throws Exception 
+     * @author Jean Robatto
+     */
+    @Test
+    public void testRecommendedBookCookieBefore() throws Exception{
+        loadFrontPage();
+        assertEquals("Genre cookie should not exist on first launch.", null, driver.manage().getCookieNamed("recentGenre"));
+    }
+    
+    /**
+     * Selenium test ensuring the recommended books cookie is 
+     * correctly set.
+     * 
+     * @throws Exception 
+     * @author Jean Robatto
+     */
+    @Test
+    public void testRecommendedBookCookieAfter() throws Exception{
+        loadFrontPage();
+        
+        driver.findElement(By.id("booklinkpage")).click();
+        
+        assertEquals("Invalid genre cookie value.", "1", driver.manage().getCookieNamed("recentGenre").getValue());
+    }
+    
+    
     
     /**
      * Used to close the browser 

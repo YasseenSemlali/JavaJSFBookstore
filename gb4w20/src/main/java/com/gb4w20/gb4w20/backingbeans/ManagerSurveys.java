@@ -178,6 +178,8 @@ public class ManagerSurveys implements Serializable {
             answerController.create(answer);
             
             responses.add(answer);
+            
+            newAnswer = " ";
 
         } catch (Exception ex) {
             LOG.info(ex.toString());

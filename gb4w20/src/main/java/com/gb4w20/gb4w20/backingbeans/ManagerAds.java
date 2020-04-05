@@ -118,8 +118,8 @@ public class ManagerAds implements Serializable {
             ad.setEnabled(Boolean.TRUE);
 
             adsController.create(ad);
-
-            addAdToArrays(ad);
+            
+            init();
 
             return "/manager-secured/manager-forms/manager-ads";
         } catch (com.gb4w20.gb4w20.exceptions.BackendException | com.gb4w20.gb4w20.exceptions.RollbackFailureException ex) {
@@ -157,35 +157,6 @@ public class ManagerAds implements Serializable {
         } catch (Exception ex) {
             LOG.debug(ex.toString());
         }
-    }
-
-    /**
-     * Creates a hard copy of the class field arrays and adds the new ad.
-     *
-     * Using a list here is not possible because the .get() method does not
-     * allow modifications.
-     *
-     * @param ad
-     */
-    private void addAdToArrays(Ads ad) {
-        String[] newLocations = new String[locations.length + 1];
-        String[] newUrls = new String[urls.length + 1];
-        Boolean[] newEnabled = new Boolean[enabled.length + 1];
-        
-        for (int i = 0; i < newLocations.length; i++) {
-            if (i==newLocations.length-1) {
-                newLocations[i] = ad.getFileLocation();
-                newUrls[i] = ad.getUrl();
-                newEnabled[i] = ad.getEnabled();
-            } else {
-                newLocations[i] = locations[i];
-                newUrls[i] = urls[i];
-                newEnabled[i] = enabled[i];
-            }
-        }
-        locations = newLocations;
-        urls = newUrls;
-        enabled = newEnabled;
     }
 
     public String[] getLocations() {
