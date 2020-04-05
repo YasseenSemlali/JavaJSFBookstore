@@ -5,14 +5,9 @@ import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
-import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.io.Serializable;
 import java.util.List;
-import java.util.ResourceBundle;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -20,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This is simply used as a backing bean for the clients report. 
- * 
  * @author Jeffrey Boisvert
  */
 @Named
@@ -76,6 +70,7 @@ public class ClientReportBackingBean implements Serializable {
     /**
      * Used to run the report to the current user id set in the bean. 
      * This will set the properties of the bean of total sales and purchased items. 
+     * @author Jeffrey Boisvert
      */
     public void runReport(){
         
@@ -167,6 +162,7 @@ public class ClientReportBackingBean implements Serializable {
      * 
      * @param date Given
      * @return sql version of the date. 
+     * @author Jeffrey Boisvert
      */
     private java.sql.Date sqlDate(java.util.Date date){
         return new java.sql.Date(date.getTime());

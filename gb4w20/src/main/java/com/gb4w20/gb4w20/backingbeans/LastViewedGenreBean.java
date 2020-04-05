@@ -1,18 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Genres;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
-import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;

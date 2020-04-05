@@ -2,30 +2,10 @@
 <actions>
         <action>
             <actionName>CUSTOM-test</actionName>
-            <displayName>test</displayName>
+            <displayName>ArquillianTest</displayName>
             <goals>
                 <goal>test</goal>
             </goals>
-        </action>
-        <action>
-            <actionName>CUSTOM-testusers</actionName>
-            <displayName>testusers</displayName>
-            <goals>
-                <goal>test</goal>
-            </goals>
-            <properties>
-                <test>UsersJpaControllerTest</test>
-            </properties>
-        </action>
-                <action>
-            <actionName>CUSTOM-testbooks</actionName>
-            <displayName>testbooks</displayName>
-            <goals>
-                <goal>test</goal>
-            </goals>
-            <properties>
-                <test>BooksJpaControllerTest</test>
-            </properties>
         </action>
         <action>
             <actionName>CUSTOM-SeleniumTest</actionName>

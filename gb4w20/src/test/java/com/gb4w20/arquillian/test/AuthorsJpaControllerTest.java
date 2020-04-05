@@ -13,11 +13,8 @@ import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 import org.javatuples.Quintet;
-import org.javatuples.Sextet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -70,8 +67,10 @@ public class AuthorsJpaControllerTest {
          */
         @Test
         public void testCorrectTotalSales(){
+            LOG.info("Testing the total sales");
             int testNumber = param.getValue0();
             double expectedTotalSales = param.getValue4();
+            LOG.info("Expected total is " + expectedTotalSales);
             
             assertEquals("Test " + testNumber + " did not return the correct total sales of this author", expectedTotalSales, this.result, 0.01f);
         }
@@ -108,8 +107,10 @@ public class AuthorsJpaControllerTest {
          */
         @Test
         public void testNumberOfBooksPurchasedByAuthor(){
+            LOG.info("Testing number of books purchased by author");
             int testNumber = param.getValue0();
             List<NameTotalAndCountBean> expectedPurchasedBooks = param.getValue4();
+            LOG.info("Expected size of purchased books is " + expectedPurchasedBooks.size());
             
             assertEquals("Test " + testNumber + " did not return the correct number of purchased books of this author", expectedPurchasedBooks.size(), this.result.size());
         }
@@ -121,10 +122,12 @@ public class AuthorsJpaControllerTest {
          */
         @Test
         public void testCorerctBooksPurchasedByAuthor(){
+            LOG.info("Testing books purchased by author");
             int testNumber = param.getValue0();
             List<NameTotalAndCountBean> expectedPurchasedBooks = param.getValue4();
             
             List<String> expectedTitles = takeTitlesFromPurchasedBooks(expectedPurchasedBooks);
+            LOG.info("Size of expected titles is " + expectedTitles.size());
            
             assertTrue("Test " + testNumber + " does not contain expected books", expectedTitles.containsAll(takeTitlesFromPurchasedBooks(this.result)));
         }
@@ -177,8 +180,10 @@ public class AuthorsJpaControllerTest {
          */
         @Test
         public void testNumberOfBooksBySameAuthor(){
+            LOG.info("Testing number of books by same author");
             int testNumber = param.getValue0();
             List<Books> expectedOtherBooks = param.getValue4();
+            LOG.info("Expected size of other books by same author is " + expectedOtherBooks.size());
             
             assertEquals("Test " + testNumber + " did not return the correct number of books by same authors", expectedOtherBooks.size(), this.result.size());
         }
@@ -190,8 +195,10 @@ public class AuthorsJpaControllerTest {
          */
         @Test
         public void testCorrectBooksBySameAuthor(){
+            LOG.info("Testing books by same author");
             int testNumber = param.getValue0();
             List<Books> expectedOtherBooks = param.getValue4();
+            LOG.info("Expected size of other books by same author is " + expectedOtherBooks.size());
             
             assertEquals("Test " + testNumber + " did not return the correct other books by same authors", expectedOtherBooks, this.result);
         }
@@ -202,6 +209,7 @@ public class AuthorsJpaControllerTest {
          */
         @Test
         public void testResultNotContainSameBook(){
+            LOG.info("Testing if result does not contain the same book");
             int testNumber = param.getValue0();
             long isbn = param.getValue1();
             
@@ -216,7 +224,7 @@ public class AuthorsJpaControllerTest {
          * @return 
          */
         private boolean booksDoNotContainTheGivenIsbn(List<Books> books, long isbn){
-            
+            LOG.info("Book ISBN to test if it is not part of the expected books result is " + isbn);
             for(Books book : books){
                 if(book.getIsbn() == isbn) {
                     return false;

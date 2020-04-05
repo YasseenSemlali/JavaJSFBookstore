@@ -19,6 +19,12 @@ necessary to manage news for the web app
     </ui:define>
 
     <ui:define name="content">
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.news}</li>
+              </ol>
+        </nav>
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <h:form style="text-align: center">
                 <p:commandButton style="padding: 2%; margin: 3%" value="#{msgs.create_feed}" styleClass="formComponent" action="manager-news-new.xhtml" />
