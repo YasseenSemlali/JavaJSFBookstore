@@ -1,10 +1,7 @@
 
 package com.gb4w20.gb4w20.backingbeans;
 
-import static com.gb4w20.gb4w20.backingbeans.LastViewedGenreBean.RECENT_GENRE_COOKIE_NAME;
-import com.gb4w20.gb4w20.entities.Genres;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.annotation.PostConstruct;
