@@ -133,7 +133,7 @@ add it to the shopping cart.
                         <c:forEach items="#{approvedReviews}" var="review">
                             <div id="apprvdRevs">
                                 <p>
-                                    #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
+                                   #{msgs.by} : #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
                                 </p>
                                 <p>
                                     #{review.getReview()}
