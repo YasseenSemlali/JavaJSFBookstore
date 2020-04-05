@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This is simply used as a backing bean for the clients report. 
- * 
  * @author Jeffrey Boisvert
  */
 @Named
@@ -71,6 +70,7 @@ public class ClientReportBackingBean implements Serializable {
     /**
      * Used to run the report to the current user id set in the bean. 
      * This will set the properties of the bean of total sales and purchased items. 
+     * @author Jeffrey Boisvert
      */
     public void runReport(){
         
@@ -162,6 +162,7 @@ public class ClientReportBackingBean implements Serializable {
      * 
      * @param date Given
      * @return sql version of the date. 
+     * @author Jeffrey Boisvert
      */
     private java.sql.Date sqlDate(java.util.Date date){
         return new java.sql.Date(date.getTime());

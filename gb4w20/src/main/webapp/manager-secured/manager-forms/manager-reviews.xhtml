@@ -19,6 +19,12 @@ necessary to manage reviews in the web app.
     </ui:define>
 
     <ui:define name="content">
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.reviews}</li>
+              </ol>
+        </nav>
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <p:tabView id="allrevs" activeIndex="#{managerReviews.activeTabIndex}" >
                 <p:tab title="#{msgs.approved_revs}" >

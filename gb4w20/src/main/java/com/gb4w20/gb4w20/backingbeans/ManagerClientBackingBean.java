@@ -173,6 +173,7 @@ public class ManagerClientBackingBean implements Serializable {
      * Helper method used to construct the user object based on the selected attributes
      * @param user to have the values set on
      * @return the constructed user
+     * @author Jeffrey Boisvert
      */
     private void setUserObjectBasedOnSelectedInputs(Users user){
             user.setTitle(this.selectedUserTitle);

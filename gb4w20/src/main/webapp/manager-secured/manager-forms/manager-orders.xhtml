@@ -18,7 +18,12 @@ necessary to manage inventory of our store.
         <title>#{msgs.orders}</title>
     </ui:define>
     <ui:define name="content">
-
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.orders}</li>
+              </ol>
+        </nav>
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <h:form style="text-align: center">
                 <p:commandButton style="padding: 2%" value="#{msgs.create_order}" styleClass="formComponent" action="#{managerOrders.selectOrder(null)}" />

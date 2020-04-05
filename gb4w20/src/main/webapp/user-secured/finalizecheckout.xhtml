@@ -21,49 +21,58 @@ to be able to finalize the transaction.
     </ui:define>
 
     <ui:define name="content">
-        <h:form>
-            <b:panelGrid colSpans="2,10" size="xs">
-                <h:outputLabel for="creditcard" value="#{msgs.creditcardnumber}"/>
-                <b:inputText id="creditcard" value="#{transaction.card}" span="6" required="true">
-                    <f:converter converterId="com.gb4w20.gb4w20.jsf.validation.CreditCardConverter" />
-                    <f:validator validatorId="com.gb4w20.gb4w20.jsf.validation.CreditCardValidator" />
-                    <f:ajax event="change" render="credcarderror"/>
-                </b:inputText>
-                <h:message id="credcarderror" for="creditcard" style="color: red" />
-                <br></br>
-                <h:outputLabel for="cardexpiry" value="#{msgs.cardexpirydate}"/>
-                <b:inputText id="cardexpiry" value="#{transaction.date}" 
-                             validator="#{transaction.validateExpiryDate}" span="4" tooltip="MM/yyyy (e.g. 01/2020)">
-                    <f:convertDateTime pattern="MM/yyyy" />
-                    <f:ajax event="change" render="cardexpireerror"/>
-                </b:inputText>
-                <h:message id="cardexpireerror" for="cardexpiry" style="color: red" />
-                <br></br>
-                <h:outputLabel for="cardsecuritycode" value="#{msgs.cardsecuritycode}"/>
-                <b:inputText id="cardsecuritycode" a:maxlength="3" span="2" 
-                             value="#{transaction.cardSecurityCode}"
-                             validator="#{transaction.validateCVV}">
-                    <f:ajax event="change" render="cvverror"/>
-                </b:inputText>
-                <h:message id="cvverror" for="cardsecuritycode" style="color: red"/>
-            </b:panelGrid>
+        <b:container>
+            <h:form>
+                <b:panelGrid colSpans="2,10" size="xs">
+                    <h:outputLabel for="creditcard" value="#{msgs.creditcardnumber}"/>
+                    <b:inputText id="creditcard" value="#{transaction.card}" span="6" required="true">
+                        <f:converter converterId="com.gb4w20.gb4w20.jsf.validation.CreditCardConverter" />
+                        <f:validator validatorId="com.gb4w20.gb4w20.jsf.validation.CreditCardValidator" />
+                        <f:ajax event="change" render="credcarderror"/>
+                    </b:inputText>
+                    <h:message id="credcarderror" for="creditcard" style="color: red" />
+                    <br></br>
+                    <h:outputLabel for="credclientname" value="#{msgs.name}"/>
+                    <b:inputText id="credclientname" value="#{transaction.ownername}" 
+                                 validator="#{transaction.validateCreditOwnerName}" span="8" required="true">
+                        <f:ajax event="change" render="credclientnameerror"/>
+                    </b:inputText>
+                    <h:message id="credclientnameerror" for="credclientname" style="color: red" />
+                    <br></br>
+                    <h:outputLabel for="cardexpiry" value="#{msgs.cardexpirydate}"/>
+                    <b:inputText id="cardexpiry" value="#{transaction.date}" 
+                                 validator="#{transaction.validateExpiryDate}" span="4" required="true" tooltip="MM/yyyy (e.g. 01/2020)">
+                        <f:convertDateTime pattern="MM/yyyy" />
+                        <f:ajax event="change" render="cardexpireerror"/>
+                    </b:inputText>
+                    <h:message id="cardexpireerror" for="cardexpiry" style="color: red" />
+                    <br></br>
+                    <h:outputLabel for="cardsecuritycode" value="#{msgs.cardsecuritycode}"/>
+                    <b:inputText id="cardsecuritycode" a:maxlength="3" span="2" required="true"
+                                 value="#{transaction.cardSecurityCode}"
+                                 validator="#{transaction.validateCVV}">
+                        <f:ajax event="change" render="cvverror"/>
+                    </b:inputText>
+                    <h:message id="cvverror" for="cardsecuritycode" style="color: red"/>
+                </b:panelGrid>
 
-            <h3>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h3>
-            <c:set var="taxprov" value="#{taxesJpaController.findByProvince(userSession.user.province)}"/>
-            <div style="color: green"> 
-                <h4>#{msgs.hst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getHSTpercentage())}</h4>
-                <h4>#{msgs.gst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getGSTpercentage())}</h4>
-                <h4>#{msgs.pst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getPSTpercentage())}</h4>
-            </div>
-            <h2 style="color: red">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxprov)}</h2>
+                <h3>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h3>
+                <c:set var="taxprov" value="#{taxesJpaController.findByProvince(userSession.user.province)}"/>
+                <div style="color: green"> 
+                    <h4>#{msgs.hst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getHSTpercentage())}</h4>
+                    <h4>#{msgs.gst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getGSTpercentage())}</h4>
+                    <h4>#{msgs.pst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getPSTpercentage())}</h4>
+                </div>
+                <h2 style="color: red">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxprov)}</h2>
 
-            <div style="text-align: center">
-                <b:commandButton action="invoice" value="#{msgs.pay}" look="primary"/>
-            </div>
+                <div style="text-align: center">
+                    <b:commandButton action="invoice" value="#{msgs.pay}" look="primary"/>
+                </div>
 
-            <b:iconAwesome value="fa-cc-mastercard" size="4x"></b:iconAwesome>
-            <b:iconAwesome value="fa-cc-visa" size="4x"></b:iconAwesome>
-        </h:form>
+                <b:iconAwesome value="fa-cc-mastercard" size="4x"></b:iconAwesome>
+                <b:iconAwesome value="fa-cc-visa" size="4x"></b:iconAwesome>
+            </h:form>
+        </b:container>
     </ui:define>
 
     <ui:define name="footer">

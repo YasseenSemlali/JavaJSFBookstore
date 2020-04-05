@@ -1,6 +1,4 @@
-/*
- * Backing beans
- */
+
 package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Taxes;
@@ -35,6 +33,7 @@ public class TransactionBackingBean implements Serializable {
 
     //Inputs
     private CreditCardBackingBean card = new CreditCardBackingBean("");
+    private String ownername;
     private Date date = new Date();
     private String cardSecurityCode;
 
@@ -57,6 +56,22 @@ public class TransactionBackingBean implements Serializable {
      */
     public void setCard(CreditCardBackingBean card) {
         this.card = card;
+    }
+    
+    /**
+     * Getter for credit card owner name
+     * @return 
+     */
+    public String getOwnername(){
+        return this.ownername;
+    }
+    
+    /**
+     * Setter for credit card owner name
+     * @param ownerName
+     */
+    public void setOwnername(String ownerName){
+        this.ownername = ownerName;
     }
 
     /**
@@ -174,6 +189,17 @@ public class TransactionBackingBean implements Serializable {
         return maskedNumber.toString();
     }
 
+    /**
+     * To validate credit card's owner name
+     * 
+     * @param fc
+     * @param c
+     * @param value 
+     */
+    public void validateCreditOwnerName(FacesContext fc, UIComponent c, Object value){
+        this.validator.validateIsNotBlank((String) value);
+    }
+    
     /**
      * To validate card security code or CVV
      *

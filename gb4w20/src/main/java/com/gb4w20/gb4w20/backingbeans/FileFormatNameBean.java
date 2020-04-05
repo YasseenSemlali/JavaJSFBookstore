@@ -5,8 +5,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-/** Gets the i18n name for a file format
- *
+/** 
+ * Gets the i18n name for a file format
  * @author Yasseen
  */
 @Named

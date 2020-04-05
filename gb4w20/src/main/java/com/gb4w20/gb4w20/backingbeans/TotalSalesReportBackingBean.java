@@ -39,6 +39,7 @@ public class TotalSalesReportBackingBean implements Serializable {
     /**
      * Used to run the report.
      * This will set the properties of the bean of total sales and purchased products. 
+     * @author Jeffrey Boisvert
      */
     public void runReport(){
         
@@ -62,6 +63,7 @@ public class TotalSalesReportBackingBean implements Serializable {
     
     /**
      * Helper method to set the total sales in a given date range. 
+     * @author Jeffrey Boisvert
      */
     private void setTotalSales(){
         this.totalSales = this.ordersJpaController.getTotalSales(sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
@@ -70,6 +72,7 @@ public class TotalSalesReportBackingBean implements Serializable {
     /**
      * Helper method to set the list of purchased products of the publisher in question. 
      * @param id of the user in question. 
+     * @author Jeffrey Boisvert
      */
     private void setPurchasedProducts() {
         this.purchasedProducts = this.ordersJpaController.getPurchasedBooks(sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
@@ -78,6 +81,7 @@ public class TotalSalesReportBackingBean implements Serializable {
     /**
      * Used to retrieve the list of products by the publisher that was purchased. 
      * @return the list of products. 
+     * @author Jeffrey Boisvert
      */
     public List<NameTotalAndCountBean> getPurchasedProducts() {
         return purchasedProducts;
@@ -86,6 +90,7 @@ public class TotalSalesReportBackingBean implements Serializable {
     /**
      * Used to get the total sales of the publisher. 
      * @return total sales of user. 
+     * @author Jeffrey Boisvert
      */
     public Double getTotalSales() {
         return totalSales;
@@ -94,6 +99,7 @@ public class TotalSalesReportBackingBean implements Serializable {
     /**
      * Used to get the set start date. 
      * @return 
+     * @author Jeffrey Boisvert
      */
     public java.util.Date getStartDate() {
         return startDate;
@@ -102,6 +108,7 @@ public class TotalSalesReportBackingBean implements Serializable {
     /**
      * Used to set the start date of the report. 
      * @param startDate 
+     * @author Jeffrey Boisvert
      */
     public void setStartDate(java.util.Date startDate) {
         this.startDate = startDate;
@@ -110,6 +117,7 @@ public class TotalSalesReportBackingBean implements Serializable {
     /**
      * Used to get the set end date. 
      * @return 
+     * @author Jeffrey Boisvert
      */
     public java.util.Date getEndDate() {
         return endDate;
@@ -118,6 +126,7 @@ public class TotalSalesReportBackingBean implements Serializable {
     /**
      * Used to set the wanted end date of the report. 
      * @param endDate 
+     * @author Jeffrey Boisvert
      */
     public void setEndDate(java.util.Date endDate) {
         this.endDate = endDate;
@@ -129,7 +138,8 @@ public class TotalSalesReportBackingBean implements Serializable {
      * for the idea to the solution. 
      * 
      * @param date Given
-     * @return sql version of the date. 
+     * @return sql version of the date.
+     * @author Jeffrey Boisvert
      */
     private java.sql.Date sqlDate(java.util.Date date){
         return new java.sql.Date(date.getTime());
