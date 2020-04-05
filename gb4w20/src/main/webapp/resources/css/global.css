@@ -38,6 +38,9 @@ div.card{
     #search-input, #search-submit {
         margin-bottom: 1em
     }
+    #miscellaneous-items{
+        text-align: center;
+    }
 }
 
 .hide-images img{

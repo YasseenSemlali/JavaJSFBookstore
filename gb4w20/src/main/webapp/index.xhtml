@@ -102,7 +102,7 @@ Java Server Faces page that displays the frontpage of the app
                 </h:panelGroup>
             </h:panelGroup>
             
-            <b:row class="small-padding">
+            <b:row id="miscellaneous-items" class="small-padding">
                 <b:column id="recently-bought-books-section" col-md="4">
                     <h2>${msgs.you_recently_bought}</h2>
 
@@ -116,7 +116,7 @@ Java Server Faces page that displays the frontpage of the app
                         </c:when>
                         <c:otherwise>
                             <p id="bought-books-not-logged-in-msg">${msgs.recently_bought_not_logged_in}</p>
-                            <b:link id="login-button" class="language-button btn btn-primary" href="#{request.contextPath}/login.xhtml" value="${msgs.login}" />
+                            <b:link id="recently-bought-books-login-button" class="language-button btn btn-primary" href="#{request.contextPath}/login.xhtml" value="${msgs.login}" />
                         </c:otherwise>
                     </c:choose>
                 </b:column>
