@@ -51,8 +51,18 @@ div.card{
     vertical-align: middle;
 }
 
+.topMenuBar .logomenuitem:hover a:hover {
+    background-image: url("#{resource['images/bookify_logo.png']}") !important;
+    width: 60px;
+    height: 60px;
+    margin-right: 8px;
+    background-size:     cover;                  
+    background-repeat:   no-repeat;
+    background-position: center center;  
+}
+
 .topMenuBar .logomenuitem a{
-    background-image: url("#{resource['images/temp_logo.png']}") !important;
+    background-image: url("#{resource['images/bookify_logo.png']}") !important;
     width: 60px;
     height: 60px;
     margin-right: 8px;
