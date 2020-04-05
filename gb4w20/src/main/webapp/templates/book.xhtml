@@ -12,7 +12,7 @@
             <h:outputStylesheet library="css" name="book.css" />
             <h:link outcome="index">
                 <div class="center-text">
-                    <a href="bookpage.xhtml?isbn=#{book.getIsbn()}">
+                    <a href="#{request.contextPath}/bookpage.xhtml?isbn=#{book.getIsbn()}">
                         <h:graphicImage library="img" name="covers/#{book.getCover()}" height="200px"/> 
                         <p class="h5"><strong>#{book.getTitle()}</strong></p>
                         

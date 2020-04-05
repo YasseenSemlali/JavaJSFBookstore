@@ -62,7 +62,7 @@ add it to the shopping cart.
                 <h:form id="add-book-to-cart-form" style="margin-top: 1em;">
                     <c:choose>
                         <!-- So if user already bought book just go to download page - Jeffrey Boisvert  --> 
-                        <c:when test="#{userSession.hasBoughtBook(book.getIsbn())}">
+                        <c:when test="#{userSession.hasBoughtBook(book)}">
                                 <p:outputLabel>#{msgs.already_bought_book}</p:outputLabel>
                                 <b:link id="download-button" class="language-button btn btn-primary" style="display: block; text-align: center; margin-left: auto; margin-right: auto; width: fit-content;" href="#{request.contextPath}/user-secured/book-downloads.xhtml" value="${msgs.downloadspage}" />
                             </c:when>
