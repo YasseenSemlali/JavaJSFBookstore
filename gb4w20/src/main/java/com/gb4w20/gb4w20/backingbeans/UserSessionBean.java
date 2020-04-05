@@ -1,9 +1,13 @@
 
 package com.gb4w20.gb4w20.backingbeans;
 
+import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.entities.Users;
+import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -25,6 +29,9 @@ public class UserSessionBean implements Serializable {
 
     @Inject
     private UsersJpaController usersJpaController;
+    
+    @Inject
+    private BooksJpaController booksJpaController;
     
     //Used to hold the user entity if logged in
     private Users user; 
@@ -85,10 +92,25 @@ public class UserSessionBean implements Serializable {
     
     /**
      * Used to know if the user is logged in and already bought the book
+     * @param book being checked
      * @return true if book already bought and false if not logged in or book not bought
+     * @author Jeffrey Boisvert
      */
-    public boolean hasBoughtBook(){
-        return this.isLoggedIn(); 
+    public boolean hasBoughtBook(Books book){
+        
+        if(!this.isLoggedIn()){
+            return false; 
+        }
+        
+        List<Books> boughtBooks = this.booksJpaController.getRecentlyBoughtBooks(this.user.getUserId(), -1);
+        
+        for(Books boughtBook : boughtBooks){
+            if (Objects.equals(boughtBook.getIsbn(), book.getIsbn())){
+                return true; 
+            }
+        }
+        
+        return false; 
     }
     
     /**
