@@ -61,6 +61,10 @@ div.card{
     background-position: center center;  
 }
 
+.center-text{
+    text-align: center;
+}
+
 .topMenuBar .logomenuitem a{
     background-image: url("#{resource['images/bookify_logo.png']}") !important;
     width: 60px;
