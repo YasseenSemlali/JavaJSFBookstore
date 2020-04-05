@@ -20,6 +20,12 @@ necessary to manage users in the web app.
     </ui:define>
     <ui:define name="content">
         <h:outputStylesheet library="css" name="manager-client.css"  />
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.users_title}</li>
+              </ol>
+        </nav>
         <b:container style="margin-top: 5%; margin-bottom:5%;" >
                     <h:form id="client-manager-form">
                         <div class="card">
