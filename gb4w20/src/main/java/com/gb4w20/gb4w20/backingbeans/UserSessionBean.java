@@ -102,7 +102,7 @@ public class UserSessionBean implements Serializable {
             return false; 
         }
         
-        List<Books> boughtBooks = this.booksJpaController.getRecentlyBoughtBooks(this.user.getUserId(), 0);
+        List<Books> boughtBooks = this.booksJpaController.getBooksForUser(this.user.getUserId());
         
         for(Books boughtBook : boughtBooks){
             if (Objects.equals(boughtBook.getIsbn(), book.getIsbn())){
