@@ -166,7 +166,8 @@ add it to the shopping cart.
                         </h:form> 
                     </c:when>
                     <c:otherwise>
-                        <p:outputLabel>#{msgs.mustbelogintoreview} </p:outputLabel>
+                        <p:outputLabel>#{msgs.mustbelogintoreview}  </p:outputLabel>
+                        <b:link id="reviews-login-button" class="language-button btn btn-primary" href="#{request.contextPath}/login.xhtml" value="${msgs.login}" />
                     </c:otherwise>  
                 </c:choose>
             </b:jumbotron>

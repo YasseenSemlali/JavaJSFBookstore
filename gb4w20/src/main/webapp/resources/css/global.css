@@ -47,6 +47,11 @@ div.card{
     }
 }
 
+#reviews-login-button{
+    display: block;
+    width: fit-content;
+}
+
 .hide-images img{
     visibility: hidden;
     width: 0px;
