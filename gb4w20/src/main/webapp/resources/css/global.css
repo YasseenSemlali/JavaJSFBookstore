@@ -45,6 +45,16 @@ div.card{
         margin-bottom: 3em;
         margin-top: 3em;
     }
+    #checkout-login-button{
+        margin-left: 0;
+    }
+    .little-margin-top{
+        margin-top: 1em;
+    }
+}
+
+#shopping-form:checkout-login-button{
+    margin-left: 1em !important;
 }
 
 #reviews-login-button{
