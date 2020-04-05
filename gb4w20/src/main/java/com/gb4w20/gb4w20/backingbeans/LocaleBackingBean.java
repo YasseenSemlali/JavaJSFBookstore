@@ -82,6 +82,9 @@ public class LocaleBackingBean implements Serializable{
         locale = new Locale(language, country);
         FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
         LOG.info("Local is now set to " + locale.toString());
+        
+        //Save the user's choice in the cookie
+        setUserLanguagePreferenceCookie();
     }
     
     /**

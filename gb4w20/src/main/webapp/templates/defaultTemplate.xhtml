@@ -4,16 +4,13 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:a4j="http://richfaces.org/a4j">
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <f:view locale="#{localeBackingBean.locale}">
         <h:head>
             <ui:insert name="head">
             </ui:insert>
         </h:head>
-        <h:body onunload="tabClosed();">
-            <h:form>
-                <a4j:jsFunction name="tabClosed" action="#{localeBackingBean.setUserLanguagePreferenceCookie()}" ></a4j:jsFunction> 
+        <h:body>
                 <h:outputStylesheet library="css" name="global.css" />
 
                 <div>
@@ -31,7 +28,6 @@
                         <ui:include src="/templates/footer.xhtml"></ui:include>
                     </ui:insert>
                 </div>
-             </h:form>
         </h:body>
     </f:view>
 </html>
