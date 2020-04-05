@@ -75,35 +75,6 @@ add it to the shopping cart.
                 #{book.getSynopsis()}
             </p>
         </b:container>
-
-        <b:container>
-            <h2>#{msgs.reviews}</h2>
-            <p>
-                <!-- APPROVED REVIEWS -->
-                <c:set var="approvedReviews" value="#{reviewsJpaController.getApprovedReviews(book.getIsbn())}"/>
-                <c:choose>
-                    <c:when test="#{empty approvedReviews}">
-                        #{msgs.no_approved_revs_yet}
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach items="#{approvedReviews}" var="review">
-                            <div id="apprvdRevs">
-                                <p>
-                                    #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
-                                </p>
-                                <p>
-                                    #{review.getReview()}
-                                </p>
-                                <p>
-                                    #{msgs.rating} : #{review.getRating()}
-                                </p>
-                            </div>
-                            <hr></hr>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
-            </p>
-        </b:container>
         <!--Recommended book for same author and same genre-->
         <b:container>
             <h2>#{msgs.recommendation}</h2>
@@ -148,6 +119,34 @@ add it to the shopping cart.
                     </b:column>
                 </b:row>
             </b:jumbotron>
+        </b:container>
+        <b:container>
+            <h2>#{msgs.reviews}</h2>
+            <p>
+                <!-- APPROVED REVIEWS -->
+                <c:set var="approvedReviews" value="#{reviewsJpaController.getApprovedReviews(book.getIsbn())}"/>
+                <c:choose>
+                    <c:when test="#{empty approvedReviews}">
+                        #{msgs.no_approved_revs_yet}
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach items="#{approvedReviews}" var="review">
+                            <div id="apprvdRevs">
+                                <p>
+                                    #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
+                                </p>
+                                <p>
+                                    #{review.getReview()}
+                                </p>
+                                <p>
+                                    #{msgs.rating} : #{review.getRating()}
+                                </p>
+                            </div>
+                            <hr></hr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+            </p>
         </b:container>
         <!--SUBMIT REVIEW-->
         <b:container>
