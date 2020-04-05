@@ -8,13 +8,9 @@ import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Size;
@@ -421,7 +417,6 @@ public class RegisterBackingBean implements Serializable {
         //Since user was created successfully reset values
         clearValues();
         
-        //TODO show an alert saying register successful please login
         return LOGIN_PAGE;
         
     }

@@ -29,6 +29,7 @@ public class StockReportBackingBean implements Serializable {
     
     /**
      * This will set the properties of the bean of for the stock
+     * @author Jeffrey Boisvert
      */
     public void runReport(){
         setStock();
@@ -37,6 +38,7 @@ public class StockReportBackingBean implements Serializable {
     
     /**
      * Helper method to set the list of clients and sales in a given date range.
+     * @author Jeffrey Boisvert
      */
     private void setStock() {
         this.stock = this.booksJpaController.getActiveBooks(-1);
@@ -45,6 +47,7 @@ public class StockReportBackingBean implements Serializable {
     /**
      * Used to retrieve the list of books in stock
      * @return the list of books in stock
+     * @author Jeffrey Boisvert
      */
     public List<Books> getStock() {
         return stock;
