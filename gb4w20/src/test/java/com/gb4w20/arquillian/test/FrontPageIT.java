@@ -356,7 +356,7 @@ public class FrontPageIT extends TestBase{
         loadFrontPage();
         
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        driver.findElement(By.id("j_idt21")).click();
+        driver.findElement(By.id("banner_ad_1")).click();
         
         wait.until(ExpectedConditions.titleIs("Summer 2019 – Credit Programs"));
     }
@@ -373,7 +373,7 @@ public class FrontPageIT extends TestBase{
         loadFrontPage();
         
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        driver.findElement(By.id("j_idt86")).click();
+        driver.findElement(By.id("banner_ad_2")).click();
         
         wait.until(ExpectedConditions.titleIs("Summer 2019 – Credit Programs"));
     }
