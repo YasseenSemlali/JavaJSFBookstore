@@ -58,14 +58,12 @@ necessary to manage sales in the web app.
                              <p:autoUpdate />
                          </p:message>
                         <!-- USED FOR CUSTOM VALIDATION -->
-                        <h:messages 
+                        <h:messages
                             id="report-error" 
                             class="alert alert-danger" 
                             style="margin: 5%" 
                             globalOnly="true" 
-                            rendered="#{index == managerSales.errorIndex}">
-                            <p:autoUpdate disabled="true"/>
-                        </h:messages>
+                            rendered="#{index == managerSales.errorIndex}" />
                     </p:column>
 
                     <p:column>
@@ -74,7 +72,6 @@ necessary to manage sales in the web app.
                                 listener="#{managerSales.editSalePrice(book.isbn, index)}" 
                                 update="salelist" 
                                 process="@all"
-                                oncomplete="PF('book_w').filter()"
                                 />
                         </p:commandButton>
                     </p:column>
