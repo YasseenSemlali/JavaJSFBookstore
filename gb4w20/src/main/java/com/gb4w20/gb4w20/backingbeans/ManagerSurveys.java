@@ -149,8 +149,6 @@ public class ManagerSurveys implements Serializable {
         try {
             for (SurveyResponses response : responses) {
                 answerController.edit(response);
-                LOG.info(Boolean.toString(response.getEnabled()));
-                LOG.info(response.getResponse());
             }
             init();
             FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/manager-secured/manager-forms/manager-surveys.xhtml"); //Fixes a display bug
@@ -183,7 +181,6 @@ public class ManagerSurveys implements Serializable {
 
         } catch (Exception ex) {
             LOG.info(ex.toString());
-            //return "/action-responses/action-failure";
         }
     }
 

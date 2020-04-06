@@ -59,7 +59,9 @@ to edit survey answers
                                         #{answer.response}
                                     </p:column>
                                     <p:column>
-                                        <p:inputSwitch value="#{answer.enabled}" />
+                                        <p:inputSwitch value="#{answer.enabled}">
+                                            <p:ajax />
+                                        </p:inputSwitch>
                                     </p:column>
                                 </p:dataTable>
                             </div>
