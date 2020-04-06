@@ -82,7 +82,7 @@ insert into bookpublisher(publisher_id, isbn) VALUES(4, 9780000000010);
 insert into bookpublisher(publisher_id, isbn) VALUES(6, 9781401323585);
 
 INSERT INTO users(user_id,title,first_name,last_name,company_name,address_1,address_2,city,province,country,postal_code,home_phone,cell_phone,email, password, is_manager) VALUES( '1', 'Mr', 'John', 'Doe', 'Invera', '123 road avenue', 'second address', 'montreal', 'QC', 'Canada', 'h1h1h1', '0000000000', '1111111111', 'cst.send@gmail.com', 'dawsoncollege', false);
-INSERT INTO users(user_id,title,first_name,last_name,company_name,address_1,address_2,city,province,country,postal_code,home_phone,cell_phone,email, password, is_manager) VALUES( '2', 'Mrs', 'Jane', 'Doe', 'Bookify', '456 avenue boulevard', '', 'toronto', 'TO', 'Canada', 'h2h2h2', '3333333333', '4444444444', 'cst.receive@gmail.com', 'collegedawson', true);
+INSERT INTO users(user_id,title,first_name,last_name,company_name,address_1,address_2,city,province,country,postal_code,home_phone,cell_phone,email, password, is_manager) VALUES( '2', 'Mrs', 'Jane', 'Doe', 'Bookify', '456 avenue boulevard', '', 'toronto', 'ON', 'Canada', 'h2h2h2', '3333333333', '4444444444', 'cst.receive@gmail.com', 'collegedawson', true);
 ALTER TABLE users AUTO_INCREMENT=3;
 
 insert into orders(order_id, user_id, billing_address, timestamp) VALUES( 1, 1, '123 road avenue', '2020-01-31 19:39:52');

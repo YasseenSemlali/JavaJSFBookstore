@@ -31,6 +31,13 @@ necessary to add a new surbey
                 }
             }
         </style>
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-forms/manager-surveys.xhtml">#{msgs.surveys}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.new_surv_question}</li>
+              </ol>
+        </nav>
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <h:form style="text-align: center; padding-top:20%; padding-bottom: 20%;">
                 

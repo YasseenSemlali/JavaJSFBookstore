@@ -1,6 +1,3 @@
-/*
- * Backing beans
- */
 package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Bookorder;
@@ -16,7 +13,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;

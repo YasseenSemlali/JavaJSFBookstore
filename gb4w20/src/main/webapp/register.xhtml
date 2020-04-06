@@ -128,13 +128,26 @@ Java Server Faces page that displays the register user page of the app
                          </div>
                          <div class="form-group">
                             <h:outputLabel for="password" value="#{msgs.password}" />
-                            <h:inputSecret id="password"
+                            <p:inputText  type="password" id="password"
                                            class="form-control" 
                                            value="#{registerBackingBean.passwordInput}"
-                                           validator="#{registerBackingBean.validatePassword}">
+                                           validator="#{registerBackingBean.validatePassword}"
+                                           binding="#{actualPassword}"
+                                           >
                                      <f:ajax event="change" render="password-error"/>
-                             </h:inputSecret>
+                             </p:inputText>
                              <h:message id="password-error" for="password" style="color: red"/>               
+                         </div>
+                         <div class="form-group">
+                          <h:outputLabel for="password-confirm" value="#{msgs.retype_password_to_confirm}" />
+                            <p:inputText  type="password" id="password-confirm"
+                                           class="form-control" 
+                                           value="#{registerBackingBean.confirmPasswordInput}"
+                                           validator="#{registerBackingBean.validatePasswordsMatch}">
+                                     <f:attribute name="other" value="#{actualPassword.submittedValue}" />
+                                     <f:ajax event="change" render="confirm-password-error"/>
+                             </p:inputText>
+                             <h:message id="confirm-password-error" for="password-confirm" style="color: red"/>               
                          </div>
                     <b:commandButton update="@form" 
                                      class="btn btn-primary" 

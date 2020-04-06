@@ -3,7 +3,7 @@
 <!--
 Java Server Faces page that displays the frontpage of the app
 
-@author Yasseen Semlali
+@author Yasseen Semlali, Jeffrey Boisvert
 -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:b="http://bootsfaces.net/ui"
@@ -101,7 +101,6 @@ Java Server Faces page that displays the frontpage of the app
                     </b:jumbotron>
                 </h:panelGroup>
             </h:panelGroup>
-
             <b:row>
                 <b:column id="recently-added-books-section" col-md="4">
                     <h2>${msgs.recently_added}</h2>
@@ -113,7 +112,7 @@ Java Server Faces page that displays the frontpage of the app
                     </b:panelGrid>
                 </b:column>
 
-                <b:column col-md="4" id="survey">
+                <b:column col-md="4" class="miscellaneous-item" id="survey">
                     <h2>${msgs.survey}</h2>
                     <c:set var="question" value="#{surveyQuestionsJpaController.getActiveQuestion()}"/>
 
@@ -145,11 +144,11 @@ Java Server Faces page that displays the frontpage of the app
                         ${msgs.no_survey_msg}
                     </h:panelGroup>
                 </b:column>
-                <b:column col-md="4">
+                <b:column col-md="4" class="miscellaneous-item">
                     <h2>${msgs.news2}</h2>
-                    <p:scrollPanel style="overflow-y: auto;height: 400px;">
+                    <p:scrollPanel id="news-feed" style="overflow-y: auto;height: 400px; padding: 1em;">
                         <p:feedReader value="#{rssFeedsJpaController.getActiveFeed().url}" var="feed"  size="10" >
-                            <h:outputLink value="#{feed.link}">
+                            <h:outputLink class="newsfeed-item" value="#{feed.link}">
                                 <h:outputText value="#{feed.title}" style="font-weight: bold;display:block"/>
                             </h:outputLink>
                             <h:outputText value="#{feed.description.value}" escape="false" class="hide-images"/>
