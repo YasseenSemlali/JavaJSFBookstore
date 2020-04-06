@@ -1282,9 +1282,9 @@ insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALU
 insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'SK', null, 0.05, 0.06 );
 insert into taxes(province, HST_percentage, GST_percentage, PST_percentage) VALUES( 'YT', null, 0.05, null );
 -- Ads 
-INSERT INTO ads(file_location, url) VALUES('christmas_ad.png', 'https://google.ca');
-INSERT INTO ads(file_location, url) VALUES('school_ad.png', 'https://www.dawsoncollege.qc.ca/');
-INSERT INTO ads(file_location, url) VALUES('summer_ad.png', 'https://www.dawsoncollege.qc.ca/credit/summer/');
+INSERT INTO ads(file_location, url) VALUES('christmas_ad.jpg', 'www.google.ca');
+INSERT INTO ads(file_location, url) VALUES('school_ad.jpg', 'www.concordiashanghai.org');
+INSERT INTO ads(file_location, url) VALUES('summer_ad.jpg', 'www.dawsoncollege.qc.ca/credit/summer/');
 
 
 -- Survey Questions

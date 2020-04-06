@@ -71,7 +71,7 @@ necessary to manage reviews in the web app.
                 </p:tab>
                 <p:tab title="#{msgs.not_approved_revs}" >
                     <h:form>
-                        <p:dataTable var="review" value="#{reviewsJpaController.getReviewsOnApproved(false)}"
+                        <p:dataTable var="review" widgetVar="rev_w2" value="#{reviewsJpaController.getReviewsOnApproved(false)}"
                                      emptyMessage="#{msgs.noresults}" tableStyle="width:auto">
 
                             <p:column filterBy="#{review.isbn.title}" headerText="#{msgs.title}" filterMatchMode="contains">
@@ -100,7 +100,10 @@ necessary to manage reviews in the web app.
 
                             <p:column>
                                 <p:commandButton value="#{msgs.approve}">
-                                    <f:ajax listener="#{managerReviews.editApprovalStatus(review.reviewId, true, 1)}" render="allrevs" execute="@all" />
+                                    <p:ajax 
+                                        listener="#{managerReviews.editApprovalStatus(review.reviewId, true, 1)}" 
+                                        update="allrevs" 
+                                        oncomplete="PF('rev_w2').filter()"  />
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>

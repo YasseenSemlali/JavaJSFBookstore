@@ -25,7 +25,7 @@
         <name>Dawson College</name>
     </organization>
     <properties>
-        <skipTests>true</skipTests>
+        <skipTests>false</skipTests>
     </properties>
     <!-- All of the sample code shares the same dependencies and build         -->
     <!-- The parent project named web_project_dependencies must be loaded into -->

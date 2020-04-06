@@ -47,7 +47,7 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:selectOneMenu id="selectbook" class="custom-select" value="#{managerInventory.selectIsbn}" style="width:30%;">
+                                        <p:selectOneMenu id="selectbook" class="custom-select" value="#{managerInventory.selectIsbn}" style="width:30%;" filter="true" filterMatchMode="startsWith">
                                             <p:ajax event="change" 
                                                     update="isbn title synopsis cover_img bookfiles pubdate numpages wholeprice listprice saleprice active allauthors allgenres allpublishers totalsaleslabel"
                                                     listener="#{managerInventory.bookChanged}" />
@@ -346,7 +346,7 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="#{msgs.addauthor}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:selectOneMenu id="book_author" class="custom-select" value="#{managerInventory.authorToAdd}" style="width:30%" styleClass="formComponent" >
+                                        <p:selectOneMenu id="book_author" class="custom-select" value="#{managerInventory.authorToAdd}" style="width:30%" styleClass="formComponent" filter="true" filterMatchMode="startsWith">
                                             <p:ajax event="change" 
                                                     update="allauthors"
                                                     listener="#{managerInventory.addAuthorToCollection}" />
@@ -379,7 +379,7 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="#{msgs.addgenre}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:selectOneMenu id="book_genre" class="custom-select" value="#{managerInventory.genreToAdd}" style="width:30%" styleClass="formComponent" >
+                                        <p:selectOneMenu id="book_genre" class="custom-select" value="#{managerInventory.genreToAdd}" style="width:30%" styleClass="formComponent" filter="true" filterMatchMode="startsWith">
                                             <p:ajax event="change" 
                                                     update="allgenres"
                                                     listener="#{managerInventory.addGenreToCollection}" />
@@ -412,7 +412,7 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="#{msgs.addpublisher}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:selectOneMenu id="book_publisher" class="custom-select" value="#{managerInventory.publisherToAdd}" style="width:30%" styleClass="formComponent" >
+                                        <p:selectOneMenu id="book_publisher" class="custom-select" value="#{managerInventory.publisherToAdd}" style="width:30%" styleClass="formComponent" filter="true" filterMatchMode="startsWith">
                                             <p:ajax event="change" 
                                                     update="allpublishers"
                                                     listener="#{managerInventory.addPublisherToCollection}" />
@@ -478,7 +478,9 @@ necessary to manage inventory of our store.
                                             id="selectauthor" 
                                             class="custom-select" 
                                             value="#{managerInventory.authorId}" 
-                                            style="width:30%;">
+                                            style="width:30%;"
+                                            filter="true" 
+                                            filterMatchMode="startsWith">
                                             <p:ajax event="change" update="author_firstname author_lastname"
                                                     listener="#{managerInventory.authorChanged}" />
                                             <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
@@ -560,7 +562,7 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:selectOneMenu id="selectpublisher" class="custom-select" value="#{managerInventory.publisherId}" style="width:30%;">
+                                        <p:selectOneMenu id="selectpublisher" class="custom-select" value="#{managerInventory.publisherId}" style="width:30%;" filter="true" filterMatchMode="startsWith">
                                             <p:ajax event="change" update="publisher_name"
                                                     listener="#{managerInventory.publisherChanged}" />
                                             <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
@@ -616,7 +618,7 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:selectOneMenu id="selectgenre" class="custom-select" value="#{managerInventory.genreId}" style="width:30%;">
+                                        <p:selectOneMenu id="selectgenre" class="custom-select" value="#{managerInventory.genreId}" style="width:30%;" filter="true" filterMatchMode="startsWith">
                                             <p:ajax event="change" update="genre"
                                                     listener="#{managerInventory.genreChanged}" />
                                             <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
