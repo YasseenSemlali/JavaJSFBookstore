@@ -39,7 +39,9 @@ and finalize transactions
                         <ui:param name="showOldPrice" value="true"></ui:param>
                     </ui:decorate>
                     <h:form>
-                        <p:commandButton value="#{msgs.remove}" action="#{cartSession.removeBookFromSession(cartbooks)}" style="background-color: red; color: white;" onsuccess="location.reload()"/>
+                        <div class="center-text">
+                            <p:commandButton value="#{msgs.remove}" action="#{cartSession.removeBookFromSession(cartbooks)}" style="background-color: red; color: white;" onsuccess="location.reload()"/>
+                        </div>
                     </h:form>
                     <br></br>
                 </c:forEach>

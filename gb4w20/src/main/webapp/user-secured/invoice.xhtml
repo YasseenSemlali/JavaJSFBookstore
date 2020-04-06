@@ -21,13 +21,14 @@ or print it or both.
         <h:outputStylesheet library="css" name="global.css" />
         
         <!-- Creating a new order -->
-        <!--<c:set var="neworder" value="#{bookOrderBackingBean.createOrder()}"/>-->
-        #{bookOrderBackingBean.createOrder()}
+        <!--#{bookOrderBackingBean.createOrder()}-->
 
         <b:container>
             <p:outputPanel id="invoiceprint">
                 <h1>#{msgs.companyName} <span class="bluetexts">#{msgs.invoice}</span></h1>
-                <h3>#{msgs.thankinvoice}</h3>
+                <h2>#{msgs.thankinvoice}</h2>
+                <br></br>
+                <h3>#{msgs.order} ##{bookOrderBackingBean.order.orderId}</h3>
                 <br></br>
                 <p>
                     <h4>#{msgs.youritems}:</h4>
@@ -36,7 +37,7 @@ or print it or both.
                             <li>#{cartbooks.title}: $#{cartbooks.listPrice -  cartbooks.salePrice}</li>
 
                             <!-- Adding those books purchased to the book order for this user -->
-                            #{bookOrderBackingBean.addBookToOrder(cartbooks)}
+                            <!--#{bookOrderBackingBean.addBookToOrder(cartbooks)}-->
                         </c:forEach>
                     </ul>
                 </p>

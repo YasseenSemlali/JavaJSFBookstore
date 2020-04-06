@@ -68,8 +68,9 @@ public class BookOrderBackingBean implements Serializable{
     /**
      * Creates a new order every time a user have
      * successfully purchased books
+     * @return 
      */
-    public void createOrder(){
+    public String createOrder(){
         order = new Orders();
         order.setUserId(userSession.getUser());
         order.setBillingAddress(userSession.getUser().getAddress1());
@@ -78,6 +79,8 @@ public class BookOrderBackingBean implements Serializable{
         
         try {
             this.ordersJpaController.create(order);
+            iterateThroughCart();
+            return "/user-secured/invoice";
         } catch (BackendException ex) {
             LOG.info(ex.toString());
             try {
@@ -85,6 +88,13 @@ public class BookOrderBackingBean implements Serializable{
             } catch (IOException ioex) {
                 LOG.info("Problem with redirection: " + ioex.toString());
             }
+            return null;
+        }
+    }
+    
+    private void iterateThroughCart(){
+        for(Books cartbook : cart.getBooks()){
+            addBookToOrder(cartbook);
         }
     }
     
@@ -93,7 +103,7 @@ public class BookOrderBackingBean implements Serializable{
      * for the user who have purchased it
      * @param book 
      */
-    public void addBookToOrder(Books book) {
+    private void addBookToOrder(Books book) {
         LOG.info("Book ISBN is " + book.getIsbn());
         LOG.info("New order id is " + this.order.getOrderId());
         LOG.info("Total is " + cart.calculateTotalAmount());
