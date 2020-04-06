@@ -2,19 +2,12 @@
 package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Publishers;
-import com.gb4w20.gb4w20.entities.Users;
 import com.gb4w20.gb4w20.jpa.PublishersJpaController;
-import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
-import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.io.Serializable;
 import java.util.List;
-import java.util.ResourceBundle;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -78,7 +71,8 @@ public class PublisherReportBackingBean implements Serializable {
     
     /**
      * Used to run the report to the current publisher id set in the bean. 
-     * This will set the properties of the bean of total sales and purchased items. 
+     * This will set the properties of the bean of total sales and purchased items.
+     * @author Jeffrey Boisvert
      */
     public void runReport(){
         
@@ -110,7 +104,7 @@ public class PublisherReportBackingBean implements Serializable {
     
     /**
      * Helper method to set the list of purchased products of the publisher in question. 
-     * @param id of the user in question. 
+     * @author Jeffrey Boisvert
      */
     private void setPurchasedProducts() {
         this.purchasedProducts = this.publisherJpaController.getPurchasedBooksByPublisher(this.publisherId, sqlDate(this.startDate).toString(), sqlDate(this.endDate).toString());
@@ -119,6 +113,7 @@ public class PublisherReportBackingBean implements Serializable {
     /**
      * Used to retrieve the list of products by the publisher that was purchased. 
      * @return the list of products. 
+     * @author Jeffrey Boisvert
      */
     public List<NameTotalAndCountBean> getPurchasedProducts() {
         return purchasedProducts;
@@ -171,6 +166,7 @@ public class PublisherReportBackingBean implements Serializable {
      * 
      * @param date Given
      * @return sql version of the date. 
+     * @author Jeffrey Boisvert
      */
     private java.sql.Date sqlDate(java.util.Date date){
         return new java.sql.Date(date.getTime());

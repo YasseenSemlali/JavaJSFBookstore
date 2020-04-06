@@ -1,13 +1,8 @@
 
 package com.gb4w20.gb4w20.backingbeans;
 
-import com.gb4w20.gb4w20.entities.Authors;
-import com.gb4w20.gb4w20.jpa.AuthorsJpaController;
-import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import java.io.Serializable;
-import java.util.List;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
