@@ -34,19 +34,19 @@ Java Server Faces page that displays the frontpage of the app
                 input.onchange()
             }
         </script>
-        
+
         <!-- BANNER AD 1 - AUTHOR: JEAN ROBATTO (only of the ad) -->
         <c:set var="ad1" value="#{adsJpaController.getRandomActiveAd()}"/>
         <div>
             <a href="https://#{ad1.url}">
-            <p:graphicImage 
-                width="100%" 
-                height="200px" 
-                alt="ad_1" 
-                library="img" 
-                name="ads/#{ad1.fileLocation}" 
-                rendered="#{ad1!=null}"
-                style="cursor: pointer"/>
+                <p:graphicImage 
+                    width="100%" 
+                    height="200px" 
+                    alt="ad_1" 
+                    library="img" 
+                    name="ads/#{ad1.fileLocation}" 
+                    rendered="#{ad1!=null}"
+                    style="cursor: pointer"/>
             </a>
         </div>
 
@@ -101,24 +101,15 @@ Java Server Faces page that displays the frontpage of the app
                     </b:jumbotron>
                 </h:panelGroup>
             </h:panelGroup>
-            
-            <b:row id="miscellaneous-items" class="small-padding">
-                <b:column id="recently-bought-books-section" class="miscellaneous-item" col-md="4">
-                    <h2>${msgs.you_recently_bought}</h2>
+            <b:row>
+                <b:column id="recently-added-books-section" col-md="4">
+                    <h2>${msgs.recently_added}</h2>
 
-                    <c:choose>
-                        <c:when test="#{userSession.loggedIn}">
-                            <b:panelGrid columns="2" id="recently-bought">
-                                <c:forEach items="#{booksJpaController.getRecentlyBoughtBooks(userSession.userId, 3)}" var="book">
-                                   <bk:book value="#{book}"/>
-                                </c:forEach>
-                            </b:panelGrid>
-                        </c:when>
-                        <c:otherwise>
-                            <p id="bought-books-not-logged-in-msg">${msgs.recently_bought_not_logged_in}</p>
-                            <b:link id="recently-bought-books-login-button" class="language-button btn btn-primary" href="#{request.contextPath}/login.xhtml" value="${msgs.login}" />
-                        </c:otherwise>
-                    </c:choose>
+                    <b:panelGrid columns="2" id="recently-added">
+                        <c:forEach items="#{booksJpaController.getRecentlyAddedBooks(3)}" var="book">
+                            <bk:book value="#{book}"/>
+                        </c:forEach>
+                    </b:panelGrid>
                 </b:column>
 
                 <b:column col-md="4" class="miscellaneous-item" id="survey">
@@ -167,19 +158,19 @@ Java Server Faces page that displays the frontpage of the app
                 </b:column>
             </b:row>
             <!-- BANNER AD 2 - AUTHOR: JEAN ROBATTO (only of the ad) -->
-        <c:set var="ad2" value="#{adsJpaController.getRandomActiveAd()}"/>
-        <div>
-            <a href="https://#{ad2.url}">
-            <p:graphicImage 
-                width="100%" 
-                height="200px" 
-                alt="ad_2" 
-                library="img" 
-                name="ads/#{ad2.fileLocation}" 
-                rendered="#{ad2!=null}"
-                style="cursor: pointer"/>
-            </a>
-        </div>
+            <c:set var="ad2" value="#{adsJpaController.getRandomActiveAd()}"/>
+            <div>
+                <a href="https://#{ad2.url}">
+                    <p:graphicImage 
+                        width="100%" 
+                        height="200px" 
+                        alt="ad_2" 
+                        library="img" 
+                        name="ads/#{ad2.fileLocation}" 
+                        rendered="#{ad2!=null}"
+                        style="cursor: pointer"/>
+                </a>
+            </div>
         </b:container>
     </ui:define>
 </ui:composition>

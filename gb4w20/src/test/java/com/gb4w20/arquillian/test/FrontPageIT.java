@@ -26,16 +26,17 @@ import static org.junit.Assert.assertEquals;
 /**
  * <h1>Selenium Test for the Front Page</h1>
  * <p>
- * To selenium test the front page components 
+ * To selenium test the front page components
  * </p>
+ *
  * @author Yasseen, Jeffrey Boisvert, Jasmar Badion, Jean
  */
-public class FrontPageIT extends TestBase{
-    
+public class FrontPageIT extends TestBase {
+
     private final static Logger LOG = LoggerFactory.getLogger(FrontPageIT.class);
 
     private final static String FRONT_PAGE_TITLE = "Front page";
-    
+
     private WebDriver driver;
 
     @Override
@@ -51,7 +52,7 @@ public class FrontPageIT extends TestBase{
         return dataSource;
         
     }
-    
+
     @BeforeClass
     public static void setupClass() {
         // Normally an executable that matches the browser you are using must
@@ -60,14 +61,36 @@ public class FrontPageIT extends TestBase{
         WebDriverManager.chromedriver().setup();
     }
 
+    /**
+     * Helper method used to login
+     *
+     * @author Yasseen Semlali
+     */
     private void login(String username, String password) {
         driver.get("http://localhost:8080/gb4w20/login.xhtml");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.titleIs("Login"));
+
         driver.findElement(By.id("login-form:email")).sendKeys(username);
         driver.findElement(By.id("login-form:password")).sendKeys(password);
         driver.findElement(By.id("login-form:login-btn")).click();
-        
+
     }
-    
+
+    /**
+     * Helper method used to load the front page
+     *
+     * @author Jeffrey Boisvert
+     */
+    private void loadFrontPage() {
+
+        driver.get("http://localhost:8080/gb4w20");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        wait.until(ExpectedConditions.titleIs(FRONT_PAGE_TITLE));
+
+    }
+
     @Before
     public void setupTest() {
         WebDriverManager.chromedriver().setup();
@@ -75,36 +98,33 @@ public class FrontPageIT extends TestBase{
     }
 
     @Test
-    @Ignore
     public void testLoginRedirectNotManager() throws Exception {
         this.login("cst.send@gmail.com", "dawsoncollege");
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.titleIs("Front page"));
     }
-    
+
     @Test
     public void testLoginRedirectIsManager() throws Exception {
         this.login("cst.receive@gmail.com", "collegedawson");
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.titleIs("Dashboard"));
     }
-    
+
     @Test
-    public void testRecentlyBought() throws Exception {
-        this.login("cst.send@gmail.com", "dawsoncollege");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.titleIs("Front page"));
-        
-        List<WebElement> books = driver.findElement(By.id("recently-bought")).findElements(By.tagName("strong"));
-        
-        List<String> results = new ArrayList<>();
-        for(WebElement i: books) {
+    public void testRecentlyAdded() throws Exception {
+        this.loadFrontPage();
+
+        List<WebElement> books = driver.findElement(By.id("recently-added")).findElements(By.tagName("strong"));
+
+        List<String> results = new ArrayList<String>();
+        for (WebElement i : books) {
             results.add(i.getText());
         }
-        
-        assertEquals(Arrays.asList("The Three-Body Problem", "Red Seas Under Red Skies", "Harry Potter and the Chamber of Secrets"), results);
+
+        assertEquals(Arrays.asList("And Another Thing...", "The Hitchhiker's Guide to the Galaxy", "The Three-Body Problem"), results);
     }
-    
+
     @Test
     public void testTitle() throws Exception {
 
@@ -130,79 +150,83 @@ public class FrontPageIT extends TestBase{
 
         driver.findElement(By.cssSelector("label[for='surveyform\\:survey-answers\\:1']")).click();
         driver.findElement(By.id("surveyform:surveysubmit")).click();
-        
+
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("survey-chart")));
-        
+
         Actions action = new Actions(driver);
-        action.moveToElement(driver.findElement(By.cssSelector(".highcharts-series > rect:nth-child(2)"))).build().perform();        
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("survey-chart")));        
+        action.moveToElement(driver.findElement(By.cssSelector(".highcharts-series > rect:nth-child(2)"))).build().perform();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("survey-chart")));
         String greenCount = driver.findElement(By.cssSelector(".highcharts-label > text > tspan:nth-child(4)")).getText();
-        
+
         assertEquals("501", greenCount);
     }
-    
+
     /**
-     * Used to test that the user is brought to the correct page upon 
-     * clicking on search giving a valid input
-     * @throws Exception 
+     * Used to test that the user is brought to the correct page upon clicking
+     * on search giving a valid input
+     *
+     * @throws Exception
      * @author Jeffrey Boisvert
      */
     @Test
     public void testNavigateToSearchPage() throws Exception {
 
         loadFrontPage();
-        
+
         WebElement inputElement = driver.findElement(By.id("search-input"));
         inputElement.clear();
         inputElement.sendKeys("harry");
-        
+
         driver.findElement(By.id("search-submit")).click();
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.titleIs("Search"));
-        
+
     }
-    
+
     /**
-     * Used to test that the user is brought to the advanced search
-     * page when clicking on the link 
-     * @throws Exception 
+     * Used to test that the user is brought to the advanced search page when
+     * clicking on the link
+     *
+     * @throws Exception
      * @author Jeffrey Boisvert
      */
     @Test
     public void testNavigateToAdvanceSearchPage() throws Exception {
 
         loadFrontPage();
-        
+
         driver.findElement(By.id("advanced-search-link")).click();
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.titleIs("Advanced search"));
-        
+
     }
 
     /**
-     * Used to test that the user can switch 
-     * the french language on the front page 
-     * @throws Exception 
+     * Used to test that the user can switch the french language on the front
+     * page
+     *
+     * @throws Exception
      * @author Jeffrey Boisvert
      */
     @Test
     public void testSwitchToFrench() throws Exception {
 
         loadFrontPage();
-        
+
         WebDriverWait wait = new WebDriverWait(driver, 10);
         driver.findElement(By.id("nav-form:french-button")).click();
         
         wait.until(ExpectedConditions.titleIs("Page de garde"));
-        
+
     }
-    
+
     /**
-     * Used to test that the user can switch 
-     * the English language on the front page 
-     * @throws Exception 
+     * Used to test that the user can switch the English language on the front
+     * page
+     *
+     * @throws Exception
      * @author Jeffrey Boisvert
      */
     @Test
@@ -210,16 +234,16 @@ public class FrontPageIT extends TestBase{
     public void testSwitchToEnglish() throws Exception {
 
         loadFrontPage();
-        
+
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        driver.findElement(By.id("nav-form:french-button")).click();
-        driver.findElement(By.id("nav-form:english-button")).click();
-        
+        driver.findElement(By.id("j_idt10:french-button")).click();
+        driver.findElement(By.id("j_idt10:english-button")).click();
         wait.until(ExpectedConditions.titleIs(FRONT_PAGE_TITLE));
-        
+
     }
-    
+
     /**
+
      * Used to test that the user is brought to the login page
      * when selecting the login button for recently bought books
      * @throws Exception 
@@ -235,23 +259,6 @@ public class FrontPageIT extends TestBase{
         driver.findElement(By.id("recently-bought-books-login-button")).click();
         
         wait.until(ExpectedConditions.titleIs("Login"));
-        
-    }
-    
-    /**
-     * Used to test that the recently bought books is empty 
-     * when the user has not logged in. 
-     * @throws Exception 
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void emptyRecentlyBoughtBooksWhenNotLoggedIn() throws Exception {
-
-        loadFrontPage();
-                
-        List<WebElement> elements = driver.findElements(By.id("bought-books-not-logged-in-msg"));
-        
-        assertEquals("Message that the user is not logged in is not shown", 1, elements.size());
         
     }
 
@@ -293,71 +300,56 @@ public class FrontPageIT extends TestBase{
         wait.until(ExpectedConditions.urlToBe(url));   
                 
     }
-       
-    /**
-     * Helper method used to load the front page
-     * @author Jeffrey Boisvert
-     */
-    private void loadFrontPage(){
-        
-        driver.get("http://localhost:8080/gb4w20");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-
-        wait.until(ExpectedConditions.titleIs(FRONT_PAGE_TITLE));
-        
-    }
-    
     /**
      * Selenium test for viewing the cart page
-     * @throws Exception 
+     *
+     * @throws Exception
      * @author Jasmar Badion
      */
     @Test
-    public void testViewCart() throws Exception{
+    public void testViewCart() throws Exception {
         loadFrontPage();
-        
+
         WebDriverWait wait = new WebDriverWait(driver, 10);
         driver.findElement(By.id("nav-form:bookcartlink")).click();
-        
         wait.until(ExpectedConditions.titleIs("Cart"));
     }
-    
+
     /**
-     * Selenium test for clicking the book if it
-     * goes to the right page
-     * @throws Exception 
+     * Selenium test for clicking the book if it goes to the right page
+     *
+     * @throws Exception
      * @author Jasmar Badion
      */
     @Test
-    public void testClickBook() throws Exception{
+    
+    public void testClickBook() throws Exception {
         loadFrontPage();
-        
+
         WebDriverWait wait = new WebDriverWait(driver, 10);
         driver.findElement(By.id("booklinkpage")).click();
-        
+
         wait.until(ExpectedConditions.urlMatches(".*bookpage.*"));
     }
-    
+
     /**
-     * Selenium test for clicking genre if it
-     * goes to the right page
-     * @throws Exception 
+     * Selenium test for clicking genre if it goes to the right page
+     *
+     * @throws Exception
      * @author Jasmar Badion
      */
     @Test
-    public void testClickGenre() throws Exception{
+    public void testClickGenre() throws Exception {
         loadFrontPage();
-        
+
         WebDriverWait wait = new WebDriverWait(driver, 10);
         driver.findElement(By.id("genrelinkpage")).click();
-        
+
         wait.until(ExpectedConditions.titleIs("Genre"));
     }
     
-    
     /**
-     * Used to close the browser 
-     * after a test was conducted
+     * Used to close the browser after a test was conducted
      */
     @After
     public void shutdownTest() {
