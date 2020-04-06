@@ -54,7 +54,7 @@ to edit orders.
                                 <p:outputLabel value="#{msgs.addIsbn}:" styleClass="formComponent" />
                             </div>
                             <div class="col-lg-6 text-left">
-                                <p:selectOneMenu id="order_book" class="custom-select" value="#{managerOrders.bookToAdd}" style="width:30%" styleClass="formComponent" >
+                                <p:selectOneMenu id="order_book" class="custom-select" value="#{managerOrders.bookToAdd}" style="width:30%" styleClass="formComponent" filter="true" filterMatchMode="startsWith">
                                     <p:ajax event="change" 
                                             update="allbooks"
                                             listener="#{managerOrders.addBookToCollection}" />
@@ -82,7 +82,7 @@ to edit orders.
                                 <p:outputLabel value="${msgs.user}:" styleClass="formComponent"/>
                             </div>
                             <div class="col-lg-6 text-left">
-                                <p:selectOneMenu id="user" class="custom-select" value="#{managerOrders.selectedUserId}" style="width:30%" styleClass="formComponent" >
+                                <p:selectOneMenu id="user" class="custom-select" value="#{managerOrders.selectedUserId}" style="width:30%" styleClass="formComponent" filter="true" filterMatchMode="startsWith">
                                     <f:selectItems value="#{usersJpaController.findUsersEntities()}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
                                 </p:selectOneMenu>
                             </div>

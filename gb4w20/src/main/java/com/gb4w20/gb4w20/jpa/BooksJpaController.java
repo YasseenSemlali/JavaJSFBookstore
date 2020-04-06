@@ -5,7 +5,6 @@
  */
 package com.gb4w20.gb4w20.jpa;
 
-import com.gb4w20.gb4w20.backingbeans.UserSessionBean;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -29,20 +28,12 @@ import com.gb4w20.gb4w20.entities.Users_;
 import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.IllegalOrphanException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
-import com.gb4w20.gb4w20.jpa.exceptions.PreexistingEntityException;
-import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
-import java.math.BigDecimal;
-import java.sql.SQLSyntaxErrorException;
-import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -55,7 +46,6 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import org.eclipse.persistence.exceptions.DatabaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

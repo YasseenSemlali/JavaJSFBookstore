@@ -48,10 +48,10 @@ Header for the webpage (nav) visible throughout the site.
                     </b:navbarLinks>
                     <c:choose>
                         <c:when test="#{localeBackingBean.setToFrench}">
-                            <b:commandLink id="english-button" class="language-button btn btn-primary" action="#{localeBackingBean.setLanguage('en', 'CA')}" value="EN" />
+                            <b:commandButton id="english-button" class="language-button btn btn-primary" action="#{localeBackingBean.setLanguage('en', 'CA')}" value="EN" />
                         </c:when>
                         <c:otherwise>
-                            <b:commandLink id="french-button" class="language-button btn btn-primary" action="#{localeBackingBean.setLanguage('fr', 'CA')}" value="FR" />
+                            <b:commandButton id="french-button" class="language-button btn btn-primary" action="#{localeBackingBean.setLanguage('fr', 'CA')}" value="FR" />
                         </c:otherwise>
                     </c:choose>
                 </h:form>

@@ -15,7 +15,6 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Size;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**

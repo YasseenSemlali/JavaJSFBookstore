@@ -59,7 +59,9 @@ to edit survey answers
                                         #{answer.response}
                                     </p:column>
                                     <p:column>
-                                        <p:inputSwitch value="#{answer.enabled}" />
+                                        <p:inputSwitch value="#{answer.enabled}">
+                                            <p:ajax />
+                                        </p:inputSwitch>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -97,7 +99,7 @@ to edit survey answers
                                 <p:commandButton value="#{msgs.add}">
                                  <p:ajax 
                                      listener="#{managerSurveys.createAnswer()}" 
-                                update="answers" 
+                                     update="answers new_answer" 
                                 process="@all" 
                                 />
                                 </p:commandButton>
