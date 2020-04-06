@@ -101,25 +101,8 @@ Java Server Faces page that displays the frontpage of the app
                     </b:jumbotron>
                 </h:panelGroup>
             </h:panelGroup>
-            <b:row id="book-items">
-                 <b:column id="recently-bought-books-section" class="miscellaneous-item" col-md="4">
-                    <h2>${msgs.you_recently_bought}</h2>
-
-                    <c:choose>
-                        <c:when test="#{userSession.loggedIn}">
-                            <b:panelGrid columns="2" id="recently-bought">
-                                <c:forEach items="#{booksJpaController.getRecentlyBoughtBooks(userSession.userId, 3)}" var="book">
-                                    <bk:book value="#{book}"/>
-                                </c:forEach>
-                            </b:panelGrid>
-                        </c:when>
-                        <c:otherwise>
-                            <p id="bought-books-not-logged-in-msg">${msgs.recently_bought_not_logged_in}</p>
-                            <b:link id="recently-bought-books-login-button" class="language-button btn btn-primary" href="#{request.contextPath}/login.xhtml" value="${msgs.login}" />
-                        </c:otherwise>
-                    </c:choose>
-                </b:column>
-                <b:column class="miscellaneous-item" id="recently-added-books-section" col-md="4">
+            <b:row>
+                <b:column id="recently-added-books-section" col-md="4">
                     <h2>${msgs.recently_added}</h2>
 
                     <b:panelGrid columns="2" id="recently-added">
@@ -128,8 +111,7 @@ Java Server Faces page that displays the frontpage of the app
                         </c:forEach>
                     </b:panelGrid>
                 </b:column>
-             </b:row>
-             <b:row id="miscellaneous-items">
+
                 <b:column col-md="4" class="miscellaneous-item" id="survey">
                     <h2>${msgs.survey}</h2>
                     <c:set var="question" value="#{surveyQuestionsJpaController.getActiveQuestion()}"/>
@@ -175,7 +157,6 @@ Java Server Faces page that displays the frontpage of the app
                     </p:scrollPanel>
                 </b:column>
             </b:row>
-
 
             <!-- BANNER AD 2 - AUTHOR: JEAN ROBATTO (only of the ad) -->
             <b:row>
