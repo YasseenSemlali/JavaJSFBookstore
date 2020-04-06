@@ -230,7 +230,6 @@ public class FrontPageIT extends TestBase {
      * @author Jeffrey Boisvert
      */
     @Test
-    @Ignore
     public void testSwitchToEnglish() throws Exception {
 
         loadFrontPage();
@@ -250,7 +249,6 @@ public class FrontPageIT extends TestBase {
      * @author Jeffrey Boisvert
      */
     @Test
-    @Ignore
     public void testLoginFromRecentlyBoughtBooks() throws Exception {
 
         loadFrontPage();
