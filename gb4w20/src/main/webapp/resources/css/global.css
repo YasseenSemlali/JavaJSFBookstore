@@ -51,6 +51,9 @@ div.card{
     .little-margin-top{
         margin-top: 1em;
     }
+    #book-items{
+        text-align: center;
+    }
 }
 
 /*Only apply to desktop not mobile*/

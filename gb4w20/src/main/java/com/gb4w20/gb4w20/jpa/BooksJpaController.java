@@ -492,6 +492,29 @@ public class BooksJpaController implements Serializable {
 
         return query.getResultList();
     }
+   
+    public List<Books> getRecentlyAddedBooks(int maxResults) {
+        LOG.info("getting " + maxResults + " recently added books");
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Books> cq = cb.createQuery(Books.class);
+
+        Root<Books> book = cq.from(Books.class);
+
+        // TODO get email from session
+        cq.select(book);
+        
+        List<Predicate> predicates = new ArrayList();
+        predicates.add(cb.isTrue(book.get(Books_.active)));
+        
+        cq.where(cb.and(predicates.toArray(new Predicate[0])));
+        cq.orderBy(cb.desc(book.get("timestamp")));
+
+        Query query = em.createQuery(cq);
+        query.setMaxResults(maxResults);
+
+        return query.getResultList();
+    }
     /**
      * Used to get the top selling books. 
      * @param maxResults if 0 or less will return all books. 
