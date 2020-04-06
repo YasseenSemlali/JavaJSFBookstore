@@ -5,7 +5,6 @@ import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.jsf.validation.FormValues;
 import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -16,7 +15,6 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Size;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -108,7 +106,6 @@ public class ManagerClientBackingBean implements Serializable {
      * Submits the user form. Will either edit an existing user, or add a new
      * user, depending on the selected field.
      *
-     * @return redirection
      * @author Jeffrey Boisvert
      */
     public void submitUser() {
@@ -176,6 +173,7 @@ public class ManagerClientBackingBean implements Serializable {
      * Helper method used to construct the user object based on the selected attributes
      * @param user to have the values set on
      * @return the constructed user
+     * @author Jeffrey Boisvert
      */
     private void setUserObjectBasedOnSelectedInputs(Users user){
             user.setTitle(this.selectedUserTitle);

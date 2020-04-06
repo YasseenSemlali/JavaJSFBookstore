@@ -19,6 +19,12 @@ necessary to manage reviews in the web app.
     </ui:define>
 
     <ui:define name="content">
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.reviews}</li>
+              </ol>
+        </nav>
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <p:tabView id="allrevs" activeIndex="#{managerReviews.activeTabIndex}" >
                 <p:tab title="#{msgs.approved_revs}" >
@@ -65,7 +71,7 @@ necessary to manage reviews in the web app.
                 </p:tab>
                 <p:tab title="#{msgs.not_approved_revs}" >
                     <h:form>
-                        <p:dataTable var="review" value="#{reviewsJpaController.getReviewsOnApproved(false)}"
+                        <p:dataTable var="review" widgetVar="rev_w2" value="#{reviewsJpaController.getReviewsOnApproved(false)}"
                                      emptyMessage="#{msgs.noresults}" tableStyle="width:auto">
 
                             <p:column filterBy="#{review.isbn.title}" headerText="#{msgs.title}" filterMatchMode="contains">
@@ -94,7 +100,10 @@ necessary to manage reviews in the web app.
 
                             <p:column>
                                 <p:commandButton value="#{msgs.approve}">
-                                    <f:ajax listener="#{managerReviews.editApprovalStatus(review.reviewId, true, 1)}" render="allrevs" execute="@all" />
+                                    <p:ajax 
+                                        listener="#{managerReviews.editApprovalStatus(review.reviewId, true, 1)}" 
+                                        update="allrevs" 
+                                        oncomplete="PF('rev_w2').filter()"  />
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>

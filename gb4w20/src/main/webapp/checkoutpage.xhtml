@@ -49,7 +49,7 @@ and finalize transactions
 
         <b:container>
             <b:jumbotron>
-                <h:form>
+                <h:form id="shopping-form">
                     <b:panelGrid columns="2">
                         <b:commandButton value="#{msgs.backshopping}" action="index.xhtml" look="primary"/>
                         <c:choose>
@@ -59,12 +59,12 @@ and finalize transactions
                                         #{msgs.nopurchasedbook}
                                     </c:when>
                                     <c:otherwise>
-                                        <b:commandButton value="#{msgs.finalize}" look="success" action="/user-secured/finalizecheckout.xhtml"/> 
+                                        <b:commandButton value="#{msgs.finalize}" look="success" action="user-secured/finalizecheckout.xhtml"/> 
                                     </c:otherwise>
                                 </c:choose>
                             </c:when>
                             <c:otherwise>
-                                <p:outputLabel>#{msgs.logintofinalize}</p:outputLabel>
+                                <p:outputLabel class="little-margin-top">#{msgs.logintofinalize} <b:link style="margin-left: 1em;" class="language-button btn btn-primary" href="#{request.contextPath}/login.xhtml" value="${msgs.login}" /></p:outputLabel>
                             </c:otherwise> 
                         </c:choose>
                     </b:panelGrid>

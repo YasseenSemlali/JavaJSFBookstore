@@ -31,6 +31,13 @@ to edit orders.
                 }
             }
         </style>
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-forms/manager-orders.xhtml">#{msgs.orders}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.edit}</li>
+              </ol>
+        </nav>
         <b:container style="margin-top: 5%; margin-bottom:5%">
             <h:form id="orderForm">
                 <c:set var="order" value="#{managerOrders.order}"/>
@@ -47,7 +54,7 @@ to edit orders.
                                 <p:outputLabel value="#{msgs.addIsbn}:" styleClass="formComponent" />
                             </div>
                             <div class="col-lg-6 text-left">
-                                <p:selectOneMenu id="order_book" class="custom-select" value="#{managerOrders.bookToAdd}" style="width:30%" styleClass="formComponent" >
+                                <p:selectOneMenu id="order_book" class="custom-select" value="#{managerOrders.bookToAdd}" style="width:30%" styleClass="formComponent" filter="true" filterMatchMode="startsWith">
                                     <p:ajax event="change" 
                                             update="allbooks"
                                             listener="#{managerOrders.addBookToCollection}" />
@@ -75,7 +82,7 @@ to edit orders.
                                 <p:outputLabel value="${msgs.user}:" styleClass="formComponent"/>
                             </div>
                             <div class="col-lg-6 text-left">
-                                <p:selectOneMenu id="user" class="custom-select" value="#{managerOrders.selectedUserId}" style="width:30%" styleClass="formComponent" >
+                                <p:selectOneMenu id="user" class="custom-select" value="#{managerOrders.selectedUserId}" style="width:30%" styleClass="formComponent" filter="true" filterMatchMode="startsWith">
                                     <f:selectItems value="#{usersJpaController.findUsersEntities()}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
                                 </p:selectOneMenu>
                             </div>

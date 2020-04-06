@@ -22,9 +22,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A java bean to edit ads.
- * 
- * NOTE: For some exceptions, the full path was required.
- * I assume Netbeans had a little issue.
+ *
+ * NOTE: For some exceptions, the full path was required. I assume Netbeans had
+ * a little issue.
  *
  * @author Jean Robatto
  */
@@ -36,17 +36,20 @@ public class ManagerAds implements Serializable {
 
     @Inject
     private AdsJpaController adsController;
-    
+
     private String image;
 
     private String[] locations;
     private String[] urls;
     private Boolean[] enabled;
 
-    @Size(min = 1, max = 2048) private String newUrl;
+    @Size(min = 1, max = 2048)
+    private String newUrl;
 
     /**
      * Method to initialize variables
+     *
+     * @author Jean Robatto
      */
     @PostConstruct
     private void init() {
@@ -68,6 +71,7 @@ public class ManagerAds implements Serializable {
      * @param id
      * @param index
      * @throws java.io.IOException
+     * @author Jean Robatto
      */
     public void editAd(Long id, int index) throws IOException {
         LOG.debug("Editing ad #" + Long.toString(id));
@@ -102,6 +106,7 @@ public class ManagerAds implements Serializable {
      * Method to create a new ad.
      *
      * @return redirection
+     * @author Jean Robatto
      */
     public String createAd() {
         LOG.debug("Creating new ad");
@@ -111,8 +116,10 @@ public class ManagerAds implements Serializable {
             ad.setUrl(newUrl);
             ad.setTimestamp(new Date());
             ad.setEnabled(Boolean.TRUE);
-            
+
             adsController.create(ad);
+            
+            init();
 
             return "/manager-secured/manager-forms/manager-ads";
         } catch (com.gb4w20.gb4w20.exceptions.BackendException | com.gb4w20.gb4w20.exceptions.RollbackFailureException ex) {
@@ -120,7 +127,7 @@ public class ManagerAds implements Serializable {
             return "/action-responses/action-failure";
         }
     }
-    
+
     /**
      * Upload the ad image file to the server.
      *
@@ -133,7 +140,7 @@ public class ManagerAds implements Serializable {
         image = newFile.getFileName();
         saveUploadedFile(newFile, basePath);
     }
-    
+
     /**
      * Method to save a file into the project
      *

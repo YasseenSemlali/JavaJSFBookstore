@@ -31,6 +31,13 @@ to edit survey answers
                 }
             }
         </style>
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-forms/manager-surveys.xhtml">#{msgs.surveys}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.edit_answers}</li>
+              </ol>
+        </nav>
         <b:container style="margin-top: 5%; margin-bottom:5%">
                 <c:set var="survey" value="#{managerSurveys.survey}"/>
                 <div class="row">
@@ -52,7 +59,9 @@ to edit survey answers
                                         #{answer.response}
                                     </p:column>
                                     <p:column>
-                                        <p:inputSwitch value="#{answer.enabled}" />
+                                        <p:inputSwitch value="#{answer.enabled}">
+                                            <p:ajax />
+                                        </p:inputSwitch>
                                     </p:column>
                                 </p:dataTable>
                             </div>
@@ -90,7 +99,7 @@ to edit survey answers
                                 <p:commandButton value="#{msgs.add}">
                                  <p:ajax 
                                      listener="#{managerSurveys.createAnswer()}" 
-                                update="answers" 
+                                     update="answers new_answer" 
                                 process="@all" 
                                 />
                                 </p:commandButton>

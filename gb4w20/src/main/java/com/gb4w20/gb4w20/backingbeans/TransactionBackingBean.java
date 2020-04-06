@@ -1,6 +1,4 @@
-/*
- * Backing beans
- */
+
 package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Taxes;

@@ -11,7 +11,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
@@ -227,6 +226,26 @@ public class JSFFormMessageValidator implements Serializable {
         if (!matcher.find()) {
             FacesMessage message = new FacesMessage(
                     this.bundle.getString("phone_error"));
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+            throw new ValidatorException(message);
+        }
+    }
+    
+    /**
+     * Used to validate if the passwords match 
+     * @param password
+     * @param retypedPassword
+     * @author Jeffrey Boisvert
+     */
+    public void validateThatPasswordsMatch(String password, String retypedPassword){
+        
+        //Validate if the password retyped is even valid
+        validatePassword(retypedPassword);
+        
+        if (password == null || retypedPassword == null || !password.equals(retypedPassword)) {
+            FacesMessage message = new FacesMessage(
+            this.bundle.getString("passwords_do_not_match"));
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
             throw new ValidatorException(message);
