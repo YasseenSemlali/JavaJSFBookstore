@@ -53,10 +53,6 @@ div.card{
     }
 }
 
-#shopping-form:checkout-login-button{
-    margin-left: 1em !important;
-}
-
 /*Only apply to desktop not mobile*/
 @media only screen and (min-width: 1025px) {
         #client-manager-form {

@@ -3,10 +3,13 @@ package com.gb4w20.gb4w20.backingbeans;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -23,6 +26,10 @@ public class LocaleBackingBean implements Serializable{
     
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(LocaleBackingBean.class);
     
+    public final static String LOCALE_VALUE = "userLocale";
+    
+    private final String NO_LANGUAGE_SET_IN_COOKIE = "NO COOKIE SET";  
+    
     private Locale locale;
 
     /**
@@ -31,7 +38,15 @@ public class LocaleBackingBean implements Serializable{
      */
     @PostConstruct
     public void init() {
-        locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
+        
+        String userPreferedLanguage = this.getUsersLanguagePreference();
+        
+        if(userPreferedLanguage.equals(NO_LANGUAGE_SET_IN_COOKIE)){
+           locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();   
+        } else {
+            setLanguage(userPreferedLanguage, "CA");
+        }
+        
     }
     
     /**
@@ -64,6 +79,9 @@ public class LocaleBackingBean implements Serializable{
         locale = new Locale(language, country);
         FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
         LOG.info("Local is now set to " + locale.toString());
+        
+        //Save the user's choice in the cookie
+        setUserLanguagePreferenceCookie();
     }
     
     /**
@@ -75,5 +93,41 @@ public class LocaleBackingBean implements Serializable{
         return this.getLanguage().equals("fr");
     }
 
+    /**
+     * Used to set the cookie of the user's language preference
+     * @author Jeffrey Boisvert
+     */
+    public void setUserLanguagePreferenceCookie() {
+        LOG.info("Setting mose recent genre");
+    
+        FacesContext context = FacesContext.getCurrentInstance();
+        
+        LOG.info("Setting language preference to " + this.getLanguage());
+        Cookie cookie = new Cookie(LOCALE_VALUE, this.getLanguage());
+        cookie.setPath("/");
+        cookie.setMaxAge(Integer.MAX_VALUE);
+
+        ((HttpServletResponse) context.getExternalContext().getResponse()).addCookie(cookie);
+    }
+    
+    /**
+     * Used to get the user's language preference if 
+     * the cookie was stored and is found
+     * @return a String of the language saved if not default value indicating no cookie set
+     * @author Jeffrey Boisvert
+     */
+    private String getUsersLanguagePreference() {
+        Map<String, Object> requestCookieMap = FacesContext.getCurrentInstance()
+                .getExternalContext()
+                .getRequestCookieMap();
+        
+        Cookie cookie = (Cookie) requestCookieMap.get(LOCALE_VALUE);
+        
+        if(cookie == null) {
+            return NO_LANGUAGE_SET_IN_COOKIE;
+        }
+        
+        return cookie.getValue();
+    }
     
 }
