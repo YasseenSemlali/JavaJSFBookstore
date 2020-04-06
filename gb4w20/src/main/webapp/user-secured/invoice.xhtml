@@ -43,6 +43,7 @@ or print it or both.
                 <hr></hr>
                 <p>
                     <h4>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h4>
+                    <c:set var="taxprov" value="#{taxesJpaController.findByProvince(userSession.user.province)}"/>
                     <p>#{msgs.hst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getHSTpercentage())}</p>
                     <p>#{msgs.gst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getGSTpercentage())}</p>
                     <p>#{msgs.pst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getPSTpercentage())}</p> 

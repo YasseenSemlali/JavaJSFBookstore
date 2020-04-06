@@ -77,7 +77,7 @@ public class BookOrderBackingBean implements Serializable{
         order.setUserId(userSession.getUser());
         order.setBillingAddress(userSession.getUser().getAddress1());
         order.setTimestamp(takeTheCurrentDate());
-        order.setEnabled(false);  
+        order.setEnabled(true);  
         
         try {
             this.ordersJpaController.create(order);
@@ -114,7 +114,7 @@ public class BookOrderBackingBean implements Serializable{
         bookorder.setPstTax(taxes.getPSTpercentage());
         bookorder.setOrderId(this.order);
         bookorder.setAmountPaidPretax(cart.calculateTotalAmount()); 
-        bookorder.setEnabled(false);
+        bookorder.setEnabled(true);
 
         try {
             this.bookorderJpaController.create(bookorder);
