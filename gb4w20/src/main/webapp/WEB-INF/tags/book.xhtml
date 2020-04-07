@@ -7,8 +7,8 @@
     <h:body>
         <ui:composition>
             <h:outputStylesheet library="css" name="book.css" />
+            <h:link outcome="/bookpage.xhtml?isbn=#{value.getIsbn()}">
                 <div>
-                    <a id="booklinkpage" href="#{request.contextPath}/bookpage.xhtml?isbn=#{value.getIsbn()}">
                         <h:graphicImage library="img" name="covers/#{value.getCover()}" height="200px"/> 
                         <h:panelGroup  rendered="#{showTitle == null || showTitle}">
                             <p class="h5"><strong>#{value.getTitle()}</strong></p>
@@ -20,8 +20,8 @@
                                 <strong>$#{value.getListPrice() - value.getSalePrice()}</strong>
                             </p>
                         </h:panelGroup>
-                    </a>
                 </div>
+            </h:link>
         </ui:composition>
     </h:body>
 </html>
