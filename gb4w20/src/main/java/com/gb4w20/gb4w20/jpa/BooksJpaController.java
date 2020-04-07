@@ -659,7 +659,6 @@ public class BooksJpaController implements Serializable {
         cq.select(book);
         
         List<Predicate> predicates = new ArrayList();
-        predicates.add(cb.isTrue(book.get(Books_.active)));
         
         predicates.add(cb.equal(user.get("userId"), id));
         
