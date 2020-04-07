@@ -51,23 +51,21 @@ necessary to add a new Ad
                             allowTypes="/(\.|\/)(jpe?g|png)$/" 
                             dragDropSupport="true"
                             style="width: 40%; margin: 5%"
-                            update="ad_img"
                             validatorMessage="#{msgs.invalid_cover}"
+                            update="file_upload_msg"
                             />
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6 text-right-mobile"></div>
-                    <div class="col-lg-6 text-left">
-                        <h:graphicImage 
-                            id="ad_img" 
-                            library="img" 
-                            name="ads/#{managerAds.image}" 
-                            height="200px" 
-                            style="margin: 20px"
-                            /> 
-                    </div>
-                </div>
+                 <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">  
+                                        <p:panelGrid id="file_upload_msg">
+                                        <p:outputLabel 
+                                            value="#{msgs.file_uploaded}" 
+                                            rendered="#{!managerAds.image.isEmpty()}" />
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
                 <div class="row">
                     <div class="col-lg-6 text-right-mobile">
                         <p:outputLabel value="#{msgs.url}" styleClass="formComponent" />
