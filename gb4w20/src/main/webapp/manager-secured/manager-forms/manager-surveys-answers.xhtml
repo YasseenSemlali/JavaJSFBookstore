@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays all the options
+to edit survey answers
+
+@author Jean Robatto
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.surveys}</title>
+    </ui:define>
+
+    <ui:define name="content">
+        <!-- FIXES STYLING FOR MOBILE -->
+        <style>
+            .text-right-mobile {
+                text-align: right;
+            }
+
+            @media (max-width: 1200px) {
+                .text-right-mobile {
+                    text-align: left;
+                }
+            }
+        </style>
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-forms/manager-surveys.xhtml">#{msgs.surveys}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.edit_answers}</li>
+              </ol>
+        </nav>
+        <b:container style="margin-top: 5%; margin-bottom:5%">
+                <c:set var="survey" value="#{managerSurveys.survey}"/>
+                <div class="row">
+                    <div class="col-lg-14 text-center">
+                        <h1>#{msgs.edit_answers} </h1>
+                        <h2># #{survey.id}</h2>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="contaimer">
+                        <h:form>
+                        <div class="row">
+                            <div class="col-lg-6 text-right-mobile">
+                                <p:outputLabel value="#{msgs.answers}:" styleClass="formComponent" />
+                            </div>
+                            <div class="col-lg-6 text-left">
+                                <p:dataTable id="answers" value="#{managerSurveys.responses}" rowIndexVar="index" emptyMessage="#{msgs.noresults}" var="answer" style="width:50%; text-align: center">
+                                    <p:column>
+                                        #{answer.response}
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputSwitch value="#{answer.enabled}">
+                                            <p:ajax />
+                                        </p:inputSwitch>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right-mobile">
+                                <p:outputLabel value="${msgs.new_answer}:" styleClass="formComponent"/>
+                            </div>
+                            <div class="col-lg-6 text-left">
+                                <p:inputText 
+                                    id="new_answer"
+                                    value="${managerSurveys.newAnswer}" 
+                                    required="true"
+                                    requiredMessage="#{msgs.no_empty}"
+                                    styleClass="formComponent" 
+                                    validatorMessage="#{msgs.string_too_long}"
+                                    >
+                                    <f:validateLength minimum="1" maximum="200" />
+                                    <f:ajax event="blur" render="new_answer_msg" />
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right-mobile"></div>
+                            <div class="col-lg-6 text-left">
+                                <p:message id="new_answer_msg" for="new_answer" style="width: 32%; margin: 2%">
+                                    <p:autoUpdate />
+                                </p:message>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right-mobile">
+                            </div>
+                            <div class="col-lg-6 text-left">
+                                <p:commandButton value="#{msgs.add}">
+                                 <p:ajax 
+                                     listener="#{managerSurveys.createAnswer()}" 
+                                     update="answers new_answer" 
+                                process="@all" 
+                                />
+                                </p:commandButton>
+                            </div>
+                        </div>
+                        </h:form>
+                        
+                        <h:form>
+                        <div class="row">
+                            <div class="col-lg-6 text-right-mobile">
+                            </div>
+                            <div class="col-lg-6 text-left">
+                                <p:commandButton value="#{msgs.submit}" action="#{managerSurveys.editAnswers()}" styleClass="formComponent" />
+                            </div>
+                        </div>
+                         </h:form>
+                    </div>
+                </div>
+        </b:container>
+    </ui:define>                
+</ui:composition>

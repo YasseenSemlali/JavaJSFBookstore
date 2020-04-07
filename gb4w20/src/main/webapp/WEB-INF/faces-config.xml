@@ -1,0 +1,24 @@
+<!-- 
+     Required configuration file for JSF. If using Jakarat/Java EE 8 the version 
+     is 2.3.
+-->
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+        http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd"
+              version="2.3">
+
+    <!-- Internationalization -->
+    <application>
+        <locale-config>
+            <default-locale>en_CA</default-locale>
+            <supported-locale>en_CA</supported-locale>
+            <supported-locale>fr_CA</supported-locale>
+        </locale-config>
+        <resource-bundle>
+            <base-name>com.gb4w20.gb4w20.bundles.messages</base-name>
+            <var>msgs</var>
+        </resource-bundle>
+    </application>
+
+</faces-config>

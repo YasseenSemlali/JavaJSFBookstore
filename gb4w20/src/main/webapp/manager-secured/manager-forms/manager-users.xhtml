@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays all the options
+necessary to manage users in the web app.
+
+@author Jeffrey Boisvert and special thanks to Jean Robatto for idea and main structure
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.users_title}</title>
+    </ui:define>
+    <ui:define name="content">
+        <h:outputStylesheet library="css" name="manager-client.css"  />
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.users_title}</li>
+              </ol>
+        </nav>
+        <b:container style="margin-top: 5%; margin-bottom:5%;" >
+                    <h:form id="client-manager-form">
+                        <div class="card">
+                            <div class="container">
+                                <b:row>
+                                   <b:column  col-md="4">
+                                        <b:selectOneMenu label="#{msgs.select_a_client}" 
+                                                         id="selectbook" 
+                                                         class="custom-select" 
+                                                         value="#{managerClient.selectedUserId}" 
+                                                         style="width:100%;"
+                                                         ajax="true" update="total-sales @form">
+                                            <f:ajax event="change" 
+                                                    listener="#{managerClient.userChanged}" />
+                                            <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
+                                            <f:selectItems value="#{usersJpaController.findUsersEntities()}" var="user" itemValue="#{user.userId}" itemLabel="#{user.firstName} #{user.lastName}"/>
+                                        </b:selectOneMenu>
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:selectBooleanCheckbox 
+                                            value="#{managerClient.selectedIsManagerState}" 
+                                            caption="#{msgs.is_manager_caption}"
+                                            label="#{msgs.is_manager_label}" />
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <h:panelGroup id="total-sales" layout="block" class="h3">#{msgs.totalSalesLabel} $#{managerClient.totalSales}</h:panelGroup>
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:selectOneMenu  
+                                                     label="#{msgs.title}" 
+                                                     value="#{managerClient.selectedUserTitle}" 
+                                                     >
+                                            <f:selectItems value="#{managerClient.availableTitles}" var="title" itemValue="#{title}" itemLabel="#{title}"/>
+                                        </b:selectOneMenu>
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:inputText label="#{msgs.firstname}" 
+                                                     value="#{managerClient.selectedUserFirstName}" 
+                                                     validator="#{managerClient.validateIsNotBlank}"
+                                                     >
+                                            <f:ajax event="change" render="first-name-error"/>
+                                        </b:inputText>
+                                        <b:message id="first-name-error" for="@previous" />
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:inputText label="#{msgs.lastname}" 
+                                                     value="#{managerClient.selectedLastName}" 
+                                                     validator="#{managerClient.validateIsNotBlank}"
+                                                     >
+                                            <f:ajax event="change" render="last-name-error"/>
+                                        </b:inputText>
+                                        <b:message id="last-name-error" for="@previous" />
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:inputText label="#{msgs.company_name_input}" 
+                                                     value="#{managerClient.selectedCompany}" 
+                                                     validator="#{managerClient.validateIsNotJustWhiteSpace}"
+                                                     >
+                                            <f:ajax event="change" render="company-name-error"/>
+                                        </b:inputText>
+                                        <b:message id="company-name-error" for="@previous" />
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:inputText label="#{msgs.address_one}" 
+                                                     value="#{managerClient.selectedAddress1}" 
+                                                     validator="#{managerClient.validateIsNotBlank}"
+                                                     >
+                                            <f:ajax event="change" render="address1-error"/>
+                                        </b:inputText>
+                                        <b:message id="address1-error" for="@previous" />
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:inputText label="#{msgs.address_two}" 
+                                                     value="#{managerClient.selectedAddress2}" 
+                                                     validator="#{managerClient.validateIsNotJustWhiteSpace}"
+                                                     >
+                                            <f:ajax event="change" render="address2-error"/>
+                                        </b:inputText>
+                                        <b:message id="address2-error" for="@previous" />
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:inputText label="#{msgs.city}" 
+                                                     value="#{managerClient.selectedCity}" 
+                                                     validator="#{managerClient.validateIsNotBlank}"
+                                                     >
+                                            <f:ajax event="change" render="city-error"/>
+                                        </b:inputText>
+                                        <b:message id="city-error" for="@previous" />
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:selectOneMenu  
+                                                     label="#{msgs.province}" 
+                                                     value="#{managerClient.selectedProvince}" 
+                                                     >
+                                            <f:selectItems value="#{managerClient.provinceSelections}" var="province" itemValue="#{province}" itemLabel="#{province}"/>
+                                        </b:selectOneMenu>
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:inputText label="#{msgs.country}" 
+                                                     value="#{managerClient.selectedCountry}" 
+                                                     validator="#{managerClient.validateIsNotBlank}"
+                                                     >
+                                            <f:ajax event="change" render="country-error"/>
+                                        </b:inputText>
+                                        <b:message id="country-error" for="@previous" />
+                                   </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:inputText label="#{msgs.postal_code}"
+                                                     a:maxlength="6"
+                                                     value="#{managerClient.selectedPostalCode}" 
+                                                     validator="#{managerClient.validatePostalCode}"
+                                                     >
+                                            <f:ajax event="change" render="postal-code-error"/>
+                                        </b:inputText>
+                                        <b:message id="postal-code-error" for="@previous" />
+                                   </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:inputText 
+                                            label="#{msgs.home_phone}" 
+                                            a:maxlength="10"
+                                            value="#{managerClient.selectedHomePhone}" 
+                                            validator="#{managerClient.validatePhone}"
+                                                     >
+                                            <f:ajax event="change" render="home-phone-error"/>
+                                        </b:inputText>
+                                        <b:message id="home-phone-error" for="@previous" />
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:inputText label="#{msgs.cell_phone}"
+                                                     a:maxlength="10"
+                                                     value="#{managerClient.selectedCellPhone}" 
+                                            validator="#{managerClient.validatePhone}"
+                                                     >
+                                            <f:ajax event="change" render="cell-phone-error"/>
+                                        </b:inputText>
+                                        <b:message id="cell-phone-error" for="@previous" />
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:inputText label="#{msgs.email}" 
+                                                     value="#{managerClient.selectedEmail}" 
+                                            validator="#{managerClient.validateEmail}"
+                                                     >
+                                            <f:ajax event="change" render="email-error"/>
+                                        </b:inputText>
+                                        <b:message id="email-error" for="@previous" />
+                                    </b:column>
+                                </b:row>
+                                <!-- 
+                                This would not normally be here like this. 
+                                This is just done for the scope of the project 
+                                and a proper change password system would be implemented
+                                usually - Jeffrey Boisvert 
+                                --> 
+                                <b:row>
+                                     <b:column  col-md="4">
+                                        <b:inputSecret label="#{msgs.password}" 
+                                                     value="#{managerClient.selectedPassword}" 
+                                            validator="#{managerClient.validatePassword}"
+                                                     >
+                                            <f:ajax event="change" render="password-error"/>
+                                        </b:inputSecret>
+                                        <b:message id="password-error" for="@previous" />
+                                    </b:column>   
+                                </b:row>
+                                <b:row>
+                                    <b:column  col-md="4">
+                                        <b:commandButton 
+                                            update="@form" 
+                                            value="#{msgs.submit}" 
+                                            action="#{managerClient.submitUser}"
+                                            styleClass="btn btn-primary" />
+                                        <!-- Used to notify about the form submission -->
+                                        <b:growl globalOnly="true" placementFrom="bottom"
+                                            show-detail="true" show-summary="false" allowDismiss="true"
+                                            delay="10000" escape="true" />
+                                    </b:column> 
+                                </b:row>
+                                </div>
+                             </div>                    
+                        </h:form>
+        </b:container>
+        </ui:define>                
+</ui:composition>

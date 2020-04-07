@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays the login form for a user
+
+@author Jeffrey Boisvert
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.login}</title>
+    </ui:define>
+    <ui:define name="content">
+        <h:outputStylesheet library="css" name="global.css"  />
+        <h:outputStylesheet library="css" name="login.css"  />
+        <div class="content-container">
+        <h2 class="header">#{msgs.login}</h2>
+        <h:form class="form-signin" id="login-form">
+                 <h:messages id="login-error" class="alert alert-danger" globalOnly="true" />
+                 <div class="form-group">
+                     <h:outputLabel for="email" value="#{msgs.email}" />
+                     <h:inputText id="email" class="form-control" 
+                                 value="#{loginBackingBean.emailInput}"  
+                                 validator="#{loginBackingBean.validateEmail}">
+                              <f:ajax event="change" render="email-error"/>
+                     </h:inputText>
+                     <h:message id="email-error" for="email" style="color: red"/>
+                 </div>
+                 <div class="form-group">
+                     <h:outputLabel for="password" value="#{msgs.password}" />
+                     <h:inputSecret id="password"
+                                    class="form-control" 
+                                    value="#{loginBackingBean.passwordInput}"
+                                    validator="#{loginBackingBean.validateIsNotBlank}">
+                              <f:ajax event="change" render="password-error"/>
+                     </h:inputSecret>
+                     <h:message id="password-error" for="password" style="color: red"/>   
+                 </div>
+                <b:commandButton update="@form" 
+                                 id="login-btn"
+                                 class="btn btn-primary" 
+                                 value="#{msgs.login}" 
+                                 action="#{loginBackingBean.login}"/>
+                <hr></hr>
+                <h4>${msgs.dont_have_an_account}</h4>
+                <b:link id="register-button-login-page" 
+                        class="language-button btn btn-primary" 
+                        href="#{request.contextPath}/register.xhtml" 
+                        value="${msgs.register_page}" />
+        </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

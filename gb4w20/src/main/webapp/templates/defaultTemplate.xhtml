@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <f:view locale="#{localeBackingBean.locale}">
+        <h:head>
+            <ui:insert name="head">
+            </ui:insert>
+        </h:head>
+        <h:body>
+                <h:outputStylesheet library="css" name="global.css" />
+
+                <div>
+                    <ui:insert name="header">
+                        <ui:include src="/templates/header.xhtml"></ui:include>
+                    </ui:insert>
+                </div>
+                <div>
+                    <ui:insert name="content">
+                        <ui:include src="/templates/content.xhtml"></ui:include>
+                    </ui:insert>
+                </div>
+                <div>
+                    <ui:insert name="footer">
+                        <ui:include src="/templates/footer.xhtml"></ui:include>
+                    </ui:insert>
+                </div>
+        </h:body>
+    </f:view>
+</html>

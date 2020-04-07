@@ -1,0 +1,680 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays all the options
+necessary to manage inventory of our store.
+
+@author Jean Robatto
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.inventory}</title>
+    </ui:define>
+    <ui:define name="content">
+        <!-- FIXES STYLING FOR MOBILE -->
+        <style>
+            .text-right-mobile {
+                text-align: right;
+            }
+
+            @media (max-width: 1200px) {
+                .text-right-mobile {
+                    text-align: left;
+                }
+            }
+        </style>
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.inventory}</li>
+              </ol>
+        </nav>
+        <b:container style="margin-top: 5%; margin-bottom:5%;" >
+            <p:tabView style="text-align: center;" >
+                <p:tab title="${msgs.book}" id="bookTab">
+                    <h:form id="bookForm">
+                        <div class="card">
+                            <div class="contaimer">
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:selectOneMenu id="selectbook" class="custom-select" value="#{managerInventory.selectIsbn}" style="width:30%;" filter="true" filterMatchMode="startsWith">
+                                            <p:ajax event="change" 
+                                                    update="isbn title synopsis cover_img bookfiles pubdate numpages wholeprice listprice saleprice active allauthors allgenres allpublishers totalsaleslabel"
+                                                    listener="#{managerInventory.bookChanged}" />
+                                            <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
+                                            <f:selectItems value="#{booksJpaController.findBooksEntities()}" var="book" itemValue="#{book.isbn}" itemLabel="#{book.title}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="ISBN:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputText 
+                                            id="isbn" 
+                                            value="#{managerInventory.isbn}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.invlid_isbn}"
+                                            >
+                                            <f:validateLongRange maximum="9999999999999" />
+                                            <f:ajax event="blur" render="isbn_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="isbn_msg" for="isbn" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.title}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputText 
+                                            id="title" 
+                                            value="#{managerInventory.title}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="100" />
+                                            <f:ajax event="blur" render="title_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="title_msg" for="title" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.synopsis}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputText 
+                                            id="synopsis" 
+                                            value="#{managerInventory.synopsis}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="1000" />
+                                            <f:ajax event="blur" render="synopsis_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="synopsis_msg" for="synopsis" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.pubdate}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:calendar 
+                                            id="pubdate" 
+                                            pattern="dd/MM/yyyy" 
+                                            style="background-color: white" 
+                                            value="#{managerInventory.dateOfPublication}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            maxdate="#{managerInventory.today}"
+                                            />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.cover}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg-6 text-left">    
+                                        <p:fileUpload 
+                                            fileUploadListener="#{managerInventory.handleImageUpload}" 
+                                            allowTypes="/(\.|\/)(jpe?g|png)$/" 
+                                            dragDropSupport="true"
+                                            style="width: 40%; margin: 5%"
+                                            update="cover_img img_upload_msg"
+                                            validatorMessage="#{msgs.invalid_cover}"
+                                            />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">  
+                                        <p:panelGrid id="img_upload_msg">
+                                        <p:outputLabel 
+                                            value="#{msgs.file_uploaded}" 
+                                            rendered="#{!managerInventory.cover.isEmpty() and managerInventory.isNew}" />
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <h:graphicImage 
+                                            id="cover_img" 
+                                            library="img" 
+                                            name="covers/#{managerInventory.cover}" 
+                                            height="200px" 
+                                            style="margin: 20px"
+                                            /> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.book_files}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg-6 text-left">    
+                                        <p:fileUpload 
+                                            fileUploadListener="#{managerInventory.handleFileUpload}" 
+                                            allowTypes="/(\.|\/)(pdf|epub|mobi)$/" 
+                                            dragDropSupport="true"
+                                            style="width: 40%; margin: 5%"
+                                            update="file_upload_msg"
+                                            validatorMessage="#{msgs.invalid_file}"
+                                            />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">  
+                                        <p:panelGrid id="file_upload_msg">
+                                        <p:outputLabel 
+                                            value="#{msgs.file_uploaded}" 
+                                            rendered="#{managerInventory.newBookfiles.size()>0}" />
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+                                 <div class="row">
+                                     <div class="col-lg-6 text-right-mobile">
+                                         <p:outputLabel value="${msgs.existing_book_files}:" styleClass="formComponent"/>
+                                     </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:dataTable 
+                                            id="bookfiles" 
+                                            emptyMessage="#{msgs.noresults}" 
+                                            value="#{bookFilesJpaController.getBookFilesForBook(booksJpaController.findBooks(managerInventory.isbn))}" 
+                                            var="file" 
+                                            style="width:50%; 
+                                            text-align: center;
+                                            margin: 3%;"
+                                            tableStyle="width:auto"
+                                            >
+                                             <p:column>
+                                                 <p:commandButton value="X">
+                                                     <f:ajax listener="#{managerInventory.removeBookFile(file.bookFileId)}" render="bookfiles" execute="@all" />
+                                                 </p:commandButton>
+                                            </p:column>
+                                            <p:column>
+                                                #{file.fileLocation}
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.num_pages}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputNumber 
+                                            id="numpages" 
+                                            value="#{managerInventory.pages}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.num_too_high}"
+                                            >
+                                            <f:validateLongRange minimum="0" maximum="2000" />
+                                            <f:ajax event="blur" render="numpages_msg" />
+                                        </p:inputNumber>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="numpages_msg" for="numpages" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.whole_price}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputNumber 
+                                            id="wholeprice" 
+                                            value="#{managerInventory.wholesalePrice}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateDoubleRange minimum="1" maximum="2000" />
+                                            <f:ajax event="blur" render="wholeprice_msg" />
+                                        </p:inputNumber>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="wholeprice_msg" for="wholeprice" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.list_price}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputNumber 
+                                            id="listprice" 
+                                            value="#{managerInventory.listPrice}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.invalid_list_price}"
+                                            >
+                                            <f:validateDoubleRange minimum="#{managerInventory.wholesalePrice}" maximum="2000" />
+                                            <f:ajax event="blur" render="listprice_msg" />
+                                        </p:inputNumber>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="listprice_msg" for="listprice" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.sale_price}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputNumber 
+                                            id="saleprice" 
+                                            value="#{managerInventory.salePrice}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateDoubleRange minimum="0" maximum="2000" />
+                                            <f:ajax event="blur" render="saleprice_msg" />
+                                        </p:inputNumber>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="saleprice_msg" for="saleprice" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.active}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputSwitch id="active" value="#{managerInventory.active}" styleClass="formComponent" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.addauthor}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:selectOneMenu id="book_author" class="custom-select" value="#{managerInventory.authorToAdd}" style="width:30%" styleClass="formComponent" filter="true" filterMatchMode="startsWith">
+                                            <p:ajax event="change" 
+                                                    update="allauthors"
+                                                    listener="#{managerInventory.addAuthorToCollection}" />
+                                            <f:selectItems value="#{authorsJpaController.findAuthorsEntities()}" var="author" itemValue="#{author.authorId}" itemLabel="#{author.firstName} #{author.lastName}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.allauthors}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:dataTable id="allauthors" value="#{managerInventory.bookAuthor}" emptyMessage="#{msgs.noresults}" var="author" style="width:50%; text-align: center">
+                                            <p:column>
+                                                #{author.firstName} #{author.lastName}
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:commandButton value="#{msgs.clearauthors}" action="#{managerInventory.clearAuthors()}" update="allauthors" styleClass="formComponent" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.addgenre}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:selectOneMenu id="book_genre" class="custom-select" value="#{managerInventory.genreToAdd}" style="width:30%" styleClass="formComponent" filter="true" filterMatchMode="startsWith">
+                                            <p:ajax event="change" 
+                                                    update="allgenres"
+                                                    listener="#{managerInventory.addGenreToCollection}" />
+                                            <f:selectItems value="#{genresJpaController.findGenresEntities()}" var="genre" itemValue="#{genre.genreId}" itemLabel="#{genre.genre}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.allgenres}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:dataTable id="allgenres" emptyMessage="#{msgs.noresults}" value="#{managerInventory.bookGenre}" var="genre" style="width:50%; text-align: center">
+                                            <p:column>
+                                                #{genre.genre}
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:commandButton value="#{msgs.cleargenres}" action="#{managerInventory.clearGenres()}" update="allgenres" styleClass="formComponent" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.addpublisher}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:selectOneMenu id="book_publisher" class="custom-select" value="#{managerInventory.publisherToAdd}" style="width:30%" styleClass="formComponent" filter="true" filterMatchMode="startsWith">
+                                            <p:ajax event="change" 
+                                                    update="allpublishers"
+                                                    listener="#{managerInventory.addPublisherToCollection}" />
+                                            <f:selectItems value="#{publishersJpaController.findPublishersEntities()}" var="publisher" itemValue="#{publisher.publisherId}" itemLabel="#{publisher.name}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.allpubs}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:dataTable id="allpublishers" emptyMessage="#{msgs.noresults}" value="#{managerInventory.bookPublisher}" var="publisher" style="width:50%; text-align: center">
+                                            <p:column>
+                                                #{publisher.name}
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:commandButton value="#{msgs.clearpubs}" action="#{managerInventory.clearPublishers()}" update="allpublishers" styleClass="formComponent" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.totalsales}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:outputLabel value="#{managerInventory.totalSales} $" styleClass="formComponent" id="totalsaleslabel"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:commandButton 
+                                            value="#{msgs.submit}" 
+                                            action="#{managerInventory.submitBook}"
+                                            styleClass="formComponent" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </h:form>
+
+                </p:tab>
+                <p:tab title="|" disabled="true"></p:tab>
+                <p:tab title="${msgs.author}" id="authorTab">
+                    <h:form id="authorForm">
+                        <div class="card">
+                            <div class="contaimer">
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:selectOneMenu 
+                                            id="selectauthor" 
+                                            class="custom-select" 
+                                            value="#{managerInventory.authorId}" 
+                                            style="width:30%;"
+                                            filter="true" 
+                                            filterMatchMode="startsWith">
+                                            <p:ajax event="change" update="author_firstname author_lastname"
+                                                    listener="#{managerInventory.authorChanged}" />
+                                            <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
+                                            <f:selectItems value="#{authorsJpaController.findAuthorsEntities()}" var="author" itemValue="#{author.authorId}" itemLabel="#{author.firstName} #{author.lastName}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.firstname}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputText 
+                                            id="author_firstname" 
+                                            value="#{managerInventory.authorFirstName}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="50" />
+                                            <f:ajax event="blur" render="author_firstname_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="author_firstname_msg" for="author_firstname" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="${msgs.lastname}:" styleClass="formComponent"/> 
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputText 
+                                            id="author_lastname" 
+                                            value="#{managerInventory.authorLastName}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="50" />
+                                            <f:ajax event="blur" render="author_lastname_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="author_lastname_msg" for="author_lastname" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 text-right-mobile">
+
+                            </div>
+                            <div class="col-lg-6 text-left">
+                                <p:commandButton value="#{msgs.submit}" action="#{managerInventory.submitAuthor}" styleClass="formComponent" />
+                            </div>
+                        </div>
+                    </h:form>
+                </p:tab>
+                <p:tab title="|" disabled="true"></p:tab>
+                <p:tab title="${msgs.publisher}" id="publisherTab">
+                    <h:form id="publisherForm">
+                        <div class="card">
+                            <div class="contaimer">
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:selectOneMenu id="selectpublisher" class="custom-select" value="#{managerInventory.publisherId}" style="width:30%;" filter="true" filterMatchMode="startsWith">
+                                            <p:ajax event="change" update="publisher_name"
+                                                    listener="#{managerInventory.publisherChanged}" />
+                                            <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
+                                            <f:selectItems value="#{publishersJpaController.findPublishersEntities()}" var="publisher" itemValue="#{publisher.publisherId}" itemLabel="#{publisher.name}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel for="publisher_name" value="#{msgs.name}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputText 
+                                            id="publisher_name" 
+                                            value="#{managerInventory.publisherName}" 
+                                            styleClass="formComponent" 
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="50" />
+                                            <f:ajax event="blur" render="publisher_name_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="publisher_name_msg" for="publisher_name" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:commandButton value="#{msgs.submit}" action="#{managerInventory.submitPublisher()}" styleClass="formComponent"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+                </p:tab>
+                <p:tab title="|" disabled="true"></p:tab>
+                <p:tab title="${msgs.genre}" id="genreTab">
+                    <h:form id="genreForm">
+                        <div class="card">
+                            <div class="contaimer">
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:selectOneMenu id="selectgenre" class="custom-select" value="#{managerInventory.genreId}" style="width:30%;" filter="true" filterMatchMode="startsWith">
+                                            <p:ajax event="change" update="genre"
+                                                    listener="#{managerInventory.genreChanged}" />
+                                            <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
+                                            <f:selectItems value="#{genresJpaController.findGenresEntities()}" var="genre" itemValue="#{genre.genreId}" itemLabel="#{genre.genre}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+                                        <p:outputLabel value="#{msgs.genre}:" styleClass="formComponent"/>
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:inputText 
+                                            id="genre" 
+                                            value="#{managerInventory.genre}" 
+                                            styleClass="formComponent"
+                                            required="true" 
+                                            requiredMessage="#{msgs.no_empty}"
+                                            validatorMessage="#{msgs.string_too_long}"
+                                            >
+                                            <f:validateLength minimum="1" maximum="50" />
+                                            <f:ajax event="blur" render="genre_msg" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:message id="genre_msg" for="genre" style="width: 32%; margin: 2%">
+                                            <p:autoUpdate />
+                                        </p:message>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile">
+
+                                    </div>
+                                    <div class="col-lg-6 text-left">
+                                        <p:commandButton value="#{msgs.submit}" action="#{managerInventory.submitGenre()}" styleClass="formComponent"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+                </p:tab>
+            </p:tabView>
+        </b:container>
+    </ui:define>                
+</ui:composition>

@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays the register user page of the app
+
+@author Jeffrey Boisvert
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.register_page}</title>
+    </ui:define>
+    <ui:define name="content">
+        <h:outputStylesheet library="css" name="login.css"  />
+        <div class="content-container">
+            <b:container fluid="true">
+                <h2 class="header">#{msgs.register_page}</h2>
+
+                <h:form class="form-signin">
+                         <div class="form-group">
+                             <b:selectOneMenu  id="title-select" class="custom-select" value = "#{registerBackingBean.titleInput}" label="#{msgs.title}">
+                                <f:selectItems value="#{registerBackingBean.availableTitles}" var="title" itemValue="#{title}" itemLabel="#{title}"/>
+                             </b:selectOneMenu>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="first-name" value="#{msgs.firstname}" />
+                             <h:inputText 
+                                 id="first-name" class="form-control"
+                                 value="#{registerBackingBean.firstNameInput}" validator="#{registerBackingBean.validateIsNotBlank}">
+                                 <f:ajax event="change" render="first-name-error"/>
+                             </h:inputText>
+                             <h:message id="first-name-error" for="first-name" style="color: red"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="last-name" value="#{msgs.lastname}" />
+                             <h:inputText id="last-name" class="form-control" 
+                                          value="#{registerBackingBean.lastNameInput}" validator="#{registerBackingBean.validateIsNotBlank}">
+                                  <f:ajax event="change" render="last-name-error"/>
+                             </h:inputText>
+                             <h:message id="last-name-error" for="last-name" style="color: red"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="company-name" value="#{msgs.company_name_input}" />
+                             <h:inputText id="company-name" class="form-control" 
+                                          value="#{registerBackingBean.companyInput}" validator="#{registerBackingBean.validateIsNotJustWhiteSpace}">
+                                  <f:ajax event="change" render="company-name-error"/>
+                             </h:inputText>
+                             <h:message id="company-name-error" for="company-name" style="color: red"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="first-address" value="#{msgs.address_one}" />
+                             <h:inputText id="first-address" class="form-control" 
+                                          value="#{registerBackingBean.firstAddressInput}" 
+                                          validator="#{registerBackingBean.validateIsNotBlank}">
+                                  <f:ajax event="change" render="first-address-error"/>
+                             </h:inputText>
+                             <h:message id="first-address-error" for="first-address" style="color: red"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="second-address" value="#{msgs.address_two}" />
+                             <h:inputText id="second-address" class="form-control" 
+                                          value="#{registerBackingBean.secondAddressInput}"
+                                          validator="#{registerBackingBean.validateIsNotJustWhiteSpace}">
+                                  <f:ajax event="change" render="second-address-error"/>
+                             </h:inputText>
+                             <h:message id="second-address-error" for="second-address" style="color: red"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="city" value="#{msgs.city}" />
+                             <h:inputText id="city" class="form-control" 
+                                          value="#{registerBackingBean.cityInput}"
+                                          validator="#{registerBackingBean.validateIsNotBlank}">
+                                  <f:ajax event="change" render="city-error"/>
+                             </h:inputText>
+                             <h:message id="city-error" for="city" style="color: red"/>
+                         </div>
+                         <div class="form-group">
+                             <b:selectOneMenu  id="province-select" class="custom-select" value = "#{registerBackingBean.provinceInput}" label="#{msgs.province}">
+                                 <f:selectItems value="#{registerBackingBean.provinceSelections}" var="province" itemValue="#{province}" itemLabel="#{province}"/>
+                             </b:selectOneMenu>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="country" value="#{msgs.country}" />
+                             <h:inputText disabled="true" id="country" class="form-control" value="#{registerBackingBean.countryInput}"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="postal-code" value="#{msgs.postal_code}" />
+                             <h:inputText id="postal-code" a:maxlength="6" class="form-control" 
+                                          value="#{registerBackingBean.postalInput}"
+                                          validator="#{registerBackingBean.validatePostalCode}">
+                                  <f:ajax event="change" render="postal-code-error"/>
+                             </h:inputText>
+                             <h:message id="postal-code-error" for="postal-code" style="color: red"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="cell-phone" value="#{msgs.cell_phone}" />
+                             <h:inputText id="cell-phone" a:maxlength="10" class="form-control" 
+                                          value="#{registerBackingBean.mobilePhoneInput}"
+                                          validator="#{registerBackingBean.validatePhone}">
+                                  <f:ajax event="change" render="cell-phone-error"/>
+                             </h:inputText>
+                             <h:message id="cell-phone-error" for="cell-phone" style="color: red"/>
+                         </div>
+                         <div class="form-group">
+                             <h:outputLabel for="home-phone" value="#{msgs.home_phone}" />
+                             <h:inputText id="home-phone" a:maxlength="10" class="form-control" 
+                                          value="#{registerBackingBean.homePhoneInput}"
+                                          validator="#{registerBackingBean.validatePhone}">
+                                  <f:ajax event="change" render="home-phone-error"/>
+                             </h:inputText>
+                             <h:message id="home-phone-error" for="home-phone" style="color: red"/>
+                         </div>
+                         <div class="form-group">
+                            <h:outputLabel for="email" value="#{msgs.email}" />
+                            <h:inputText id="email" class="form-control" 
+                                         value="#{registerBackingBean.emailInput}"  
+                                         validator="#{registerBackingBean.validateEmail}">
+                                     <f:ajax event="change" render="email-error"/>
+                             </h:inputText>
+                             <h:message id="email-error" for="email" style="color: red"/>
+                         </div>
+                         <div class="form-group">
+                            <h:outputLabel for="password" value="#{msgs.password}" />
+                            <p:inputText  type="password" id="password"
+                                           class="form-control" 
+                                           value="#{registerBackingBean.passwordInput}"
+                                           validator="#{registerBackingBean.validatePassword}"
+                                           binding="#{actualPassword}"
+                                           >
+                                     <f:ajax event="change" render="password-error"/>
+                             </p:inputText>
+                             <h:message id="password-error" for="password" style="color: red"/>               
+                         </div>
+                         <div class="form-group">
+                          <h:outputLabel for="password-confirm" value="#{msgs.retype_password_to_confirm}" />
+                            <p:inputText  type="password" id="password-confirm"
+                                           class="form-control" 
+                                           value="#{registerBackingBean.confirmPasswordInput}"
+                                           validator="#{registerBackingBean.validatePasswordsMatch}">
+                                     <f:attribute name="other" value="#{actualPassword.submittedValue}" />
+                                     <f:ajax event="change" render="confirm-password-error"/>
+                             </p:inputText>
+                             <h:message id="confirm-password-error" for="password-confirm" style="color: red"/>               
+                         </div>
+                    <b:commandButton update="@form" 
+                                     class="btn btn-primary" 
+                                     value="#{msgs.register_page}" 
+                                     action="#{registerBackingBean.register}"/>
+                </h:form>
+            </b:container>
+        </div>
+    </ui:define>
+</ui:composition>

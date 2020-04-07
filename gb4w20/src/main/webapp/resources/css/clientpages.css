@@ -1,0 +1,37 @@
+/*
+CSS file used by the bookpage
+*/
+/* 
+    Created on : Feb. 17, 2020, 1:24:09 p.m.
+    Author     : Jasmar Badion
+*/
+
+#checkout-startreadingnow{
+    text-align: center; 
+    background-color: #000000;
+}
+
+#checkout-startreadingnow h1{
+    color: #fff;
+}
+
+.center-text{
+    text-align: center;
+}
+
+.finalize-redtexts{
+    color: red;
+}
+
+.greentexts{
+    color: green;
+}
+
+.bluetexts{
+    color: blue;
+}
+
+.invoice-icons{
+    padding-right: 5px;
+}
+

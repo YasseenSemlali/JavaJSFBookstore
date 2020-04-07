@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays an invoice after the
+transaction, also user can decide to either send it to his e-mail
+or print it or both.
+
+@author Jasmar Badion
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="content">
+        <title>#{msgs.invoice}</title>
+        <h:outputStylesheet library="css" name="clientpages.css" />
+        <h:outputStylesheet library="css" name="global.css" />
+        
+        <!-- Creating a new order -->
+        <!--#{bookOrderBackingBean.createOrder()}-->
+
+        <b:container>
+            <p:outputPanel id="invoiceprint">
+                <h1>#{msgs.companyName} <span class="bluetexts">#{msgs.invoice}</span></h1>
+                <h2>#{msgs.thankinvoice}</h2>
+                <br></br>
+                <h3>#{msgs.order} ##{bookOrderBackingBean.order.orderId}</h3>
+                <br></br>
+                <p>
+                    <h4>#{msgs.youritems}:</h4>
+                    <ul>
+                        <c:forEach items="#{cartSession.books}" var="cartbooks">
+                            <li>#{cartbooks.title}: $#{cartbooks.listPrice -  cartbooks.salePrice}</li>
+
+                            <!-- Adding those books purchased to the book order for this user -->
+                            <!--#{bookOrderBackingBean.addBookToOrder(cartbooks)}-->
+                        </c:forEach>
+                    </ul>
+                </p>
+                <hr></hr>
+                <p>
+                    <h4>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h4>
+                    <c:set var="taxprov" value="#{taxesJpaController.findByProvince(userSession.user.province)}"/>
+                    <p>#{msgs.hst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getHSTpercentage())}</p>
+                    <p>#{msgs.gst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getGSTpercentage())}</p>
+                    <p>#{msgs.pst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getPSTpercentage())}</p> 
+                    <h4><div class="finalize-redtexts">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxesJpaController.findByProvince(userSession.user.province))}</div></h4>
+                </p>
+                <hr></hr>
+                <p>
+                    <h4>#{msgs.information}</h4>
+                    #{msgs.credcardnum}: <span class="greentexts">#{transaction.hideCreditCardNum()}</span>
+                    <br></br>
+                    #{msgs.name}: #{userSession.user.firstName} #{userSession.user.lastName}
+                    <br></br>
+                    #{msgs.address}: #{userSession.user.address1}
+                    <br></br>
+                    #{msgs.datepurchase}: #{transaction.showCurrentDate()}
+                </p>
+            </p:outputPanel>
+            <hr></hr>
+            <!--Sending email and print-->
+            <h:form>
+                <p>
+                    <b:icon value="envelope" size="lg" class="invoice-icons" />
+                    <b:commandButton value="#{msgs.sendemail}" look="primary" action="#{emailBackingBean.perform()}" />
+                    <p:dialog id="emailSuccess"  header="#{msgs.emailinvoice}" widgetVar="successEmail" modal="true" minHeight="40" responsive="true">
+                        <h:outputText value="#{msgs.emailsucceed}" /> 
+                    </p:dialog>
+                    <p:dialog id="emailFail"  header="#{msgs.emailinvoice}" widgetVar="failEmail" modal="true" minHeight="40" responsive="true">
+                        <h:outputText value="#{msgs.emailfail}" /> 
+                    </p:dialog>
+                </p>
+                <p>
+                    <b:icon value="print" size="lg" class="invoice-icons" />
+                    <p:commandButton value="#{msgs.print}" type="button">
+                        <p:printer target="invoiceprint"/>
+                    </p:commandButton>
+                </p>
+                <p>
+                    <b:commandButton action="#{cartSession.clearCart()}" value="#{msgs.shop_again_index}" look="info"/>
+                </p>
+            </h:form>
+        </b:container>
+    </ui:define>
+</ui:composition>

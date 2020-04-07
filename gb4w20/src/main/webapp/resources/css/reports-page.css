@@ -1,0 +1,41 @@
+
+/* 
+    Created on : Feb. 17, 2020, 5:15:38 p.m.
+    Author     : Jeffrey Boisvert
+*/
+
+a {
+  text-decoration: none;
+  outline: none;
+}
+
+.ui-breadcrumb ul li {
+  display: block;
+  float: left;
+  overflow: hidden;
+  position: relative;
+}
+
+.ui-breadcrumb ul li a.ui-icon-home {
+  margin-top: 1px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.ui-widget-header a {
+  color: #222;
+}
+
+.ui-breadcrumb ul li .ui-menuitem-link {
+  display: block;
+  float: left;
+  margin-top: 3px;
+  overflow: hidden;
+  position: relative;
+  color: #222;
+  font-size: 90%;
+}
+
+.ui-breadcrumb-chevron {
+  margin-top: 2px;
+}

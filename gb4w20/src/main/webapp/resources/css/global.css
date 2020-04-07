@@ -1,0 +1,185 @@
+/* 
+    Created on : Feb. 6, 2020, 1:09:53 p.m.
+    Author     : jeanrobatto
+
+    Global CSS file for styles shared across the entire web application
+*/
+
+/* GENERAL */
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+div.card{
+    margin-top: 2em;
+    padding: 2em;
+}
+
+.card {
+    margin: auto;
+    background-color: #eee;
+    max-width: 100%;
+    min-width: 100%;
+    border-radius: 15px;
+    box-shadow: #bbb 6px 6px 12px;
+    padding: 5%;
+}
+
+.language-button{
+    margin-top: 0.55em;
+}
+
+/* Used to make mobile menu nicer */
+@media (max-width: 767px) {
+    #main-nav_inner{
+        padding: 2em;
+    }
+    #search-input, #search-submit {
+        margin-bottom: 1em
+    }
+    #miscellaneous-items{
+        text-align: center;
+    }
+    .miscellaneous-item{
+        margin-bottom: 3em;
+        margin-top: 3em;
+    }
+    #checkout-login-button{
+        margin-left: 0;
+    }
+    .little-margin-top{
+        margin-top: 1em;
+    }
+    #book-items{
+        text-align: center;
+    }
+}
+
+/*Only apply to desktop not mobile*/
+@media only screen and (min-width: 1025px) {
+        #client-manager-form {
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    } 
+
+.ad {
+   margin-top: 1em; 
+   margin-bottom: 1em; 
+}
+    
+#reviews-login-button{
+    display: block;
+    width: fit-content;
+}
+
+.hide-images img{
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
+}
+
+/* TOP MENU */
+.topMenuBar {
+    background-color: #303030 !important;
+    border: none;
+    color: white;
+    vertical-align: middle;
+}
+
+.topMenuBar .logomenuitem:hover a:hover {
+    background-image: url("#{resource['images/bookify_logo.png']}") !important;
+    width: 60px;
+    height: 60px;
+    margin-right: 8px;
+    background-size:     cover;                  
+    background-repeat:   no-repeat;
+    background-position: center center;  
+}
+
+.center-text{
+    text-align: center;
+}
+
+#news-feed{
+  padding: 1em !important;
+}
+
+.small-padding{
+    padding: 1em;
+}
+
+.topMenuBar .logomenuitem a{
+    background-image: url("#{resource['images/bookify_logo.png']}") !important;
+    width: 60px;
+    height: 60px;
+    margin-right: 8px;
+    background-size:     cover;                  
+    background-repeat:   no-repeat;
+    background-position: center center;       
+}
+
+.topMenuBar div {
+    margin-left: 0px;
+    width: 100%;
+}
+
+.topMenuBar div div{
+    padding-left: 0px;
+}
+
+/* MANAGER DASHBOARD */
+
+.menutile {
+    text-align: center;
+    padding: 8%;
+    width: 100%;
+    border: 1px solid white;
+}
+
+.menutile:hover {
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    background-color: #303030;
+    color:rgb(200,200,200);
+    margin: 0;
+    bottom: 0px;
+    width: 100%;
+    padding: 6%;
+}
+
+/* FORMS */
+.form {
+    padding: 5%;
+}
+
+.formComponent {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 2vh;
+}
+
+.ui-tabs-nav {
+    font-size: 1.5em;
+    letter-spacing: 0.4vw;
+}
+
+.ui-tabs-nav a {
+    color: #545b62;
+}
+
+.year-spinner input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.error {
+    color:red;
+}

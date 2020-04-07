@@ -1,0 +1,44 @@
+
+/* 
+    Created on : Feb. 24, 2020, 7:54:28 p.m.
+    Author     : Jeffrey Boisvert
+*/
+html,
+body {
+  height: 100%;
+}
+
+#login-error{
+    padding: 1em; 
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 1em;
+  margin: 0 auto;
+}
+
+.header{
+    text-align: center;
+    margin: 0 auto;
+}
+
+.content-container{
+    padding: 5em;
+}
+
+.ui-growl-item {
+    display: block;
+    padding: 10px 15px;
+    background-color: lightcoral;
+    color: white;
+}
+
+.ui-growl-icon-close {
+width: 100%;
+height: 100%;
+background-image: none!important;
+}
+
+

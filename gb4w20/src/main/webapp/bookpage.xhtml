@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+Java Server Faces page that displays a chosen book page by the
+user and displays that book's details and be able to rate it and 
+add it to the shopping cart. 
+
+@author Jasmar Badion
+-->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{booksJpaController.findBooks(bookAndGenre.isbn).title}</title>
+        <h:outputStylesheet library="css" name="clientpages.css" />
+        <h:outputStylesheet library="css" name="global.css" />
+    </ui:define>
+
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam id="isbn" name="isbn" value="#{bookAndGenre.isbn}" />
+        </f:metadata>
+
+        <c:set var="book" value="#{booksJpaController.findBooks(bookAndGenre.isbn)}"/>
+        <c:set var="authorbooks" value="#{book.getAuthorsCollection()}"/>
+        <c:set var="genrebooks" value="#{book.getGenresCollection()}"/>
+
+        #{lastViewedGenreBean.setMostRecentGenre(genrebooks)}
+
+        <b:container class="center-text">
+            <b:jumbotron>
+                <ui:decorate template="/templates/book.xhtml">
+                    <ui:param name="book" value="#{book}"></ui:param>
+                    <ui:param name="showPrice" value="true"></ui:param>
+                    <ui:param name="showOldPrice" value="true"></ui:param>
+                </ui:decorate>
+                <br></br>
+                <p:outputLabel>#{msgs.author} : </p:outputLabel>
+                <br></br>
+                <c:forEach items="#{authorbooks}" var="auth">
+                    #{auth.getFirstName()} #{auth.getLastName()}
+                    <br></br>
+                </c:forEach>
+                <br></br>
+                <p:outputLabel>#{msgs.genre} : </p:outputLabel>
+                <br></br>
+                <c:forEach items="#{genrebooks}" var="gen">
+                    #{gen.getGenre()}
+                    <br></br>
+                </c:forEach>
+                <br></br>
+                <p:outputLabel>#{msgs.rating} : </p:outputLabel>
+                    #{reviewsJpaController.getAverageRating(book.getIsbn())}
+                <br></br>
+                <h:form id="add-book-to-cart-form" style="margin-top: 1em;">
+                    <c:choose>
+                        <!-- So if user already bought book just go to download page - Jeffrey Boisvert  --> 
+                        <c:when test="#{userSession.hasBoughtBook(book)}">
+                                <p:outputLabel>#{msgs.already_bought_book}</p:outputLabel>
+                                <b:link id="download-button" class="language-button btn btn-primary" style="display: block; text-align: center; margin-left: auto; margin-right: auto; width: fit-content;" href="#{request.contextPath}/user-secured/book-downloads.xhtml" value="${msgs.downloadspage}" />
+                            </c:when>
+                            <c:otherwise>
+                                <p:commandButton value="#{msgs.addToCart}" style="background-color: #007bff; color: white" action="#{cartSession.addBookToSession(bookAndGenre.isbn)}" onsuccess="PF('succeedcart').show()">
+                                    <p:dialog header="#{msgs.addedtocart}" widgetVar="succeedcart" modal="true" minHeight="20" responsive="true">
+                                        <h:outputText value="#{msgs.checkcart}" /> 
+                                    </p:dialog>
+                                </p:commandButton>
+                            </c:otherwise>
+                    </c:choose>
+                </h:form>
+            </b:jumbotron> 
+        </b:container>
+
+        <b:container>
+            <h2>#{msgs.summary}</h2>
+            <p>
+                #{book.getSynopsis()}
+            </p>
+        </b:container>
+        <!--Recommended book for same author and same genre-->
+        <b:container>
+            <h2>#{msgs.recommendation}</h2>
+        </b:container>
+        <b:container>
+            <b:jumbotron> 
+                <h3>#{msgs.otherbooksby}
+                    <br></br>
+                    <c:forEach items="#{authorbooks}" var="auth">
+                        #{auth.getFirstName()} #{auth.getLastName()}
+                        <br></br>
+                    </c:forEach>
+                </h3>
+                <b:row> 
+                    <b:column col-md="6">
+                        <b:panelGrid columns="3"> 
+                            <c:forEach items="#{authorsJpaController.getOtherBooksBySameAuthor(book.getIsbn(), authorbooks, 3)}" var="sameauthor">
+                                <ui:decorate template="/templates/book.xhtml">
+                                    <ui:param name="book" value="#{sameauthor}"></ui:param>
+                                </ui:decorate>
+                            </c:forEach>
+                        </b:panelGrid>
+                    </b:column>
+                </b:row>
+            </b:jumbotron>
+        </b:container>
+
+        <b:container>
+            <b:jumbotron>
+                <c:forEach items="#{genrebooks}" var="gen">
+                    <h3>#{msgs.otherbooksof} #{gen.getGenre()} #{msgs.genre}</h3>
+                </c:forEach>
+                <b:row>
+                    <b:column col-md="6">
+                        <b:panelGrid columns="3">
+                            <c:forEach items="#{genresJpaController.getOtherBooksOfSameGenre(book.getIsbn(), genrebooks, authorbooks, 3)}" var="samegenre">
+                                <ui:decorate template="/templates/book.xhtml">
+                                    <ui:param name="book" value="#{samegenre}"></ui:param>
+                                </ui:decorate>
+                            </c:forEach>
+                        </b:panelGrid>
+                    </b:column>
+                </b:row>
+            </b:jumbotron>
+        </b:container>
+        <b:container>
+            <h2>#{msgs.reviews}</h2>
+            <p>
+                <!-- APPROVED REVIEWS -->
+                <c:set var="approvedReviews" value="#{reviewsJpaController.getApprovedReviews(book.getIsbn())}"/>
+                <c:choose>
+                    <c:when test="#{empty approvedReviews}">
+                        #{msgs.no_approved_revs_yet}
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach items="#{approvedReviews}" var="review">
+                            <div id="apprvdRevs">
+                                <p>
+                                   #{msgs.by} : #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
+                                </p>
+                                <p>
+                                    #{review.getReview()}
+                                </p>
+                                <p>
+                                    #{msgs.rating} : #{review.getRating()}
+                                </p>
+                            </div>
+                            <hr></hr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+            </p>
+        </b:container>
+        <!--SUBMIT REVIEW-->
+        <b:container>
+            <h3>#{msgs.reviewthisbooks} : </h3>
+            <b:jumbotron>
+                <c:choose>
+                    <c:when test="#{userSession.loggedIn}">
+                        <h:form id="addBookReview">
+                            <p:outputLabel for="bookrev">#{msgs.writeyourreview} : </p:outputLabel>
+                            <br></br> 
+                            <p:inputTextarea id="bookrev" value="#{bookReviewBackingBean.review}" rows="5" cols="40" maxlength="750" />
+                            <p:rating id="bookrate" value="#{bookReviewBackingBean.rating}" />
+                            <p:commandButton id="submitreview" value="#{msgs.submit}" action="#{bookReviewBackingBean.makeReview(bookAndGenre.isbn, userSession.loggedInUserId)}" onsuccess="PF('succeed').show()"/> 
+                            <p:dialog header="#{msgs.reviewsubmitted}" widgetVar="succeed" modal="true" minHeight="40" responsive="true"> 
+                                <h:outputText value="#{msgs.thankyoureview}" />  
+                            </p:dialog>
+                        </h:form> 
+                    </c:when>
+                    <c:otherwise>
+                        <p:outputLabel>#{msgs.mustbelogintoreview}  </p:outputLabel>
+                        <b:link id="reviews-login-button" class="language-button btn btn-primary" href="#{request.contextPath}/login.xhtml" value="${msgs.login}" />
+                    </c:otherwise>  
+                </c:choose>
+            </b:jumbotron>
+        </b:container>
+    </ui:define>
+
+    <ui:define name="footer">
+        <ui:include src="/templates/footer.xhtml"></ui:include>
+    </ui:define>
+</ui:composition>

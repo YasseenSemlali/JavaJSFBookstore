@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays the author report. 
+This will display the total sales of the author along with the totals of each item sold. 
+The user can select which author they would like to view via a drop down. 
+
+@author Jeffrey Boisvert
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.authorReport}</title>
+    </ui:define>
+    <ui:define name="content">
+        <h:outputStylesheet library="css" name="report.css" />
+        <f:metadata>
+            <f:viewParam id="authorId" name="authorId" value="#{authorReportBackingBean.authorId}" />
+        </f:metadata>
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/reports-page.xhtml">#{msgs.reportsLower}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.authorReport}</li>
+              </ol>
+        </nav>
+        <div class="jumbotron">
+            <h3 class="report-title">#{msgs.authorReport}</h3>
+        <h:form class="report-form" >
+            <h:messages id="report-error" class="alert alert-danger" globalOnly="true" />
+            <h:panelGroup layout="block">
+                <b:selectOneMenu  id="authorSelect" class="custom-select" value = "#{authorReportBackingBean.authorId}" label="#{msgs.authorLabel}">
+                    <f:selectItems value="#{authorReportBackingBean.authors}" var="author" itemValue="#{author.authorId}" itemLabel="#{author.firstName} #{author.lastName}"/>
+                 </b:selectOneMenu>
+             </h:panelGroup>
+            <h:panelGroup layout="block">
+                    <h:outputLabel for="startDateReport" value="#{msgs.startDate}"/>
+                    <p:calendar class="datepicker" 
+                                value="#{authorReportBackingBean.startDate}"
+                        id="startDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
+                    </p:calendar>
+            </h:panelGroup>
+            <h:panelGroup layout="block">
+                    <h:outputLabel for="endDateReport" value="#{msgs.endDate}"/>
+                    <p:calendar class="datepicker" 
+                                value="#{authorReportBackingBean.endDate}"
+                        id="endDateReport" pattern="yyyy-MM-dd" mode="popup" showOn="button">
+                    </p:calendar>
+            </h:panelGroup>
+            
+            <b:commandButton update="report-result @form"
+                              class="btn btn-primary run-report-button" 
+                              value="#{msgs.runReport}"
+                              action="#{authorReportBackingBean.runReport}"/>
+
+
+        </h:form>
+        </div>
+        <!-- Report --> 
+        <h:panelGroup id="report-result" layout="block">
+            <h:panelGroup layout="block" class="jumbotron" rendered="#{not empty authorReportBackingBean.purchasedProducts}">
+                <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.totalSalesLabel} $#{authorReportBackingBean.totalSales == null ? 0.00 : authorReportBackingBean.totalSales}</h:panelGroup>
+            </h:panelGroup>
+            <h:panelGroup layout="block" class="jumbotron" rendered="#{not empty authorReportBackingBean.purchasedProducts}">
+                  <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.itemsPurchased}</h:panelGroup>
+                  <h:panelGroup class="report-result" layout="block">
+                    <h:panelGrid class="table table-hover" columns="3" border="1">
+                        <h:panelGroup class="column-header">#{msgs.book_report_title}</h:panelGroup>
+                        <h:panelGroup class="column-header">#{msgs.saleTotal}</h:panelGroup>
+                        <h:panelGroup class="column-header">#{msgs.number_of_orders}</h:panelGroup>
+                              <c:forEach items="#{authorReportBackingBean.purchasedProducts}" var="sales">
+                                  <h:panelGroup>#{sales.name}</h:panelGroup>
+                                  <h:panelGroup>$#{sales.amount}</h:panelGroup>
+                                  <h:panelGroup>#{sales.count}</h:panelGroup>
+                              </c:forEach>
+                   </h:panelGrid>
+                  </h:panelGroup>
+            </h:panelGroup>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

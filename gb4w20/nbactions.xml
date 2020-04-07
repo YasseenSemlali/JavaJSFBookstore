@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-test</actionName>
+            <displayName>ArquillianTest</displayName>
+            <goals>
+                <goal>test</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-SeleniumTest</actionName>
+            <displayName>SeleniumTest</displayName>
+            <goals>
+                <goal>test</goal>
+            </goals>
+            <properties>
+                <test>FrontPageIT</test>
+            </properties>
+        </action>
+    </actions>

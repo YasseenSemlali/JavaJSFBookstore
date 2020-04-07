@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays the frontpage of the app
+
+@author Yasseen Semlali, Jeffrey Boisvert, Jean Robatto
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:hf="http://highfaces.org"
+                xmlns:bk="http://bookify.com/facelets"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>${msgs.page_title_index}</title>
+    </ui:define>
+
+    <ui:define name="content">    
+
+        <h:form id="cookieForm" style="display:none">
+            <h:inputText id="cookiesEnabled" value="#{cookiesEnabledBackingBean.cookiesEnabled}">
+                <f:ajax event="change" execute="cookiesEnabled" render="requiresCookie" immediate="true" />
+            </h:inputText>
+        </h:form>
+        <script type="text/javascript">
+            window.onload = () => {
+                var cookieEnabled = (navigator.cookieEnabled) ? true : false;
+                var input = document.getElementById("cookieForm:cookiesEnabled");
+                input.value = cookieEnabled;
+                input.onchange();
+            };
+        </script>
+
+        <!-- BANNER AD 1 - AUTHOR: JEAN ROBATTO (only of the ad) -->
+        <b:row>
+            <a href="https://#{clientAdsBackingBean.ad1.url}">
+                <p:graphicImage 
+                    width="100%" 
+                    height="200px"
+                    class="ad"
+                    alt="ad_1" 
+                    library="img" 
+                    name="ads/#{clientAdsBackingBean.ad1.fileLocation}" 
+                    rendered="#{clientAdsBackingBean.ad1 != null}"
+                    style="cursor: pointer"
+                    id="banner_ad_1"/>
+            </a>
+        </b:row>
+
+        <b:container fluid="true">
+            <b:jumbotron>
+                <b:container style="text-align: center;">
+                    <h1>#{msgs.companyName}</h1>
+                    <p>#{msgs.slogan}</p>
+                    <p>
+                        <a href="search.xhtml?allTrue=true" class="btn btn-lg btn-info">#{msgs.shop_now}</a>
+                    </p>
+                </b:container>
+            </b:jumbotron>
+
+            <div class="card">
+                <div class="card-header">
+                    <h1>${msgs.browse_genre}</h1>
+                </div>
+                <div class="card-body">
+                    <b:panelGrid columns="4">
+                        <c:forEach items="#{genresJpaController.findGenresEntities()}" var="genre">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h2 class="card-title">#{genre.getGenre()}</h2>
+                                    <a id="genrelinkpage" href="genre.xhtml?id=#{genre.getGenreId()}" class="btn btn-primary">${msgs.browse}</a>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </b:panelGrid>
+                </div>
+            </div>
+
+            <!--https://stackoverflow.com/questions/37837623/primefaces-carousel-next-and-prev-methods-are-not-working-in-version-5-3-and-->
+            <p:carousel numVisible="5" value="#{booksJpaController.getBooksOnSale()}" headerText="${msgs.on_sale}" var="book" itemStyle="text-align:center" responsive="true" >
+                <bk:book value="#{book}" showPrice="true"/>
+            </p:carousel>
+
+            <h:panelGroup id="requiresCookie">
+                <h:panelGroup rendered="#{cookiesEnabledBackingBean.cookiesEnabled == true}">
+                    <c:set var="recbooks" value="#{lastViewedGenreBean.getBookRecommendations()}"/>
+                    <c:choose>
+                        <c:when test="#{recbooks != null}">
+                            <p:carousel numVisible="5" value="#{recbooks}" headerText="${msgs.recommended_for_you}" var="book" itemStyle="text-align:center" responsive="true" >
+                                <bk:book value="#{book}" showPrice="true"/>
+                            </p:carousel>
+                        </c:when>
+                    </c:choose>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{!cookiesEnabledBackingBean.cookiesEnabled}">
+                    <b:jumbotron>
+                        <h2>${msgs.no_cookies}</h2>
+                    </b:jumbotron>
+                </h:panelGroup>
+            </h:panelGroup>
+            <b:row>
+                <b:column id="recently-added-books-section" col-md="4">
+                    <h2>${msgs.recently_added}</h2>
+
+                    <b:panelGrid columns="2" id="recently-added">
+                        <c:forEach items="#{booksJpaController.getRecentlyAddedBooks(3)}" var="book">
+                            <bk:book value="#{book}"/>
+                        </c:forEach>
+                    </b:panelGrid>
+                </b:column>
+                <b:column col-md="4" class="miscellaneous-item" id="survey">
+                    <h2>${msgs.survey}</h2>
+                    <c:set var="question" value="#{surveyQuestionsJpaController.getActiveQuestion()}"/>
+
+                    <h:panelGroup rendered="#{question != null}">
+                        <h:panelGroup rendered="#{userSession.isHasRespondedToSurvey()}" id="survey-chart">
+                            <hf:chart type="bar"  title="#{question.getQuestion()}">
+                                <hf:chartSerie value="#{question.getSurveyResponsesCollection()}" var="response" point="#{response.getCount()}" tickLabel="#{response.getResponse()}" />
+                                <hf:chartLegend position="ne" enabled="false"/>
+                            </hf:chart>
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="#{!userSession.isHasRespondedToSurvey()}">
+                            <h3>#{question.getQuestion()}</h3>
+                            <h:form id="surveyform">
+                                <h:selectOneRadio value="#{surveyBackingBean.questionId}" layout="pageDirection" id="survey-answers">
+                                    <f:selectItems  value="#{question.getSurveyResponsesCollection()}" var="response" itemValue="#{response.getId()}" itemLabel="#{response.getResponse()}"/>
+                                    <br/>
+                                </h:selectOneRadio>
+                                <h:commandButton value="Submit" action="#{surveyBackingBean.vote()}" id="surveysubmit">
+                                    <f:ajax execute="@form" render="survey"/>
+                                </h:commandButton>
+                                <br/>
+                                <h:message class="error" for="surveysubmit"/>
+                            </h:form>
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{question == null}">
+                        ${msgs.no_survey_msg}
+                    </h:panelGroup>
+                </b:column>
+                <b:column col-md="4" class="miscellaneous-item">
+                    <h2>${msgs.news2}</h2>
+                    <p:scrollPanel id="news-feed" style="overflow-y: auto;height: 400px; padding: 1em;">
+                        <p:feedReader value="#{rssFeedsJpaController.getActiveFeed().url}" var="feed"  size="10" >
+                            <h:outputLink class="newsfeed-item" value="#{feed.link}">
+                                <h:outputText value="#{feed.title}" style="font-weight: bold;display:block"/>
+                            </h:outputLink>
+                            <h:outputText value="#{feed.description.value}" escape="false" class="hide-images"/>
+                            <p:separator />
+                        </p:feedReader>
+                    </p:scrollPanel>
+                </b:column>
+            </b:row>
+
+            <!-- BANNER AD 2 - AUTHOR: JEAN ROBATTO (only of the ad) -->
+            <b:row>
+                <a href="https://#{clientAdsBackingBean.ad2.url}">
+                    <p:graphicImage 
+                        width="100%" 
+                        height="200px" 
+                        alt="ad_2" 
+                        library="img" 
+                        class="ad"
+                        name="ads/#{clientAdsBackingBean.ad2.fileLocation}" 
+                        rendered="#{clientAdsBackingBean.ad2 != null}"
+                        style="cursor: pointer"
+                        id="banner_ad_2"/>
+                </a>
+            </b:row>
+        </b:container>
+    </ui:define>
+</ui:composition>

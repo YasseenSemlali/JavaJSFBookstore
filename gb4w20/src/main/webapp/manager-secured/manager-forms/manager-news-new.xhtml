@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Java Server Faces page that displays all the options
+necessary to add a new RSS FEED
+
+@author Jean Robatto
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/templates/defaultTemplate.xhtml">
+    <ui:define name="head">
+        <title>#{msgs.news}</title>
+    </ui:define>
+
+    <ui:define name="content">
+        <!-- FIXES STYLING FOR MOBILE -->
+        <style>
+            .text-right-mobile {
+                text-align: right;
+            }
+
+            @media (max-width: 1200px) {
+                .text-right-mobile {
+                    text-align: left;
+                }
+            }
+        </style>
+        <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-forms/manager-news.xhtml">#{msgs.news}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.create_news}</li>
+              </ol>
+        </nav>
+        <b:container style="margin-top: 5%; margin-bottom:5%;">
+            <h:form style="text-align: center; padding-top:20%; padding-bottom: 20%;">
+                <div class="row">
+                    <div class="col-lg-6 text-right-mobile">
+                        <p:outputLabel value="#{msgs.url}" styleClass="formComponent" />
+                    </div>
+                    <div class="col-lg-6 text-left">
+                        <p:inputText 
+                            id="new_url"
+                            value="#{managerNews.newUrl}" 
+                            styleClass="formComponent" 
+                            required="true" 
+                            requiredMessage="#{msgs.no_empty}"
+                            validatorMessage="#{msgs.string_too_long}"
+                             >
+                            <f:validateLength minimum="1" maximum="2048" />
+                            <f:ajax event="blur" render="new_url_msg" />
+                        </p:inputText>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 text-right-mobile"></div>
+                    <div class="col-lg-6 text-left">
+                        <p:message id="new_url_msg" for="new_url" style="width: 32%; margin: 2%">
+                            <p:autoUpdate />
+                        </p:message>
+                    </div>
+                </div>
+
+                <p:commandButton 
+                    value="#{msgs.create_feed}" 
+                    action="#{managerNews.createFeed()}" 
+                    styleClass="formComponent" />
+            </h:form>       
+        </b:container>
+    </ui:define>                
+</ui:composition>

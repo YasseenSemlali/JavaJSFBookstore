@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <h:outputStylesheet library="css" name="book.css" />
+            <h:link outcome="index">
+                <div class="center-text">
+                    <a href="#{request.contextPath}/bookpage.xhtml?isbn=#{book.getIsbn()}">
+                        <h:graphicImage library="img" name="covers/#{book.getCover()}" height="200px"/> 
+                        <p class="h5"><strong>#{book.getTitle()}</strong></p>
+                        
+                        <h:panelGroup  rendered="#{showPrice}">
+                            <p class="h4"> 
+                                <h:panelGroup rendered="#{(showOldPrice == null || showOldPrice == true) and  book.getSalePrice() > 0}"><span class="crossed-out">$#{book.getListPrice()}</span></h:panelGroup> 
+                                <strong>$#{book.getListPrice() - book.getSalePrice()}</strong>
+                            </p>
+                        </h:panelGroup>
+                    </a>
+                </div>
+            </h:link>
+        </ui:composition>
+    </h:body>
+</html>
