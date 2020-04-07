@@ -40,7 +40,7 @@ Java Server Faces page that displays the frontpage of the app
                 </h:outputFormat>
             </h2>
             <b:panelGrid columns="6">
-                <c:forEach items="#{booksJpaController.getAllBooksForGenre(genre.getGenreId())}" var="book">
+                <c:forEach items="#{booksJpaController.getAllBooksForGenre(genre.getGenreId(), 5)}" var="book">
                     <ui:decorate template="/templates/book.xhtml">
                         <ui:param name="book" value="#{book}"></ui:param>
                         <ui:param name="showPrice" value="true"></ui:param>
