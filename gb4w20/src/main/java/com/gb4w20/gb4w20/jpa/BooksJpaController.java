@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import java.io.Serializable;
@@ -700,7 +696,10 @@ public class BooksJpaController implements Serializable {
         Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
 
         cq.multiselect(
-                book.get(Books_.title),
+                cb.concat(
+                        cb.concat(book.get("isbn"), " - "), 
+                        cb.concat(book.get("title"), "")
+                ),
                 cb.sum(bookorder.get("amountPaidPretax")),
                 cb.count(bookorder.get("orderId"))
         )
