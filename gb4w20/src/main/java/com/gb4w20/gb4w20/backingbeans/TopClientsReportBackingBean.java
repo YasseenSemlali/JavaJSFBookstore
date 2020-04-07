@@ -1,20 +1,12 @@
 
 package com.gb4w20.gb4w20.backingbeans;
 
-import com.gb4w20.gb4w20.entities.Publishers;
-import com.gb4w20.gb4w20.entities.Users;
-import com.gb4w20.gb4w20.jpa.PublishersJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
 import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
-import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.io.Serializable;
 import java.util.List;
-import java.util.ResourceBundle;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -45,6 +37,7 @@ public class TopClientsReportBackingBean implements Serializable {
     /**
      * This will set the properties of the bean of for the clients sales based
      * on the values set in startDate and endDate. 
+     * @author Jeffrey Boisvert
      */
     public void runReport(){
         
@@ -68,6 +61,7 @@ public class TopClientsReportBackingBean implements Serializable {
     
     /**
      * Helper method to set the list of clients and sales in a given date range.
+     * @author Jeffrey Boisvert
      */
     private void setClientSales() {
 
@@ -78,6 +72,7 @@ public class TopClientsReportBackingBean implements Serializable {
     /**
      * Used to retrieve the list of clients and their sales.
      * @return the list of clients and sales. 
+     * @author Jeffrey Boisvert
      */
     public List<NameTotalAndCountBean> getClientsSales() {
         return clientsSales;
@@ -86,6 +81,7 @@ public class TopClientsReportBackingBean implements Serializable {
     /**
      * Used to get the set start date. 
      * @return 
+     * @author Jeffrey Boisvert
      */
     public java.util.Date getStartDate() {
         return startDate;
@@ -94,6 +90,7 @@ public class TopClientsReportBackingBean implements Serializable {
     /**
      * Used to set the start date of the report. 
      * @param startDate 
+     * @author Jeffrey Boisvert
      */
     public void setStartDate(java.util.Date startDate) {
         this.startDate = startDate;
@@ -102,6 +99,7 @@ public class TopClientsReportBackingBean implements Serializable {
     /**
      * Used to get the set end date. 
      * @return 
+     * @author Jeffrey Boisvert
      */
     public java.util.Date getEndDate() {
         return endDate;
@@ -110,6 +108,7 @@ public class TopClientsReportBackingBean implements Serializable {
     /**
      * Used to set the wanted end date of the report. 
      * @param endDate 
+     * @author Jeffrey Boisvert
      */
     public void setEndDate(java.util.Date endDate) {
         this.endDate = endDate;
@@ -122,6 +121,7 @@ public class TopClientsReportBackingBean implements Serializable {
      * 
      * @param date Given
      * @return sql version of the date. 
+     * @author Jeffrey Boisvert
      */
     private java.sql.Date sqlDate(java.util.Date date){
         return new java.sql.Date(date.getTime());

@@ -4,7 +4,6 @@ package com.gb4w20.gb4w20.backingbeans;
 import com.gb4w20.gb4w20.entities.Authors;
 import com.gb4w20.gb4w20.jpa.AuthorsJpaController;
 import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
-import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.io.Serializable;
 import java.util.List;

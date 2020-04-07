@@ -34,7 +34,7 @@ add it to the shopping cart.
 
         #{lastViewedGenreBean.setMostRecentGenre(genrebooks)}
 
-        <b:container>
+        <b:container class="center-text">
             <b:jumbotron>
                 <ui:decorate template="/templates/book.xhtml">
                     <ui:param name="book" value="#{book}"></ui:param>
@@ -59,12 +59,21 @@ add it to the shopping cart.
                 <p:outputLabel>#{msgs.rating} : </p:outputLabel>
                     #{reviewsJpaController.getAverageRating(book.getIsbn())}
                 <br></br>
-                <h:form>
-                    <p:commandButton value="#{msgs.addToCart}" style="background-color: #007bff; color: white" action="#{cartSession.addBookToSession(bookAndGenre.isbn)}" onsuccess="PF('succeedcart').show()">
-                        <p:dialog header="#{msgs.addedtocart}" widgetVar="succeedcart" modal="true" minHeight="20" responsive="true">
-                            <h:outputText value="#{msgs.checkcart}" /> 
-                        </p:dialog>
-                    </p:commandButton>
+                <h:form id="add-book-to-cart-form" style="margin-top: 1em;">
+                    <c:choose>
+                        <!-- So if user already bought book just go to download page - Jeffrey Boisvert  --> 
+                        <c:when test="#{userSession.hasBoughtBook(book)}">
+                                <p:outputLabel>#{msgs.already_bought_book}</p:outputLabel>
+                                <b:link id="download-button" class="language-button btn btn-primary" style="display: block; text-align: center; margin-left: auto; margin-right: auto; width: fit-content;" href="#{request.contextPath}/user-secured/book-downloads.xhtml" value="${msgs.downloadspage}" />
+                            </c:when>
+                            <c:otherwise>
+                                <p:commandButton value="#{msgs.addToCart}" style="background-color: #007bff; color: white" action="#{cartSession.addBookToSession(bookAndGenre.isbn)}" onsuccess="PF('succeedcart').show()">
+                                    <p:dialog header="#{msgs.addedtocart}" widgetVar="succeedcart" modal="true" minHeight="20" responsive="true">
+                                        <h:outputText value="#{msgs.checkcart}" /> 
+                                    </p:dialog>
+                                </p:commandButton>
+                            </c:otherwise>
+                    </c:choose>
                 </h:form>
             </b:jumbotron> 
         </b:container>
@@ -73,26 +82,6 @@ add it to the shopping cart.
             <h2>#{msgs.summary}</h2>
             <p>
                 #{book.getSynopsis()}
-            </p>
-        </b:container>
-
-        <b:container>
-            <h2>#{msgs.reviews}</h2>
-            <p>
-                <!-- APPROVED REVIEWS -->
-                <c:forEach items="#{reviewsJpaController.getApprovedReviews(book.getIsbn())}" var="review">
-                    <div id="">
-                        <p>
-                            #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
-                        </p>
-                        <p>
-                            #{review.getReview()}
-                        </p>
-                        <p>
-                            #{msgs.rating} : #{review.getRating()}
-                        </p>
-                    </div>
-                </c:forEach>
             </p>
         </b:container>
         <!--Recommended book for same author and same genre-->
@@ -140,6 +129,34 @@ add it to the shopping cart.
                 </b:row>
             </b:jumbotron>
         </b:container>
+        <b:container>
+            <h2>#{msgs.reviews}</h2>
+            <p>
+                <!-- APPROVED REVIEWS -->
+                <c:set var="approvedReviews" value="#{reviewsJpaController.getApprovedReviews(book.getIsbn())}"/>
+                <c:choose>
+                    <c:when test="#{empty approvedReviews}">
+                        #{msgs.no_approved_revs_yet}
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach items="#{approvedReviews}" var="review">
+                            <div id="apprvdRevs">
+                                <p>
+                                   #{msgs.by} : #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
+                                </p>
+                                <p>
+                                    #{review.getReview()}
+                                </p>
+                                <p>
+                                    #{msgs.rating} : #{review.getRating()}
+                                </p>
+                            </div>
+                            <hr></hr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+            </p>
+        </b:container>
         <!--SUBMIT REVIEW-->
         <b:container>
             <h3>#{msgs.reviewthisbooks} : </h3>
@@ -158,7 +175,8 @@ add it to the shopping cart.
                         </h:form> 
                     </c:when>
                     <c:otherwise>
-                        <p:outputLabel>#{msgs.mustbelogintoreview}</p:outputLabel>
+                        <p:outputLabel>#{msgs.mustbelogintoreview}  </p:outputLabel>
+                        <b:link id="reviews-login-button" class="language-button btn btn-primary" href="#{request.contextPath}/login.xhtml" value="${msgs.login}" />
                     </c:otherwise>  
                 </c:choose>
             </b:jumbotron>

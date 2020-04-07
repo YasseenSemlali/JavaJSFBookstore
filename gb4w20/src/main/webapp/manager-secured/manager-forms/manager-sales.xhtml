@@ -19,6 +19,12 @@ necessary to manage sales in the web app.
     </ui:define>
 
     <ui:define name="content">
+       <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#{request.contextPath}/manager-secured/manager-frontpage.xhtml">#{msgs.dashboard}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{msgs.sales}</li>
+              </ol>
+        </nav>
         <b:container style="margin-top: 5%; margin-bottom:5%;">
             <h:form>
                 <p:dataTable id="salelist" widgetVar="book_w" var="book" value="#{booksJpaController.findBooksEntities()}"
@@ -52,14 +58,12 @@ necessary to manage sales in the web app.
                              <p:autoUpdate />
                          </p:message>
                         <!-- USED FOR CUSTOM VALIDATION -->
-                        <h:messages 
+                        <h:messages
                             id="report-error" 
                             class="alert alert-danger" 
                             style="margin: 5%" 
                             globalOnly="true" 
-                            rendered="#{index == managerSales.errorIndex}">
-                            <p:autoUpdate disabled="true"/>
-                        </h:messages>
+                            rendered="#{index == managerSales.errorIndex}" />
                     </p:column>
 
                     <p:column>
@@ -68,7 +72,6 @@ necessary to manage sales in the web app.
                                 listener="#{managerSales.editSalePrice(book.isbn, index)}" 
                                 update="salelist" 
                                 process="@all"
-                                oncomplete="PF('book_w').filter()"
                                 />
                         </p:commandButton>
                     </p:column>

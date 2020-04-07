@@ -100,12 +100,12 @@ public class ManagerOrders implements Serializable {
             orderController.edit(order);
 
             //This redirect is needed to fix a rendering issue.
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/manager-forms/manager-orders.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/manager-secured/manager-forms/manager-orders.xhtml");
 
-            return "/manager-forms/manager-orders";
+            return "/manager-secured/manager-forms/manager-orders";
         } catch (Exception ex) {
             LOG.info(ex.toString());
-            return "/action-responses/action-failure";
+            return "/manager-secured/action-responses/action-failure";
         }
     }
 
@@ -120,11 +120,11 @@ public class ManagerOrders implements Serializable {
         try {
             orderController.destroy(order.getOrderId());
             //This redirect is needed to fix a rendering issue.
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/manager-forms/manager-orders.xhtml");
-            return "/manager-forms/manager-orders";
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/gb4w20/manager-secured/manager-forms/manager-orders.xhtml");
+            return "/manager-secured/manager-forms/manager-orders";
         } catch (Exception ex) {
             LOG.info(ex.toString());
-            return "/action-responses/action-failure";
+            return "/manager-secured/action-responses/action-failure";
         }
     }
 

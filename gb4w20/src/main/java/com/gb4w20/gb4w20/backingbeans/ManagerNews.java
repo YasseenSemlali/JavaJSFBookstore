@@ -36,6 +36,8 @@ public class ManagerNews implements Serializable {
 
     /**
      * Method to initialize variables
+     * 
+     * @author Jean Robatto
      */
     @PostConstruct
     private void init() {
@@ -55,6 +57,7 @@ public class ManagerNews implements Serializable {
      * @param id
      * @param index
      * @throws java.io.IOException
+     * @author Jean Robatto
      */
     public void editFeed(Long id, int index) throws IOException {
         LOG.debug("Editing feed with id: " + Long.toString(id));
@@ -83,7 +86,9 @@ public class ManagerNews implements Serializable {
     
     /**
      * Method to create a new feed.
+     * 
      * @return redirection
+     * @author Jean Robatto
      */
     public String createFeed() {
         LOG.debug("Creating a new feed");

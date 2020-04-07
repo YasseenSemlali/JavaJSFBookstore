@@ -5,7 +5,6 @@ import com.gb4w20.gb4w20.jpa.RssFeedsJpaController;
 import javax.inject.Inject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -55,6 +54,7 @@ public class RssFeedsJpaControllerTest {
          */
         @Test
         public void testCorrectActiveFeeds(){
+            LOG.info("Testing correct active feeds");
             String expectedRssUrl = "https://www.cbc.ca/cmlink/rss-topstories";
             
             assertEquals("Did not get the right RSS feed", expectedRssUrl, this.rssFeeds.getUrl());
@@ -68,6 +68,7 @@ public class RssFeedsJpaControllerTest {
          */
         @Test
         public void testNullWhenNoActiveFeeds() throws Exception{
+            LOG.info("Testing null value when there are no active feeds");
             //disabling the only active RSS feed
             this.rssFeeds.setEnabled(false);
             this.rssFeedsJpaController.edit(rssFeeds);

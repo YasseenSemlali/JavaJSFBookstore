@@ -4,7 +4,6 @@ import com.gb4w20.gb4w20.entities.Reviews;
 import com.gb4w20.gb4w20.jpa.ReviewsJpaController;
 import java.io.IOException;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -35,6 +34,7 @@ public class ManagerReviews implements Serializable {
      * @param status
      * @param activeTabIndex
      * @throws java.io.IOException
+     * @author Jean Robatto
      */
     public void editApprovalStatus(Long revId, boolean status, Integer activeTabIndex) throws IOException {
         LOG.debug("Editing approval status or review with id " + Long.toString(revId));
