@@ -91,7 +91,7 @@ public class ManagerInventory implements Serializable {
     @Size(min = 1, max = 1000)
     private String synopsis;
     private UploadedFile uploadedCover;
-    private String cover = "1984.jpg"; //Default
+    private String cover = ""; 
     private BigDecimal wholesalePrice;
     private BigDecimal listPrice;
     private BigDecimal salePrice;
@@ -127,10 +127,12 @@ public class ManagerInventory implements Serializable {
     //Total sales
     private BigDecimal totalSales = new BigDecimal(0);
 
-    //Variabls
+    //Variables
     private final long EPUB_ID = 1L;
     private final long PDF_ID = 2L;
     private final long MOBI_ID = 3L;
+    
+    private boolean isNew = true;
 
     //INIT
     @PostConstruct
@@ -164,7 +166,7 @@ public class ManagerInventory implements Serializable {
             dateOfPublication = null;
             pages = 0;
             synopsis = null;
-            cover = "1984.jpg"; //Default
+            cover = "";
             wholesalePrice = null;
             listPrice = null;
             salePrice = null;
@@ -174,6 +176,7 @@ public class ManagerInventory implements Serializable {
             bookGenre = new ArrayList<>();
             bookPublisher = new ArrayList<>();
             totalSales = new BigDecimal(0);
+            isNew = true;
         } else {
             LOG.debug("Selected book with ISBN: " + Long.toString(input_isbn));
             edit = true;
@@ -193,6 +196,7 @@ public class ManagerInventory implements Serializable {
             bookGenre = book.getGenresCollection();
             bookPublisher = book.getPublishersCollection();
             totalSales = bookorderController.getTotalSalesForBook(isbn);
+            isNew = false;
         }
     }
 
@@ -882,6 +886,10 @@ public class ManagerInventory implements Serializable {
         this.newBookfiles = newBookfiles;
     }
 
+    public void setIsNew(boolean isNew) {
+        this.isNew = isNew;
+    }
+
     //Getters
     public Long getIsbn() {
         return isbn;
@@ -1001,6 +1009,10 @@ public class ManagerInventory implements Serializable {
     
     public Collection<String> getNewBookfiles() {
         return newBookfiles;
+    }
+
+    public boolean isIsNew() {
+        return isNew;
     }
     
 }

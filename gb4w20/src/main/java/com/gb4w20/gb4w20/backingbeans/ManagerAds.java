@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Size;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -60,6 +61,7 @@ public class ManagerAds implements Serializable {
         locations = new String[size];
         urls = new String[size];
         enabled = new Boolean[size];
+        image="";
         for (int i = 0; i < size; i++) {
             locations[i] = "";
             urls[i] = "";
