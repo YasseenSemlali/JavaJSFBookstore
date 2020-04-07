@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gb4w20</groupId>
     <artifactId>gb4w20</artifactId>
-    <version>1.0-FINAL-V1</version>
+    <version>1.0-SNAPSHOT-V1</version>
     <packaging>war</packaging>
     <name>${project.artifactId}</name>
     <description>The CSD Book Store for the Java Server Side course at Dawson College.</description>
