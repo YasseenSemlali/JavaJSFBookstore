@@ -16,7 +16,7 @@ import javax.inject.Named;
  */
 @Named
 @SessionScoped
-public class clientAdsBackingBean implements Serializable {
+public class ClientAdsBackingBean implements Serializable {
     
     private Ads ad1;
     private Ads ad2;

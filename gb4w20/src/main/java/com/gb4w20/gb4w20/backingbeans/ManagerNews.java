@@ -6,6 +6,7 @@ import com.gb4w20.gb4w20.jpa.RssFeedsJpaController;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -42,12 +43,13 @@ public class ManagerNews implements Serializable {
     @PostConstruct
     private void init() {
         LOG.debug("Initializing Manager News variables");
-        int size = newsController.getRssFeedsCount();
+        List<RssFeeds> feeds = newsController.findRssFeedsEntities();
+        int size = feeds.size();
         urls = new String[size];
         enabled = new Boolean[size];
         for (int i = 0; i < size; i++) {
             urls[i] = "";
-            enabled[i] = Boolean.FALSE;
+            enabled[i] = feeds.get(i).getEnabled();
         }
     }
 
@@ -75,7 +77,6 @@ public class ManagerNews implements Serializable {
             newsController.edit(feed);
 
             //Reset inputs
-            enabled[index] = Boolean.FALSE;
             urls[index] = "";
 
         } catch (Exception ex) {
