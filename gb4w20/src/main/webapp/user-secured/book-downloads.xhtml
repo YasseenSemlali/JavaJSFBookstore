@@ -23,6 +23,7 @@ Java Server Faces page that displays the frontpage of the app
     <ui:define name="content">
         <b:container>
             <c:forEach items="#{booksJpaController.getBooksForUser(userSession.loggedInUserId)}" var="book">
+                <b:column col-md="6"  style-class="align-self-center">
                 <b:row>
                     <b:column col-md="2">
                         <bk:book value="#{book}" showTitle="false"/>
@@ -37,6 +38,7 @@ Java Server Faces page that displays the frontpage of the app
                         </c:forEach>
                     </b:column>
                 </b:row>
+                </b:column>
             </c:forEach>
         </b:container>
     </ui:define>
