@@ -39,7 +39,7 @@ This will list the books that are active with the current wholesale, list and sa
                       <h:panelGroup class="column-header">#{msgs.list_price}</h:panelGroup>
                       <h:panelGroup class="column-header">#{msgs.salePrice}</h:panelGroup>
                       <c:forEach items="#{stockReportBackingBean.stock}" var="book">
-                          <h:panelGroup>#{book.title}</h:panelGroup>
+                          <h:panelGroup>#{book.isbn} - #{book.title}</h:panelGroup>
                           <h:panelGroup>#{book.wholesalePrice}</h:panelGroup>
                           <h:panelGroup>#{book.listPrice}</h:panelGroup>
                           <h:panelGroup>#{book.salePrice.doubleValue() == 0.0 ? "N/A": book.salePrice}</h:panelGroup>
