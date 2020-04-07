@@ -31,6 +31,7 @@ Java Server Faces page that displays the frontpage of the app
                     <b:column col-md="4"  style-class="align-self-center">
                         <c:forEach items="#{book.bookFilesCollection}" var="file">
                             <b:row>
+                                #{file.fileLocation}
                                 <a href="#{request.contextPath}/resources/bookfiles/#{file.fileLocation}" download="#{file.fileLocation}">#{fileFormatNameBean.getInternationalizedFormatName(file.fileFormatId.format)} ⇓</a>
 
                             </b:row>
