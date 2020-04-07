@@ -83,13 +83,9 @@ necessary to manage ads for the web app
                         
 
                         <p:column headerText="#{msgs.enabled}">
-                            <h:outputLabel value="#{ad.enabled}" />
+                             <p:inputSwitch value="#{managerAds.enabled[index]}" />
                         </p:column>
-
-                        <p:column headerText="#{msgs.set_enabled}">
-                            <p:inputSwitch value="#{managerAds.enabled[index]}" />
-                        </p:column>
-
+                        
                         <p:column>
                             <p:commandButton value="#{msgs.edit}">
                                 <p:ajax 
