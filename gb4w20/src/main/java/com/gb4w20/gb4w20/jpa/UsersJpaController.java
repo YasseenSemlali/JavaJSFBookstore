@@ -412,7 +412,10 @@ public class UsersJpaController implements Serializable {
         Join<Orders, Users> user = order.join("userId", JoinType.INNER);
         
         cq.multiselect(
-                book.get(Books_.title), 
+                cb.concat(
+                        cb.concat(book.get("isbn"), " - "), 
+                        cb.concat(book.get("title"), "")
+                ),
                 cb.sum(bookorder.get("amountPaidPretax")
                 ))
                 .groupBy(book.get(Books_.title))

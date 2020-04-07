@@ -55,9 +55,9 @@ Java Server Faces page that displays the zero sales report.
                 <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.zeroSales}</h:panelGroup>
                 <h:panelGroup class="report-result" layout="block">
                 <h:panelGrid class="table table-hover" columns="1" border="1">
-                      <h:panelGroup class="column-header">#{msgs.bookColumnName}</h:panelGroup>
+                      <h:panelGroup class="column-header">#{msgs.book_report_title}</h:panelGroup>
                       <c:forEach items="#{zeroSalesReportBackingBean.bookSales}" var="book">
-                          <h:panelGroup>#{book.title}</h:panelGroup>
+                          <h:panelGroup>#{book.isbn} - #{book.title}</h:panelGroup>
                       </c:forEach>
                 </h:panelGrid>
                 </h:panelGroup>
