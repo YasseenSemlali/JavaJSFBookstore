@@ -43,6 +43,8 @@ public class EmailBackingBean implements Serializable {
     private CartBookBackingBean cart;
     @Inject
     private TaxesJpaController tax;
+    @Inject
+    private BookOrderBackingBean bookOrder;
 
     //We made our own Gmail account for this project
     private final String emailSender;
@@ -120,7 +122,8 @@ public class EmailBackingBean implements Serializable {
                     .textMessage(this.bundle.getString("companyName") + ": " + LocalDateTime.now())
                     .htmlMessage("<html><META http-equiv=Content-Type "
                             + "content=\"text/html; charset=utf-8\">"
-                            + "<body><h1>Bookify " + this.bundle.getString("invoice") + "</h1>"
+                            + "<body><h1>Bookify " + this.bundle.getString("invoice") + "</h1>" 
+                            + "<h2>" + this.bundle.getString("order") + " #" + this.bookOrder.getOrder().getOrderId() + "</h2>"
                             + "<p>" + emailBody + "</p>"
                             + "</body></html>")
                     .priority(PRIORITY_HIGHEST);

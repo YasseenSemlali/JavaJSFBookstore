@@ -17,8 +17,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Used to test various methods inside the GenresJpaController class. 
@@ -28,8 +26,6 @@ import org.slf4j.LoggerFactory;
  */
 @RunWith(Enclosed.class)
 public class GenresJpaControllerTest {
-    
-    private final static Logger LOG = LoggerFactory.getLogger(GenresJpaControllerTest.class);
     
     /**
      * Used to run valid tests for the getOtherBooksOfSameGenres 
@@ -61,10 +57,8 @@ public class GenresJpaControllerTest {
          */
         @Test
         public void testCorrectDataSetSize() {
-            LOG.info("Testing data set size");
             int testNumber = param.getValue0();
             int expectedResultSetSize = param.getValue5();
-            LOG.info("Expected result set size is " + expectedResultSetSize);
             
             assertEquals( "Test " + testNumber + ": Expected number of books found was incorrect", expectedResultSetSize, this.result.size());
 
@@ -76,7 +70,6 @@ public class GenresJpaControllerTest {
          */
         @Test
         public void testResultSetDoesNotContainSameAuthor() {
-            LOG.info("Testing if result set does not contain same author");
             int testNumber = param.getValue0();
             Collection<Authors> authors = param.getValue3(); 
             
@@ -109,10 +102,8 @@ public class GenresJpaControllerTest {
          */
         @Test
         public void testResultSetDoesNotContainSameBook() {
-            LOG.info("Testing if result set does not contain the same book");
             int testNumber = param.getValue0();
             long isbn = param.getValue1();
-            LOG.info("ISBN of the book that should not be part of the result set is " + isbn);
             
             assertTrue( "Test " + testNumber + ": The same book is present in the result set", booksDoNotContainTheGivenIsbn(this.result, isbn));
 

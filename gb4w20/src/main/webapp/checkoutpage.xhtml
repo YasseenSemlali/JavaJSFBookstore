@@ -18,14 +18,16 @@ and finalize transactions
                 template="/templates/defaultTemplate.xhtml">
     <ui:define name="head">
         <title>#{msgs.cart}</title>
+        <h:outputStylesheet library="css" name="clientpages.css" />
+        <h:outputStylesheet library="css" name="global.css" />
     </ui:define>
 
     <ui:define name="content">
         <b:container>
-            <div style="text-align: center; background-color: #000000;">
-                <h1 style="color: #fff">#{msgs.startreadingnow}</h1>
+            <div id="checkout-startreadingnow">
+                <h1>#{msgs.startreadingnow}</h1>
             </div>
-            <h2 style="text-align: center">#{msgs.checkout}</h2>
+            <h2 class="center-text">#{msgs.checkout}</h2>
         </b:container>
 
         <b:container>
@@ -37,7 +39,9 @@ and finalize transactions
                         <ui:param name="showOldPrice" value="true"></ui:param>
                     </ui:decorate>
                     <h:form>
-                        <p:commandButton value="#{msgs.remove}" action="#{cartSession.removeBookFromSession(cartbooks)}" style="background-color: red; color: white" onsuccess="location.reload()"/>
+                        <div class="center-text">
+                            <p:commandButton value="#{msgs.remove}" action="#{cartSession.removeBookFromSession(cartbooks)}" style="background-color: red; color: white;" onsuccess="location.reload()"/>
+                        </div>
                     </h:form>
                     <br></br>
                 </c:forEach>

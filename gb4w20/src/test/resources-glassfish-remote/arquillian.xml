@@ -7,7 +7,7 @@
     <container qualifier="glassfish" default="true">
         <configuration>
             <property name="adminUser">admin</property>
-            <property name="adminPassword">dawscon</property>
+            <property name="adminPassword"></property>
         </configuration>
     </container>
 

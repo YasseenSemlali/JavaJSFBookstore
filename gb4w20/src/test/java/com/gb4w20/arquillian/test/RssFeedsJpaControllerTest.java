@@ -9,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <h1>RSS Feeds JPA Controller Test</h1>
@@ -23,8 +21,6 @@ import org.slf4j.LoggerFactory;
  */
 @RunWith(Enclosed.class)
 public class RssFeedsJpaControllerTest {
-    
-    private final static Logger LOG = LoggerFactory.getLogger(RssFeedsJpaControllerTest.class);
     
     /**
      * Used to run valid tests for the GetActiveFeed 
@@ -54,7 +50,6 @@ public class RssFeedsJpaControllerTest {
          */
         @Test
         public void testCorrectActiveFeeds(){
-            LOG.info("Testing correct active feeds");
             String expectedRssUrl = "https://www.cbc.ca/cmlink/rss-topstories";
             
             assertEquals("Did not get the right RSS feed", expectedRssUrl, this.rssFeeds.getUrl());
@@ -68,7 +63,6 @@ public class RssFeedsJpaControllerTest {
          */
         @Test
         public void testNullWhenNoActiveFeeds() throws Exception{
-            LOG.info("Testing null value when there are no active feeds");
             //disabling the only active RSS feed
             this.rssFeeds.setEnabled(false);
             this.rssFeedsJpaController.edit(rssFeeds);
