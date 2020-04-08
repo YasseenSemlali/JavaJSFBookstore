@@ -547,6 +547,12 @@ public class BooksJpaController implements Serializable {
     public List<Books> getAllBooksForGenre(Long genreId) {
         return this.getTopSellingForGenre(genreId, -1);
     }
+
+    public List<Books> getAllBooksForGenre(Long genreId, int topSellingToExclude) {
+        List<Books> results = this.getTopSellingForGenre(genreId, -1);
+        results.removeAll(this.getTopSellingForGenre(genreId, topSellingToExclude));
+        return results;
+    }
     
     /**
      * Used to get the top selling books of a given genre
