@@ -94,11 +94,10 @@ public class CartBookBackingBean implements Serializable {
      * Removing the book from the books list that will be in session scope
      *
      * @param book
-     * @return
      */
-    public boolean removeBookFromSession(Books book) {
-        LOG.info(book.getIsbn() + " being removed from the ccart");
-        return this.books.remove(book);
+    public void removeBookFromSession(Books book) {
+        LOG.info(book.getIsbn() + " being removed from the cart");
+        this.books.remove(book);
     }
 
     /**
@@ -125,11 +124,8 @@ public class CartBookBackingBean implements Serializable {
     
     /**
      * Re-initializing a new cart and returning back to the index page
-     *
-     * @return
      */
-    public String clearCart() {
+    public void clearCart() {
         this.books = new HashSet<Books>();
-        return "/index.xhtml";
     }
 }

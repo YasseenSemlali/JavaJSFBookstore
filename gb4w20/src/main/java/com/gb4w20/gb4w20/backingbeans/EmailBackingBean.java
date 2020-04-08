@@ -40,7 +40,7 @@ public class EmailBackingBean implements Serializable {
     @Inject
     private TransactionBackingBean transaction;
     @Inject
-    private CartBookBackingBean cart;
+    private InvoiceBackingBean invoice;
     @Inject
     private TaxesJpaController tax;
     @Inject
@@ -50,7 +50,7 @@ public class EmailBackingBean implements Serializable {
     private final String emailSender;
     private final String smtpPassword;
     private final String smtpServerName;
-    
+
     //Bundle for i18n
     private ResourceBundle bundle;
 
@@ -66,7 +66,7 @@ public class EmailBackingBean implements Serializable {
         smtpServerName
                 = ctx.getExternalContext().getInitParameter("smtpServerName");
     }
-    
+
     /**
      * Mainly used to set the bundle.
      *
@@ -95,15 +95,15 @@ public class EmailBackingBean implements Serializable {
 
     /**
      * Sending email and checks if emails are valid
-     * 
+     *
      */
     public void sendEmail() {
         LOG.info("Our email " + emailSender);
         LOG.info("To who: " + userSession.getUser().getEmail());
-        
+
         //dialog from PrimeFaces is used depending on the outcome of this method
         PrimeFaces emailDialog = PrimeFaces.current();
-        
+
         if (checkEmail(emailSender) && checkEmail(userSession.getUser().getEmail())) {
             LOG.debug("VALID EMAILS");
             // Create am SMTP server object
@@ -113,7 +113,7 @@ public class EmailBackingBean implements Serializable {
                     .auth(emailSender, smtpPassword)
                     .buildSmtpMailServer();
             LOG.debug("SMTP SUCCESS");
-            
+
             // Using the fluent style of coding create a plain text message
             String emailBody = createEmailBody();
             Email email = Email.create().from(emailSender)
@@ -122,13 +122,13 @@ public class EmailBackingBean implements Serializable {
                     .textMessage(this.bundle.getString("companyName") + ": " + LocalDateTime.now())
                     .htmlMessage("<html><META http-equiv=Content-Type "
                             + "content=\"text/html; charset=utf-8\">"
-                            + "<body><h1>Bookify " + this.bundle.getString("invoice") + "</h1>" 
+                            + "<body><h1>Bookify " + this.bundle.getString("invoice") + "</h1>"
                             + "<h2>" + this.bundle.getString("order") + " #" + this.bookOrder.getOrder().getOrderId() + "</h2>"
                             + "<p>" + emailBody + "</p>"
                             + "</body></html>")
                     .priority(PRIORITY_HIGHEST);
             LOG.debug("Email created");
-            
+
             // Like a file we open the session, send the message and close the
             // session
             try (SendMailSession session = smtpServer.createSession()) {
@@ -136,7 +136,7 @@ public class EmailBackingBean implements Serializable {
                 session.sendMail(email);
                 LOG.info("Email sent");
                 emailDialog.executeScript("PF('successEmail').show()");
-            }    
+            }
         } else {
             LOG.info("Unable to send email because either send or recieve addresses are invalid");
             emailDialog.executeScript("PF('failEmail').show()");
@@ -152,19 +152,21 @@ public class EmailBackingBean implements Serializable {
     private boolean checkEmail(String address) {
         return RFC2822AddressParser.STRICT.parseToEmailAddress(address) != null;
     }
-    
+
     /**
      * Creates the email body that will be sent to email
-     * @return 
+     *
+     * @return
      */
-    private String createEmailBody(){
+    private String createEmailBody() {
         String items = "<h2>" + this.bundle.getString("youritems") + ": </h2>";
-        for (Books book : cart.getBooks()){
+        for (Books book : invoice.getBooksincart()) {
             items += "<p> " + book.getTitle() + " $" + (book.getListPrice().subtract(book.getSalePrice())) + " </p>";
         }
-        String amount = "<h3>" + this.bundle.getString("total") + ": $" + transaction.calculateAmountWithTaxes(cart.calculateTotalAmount(), tax.findByProvince(userSession.getUser().getProvince())) + " </h3>";
-        String info = "<p>" + this.bundle.getString("credcardnum") + ": " + transaction.hideCreditCardNum() + 
-                "</p><p>" + this.bundle.getString("datepurchase") + ": " + transaction.showCurrentDate() + "</p>";
+        String amount = "<h3>" + this.bundle.getString("total") + ": $" + transaction.calculateAmountWithTaxes(invoice.getTotalincart(), tax.findByProvince(userSession.getUser().getProvince())) + " </h3>";
+
+        String info = "<p>" + this.bundle.getString("credcardnum") + ": " + transaction.hideCreditCardNum()
+                + "</p><p>" + this.bundle.getString("datepurchase") + ": " + transaction.showCurrentDate() + "</p>";
         return items + amount + info + "<h2>" + this.bundle.getString("thankinvoice") + "</h2>";
     }
 }
