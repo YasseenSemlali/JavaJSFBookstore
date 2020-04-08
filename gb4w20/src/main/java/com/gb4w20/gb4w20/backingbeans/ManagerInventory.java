@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIOutput;
@@ -355,6 +356,11 @@ public class ManagerInventory implements Serializable {
     public void clearAuthors() {
         LOG.debug("Cleared all authors from collection");
         bookAuthor = new ArrayList<>();
+    }
+    
+    public void removeAuthorFromCollection(Long authorId) {
+        Authors author = authorsController.findAuthors(authorId);
+        bookAuthor.remove(author);
     }
 
     /**
