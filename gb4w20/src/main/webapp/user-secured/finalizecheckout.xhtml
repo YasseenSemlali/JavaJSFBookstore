@@ -23,6 +23,10 @@ to be able to finalize the transaction.
     </ui:define>
 
     <ui:define name="content">
+        <!-- setting the values for invoice to be displayed -->
+        #{invoiceBackingBean.convertFromHashToList(cartSession.books)}
+        #{invoiceBackingBean.setTotalincart(cartSession.calculateTotalAmount())}
+        
         <b:container>
             <h:form>
                 <b:panelGrid colSpans="2,10" size="xs">
