@@ -25,7 +25,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIOutput;
@@ -132,8 +131,6 @@ public class ManagerInventory implements Serializable {
     private final long EPUB_ID = 1L;
     private final long PDF_ID = 2L;
     private final long MOBI_ID = 3L;
-    
-    private boolean isNew = true;
 
     //INIT
     @PostConstruct
@@ -177,7 +174,6 @@ public class ManagerInventory implements Serializable {
             bookGenre = new ArrayList<>();
             bookPublisher = new ArrayList<>();
             totalSales = new BigDecimal(0);
-            isNew = true;
         } else {
             LOG.debug("Selected book with ISBN: " + Long.toString(input_isbn));
             edit = true;
@@ -197,7 +193,6 @@ public class ManagerInventory implements Serializable {
             bookGenre = book.getGenresCollection();
             bookPublisher = book.getPublishersCollection();
             totalSales = bookorderController.getTotalSalesForBook(isbn);
-            isNew = false;
         }
     }
 
@@ -356,11 +351,6 @@ public class ManagerInventory implements Serializable {
     public void clearAuthors() {
         LOG.debug("Cleared all authors from collection");
         bookAuthor = new ArrayList<>();
-    }
-    
-    public void removeAuthorFromCollection(Long authorId) {
-        Authors author = authorsController.findAuthors(authorId);
-        bookAuthor.remove(author);
     }
 
     /**
@@ -892,10 +882,6 @@ public class ManagerInventory implements Serializable {
         this.newBookfiles = newBookfiles;
     }
 
-    public void setIsNew(boolean isNew) {
-        this.isNew = isNew;
-    }
-
     //Getters
     public Long getIsbn() {
         return isbn;
@@ -1017,8 +1003,4 @@ public class ManagerInventory implements Serializable {
         return newBookfiles;
     }
 
-    public boolean isIsNew() {
-        return isNew;
-    }
-    
 }
