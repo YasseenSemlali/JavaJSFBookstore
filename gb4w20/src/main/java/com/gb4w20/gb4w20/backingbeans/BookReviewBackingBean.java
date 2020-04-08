@@ -6,6 +6,7 @@ import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import com.gb4w20.gb4w20.jpa.ReviewsJpaController;
 import com.gb4w20.gb4w20.jpa.UsersJpaController;
+import com.gb4w20.gb4w20.jsf.validation.JSFFormMessageValidator;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -13,9 +14,11 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.PrimeFaces;
 
 /**
  * <h1>Book Review Backing Bean</h1>
@@ -39,9 +42,12 @@ public class BookReviewBackingBean implements Serializable{
     private BooksJpaController booksJpaController;
     @Inject
     private UsersJpaController usersJpaController;
+    
+    @Inject
+    private JSFFormMessageValidator validator;
 
     private String review;
-    private short rating;
+    private short rating = 1; //default value is 1 star since it's the lowest rate
     
     /**
      * Makes a review setting up its instances depending 
@@ -51,7 +57,7 @@ public class BookReviewBackingBean implements Serializable{
      * @param user
      * @throws RollbackFailureException 
      */
-    public void makeReview(Long book, Long user) throws RollbackFailureException{
+    public void makeReview(Long book, Long user) throws RollbackFailureException{   
         Reviews reviews = new Reviews();
         reviews.setReview(this.review);
         reviews.setRating(this.rating); 
@@ -76,8 +82,12 @@ public class BookReviewBackingBean implements Serializable{
      * @throws RollbackFailureException 
      */
     private void saveReview(Reviews reviews) {
+        //dialog from PrimeFaces is used depending on the outcome of this method
+        PrimeFaces reviewDialog = PrimeFaces.current();
         try {
             this.reviewsJpaController.create(reviews);
+            reviewDialog.executeScript("PF('succeed').show()");
+            clearReviewsInputs();
         } catch (BackendException | RollbackFailureException ex) {
             LOG.info(ex.toString());
             try {
@@ -118,5 +128,23 @@ public class BookReviewBackingBean implements Serializable{
      */
     public void setRating(short rating){
         this.rating = rating;
+    }
+    
+    /**
+     * Clears the inputs of review and rating once it's submitted
+     */
+    private void clearReviewsInputs(){
+        this.review = null;
+        this.rating = 1;
+    }
+    
+    /**
+     * Validates the review if it's empty or not
+     * @param fc
+     * @param c
+     * @param value 
+     */
+    public void validateReview(FacesContext fc, UIComponent c, Object value) {
+        this.validator.validateIsNotBlank((String) value);
     }
 }

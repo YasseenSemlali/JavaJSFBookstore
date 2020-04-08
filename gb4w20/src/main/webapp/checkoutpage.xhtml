@@ -23,6 +23,19 @@ and finalize transactions
     </ui:define>
 
     <ui:define name="content">
+        
+        <!-- When user has not logged in yet and he added to the cart a book he has purchased already
+                    then it will still show that book to the cart UNTIL he logs back in then that book is removed to the cart 
+                    since he already purchased it. 
+        @author Jasmar Badion -->
+        <!--<c:if test="#{not empty cartSession.books}">
+            <c:forEach items="#{cartSession.books}" var="bookincart">
+                <c:if test="#{userSession.hasBoughtBook(bookincart)}">
+                    #{cartSession.removeBookFromSession(bookincart)}
+                </c:if>
+            </c:forEach>
+        </c:if>-->
+        
         <b:container>
             <div id="checkout-startreadingnow">
                 <h1>#{msgs.startreadingnow}</h1>
@@ -33,17 +46,17 @@ and finalize transactions
         <b:container>
             <b:jumbotron>
                 <c:forEach items="#{cartSession.books}" var="cartbooks">
-                    <ui:decorate template="/templates/book.xhtml">
-                        <ui:param name="book" value="#{cartbooks}"></ui:param>
-                        <ui:param name="showPrice" value="true"></ui:param>
-                        <ui:param name="showOldPrice" value="true"></ui:param>
-                    </ui:decorate>
-                    <h:form>
-                        <div class="center-text">
-                            <p:commandButton value="#{msgs.remove}" action="#{cartSession.removeBookFromSession(cartbooks)}" style="background-color: red; color: white;" onsuccess="location.reload()"/>
-                        </div>
-                    </h:form>
-                    <br></br>
+                            <ui:decorate template="/templates/book.xhtml">
+                                <ui:param name="book" value="#{cartbooks}"></ui:param>
+                                <ui:param name="showPrice" value="true"></ui:param>
+                                <ui:param name="showOldPrice" value="true"></ui:param>
+                            </ui:decorate>
+                            <h:form>
+                                <div class="center-text">
+                                    <p:commandButton value="#{msgs.remove}" action="#{cartSession.removeBookFromSession(cartbooks)}" style="background-color: red; color: white;" onsuccess="location.reload()"/>
+                                </div>
+                            </h:form>
+                            <br></br>
                 </c:forEach>
                 <h3>#{msgs.total}: $#{cartSession.calculateTotalAmount()}</h3>
             </b:jumbotron>

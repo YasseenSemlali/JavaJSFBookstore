@@ -102,7 +102,7 @@ Java Server Faces page that displays the frontpage of the app
                 </h:panelGroup>
             </h:panelGroup>
             <b:row id="book-items">
-                 <b:column id="recently-bought-books-section" class="miscellaneous-item" col-md="4">
+                <b:column id="recently-bought-books-section" class="miscellaneous-item" col-md="4">
                     <h2>${msgs.you_recently_bought}</h2>
 
                     <c:choose>
@@ -128,8 +128,8 @@ Java Server Faces page that displays the frontpage of the app
                         </c:forEach>
                     </b:panelGrid>
                 </b:column>
-             </b:row>
-             <b:row id="miscellaneous-items">
+            </b:row>
+            <b:row id="miscellaneous-items">
                 <b:column col-md="4" class="miscellaneous-item" id="survey">
                     <h2>${msgs.survey}</h2>
                     <c:set var="question" value="#{surveyQuestionsJpaController.getActiveQuestion()}"/>
