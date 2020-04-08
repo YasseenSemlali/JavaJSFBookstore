@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.gb4w20.gb4w20.jpa;
 
 import java.io.Serializable;
@@ -551,6 +547,12 @@ public class BooksJpaController implements Serializable {
     public List<Books> getAllBooksForGenre(Long genreId) {
         return this.getTopSellingForGenre(genreId, -1);
     }
+
+    public List<Books> getAllBooksForGenre(Long genreId, int topSellingToExclude) {
+        List<Books> results = this.getTopSellingForGenre(genreId, -1);
+        results.removeAll(this.getTopSellingForGenre(genreId, topSellingToExclude));
+        return results;
+    }
     
     /**
      * Used to get the top selling books of a given genre
@@ -659,7 +661,6 @@ public class BooksJpaController implements Serializable {
         cq.select(book);
         
         List<Predicate> predicates = new ArrayList();
-        predicates.add(cb.isTrue(book.get(Books_.active)));
         
         predicates.add(cb.equal(user.get("userId"), id));
         
@@ -700,7 +701,10 @@ public class BooksJpaController implements Serializable {
         Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
 
         cq.multiselect(
-                book.get(Books_.title),
+                cb.concat(
+                        cb.concat(book.get("isbn"), " - "), 
+                        cb.concat(book.get("title"), "")
+                ),
                 cb.sum(bookorder.get("amountPaidPretax")),
                 cb.count(bookorder.get("orderId"))
         )

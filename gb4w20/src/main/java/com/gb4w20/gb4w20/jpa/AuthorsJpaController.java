@@ -229,7 +229,10 @@ public class AuthorsJpaController implements Serializable {
         Join<Books, Authors> authors = book.join(Books_.authorsCollection);
         
         cq.multiselect(
-                    book.get(Books_.title), 
+                    cb.concat(
+                            cb.concat(book.get("isbn"), " - "), 
+                            cb.concat(book.get("title"), "")
+                    ), 
                     cb.sum(bookorder.get("amountPaidPretax")),
                     cb.count(bookorder.get("orderId"))
                  )

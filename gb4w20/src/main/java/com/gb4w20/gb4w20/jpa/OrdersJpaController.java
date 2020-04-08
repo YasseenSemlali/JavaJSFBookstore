@@ -259,7 +259,10 @@ public class OrdersJpaController implements Serializable {
         Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
         
         cq.multiselect(
-                book.get(Books_.title), 
+                cb.concat(
+                        cb.concat(book.get("isbn"), " - "), 
+                        cb.concat(book.get("title"), "")
+                ),
                 cb.sum(bookorder.get("amountPaidPretax")),
                 cb.count(bookorder.get("orderId"))
                 )

@@ -9,12 +9,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Size;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -54,14 +56,16 @@ public class ManagerAds implements Serializable {
     @PostConstruct
     private void init() {
         LOG.debug("Initializing manager ads backing bean");
-        int size = adsController.getAdsCount();
+        List<Ads> allAds = adsController.findAdsEntities();
+        int size = allAds.size();
         locations = new String[size];
         urls = new String[size];
         enabled = new Boolean[size];
+        image="";
         for (int i = 0; i < size; i++) {
             locations[i] = "";
             urls[i] = "";
-            this.enabled[i] = Boolean.FALSE;
+            this.enabled[i] = allAds.get(i).getEnabled();
         }
     }
 
@@ -94,7 +98,6 @@ public class ManagerAds implements Serializable {
             //Reset inputs
             locations[index] = "";
             urls[index] = "";
-            enabled[index] = Boolean.FALSE;
 
         } catch (com.gb4w20.gb4w20.exceptions.BackendException ex) {
             LOG.info(ex.toString());

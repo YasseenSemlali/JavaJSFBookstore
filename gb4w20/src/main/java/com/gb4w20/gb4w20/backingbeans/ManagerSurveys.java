@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -55,12 +56,13 @@ public class ManagerSurveys implements Serializable {
     @PostConstruct
     private void init() {
         LOG.debug("Initializing Manager Survey variables");
-        int size = surveysController.getSurveyQuestionsCount();
+        List<SurveyQuestions> allQuestions = surveysController.findSurveyQuestionsEntities();
+        int size = allQuestions.size();
         questions = new String[size];
         enabled = new Boolean[size];
         for (int i = 0; i < size; i++) {
             questions[i] = "";
-            enabled[i] = Boolean.FALSE;
+            enabled[i] = allQuestions.get(i).getEnabled();
         }
     }
 
@@ -104,7 +106,6 @@ public class ManagerSurveys implements Serializable {
             surveysController.edit(question);
 
             //Reset inputs
-            enabled[index] = Boolean.FALSE;
             questions[index] = "";
 
         } catch (Exception ex) {
