@@ -46,6 +46,10 @@ public class BookOrderBackingBean implements Serializable{
     private UserSessionBean userSession;
     @Inject
     private CartBookBackingBean cart;
+    @Inject
+    private TransactionBackingBean transaction;
+    @Inject
+    private InvoiceBackingBean invoice;
 
     private Orders order;
     
@@ -80,6 +84,7 @@ public class BookOrderBackingBean implements Serializable{
         try {
             this.ordersJpaController.create(order);
             iterateThroughCart();
+            this.invoice.setCredcard(transaction.getCard());
             return "/user-secured/invoice";
         } catch (BackendException ex) {
             LOG.info(ex.toString());
