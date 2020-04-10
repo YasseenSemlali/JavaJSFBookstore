@@ -37,6 +37,10 @@ public class SurveyBackingBean {
         this.questionId = questionId;
     }
 
+    /** Votes for the selected question
+     * 
+     * @author Yasseen Semlali
+     */
     public void vote() {
         FacesContext context = FacesContext.getCurrentInstance();
         ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msgs");

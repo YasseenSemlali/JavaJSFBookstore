@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Used as a data access object between taxes entities.
  *
- * @author Jeffrey Boisvert, Jean Robatto
+ * @author Jean Robatto, Yasseen Semlali
  */
 @Named
 @SessionScoped
@@ -188,10 +188,8 @@ public class SurveyResponsesJpaController implements Serializable {
     }
 
     /**
-     * PLEASE SOMEONE COMMENT THIS!
-     * WE DONT NEED THIS: CAN JUST FIND ENTRY, USE SETTERS AND COMMIT
-     * @param id
-     * @throws RollbackFailureException 
+     * Increments the number of votes a survey response has
+     * @author Yasseen Semlali
      */
     public void voteForQuestion(long id) throws RollbackFailureException {
         try {

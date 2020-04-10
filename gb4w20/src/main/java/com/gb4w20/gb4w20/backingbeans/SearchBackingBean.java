@@ -22,6 +22,9 @@ public class SearchBackingBean {
     @Inject
     BooksJpaController booksJpaController;
 
+    /**Searches given the parameters
+     * @author Yasseen Semlali
+     */
     public List<Books> search(Long isbn, String title, String author, String publisher, Boolean allTrue) throws IOException {
         List<Books> results = booksJpaController.searchBooks(isbn, title, author, publisher, allTrue);
 
