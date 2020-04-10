@@ -165,7 +165,7 @@ public class EmailBackingBean implements Serializable {
         }
         String amount = "<h3>" + this.bundle.getString("total") + ": $" + transaction.calculateAmountWithTaxes(invoice.getTotalincart(), tax.findByProvince(userSession.getUser().getProvince())) + " </h3>";
 
-        String info = "<p>" + this.bundle.getString("credcardnum") + ": " + transaction.hideCreditCardNum()
+        String info = "<p>" + this.bundle.getString("credcardnum") + ": " + invoice.hideCreditCardNum()
                 + "</p><p>" + this.bundle.getString("datepurchase") + ": " + transaction.showCurrentDate() + "</p>";
         return items + amount + info + "<h2>" + this.bundle.getString("thankinvoice") + "</h2>";
     }

@@ -145,6 +145,11 @@ public class TransactionBackingBean implements Serializable {
         return totals.setScale(2, RoundingMode.HALF_UP);
     }
 
+    /**
+     * Scales amount to two decimals
+     * @param amount
+     * @return 
+     */
     public BigDecimal scaleByTwoDecimals(BigDecimal amount) {
         return amount.setScale(2, RoundingMode.HALF_UP);
     }
@@ -160,33 +165,15 @@ public class TransactionBackingBean implements Serializable {
         Date datenow = new Date();
         return formatter.format(datenow);
     }
-
+    
     /**
-     * Displays the credit card number in invoice as masked
-     * @return 
+     * Clears transaction input after paying
      */
-    public String hideCreditCardNum() {
-        int index = 0;
-        String mask = "##xx-xxxx-xxxx-xx##"; //format of how it will be displayed masked
-        StringBuilder maskedNumber = new StringBuilder();
-        LOG.debug(this.card.toString());
-        for (int i = 0; i < mask.length(); i++) {
-            char c = mask.charAt(i);
-            switch (c) {
-                case '#':
-                    maskedNumber.append(this.card.toString().charAt(index));
-                    index++;
-                    break;
-                case 'x':
-                    maskedNumber.append(c);
-                    index++;
-                    break;
-                default:
-                    maskedNumber.append(c);
-                    break;
-            }
-        }
-        return maskedNumber.toString();
+    public void clearTransactioninfo(){
+        this.card = null;
+        this.ownername = null;
+        this.date = null;
+        this.cardSecurityCode = null;
     }
 
     /**

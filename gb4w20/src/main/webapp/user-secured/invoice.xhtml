@@ -22,6 +22,8 @@ or print it or both.
 
         <!-- clearing the cart -->
         #{cartSession.clearCart()}
+        <!-- clearing transaction inputs -->
+        #{transaction.clearTransactioninfo()}
         
         <b:container>
             <p:outputPanel id="invoiceprint">
@@ -50,7 +52,7 @@ or print it or both.
                 <hr></hr>
                 <p>
                     <h4>#{msgs.information}</h4>
-                    #{msgs.credcardnum}: <span class="greentexts">#{transaction.hideCreditCardNum()}</span>
+                    #{msgs.credcardnum}: <span class="greentexts">#{invoiceBackingBean.hideCreditCardNum()}</span>
                     <br></br>
                     #{msgs.name}: #{userSession.user.firstName} #{userSession.user.lastName}
                     <br></br>
