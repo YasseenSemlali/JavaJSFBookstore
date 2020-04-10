@@ -47,6 +47,23 @@ public class SurveyResponsesJpaControllerTest {
 
             assertEquals("Did not correcty increment voting count:", currentCount + 1, newCount);
         }
+        
+//        /**
+//         * Used to test that when the method is called, the vote is increased by
+//         * one
+//         *
+//         * @author Jeffrey Boisvert
+//         */
+//        @Test
+//        public void testGetResponsesFromQuestion() {
+//            Long id = 1L;
+//            SurveyResponses response = surveyResponsesJpaController.findSurveyResponses(id);
+//            int currentCount = response.getCount();
+//            surveyResponsesJpaController.voteForQuestion(id);
+//            int newCount = surveyResponsesJpaController.findSurveyResponses(id).getCount();
+//
+//            assertEquals("Did not correcty increment voting count:", currentCount + 1, newCount);
+//        }
 
     }
 
