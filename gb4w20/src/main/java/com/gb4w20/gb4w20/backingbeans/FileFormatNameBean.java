@@ -12,6 +12,9 @@ import javax.inject.Named;
 @Named
 @SessionScoped
 public class FileFormatNameBean implements Serializable{
+    /** Returns the name of a file format depending on the language
+     * @author Yasseen Semlali
+     */
     public String getInternationalizedFormatName(String format) {
         FacesContext context = FacesContext.getCurrentInstance();
         

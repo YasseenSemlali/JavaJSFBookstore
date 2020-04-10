@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Yasseen Semlali, Jean Robatto
+ * @author Yasseen Semlali, Jeffrey Boisvert
  */
 @Named
 @SessionScoped
@@ -461,6 +461,11 @@ public class BooksJpaController implements Serializable {
         return query.getResultList();
     }
 
+    /** Gets most recent books bought by user
+     * @param id User id
+     * @param maxResults Number of books to return
+     * @author Yasseen Semlali
+     */
     public List<Books> getRecentlyBoughtBooks(Long id, int maxResults) {
         LOG.info("getting " + maxResults + " recent books");
 
@@ -472,7 +477,6 @@ public class BooksJpaController implements Serializable {
         Join<Bookorder, Orders> order = bookorder.join("orderId", JoinType.INNER);
         Join<Orders, Users> user = order.join("userId", JoinType.INNER);
 
-        // TODO get email from session
         cq.select(book);
         
         List<Predicate> predicates = new ArrayList();
@@ -543,11 +547,20 @@ public class BooksJpaController implements Serializable {
 
         return query.getResultList();
     }
-
+    
+    /** Gets all the books in a genre, sorted by sales
+     * @param genreId Genre to search in
+     * @author Yasseen Semlali
+     */
     public List<Books> getAllBooksForGenre(Long genreId) {
         return this.getTopSellingForGenre(genreId, -1);
     }
 
+    /** Gets all the books in a genre, sorted by sales
+     * @param genreId Genre to search in
+     * @param topSellingToExclude Exludes the top n books from the search
+     * @author Yasseen Semlali
+     */
     public List<Books> getAllBooksForGenre(Long genreId, int topSellingToExclude) {
         List<Books> results = this.getTopSellingForGenre(genreId, -1);
         results.removeAll(this.getTopSellingForGenre(genreId, topSellingToExclude));
@@ -588,6 +601,15 @@ public class BooksJpaController implements Serializable {
         return query.getResultList();
     }
 
+    /** Searches the books given the criteria
+     * @param isbn Isbn of the book
+     * @param title Text contained in the book
+     * @param author Space separated list of first or last names
+     * @param publisher Publisher of the book
+     * @param allTrue Whether all criteria have to be true or just one
+     * @return Search results
+     * @author Yasseen Semlali
+     */
     public List<Books> searchBooks(Long isbn, String title, String author, String publisher, Boolean allTrue) {
         LOG.info("Searching books: isbn: " + isbn + " title: " + title + " author: " + author + " publisher: " + publisher);
 
@@ -646,6 +668,10 @@ public class BooksJpaController implements Serializable {
         return query.getResultList();
     }
 
+    /** Gets all the books a user owns
+     * @param id User id 
+     * @author Yasseen Semlali
+     */
     public List<Books> getBooksForUser(Long id) {
         LOG.info("getting books for user " + id);
 
