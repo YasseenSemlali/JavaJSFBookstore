@@ -248,25 +248,6 @@ public class FrontPageIT extends TestBase {
     }
 
     /**
-
-     * Used to test that the user is brought to the login page
-     * when selecting the login button for recently bought books
-     * @throws Exception 
-     * @author Jeffrey Boisvert
-     */
-    @Test
-    public void testLoginFromRecentlyBoughtBooks() throws Exception {
-
-        loadFrontPage();
-        
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        driver.findElement(By.id("recently-bought-books-login-button")).click();
-        
-        wait.until(ExpectedConditions.titleIs("Login"));
-        
-    }
-
-    /**
      * Used to test that the news feed is present on the page
      * @throws Exception 
      * @author Jeffrey Boisvert
