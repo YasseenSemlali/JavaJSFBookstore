@@ -8,6 +8,7 @@ import javax.persistence.criteria.Root;
 import com.gb4w20.gb4w20.entities.SurveyQuestions;
 import com.gb4w20.gb4w20.entities.SurveyResponses;
 import com.gb4w20.gb4w20.entities.SurveyResponses_;
+import com.gb4w20.gb4w20.entities.Users_;
 import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
 import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import java.util.Collection;
@@ -224,7 +225,7 @@ public class SurveyResponsesJpaController implements Serializable {
      * 
      * @param question
      * @return 
-     * @author Jean Robatto
+     * @author Jean Robatto, Jeffrey Boisvert
      */
     public Collection<SurveyResponses> getResponsesFromQuestion(SurveyQuestions question) {
         
@@ -233,7 +234,13 @@ public class SurveyResponsesJpaController implements Serializable {
 
         Root<SurveyResponses> response = cq.from(SurveyResponses.class);
         
-        cq.select(response).where(cb.equal(response.get(SurveyResponses_.surveyQuestionId), question));
+        cq.select(response).where(
+                //Added logic to only get enabled survey responses - Jeffrey 
+                cb.and(
+                  cb.equal(response.get(SurveyResponses_.surveyQuestionId), question),
+                  cb.isTrue(response.get(SurveyResponses_.enabled))
+            )
+        );
         
         Query query = em.createQuery(cq);
 
