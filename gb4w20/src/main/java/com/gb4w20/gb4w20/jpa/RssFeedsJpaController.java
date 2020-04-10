@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Used to interact with the rssfeeds table in the database. 
  * 
- * @author Jeffrey Boisvert, Jean Robatto
+ * @author Yasseen Semlali
  */
 @Named
 @SessionScoped
@@ -122,8 +122,9 @@ public class RssFeedsJpaController implements Serializable {
     }
     
     /**
-     * Getting active feeds
-     * @return 
+     * Gets the active feed
+     * @author Yasseen Semlali
+     * @return The active feed, or null if there are none. If there are multiple, it returns the first
      */
      public RssFeeds getActiveFeed() {
         LOG.info("getting active rssFeed");
