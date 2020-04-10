@@ -201,6 +201,7 @@ add it to the shopping cart.
                     </c:when>
                     <c:otherwise>
                         <p:outputLabel>#{msgs.mustbelogintoreview}  </p:outputLabel>
+                        <!-- Link if not logged in - Jeffrey Boisvert --> 
                         <b:link id="reviews-login-button" class="language-button btn btn-primary" href="#{request.contextPath}/login.xhtml" value="${msgs.login}" />
                     </c:otherwise>  
                 </c:choose>
