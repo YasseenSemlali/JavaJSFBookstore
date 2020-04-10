@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Used to interact with survey questions table in the database.
  *
- * @author Jeffrey Boisvert, Yasseen Semlali, Jean Robatto
+ * @author Yasseen Semlali
  */
 @Named
 @SessionScoped
@@ -181,6 +181,11 @@ public class SurveyQuestionsJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
     }
     
+    /**
+     * Gets the active question
+     * @author Yasseen Semlali
+     * @return The active question, or null if there are none. If there are multiple, it returns the first
+     */
     public SurveyQuestions getActiveQuestion() {
         LOG.info("getting active surveyQuestion");
         
