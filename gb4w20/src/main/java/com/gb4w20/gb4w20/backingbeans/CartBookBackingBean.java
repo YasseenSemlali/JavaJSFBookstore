@@ -1,4 +1,3 @@
-
 package com.gb4w20.gb4w20.backingbeans;
 
 import com.gb4w20.gb4w20.entities.Books;
@@ -6,6 +5,7 @@ import com.gb4w20.gb4w20.jpa.BooksJpaController;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Iterator;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -34,6 +34,8 @@ public class CartBookBackingBean implements Serializable {
 
     @Inject
     private BooksJpaController bookJpaController;
+    @Inject
+    private UserSessionBean userSession;
 
     /**
      * Default constructor initializing the HashSet
@@ -121,11 +123,29 @@ public class CartBookBackingBean implements Serializable {
             return new BigDecimal(0);
         }
     }
-    
+
     /**
      * Re-initializing a new cart and returning back to the index page
      */
     public void clearCart() {
         this.books = new HashSet<Books>();
+    }
+
+    /**
+     * When user logs in, it checks in the cart if
+     * there are books that he already purchased then
+     * remove them from the cart when it was added before
+     * he logged in
+     */
+    public void removePurchasedbooks() {
+        //creating an interator for the HashSet of books in the cart
+        Iterator<Books> bookiterator = this.books.iterator();
+        
+        while(bookiterator.hasNext()){
+            if(this.userSession.hasBoughtBook(bookiterator.next())){
+                LOG.info("Removing from the cart");
+                bookiterator.remove();
+            }
+        }
     }
 }
