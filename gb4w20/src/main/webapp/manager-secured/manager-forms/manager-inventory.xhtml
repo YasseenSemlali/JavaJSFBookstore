@@ -161,9 +161,19 @@ necessary to manage inventory of our store.
                                             allowTypes="/(\.|\/)(jpe?g|png)$/" 
                                             dragDropSupport="true"
                                             style="width: 40%; margin: 5%"
-                                            update="cover_img"
+                                            update="cover_img img_upload_msg"
                                             validatorMessage="#{msgs.invalid_cover}"
                                             />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 text-right-mobile"></div>
+                                    <div class="col-lg-6 text-left">  
+                                        <p:panelGrid id="img_upload_msg">
+                                        <p:outputLabel 
+                                            value="#{msgs.file_uploaded}" 
+                                            rendered="#{!managerInventory.cover.isEmpty() and managerInventory.isNew}" />
+                                        </p:panelGrid>
                                     </div>
                                 </div>
                                 <div class="row">

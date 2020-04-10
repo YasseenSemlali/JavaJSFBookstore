@@ -19,10 +19,10 @@ or print it or both.
         <title>#{msgs.invoice}</title>
         <h:outputStylesheet library="css" name="clientpages.css" />
         <h:outputStylesheet library="css" name="global.css" />
-        
-        <!-- Creating a new order -->
-        <!--#{bookOrderBackingBean.createOrder()}-->
 
+        <!-- clearing the cart -->
+        #{cartSession.clearCart()}
+        
         <b:container>
             <p:outputPanel id="invoiceprint">
                 <h1>#{msgs.companyName} <span class="bluetexts">#{msgs.invoice}</span></h1>
@@ -33,22 +33,19 @@ or print it or both.
                 <p>
                     <h4>#{msgs.youritems}:</h4>
                     <ul>
-                        <c:forEach items="#{cartSession.books}" var="cartbooks">
+                        <c:forEach items="#{invoiceBackingBean.booksincart}" var="cartbooks">
                             <li>#{cartbooks.title}: $#{cartbooks.listPrice -  cartbooks.salePrice}</li>
-
-                            <!-- Adding those books purchased to the book order for this user -->
-                            <!--#{bookOrderBackingBean.addBookToOrder(cartbooks)}-->
                         </c:forEach>
                     </ul>
                 </p>
                 <hr></hr>
                 <p>
-                    <h4>#{msgs.amount} $#{cartSession.calculateTotalAmount()}</h4>
+                    <h4>#{msgs.amount} $#{invoiceBackingBean.totalincart}</h4>
                     <c:set var="taxprov" value="#{taxesJpaController.findByProvince(userSession.user.province)}"/>
-                    <p>#{msgs.hst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getHSTpercentage())}</p>
-                    <p>#{msgs.gst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getGSTpercentage())}</p>
-                    <p>#{msgs.pst_tax}: $#{transaction.scaleByTwoDecimals(cartSession.calculateTotalAmount()*taxprov.getPSTpercentage())}</p> 
-                    <h4><div class="finalize-redtexts">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(cartSession.calculateTotalAmount(), taxesJpaController.findByProvince(userSession.user.province))}</div></h4>
+                    <p>#{msgs.hst_tax}: $#{transaction.scaleByTwoDecimals(invoiceBackingBean.totalincart*taxprov.getHSTpercentage())}</p>
+                    <p>#{msgs.gst_tax}: $#{transaction.scaleByTwoDecimals(invoiceBackingBean.totalincart*taxprov.getGSTpercentage())}</p>
+                    <p>#{msgs.pst_tax}: $#{transaction.scaleByTwoDecimals(invoiceBackingBean.totalincart*taxprov.getPSTpercentage())}</p> 
+                    <h4><div class="finalize-redtexts">#{msgs.total}: $#{transaction.calculateAmountWithTaxes(invoiceBackingBean.totalincart, taxesJpaController.findByProvince(userSession.user.province))}</div></h4>
                 </p>
                 <hr></hr>
                 <p>
@@ -82,7 +79,7 @@ or print it or both.
                     </p:commandButton>
                 </p>
                 <p>
-                    <b:commandButton action="#{cartSession.clearCart()}" value="#{msgs.shop_again_index}" look="info"/>
+                    <b:commandButton action="/index.xhtml" value="#{msgs.shop_again_index}" look="info"/>
                 </p>
             </h:form>
         </b:container>

@@ -92,6 +92,10 @@ public class BookOrderBackingBean implements Serializable{
         }
     }
     
+    /**
+     * Iterates through books in the cart to add each to
+     * book order
+     */
     private void iterateThroughCart(){
         for(Books cartbook : cart.getBooks()){
             addBookToOrder(cartbook);
