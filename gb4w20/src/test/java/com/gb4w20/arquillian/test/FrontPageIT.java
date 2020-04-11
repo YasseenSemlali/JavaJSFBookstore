@@ -393,7 +393,7 @@ public class FrontPageIT extends TestBase {
         
         driver.findElement(By.id("booklinkpage")).click();
         
-        assertEquals("Invalid genre cookie value.", "1", driver.manage().getCookieNamed("recentGenre").getValue());
+        assertEquals("Invalid genre cookie value.", "2", driver.manage().getCookieNamed("recentGenre").getValue());
     }
     
     
