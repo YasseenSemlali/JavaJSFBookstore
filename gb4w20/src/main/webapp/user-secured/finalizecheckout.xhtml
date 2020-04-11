@@ -32,8 +32,8 @@ to be able to finalize the transaction.
                 <b:panelGrid colSpans="2,10" size="xs">
                     <h:outputLabel for="creditcard" value="#{msgs.creditcardnumber}"/>
                     <b:inputText id="creditcard" value="#{transaction.card}" span="6" required="true">
-                        <f:converter converterId="com.gb4w20.gb4w20.jsf.validation.CreditCardConverter" />
-                        <f:validator validatorId="com.gb4w20.gb4w20.jsf.validation.CreditCardValidator" />
+                        <f:converter converterId="com.gb4w20.jsf.validation.CreditCardConverter" />
+                        <f:validator validatorId="com.gb4w20.jsf.validation.CreditCardValidator" />
                         <f:ajax event="change" render="credcarderror"/>
                     </b:inputText>
                     <h:message id="credcarderror" for="creditcard" class="finalize-redtexts" />

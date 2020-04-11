@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Jasmar Badion
  */
-@FacesConverter("com.gb4w20.gb4w20.jsf.validation.CreditCardConverter")
+@FacesConverter("com.gb4w20.jsf.validation.CreditCardConverter")
 public class CreditCardConverter implements Converter, Serializable {
 
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(CreditCardConverter.class);
@@ -64,7 +64,7 @@ public class CreditCardConverter implements Converter, Serializable {
         
         if (foundInvalidCharacter) {
             FacesMessage message = CreditCardMessages.getMessage(
-                    "com.gb4w20.gb4w20.bundles.messages", "badCreditCardCharacter",
+                    "com.gb4w20.bundles.messages", "badCreditCardCharacter",
                     new Object[]{invalidCharacter});
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ConverterException(message);

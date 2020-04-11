@@ -121,7 +121,7 @@ public class Authors implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.Authors[ authorId=" + authorId + " ]";
+        return "com.gb4w20.entities.Authors[ authorId=" + authorId + " ]";
     }
     
 }

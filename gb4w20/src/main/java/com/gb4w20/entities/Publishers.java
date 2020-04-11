@@ -109,7 +109,7 @@ public class Publishers implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.Publishers[ publisherId=" + publisherId + " ]";
+        return "com.gb4w20.entities.Publishers[ publisherId=" + publisherId + " ]";
     }
     
 }

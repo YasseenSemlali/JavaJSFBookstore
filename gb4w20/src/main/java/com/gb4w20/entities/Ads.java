@@ -133,7 +133,7 @@ public class Ads implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.Ads[ id=" + id + " ]";
+        return "com.gb4w20.entities.Ads[ id=" + id + " ]";
     }
     
 }

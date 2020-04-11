@@ -160,7 +160,7 @@ public class Bookorder implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.Bookorder[ bookorderId=" + bookorderId + " ]";
+        return "com.gb4w20.entities.Bookorder[ bookorderId=" + bookorderId + " ]";
     }
     
 }

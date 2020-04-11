@@ -125,7 +125,7 @@ public class Taxes implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.Taxes[ province=" + province + " ]";
+        return "com.gb4w20.entities.Taxes[ province=" + province + " ]";
     }
     
 }

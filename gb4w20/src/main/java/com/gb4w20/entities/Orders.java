@@ -149,7 +149,7 @@ public class Orders implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.Orders[ orderId=" + orderId + " ]";
+        return "com.gb4w20.entities.Orders[ orderId=" + orderId + " ]";
     }
     
 }
