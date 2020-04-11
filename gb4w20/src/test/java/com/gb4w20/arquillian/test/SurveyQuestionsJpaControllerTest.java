@@ -1,7 +1,7 @@
 package com.gb4w20.arquillian.test;
 
-import com.gb4w20.gb4w20.entities.SurveyQuestions;
-import com.gb4w20.gb4w20.jpa.SurveyQuestionsJpaController;
+import com.gb4w20.entities.SurveyQuestions;
+import com.gb4w20.jpa.SurveyQuestionsJpaController;
 import javax.inject.Inject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

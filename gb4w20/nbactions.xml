@@ -2,14 +2,14 @@
 <actions>
         <action>
             <actionName>CUSTOM-test</actionName>
-            <displayName>ArquillianTest</displayName>
+            <displayName>Run Arquillian Test</displayName>
             <goals>
                 <goal>test</goal>
             </goals>
         </action>
         <action>
             <actionName>CUSTOM-SeleniumTest</actionName>
-            <displayName>SeleniumTest</displayName>
+            <displayName>Run Selenium Tests</displayName>
             <goals>
                 <goal>test</goal>
             </goals>

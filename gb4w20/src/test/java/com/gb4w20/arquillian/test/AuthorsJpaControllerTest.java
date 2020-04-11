@@ -1,10 +1,10 @@
 package com.gb4w20.arquillian.test;
 
 import com.gb4w20.arquillian.test.rules.ParameterRule;
-import com.gb4w20.gb4w20.entities.Authors;
-import com.gb4w20.gb4w20.entities.Books;
-import com.gb4w20.gb4w20.jpa.AuthorsJpaController;
-import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
+import com.gb4w20.entities.Authors;
+import com.gb4w20.entities.Books;
+import com.gb4w20.jpa.AuthorsJpaController;
+import com.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;

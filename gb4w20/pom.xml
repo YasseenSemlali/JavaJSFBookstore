@@ -29,7 +29,7 @@
         <name>Dawson College</name>
     </organization>
     <properties>
-        <skipTests>false</skipTests>
+        <skipTests>true</skipTests>
     </properties>
     <build>
         <finalName>

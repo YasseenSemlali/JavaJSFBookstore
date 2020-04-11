@@ -1,7 +1,7 @@
 package com.gb4w20.arquillian.test;
 
 import com.gb4w20.arquillian.test.rules.ParameterRule;
-import com.gb4w20.gb4w20.jpa.BookorderJpaController;
+import com.gb4w20.jpa.BookorderJpaController;
 import javax.inject.Inject;
 import org.javatuples.Triplet;
 import static org.junit.Assert.assertEquals;

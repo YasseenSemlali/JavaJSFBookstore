@@ -1,10 +1,10 @@
 package com.gb4w20.arquillian.test;
 
-import com.gb4w20.gb4w20.entities.SurveyQuestions;
-import com.gb4w20.gb4w20.entities.SurveyResponses;
-import com.gb4w20.gb4w20.jpa.SurveyQuestionsJpaController;
-import com.gb4w20.gb4w20.jpa.SurveyResponsesJpaController;
-import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
+import com.gb4w20.entities.SurveyQuestions;
+import com.gb4w20.entities.SurveyResponses;
+import com.gb4w20.jpa.SurveyQuestionsJpaController;
+import com.gb4w20.jpa.SurveyResponsesJpaController;
+import com.gb4w20.jpa.exceptions.RollbackFailureException;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import javax.inject.Inject;
@@ -42,7 +42,7 @@ public class SurveyResponsesJpaControllerTest {
          * one
          *
          * @author Jean Robatto
-         * @throws com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException
+         * @throws com.gb4w20.jpa.exceptions.RollbackFailureException
          */
         @Test
         public void testCorrectIncrease() throws RollbackFailureException {

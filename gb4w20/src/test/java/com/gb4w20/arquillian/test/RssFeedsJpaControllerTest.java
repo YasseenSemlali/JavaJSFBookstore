@@ -1,7 +1,7 @@
 package com.gb4w20.arquillian.test;
 
-import com.gb4w20.gb4w20.entities.RssFeeds;
-import com.gb4w20.gb4w20.jpa.RssFeedsJpaController;
+import com.gb4w20.entities.RssFeeds;
+import com.gb4w20.jpa.RssFeedsJpaController;
 import javax.inject.Inject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
