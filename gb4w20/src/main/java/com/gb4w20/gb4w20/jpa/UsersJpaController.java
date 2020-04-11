@@ -297,9 +297,8 @@ public class UsersJpaController implements Serializable {
           Root<Users> user = cq.from(Users.class);
           
           cq.select(user);
-          cq.where(cb.and(
+          cq.where(
                   cb.equal(user.get(Users_.email), email)
-            )
           );
           
           TypedQuery<Users> query = em.createQuery(cq);

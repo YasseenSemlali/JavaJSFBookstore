@@ -61,7 +61,11 @@ The user can select which author they would like to view via a drop down.
         <!-- Report --> 
         <h:panelGroup id="report-result" layout="block">
             <h:panelGroup layout="block" class="jumbotron"  rendered="#{not empty publisherReportBackingBean.purchasedProducts}">
-                 <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.totalSalesLabel} $#{publisherReportBackingBean.totalSales == null ? 0.00 : publisherReportBackingBean.totalSales}</h:panelGroup>
+                 <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.totalSalesLabel}
+                     <h:outputText value="#{publisherReportBackingBean.totalSales == null ? 0.00 : publisherReportBackingBean.totalSales}">
+                         <f:convertNumber pattern="$0.00" />
+                     </h:outputText>
+                 </h:panelGroup>
             </h:panelGroup>
             <h:panelGroup layout="block" class="jumbotron" rendered="#{not empty publisherReportBackingBean.purchasedProducts}">
                   <h:panelGroup layout="block" class="h3 report-sub-title">#{msgs.itemsPurchased}</h:panelGroup>

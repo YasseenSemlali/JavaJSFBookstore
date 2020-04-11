@@ -4,15 +4,12 @@ import com.gb4w20.arquillian.test.rules.ParameterRule;
 import com.gb4w20.arquillian.test.utils.BooksUtilities;
 import com.gb4w20.gb4w20.entities.Books;
 import com.gb4w20.gb4w20.jpa.BooksJpaController;
-import com.gb4w20.gb4w20.jpa.exceptions.NonexistentEntityException;
 import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
-import org.apache.commons.lang3.tuple.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Septet;
 import org.javatuples.Triplet;
@@ -91,11 +88,11 @@ public class BooksJpaControllerTest {
         @Rule
         public ParameterRule rule = new ParameterRule("param",
                 //test number, startDate, endDate, expected resultset size, expected title, expected amount, expected count
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(1, "2020-01-01", "2020-03-03", 8, "The Three-Body Problem", new BigDecimal(36), 2l),
+                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(1, "2020-01-01", "2020-03-03", 8, "9780765377067 - The Three-Body Problem", new BigDecimal(36), 2l),
                 new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(2, "2019-01-01", "2019-03-03", 0, "Test", new BigDecimal(5), 4l),
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(3, "2020-01-31", "2020-01-31", 1, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l),
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(4, "2020-02-22", "2020-02-22", 1, "The Three-Body Problem", new BigDecimal(18), 1l),
-                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(5, "1999-02-22", "2020-01-31", 1, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l)
+                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(3, "2020-01-31", "2020-01-31", 1, "9780000000000 - Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l),
+                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(4, "2020-02-22", "2020-02-22", 1, "9780765377067 - The Three-Body Problem", new BigDecimal(18), 1l),
+                new Septet<Integer, String, String, Integer, String, BigDecimal, Long>(5, "1999-02-22", "2020-01-31", 1, "9780000000000 - Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1l)
                 );
         
         private Septet<Integer, String, String, Integer, String, BigDecimal, Long> param;
