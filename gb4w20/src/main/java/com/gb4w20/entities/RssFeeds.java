@@ -118,7 +118,7 @@ public class RssFeeds implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.RssFeeds[ id=" + id + " ]";
+        return "com.gb4w20.entities.RssFeeds[ id=" + id + " ]";
     }
     
 }

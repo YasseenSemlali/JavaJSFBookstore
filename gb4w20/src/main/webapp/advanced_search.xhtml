@@ -23,6 +23,12 @@ Allows the user to search based on several criteria
 
             <form class="form-horizontal" action="search.xhtml">
                 <div class="form-group">
+                    <label class="control-label col-sm-2" for="isbn">${msgs.isbn_label}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="isbn" placeholder="${msgs.isbn_placeholder}"/>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-sm-2" for="title">${msgs.title_label}</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="title" placeholder="${msgs.title_placeholder}"/>

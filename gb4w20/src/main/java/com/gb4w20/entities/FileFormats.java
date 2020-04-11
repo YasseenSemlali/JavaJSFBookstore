@@ -105,7 +105,7 @@ public class FileFormats implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.FileFormats[ fileFormatId=" + fileFormatId + " ]";
+        return "com.gb4w20.entities.FileFormats[ fileFormatId=" + fileFormatId + " ]";
     }
     
 }

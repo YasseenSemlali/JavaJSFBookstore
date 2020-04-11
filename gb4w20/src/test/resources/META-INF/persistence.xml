@@ -3,21 +3,21 @@
   <persistence-unit name="BookPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>java:app/jdbc/bookstore_test</jta-data-source>
-        <class>com.gb4w20.gb4w20.entities.Ads</class>
-    <class>com.gb4w20.gb4w20.entities.Authors</class>
-    <class>com.gb4w20.gb4w20.entities.BookFiles</class>
-    <class>com.gb4w20.gb4w20.entities.Bookorder</class>
-    <class>com.gb4w20.gb4w20.entities.Books</class>
-    <class>com.gb4w20.gb4w20.entities.FileFormats</class>
-    <class>com.gb4w20.gb4w20.entities.Genres</class>
-    <class>com.gb4w20.gb4w20.entities.Orders</class>
-    <class>com.gb4w20.gb4w20.entities.Publishers</class>
-    <class>com.gb4w20.gb4w20.entities.Reviews</class>
-    <class>com.gb4w20.gb4w20.entities.RssFeeds</class>
-    <class>com.gb4w20.gb4w20.entities.SurveyQuestions</class>
-    <class>com.gb4w20.gb4w20.entities.SurveyResponses</class>
-    <class>com.gb4w20.gb4w20.entities.Taxes</class>
-    <class>com.gb4w20.gb4w20.entities.Users</class>
+        <class>com.gb4w20.entities.Ads</class>
+    <class>com.gb4w20.entities.Authors</class>
+    <class>com.gb4w20.entities.BookFiles</class>
+    <class>com.gb4w20.entities.Bookorder</class>
+    <class>com.gb4w20.entities.Books</class>
+    <class>com.gb4w20.entities.FileFormats</class>
+    <class>com.gb4w20.entities.Genres</class>
+    <class>com.gb4w20.entities.Orders</class>
+    <class>com.gb4w20.entities.Publishers</class>
+    <class>com.gb4w20.entities.Reviews</class>
+    <class>com.gb4w20.entities.RssFeeds</class>
+    <class>com.gb4w20.entities.SurveyQuestions</class>
+    <class>com.gb4w20.entities.SurveyResponses</class>
+    <class>com.gb4w20.entities.Taxes</class>
+    <class>com.gb4w20.entities.Users</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
 </persistence>

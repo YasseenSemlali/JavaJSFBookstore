@@ -142,7 +142,7 @@ public class SurveyResponses implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.SurveyResponses[ id=" + id + " ]";
+        return "com.gb4w20.entities.SurveyResponses[ id=" + id + " ]";
     }
     
 }

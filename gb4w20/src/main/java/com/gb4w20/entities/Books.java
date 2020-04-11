@@ -293,7 +293,7 @@ public class Books implements Serializable {
      */
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.Books[ isbn=" + isbn + " ] ";
+        return "com.gb4w20.entities.Books[ isbn=" + isbn + " ] ";
     }
     
 }

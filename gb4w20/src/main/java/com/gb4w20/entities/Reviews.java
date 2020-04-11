@@ -162,7 +162,7 @@ public class Reviews implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.Reviews[ reviewId=" + reviewId + " ]";
+        return "com.gb4w20.entities.Reviews[ reviewId=" + reviewId + " ]";
     }
     
 }

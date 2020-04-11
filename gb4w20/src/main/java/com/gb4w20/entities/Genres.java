@@ -109,7 +109,7 @@ public class Genres implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w20.gb4w20.entities.Genres[ genreId=" + genreId + " ]";
+        return "com.gb4w20.entities.Genres[ genreId=" + genreId + " ]";
     }
     
 }

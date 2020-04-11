@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Jasmar Badion
  */
-@FacesValidator("com.gb4w20.gb4w20.jsf.validation.CreditCardValidator")
+@FacesValidator("com.gb4w20.jsf.validation.CreditCardValidator")
 public class CreditCardValidator implements Validator {
 
     private final static Logger LOG = LoggerFactory.getLogger(CreditCardValidator.class);
@@ -41,7 +41,7 @@ public class CreditCardValidator implements Validator {
         
         if (!luhnCheck(cardNumber) || cardNumber.equals("")) {
             FacesMessage message = CreditCardMessages.getMessage(
-                    "com.gb4w20.gb4w20.bundles.messages", "badLuhnCheck", null);
+                    "com.gb4w20.bundles.messages", "badLuhnCheck", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
 
