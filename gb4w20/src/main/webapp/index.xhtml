@@ -36,9 +36,8 @@ Java Server Faces page that displays the frontpage of the app
         </script>
 
         <!-- BANNER AD 1 - AUTHOR: JEAN ROBATTO (only of the ad) -->
-        <!-- Jeffrey Boisvert just added logic to open in new tab --> 
         <b:row>
-            <a href="https://#{clientAdsBackingBean.ad1.url}" target="_blank">
+            <a href="https://#{clientAdsBackingBean.ad1.url}">
                 <p:graphicImage 
                     width="100%" 
                     height="200px"
@@ -149,7 +148,7 @@ Java Server Faces page that displays the frontpage of the app
                     <h2>${msgs.news2}</h2>
                     <p:scrollPanel id="news-feed" style="overflow-y: auto;height: 400px; padding: 1em;">
                         <p:feedReader value="#{rssFeedsJpaController.getActiveFeed().url}" var="feed"  size="10" >
-                            <h:outputLink class="newsfeed-item" value="#{feed.link}" target="_blank">
+                            <h:outputLink class="newsfeed-item" value="#{feed.link}">
                                 <h:outputText value="#{feed.title}" style="font-weight: bold;display:block"/>
                             </h:outputLink>
                             <h:outputText value="#{feed.description.value}" escape="false" class="hide-images"/>
@@ -160,9 +159,8 @@ Java Server Faces page that displays the frontpage of the app
             </b:row>
 
             <!-- BANNER AD 2 - AUTHOR: JEAN ROBATTO (only of the ad) -->
-            <!-- Jeffrey Boisvert just added logic to open in new tab --> 
             <b:row>
-                <a href="https://#{clientAdsBackingBean.ad2.url}" target="_blank">
+                <a href="https://#{clientAdsBackingBean.ad2.url}">
                     <p:graphicImage 
                         width="100%" 
                         height="200px" 
