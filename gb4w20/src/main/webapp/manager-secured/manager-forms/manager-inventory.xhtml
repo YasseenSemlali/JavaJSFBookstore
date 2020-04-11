@@ -47,12 +47,12 @@ necessary to manage inventory of our store.
                                         <p:outputLabel value="#{msgs.select}:" styleClass="formComponent" />
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:selectOneMenu id="selectbook" class="custom-select" value="#{managerInventory.selectIsbn}" style="width:30%;" filter="true" filterMatchMode="startsWith">
+                                        <p:selectOneMenu id="selectbook" class="custom-select" value="#{managerInventory.selectIsbn}" style="width:30%;" filter="true" filterMatchMode="contains">
                                             <p:ajax event="change" 
                                                     update="isbn title synopsis cover_img bookfiles pubdate numpages wholeprice listprice saleprice active allauthors allgenres allpublishers totalsaleslabel"
                                                     listener="#{managerInventory.bookChanged}" />
                                             <f:selectItem itemLabel="#{msgs.new}" itemValue="#{-1}"/>
-                                            <f:selectItems value="#{booksJpaController.findBooksEntities()}" var="book" itemValue="#{book.isbn}" itemLabel="#{book.title}"/>
+                                            <f:selectItems value="#{booksJpaController.findBooksEntities()}" var="book" itemValue="#{book.isbn}" itemLabel="#{book.title} - #{book.isbn}"/>
                                         </p:selectOneMenu>
                                     </div>
                                 </div>
@@ -172,7 +172,7 @@ necessary to manage inventory of our store.
                                         <p:panelGrid id="img_upload_msg">
                                         <p:outputLabel 
                                             value="#{msgs.file_uploaded}" 
-                                            rendered="#{!managerInventory.cover.isEmpty() and managerInventory.isNew}" />
+                                            rendered="#{!managerInventory.cover.isEmpty()}" />
                                         </p:panelGrid>
                                     </div>
                                 </div>
@@ -230,7 +230,7 @@ necessary to manage inventory of our store.
                                             >
                                              <p:column>
                                                  <p:commandButton value="X">
-                                                     <f:ajax listener="#{managerInventory.removeBookFile(file.bookFileId)}" render="bookfiles" execute="@all" />
+                                                     <f:ajax listener="#{managerInventory.removeBookFile(file.bookFileId)}" render="bookfiles" execute="@all" immediate="true"/>
                                                  </p:commandButton>
                                             </p:column>
                                             <p:column>
@@ -371,6 +371,11 @@ necessary to manage inventory of our store.
                                     <div class="col-lg-6 text-left">
                                         <p:dataTable id="allauthors" value="#{managerInventory.bookAuthor}" emptyMessage="#{msgs.noresults}" var="author" style="width:50%; text-align: center">
                                             <p:column>
+                                                <p:commandButton value="X" immediate="true">
+                                                     <f:ajax listener="#{managerInventory.removeAuthorFromCollection(author)}" render="allauthors" execute="@all" />
+                                                 </p:commandButton>
+                                            </p:column>
+                                            <p:column>
                                                 #{author.firstName} #{author.lastName}
                                             </p:column>
                                         </p:dataTable>
@@ -381,7 +386,7 @@ necessary to manage inventory of our store.
 
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:commandButton value="#{msgs.clearauthors}" action="#{managerInventory.clearAuthors()}" update="allauthors" styleClass="formComponent" />
+                                        <p:commandButton value="#{msgs.clearauthors}" action="#{managerInventory.clearAuthors()}" update="allauthors" styleClass="formComponent" immediate="true" />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -404,6 +409,11 @@ necessary to manage inventory of our store.
                                     <div class="col-lg-6 text-left">
                                         <p:dataTable id="allgenres" emptyMessage="#{msgs.noresults}" value="#{managerInventory.bookGenre}" var="genre" style="width:50%; text-align: center">
                                             <p:column>
+                                                <p:commandButton value="X" immediate="true">
+                                                     <f:ajax listener="#{managerInventory.removeGenreFromCollection(genre)}" render="allgenres" execute="@all" />
+                                                 </p:commandButton>
+                                            </p:column>
+                                            <p:column>
                                                 #{genre.genre}
                                             </p:column>
                                         </p:dataTable>
@@ -414,7 +424,7 @@ necessary to manage inventory of our store.
 
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:commandButton value="#{msgs.cleargenres}" action="#{managerInventory.clearGenres()}" update="allgenres" styleClass="formComponent" />
+                                        <p:commandButton value="#{msgs.cleargenres}" action="#{managerInventory.clearGenres()}" update="allgenres" styleClass="formComponent" immediate="true" />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -437,6 +447,11 @@ necessary to manage inventory of our store.
                                     <div class="col-lg-6 text-left">
                                         <p:dataTable id="allpublishers" emptyMessage="#{msgs.noresults}" value="#{managerInventory.bookPublisher}" var="publisher" style="width:50%; text-align: center">
                                             <p:column>
+                                                <p:commandButton value="X" immediate="true">
+                                                     <f:ajax listener="#{managerInventory.removePublisherFromCollection(publisher)}" render="allpublishers" execute="@all" />
+                                                 </p:commandButton>
+                                            </p:column>
+                                            <p:column>
                                                 #{publisher.name}
                                             </p:column>
                                         </p:dataTable>
@@ -447,7 +462,7 @@ necessary to manage inventory of our store.
 
                                     </div>
                                     <div class="col-lg-6 text-left">
-                                        <p:commandButton value="#{msgs.clearpubs}" action="#{managerInventory.clearPublishers()}" update="allpublishers" styleClass="formComponent" />
+                                        <p:commandButton value="#{msgs.clearpubs}" action="#{managerInventory.clearPublishers()}" update="allpublishers" styleClass="formComponent" immediate="true"/>
                                     </div>
                                 </div>
                                 <div class="row">
