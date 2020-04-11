@@ -2,9 +2,9 @@ package com.gb4w20.arquillian.test;
 
 import com.gb4w20.arquillian.test.rules.ParameterRule;
 import com.gb4w20.arquillian.test.utils.BooksUtilities;
-import com.gb4w20.gb4w20.entities.Books;
-import com.gb4w20.gb4w20.jpa.BooksJpaController;
-import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
+import com.gb4w20.entities.Books;
+import com.gb4w20.jpa.BooksJpaController;
+import com.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -7,7 +7,7 @@
     <h:body>
         <ui:composition>
             <h:outputStylesheet library="css" name="book.css" />
-            <h:link outcome="/bookpage.xhtml?isbn=#{value.getIsbn()}">
+            <h:link id="booklinkpage" outcome="/bookpage.xhtml?isbn=#{value.getIsbn()}">
                 <div>
                         <h:graphicImage library="img" name="covers/#{value.getCover()}" height="200px"/> 
                         <h:panelGroup  rendered="#{showTitle == null || showTitle}">
