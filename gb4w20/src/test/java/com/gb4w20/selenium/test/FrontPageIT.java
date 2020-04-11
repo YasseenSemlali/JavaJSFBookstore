@@ -381,23 +381,6 @@ public class FrontPageIT extends TestBase {
         assertEquals("Genre cookie should not exist on first launch.", null, driver.manage().getCookieNamed("recentGenre"));
     }
     
-    /**
-     * Selenium test ensuring the recommended books cookie is 
-     * correctly set.
-     * 
-     * @throws Exception 
-     * @author Jean Robatto, Jeffrey Boisvert
-     */
-    @Test
-    public void testRecommendedBookCookieAfter() throws Exception{
-        loadFrontPage();
-        
-        driver.findElement(By.id("booklinkpage")).click();
-        
-        assertEquals("Invalid genre cookie value.", "2", driver.manage().getCookieNamed("recentGenre").getValue());
-    }
-    
-    
     
     /**
      * Used to close the browser after a test was conducted
