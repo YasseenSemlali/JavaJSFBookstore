@@ -87,11 +87,11 @@ public class AuthorsJpaControllerTest {
         @Rule
         public ParameterRule<Quintet<Integer, Long, String, String, List<NameTotalAndCountBean>>> rule = new ParameterRule("param", "result",
                 () -> authorsJpaController.getPurchasedBooksByAuthor(param.getValue1(), param.getValue2(), param.getValue3()),
-                Quintet.with(1, 1l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal("34.00"), 2l), new NameTotalAndCountBean("Harry Potter and the Deathly Hallows", new BigDecimal("30.00"), 2l)))),
-                Quintet.with(2, 2l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal("34.00"), 2l)))),
-                Quintet.with(3, 3l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("Harry Potter and the Chamber of Secrets", new BigDecimal("26.00"), 2l), new NameTotalAndCountBean("Harry Potter and the Deathly Hallows", new BigDecimal("30.00"), 2l)))),
-                Quintet.with(4, 6l, "2020-01-01", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("Red Seas Under Red Skies", new BigDecimal("24.00"), 2l)))),
-                Quintet.with(5, 9l, "2020-01-01", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("And Another Thing...", new BigDecimal("10.00"), 1l)))));
+                Quintet.with(1, 1l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("9780000000000 - Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal("34.00"), 2l), new NameTotalAndCountBean("9780545010221 - Harry Potter and the Deathly Hallows", new BigDecimal("30.00"), 2l)))),
+                Quintet.with(2, 2l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("9780000000000 - Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal("34.00"), 2l)))),
+                Quintet.with(3, 3l, "2020-01-23", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("9780439064866 - Harry Potter and the Chamber of Secrets", new BigDecimal("26.00"), 2l), new NameTotalAndCountBean("9780545010221 - Harry Potter and the Deathly Hallows", new BigDecimal("30.00"), 2l)))),
+                Quintet.with(4, 6l, "2020-01-01", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("9780000000006 - Red Seas Under Red Skies", new BigDecimal("24.00"), 2l)))),
+                Quintet.with(5, 9l, "2020-01-01", "2020-03-21", new ArrayList<NameTotalAndCountBean>(Arrays.asList(new NameTotalAndCountBean("9781401323585 - And Another Thing...", new BigDecimal("10.00"), 1l)))));
         
         /**
          * Used to test if the number of books purchased given is equals to
@@ -112,7 +112,7 @@ public class AuthorsJpaControllerTest {
          * @author Jasmar Badion
          */
         @Test
-        public void testCorerctBooksPurchasedByAuthor(){
+        public void testCorrectBooksPurchasedByAuthor(){
             int testNumber = param.getValue0();
             List<NameTotalAndCountBean> expectedPurchasedBooks = param.getValue4();
             

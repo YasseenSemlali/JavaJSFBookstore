@@ -1,5 +1,6 @@
-package com.gb4w20.arquillian.test;
+package com.gb4w20.selenium.test;
 
+import com.gb4w20.arquillian.test.TestBase;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.ArrayList;
@@ -385,7 +386,7 @@ public class FrontPageIT extends TestBase {
      * correctly set.
      * 
      * @throws Exception 
-     * @author Jean Robatto
+     * @author Jean Robatto, Jeffrey Boisvert
      */
     @Test
     public void testRecommendedBookCookieAfter() throws Exception{
