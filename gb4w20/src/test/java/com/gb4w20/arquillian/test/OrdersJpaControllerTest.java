@@ -91,29 +91,29 @@ public class OrdersJpaControllerTest {
                 Quartet.with(1, "2000-01-01", "3000-01-01",
                         new ArrayList<NameTotalAndCountBean>() {
                     {
-                        add(new NameTotalAndCountBean("And Another Thing...", new BigDecimal(10), 1L));
-                        add(new NameTotalAndCountBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(34), 2L));
-                        add(new NameTotalAndCountBean("Harry Potter and the Chamber of Secrets", new BigDecimal(26), 2L));
-                        add(new NameTotalAndCountBean("Harry Potter and the Deathly Hallows", new BigDecimal(30), 2L));
-                        add(new NameTotalAndCountBean("Red Seas Under Red Skies", new BigDecimal(24), 2L));
-                        add(new NameTotalAndCountBean("The Burning White", new BigDecimal(32), 2L));
-                        add(new NameTotalAndCountBean("The Hitchhiker's Guide to the Galaxy", new BigDecimal(20), 1L));
-                        add(new NameTotalAndCountBean("The Three-Body Problem", new BigDecimal(36), 2L));
+                        add(new NameTotalAndCountBean("9781401323585 - And Another Thing...", new BigDecimal(10), 1L));
+                        add(new NameTotalAndCountBean("9780000000000 - Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(34), 2L));
+                        add(new NameTotalAndCountBean("9780439064866 - Harry Potter and the Chamber of Secrets", new BigDecimal(26), 2L));
+                        add(new NameTotalAndCountBean("9780545010221 - Harry Potter and the Deathly Hallows", new BigDecimal(30), 2L));
+                        add(new NameTotalAndCountBean("9780000000006 - Red Seas Under Red Skies", new BigDecimal(24), 2L));
+                        add(new NameTotalAndCountBean("9780316251303 - The Burning White", new BigDecimal(32), 2L));
+                        add(new NameTotalAndCountBean("9780000000010 - The Hitchhiker's Guide to the Galaxy", new BigDecimal(20), 1L));
+                        add(new NameTotalAndCountBean("9780765377067 - The Three-Body Problem", new BigDecimal(36), 2L));
                     }
                 }
                 ), //All total sales
                 Quartet.with(2, "2020-01-01", "2020-01-31",
                         new ArrayList<NameTotalAndCountBean>() {
                     {
-                        add(new NameTotalAndCountBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1L));
+                        add(new NameTotalAndCountBean("9780000000000 - Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1L));
                     }
                 }
                 ), //Jan
                 Quartet.with(3, "2020-02-04", "2020-02-10",
                         new ArrayList<NameTotalAndCountBean>() {
                     {
-                       add(new NameTotalAndCountBean("Harry Potter and the Deathly Hallows", new BigDecimal(15), 1L));
-                       add(new NameTotalAndCountBean("The Burning White", new BigDecimal(16), 1L));
+                       add(new NameTotalAndCountBean("9780545010221 - Harry Potter and the Deathly Hallows", new BigDecimal(15), 1L));
+                       add(new NameTotalAndCountBean("9780316251303 - The Burning White", new BigDecimal(16), 1L));
                     }
                 }
                 ), 
@@ -123,14 +123,14 @@ public class OrdersJpaControllerTest {
                 Quartet.with(5, "2020-02-01", "2020-02-29",
                         new ArrayList<NameTotalAndCountBean>() {
                     {
-                        add(new NameTotalAndCountBean("And Another Thing...", new BigDecimal(10), 1L));
-                        add(new NameTotalAndCountBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1L));
-                        add(new NameTotalAndCountBean("Harry Potter and the Chamber of Secrets", new BigDecimal(26), 2L));
-                        add(new NameTotalAndCountBean("Harry Potter and the Deathly Hallows", new BigDecimal(30), 2L));
-                        add(new NameTotalAndCountBean("Red Seas Under Red Skies", new BigDecimal(24), 2L));
-                        add(new NameTotalAndCountBean("The Burning White", new BigDecimal(32), 2L));
-                        add(new NameTotalAndCountBean("The Hitchhiker's Guide to the Galaxy", new BigDecimal(20), 1L));
-                        add(new NameTotalAndCountBean("The Three-Body Problem", new BigDecimal(36), 2L));
+                        add(new NameTotalAndCountBean("9781401323585 - And Another Thing...", new BigDecimal(10), 1L));
+                        add(new NameTotalAndCountBean("9780000000000 - Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17), 1L));
+                        add(new NameTotalAndCountBean("9780439064866 - Harry Potter and the Chamber of Secrets", new BigDecimal(26), 2L));
+                        add(new NameTotalAndCountBean("9780545010221 - Harry Potter and the Deathly Hallows", new BigDecimal(30), 2L));
+                        add(new NameTotalAndCountBean("9780000000006 - Red Seas Under Red Skies", new BigDecimal(24), 2L));
+                        add(new NameTotalAndCountBean("9780316251303 - The Burning White", new BigDecimal(32), 2L));
+                        add(new NameTotalAndCountBean("9780000000010 - The Hitchhiker's Guide to the Galaxy", new BigDecimal(20), 1L));
+                        add(new NameTotalAndCountBean("9780765377067 - The Three-Body Problem", new BigDecimal(36), 2L));
                     }
                 }
                 ) //Feb
