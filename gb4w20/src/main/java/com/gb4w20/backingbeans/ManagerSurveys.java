@@ -170,6 +170,7 @@ public class ManagerSurveys implements Serializable {
         try {
             SurveyResponses answer = new SurveyResponses();
             answer.setResponse(newAnswer);
+            answer.setCount(0);
             answer.setTimestamp(new Date());
             answer.setEnabled(Boolean.TRUE);
             answer.setSurveyQuestionId(survey);

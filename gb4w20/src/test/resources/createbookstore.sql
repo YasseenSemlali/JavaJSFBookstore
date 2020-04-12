@@ -206,7 +206,7 @@ CREATE TABLE survey_responses(
     survey_question_id bigint NOT NULL, 
     response varchar(1024),
     enabled boolean DEFAULT true,
-    count int DEFAULT 0 CHECK (count > 0),
+    count int NOT NULL DEFAULT 0 CHECK (count >= 0),
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (survey_question_id) REFERENCES survey_questions(id) ON DELETE CASCADE
 );
