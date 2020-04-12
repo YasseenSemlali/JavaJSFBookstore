@@ -2,7 +2,7 @@
 Java Server Faces page that displays all the options
 a manager can perform.
 
-@author Jean Robatto
+@author Jean Robatto, Jeffrey Boisvert (only fixed the paths not structure)
 -->
 <!DOCTYPE html>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
@@ -108,8 +108,15 @@ a manager can perform.
                     </a>
                 </b:column>
             </b:row>
-
-
-        </b:container>
+        </b:container>   
+        
+        <!-- When user has not logged in yet and he added to the cart a book he has purchased already
+                    then it will still show that book to the cart UNTIL he logs back in then that book is removed to the cart 
+                    since he already purchased it. 
+        @author Jasmar Badion -->
+        <c:if test="#{userSession.loggedIn}">
+            #{cartSession.removePurchasedbooks()}
+        </c:if>
+        
     </ui:define>
 </ui:composition>

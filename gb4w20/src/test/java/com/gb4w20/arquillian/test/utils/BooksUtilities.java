@@ -1,7 +1,7 @@
 
 package com.gb4w20.arquillian.test.utils;
 
-import com.gb4w20.gb4w20.entities.Books;
+import com.gb4w20.entities.Books;
 import java.util.ArrayList;
 import java.util.List;
 

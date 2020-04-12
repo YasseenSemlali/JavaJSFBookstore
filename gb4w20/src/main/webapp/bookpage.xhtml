@@ -63,16 +63,16 @@ add it to the shopping cart.
                     <c:choose>
                         <!-- So if user already bought book just go to download page - Jeffrey Boisvert  --> 
                         <c:when test="#{userSession.hasBoughtBook(book)}">
-                                <p:outputLabel>#{msgs.already_bought_book}</p:outputLabel>
-                                <b:link id="download-button" class="language-button btn btn-primary" style="display: block; text-align: center; margin-left: auto; margin-right: auto; width: fit-content;" href="#{request.contextPath}/user-secured/book-downloads.xhtml" value="${msgs.downloadspage}" />
-                            </c:when>
-                            <c:otherwise>
-                                <p:commandButton value="#{msgs.addToCart}" style="background-color: #007bff; color: white" action="#{cartSession.addBookToSession(bookAndGenre.isbn)}" onsuccess="PF('succeedcart').show()">
-                                    <p:dialog header="#{msgs.addedtocart}" widgetVar="succeedcart" modal="true" minHeight="20" responsive="true">
-                                        <h:outputText value="#{msgs.checkcart}" /> 
-                                    </p:dialog>
-                                </p:commandButton>
-                            </c:otherwise>
+                            <p:outputLabel>#{msgs.already_bought_book}</p:outputLabel>
+                            <b:link id="download-button" class="language-button btn btn-primary" style="display: block; text-align: center; margin-left: auto; margin-right: auto; width: fit-content;" href="#{request.contextPath}/user-secured/book-downloads.xhtml" value="${msgs.downloadspage}" />
+                        </c:when>
+                        <c:otherwise>
+                            <p:commandButton value="#{msgs.addToCart}" style="background-color: #007bff; color: white" action="#{cartSession.addBookToSession(bookAndGenre.isbn)}" onsuccess="PF('succeedcart').show()">
+                                <p:dialog header="#{msgs.addedtocart}" widgetVar="succeedcart" modal="true" minHeight="20" responsive="true">
+                                    <h:outputText value="#{msgs.checkcart}" /> 
+                                </p:dialog>
+                            </p:commandButton>
+                        </c:otherwise>
                     </c:choose>
                 </h:form>
             </b:jumbotron> 
@@ -97,17 +97,24 @@ add it to the shopping cart.
                         <br></br>
                     </c:forEach>
                 </h3>
-                <b:row> 
-                    <b:column col-md="6">
-                        <b:panelGrid columns="3"> 
-                            <c:forEach items="#{authorsJpaController.getOtherBooksBySameAuthor(book.getIsbn(), authorbooks, 3)}" var="sameauthor">
-                                <ui:decorate template="/templates/book.xhtml">
-                                    <ui:param name="book" value="#{sameauthor}"></ui:param>
-                                </ui:decorate>
-                            </c:forEach>
-                        </b:panelGrid>
-                    </b:column>
-                </b:row>
+                <c:choose>
+                    <c:when test="#{empty authorsJpaController.getOtherBooksBySameAuthor(book.getIsbn(), authorbooks, 3)}">
+                        <div class="greentexts">#{msgs.nootherbooks_sameauthor}</div>
+                    </c:when>
+                    <c:otherwise>
+                        <b:row> 
+                            <b:column col-md="6">
+                                <b:panelGrid columns="3"> 
+                                    <c:forEach items="#{authorsJpaController.getOtherBooksBySameAuthor(book.getIsbn(), authorbooks, 3)}" var="sameauthor">
+                                        <ui:decorate template="/templates/book.xhtml">
+                                            <ui:param name="book" value="#{sameauthor}"></ui:param>
+                                        </ui:decorate>
+                                    </c:forEach>
+                                </b:panelGrid>
+                            </b:column>
+                        </b:row>
+                    </c:otherwise>
+                </c:choose>
             </b:jumbotron>
         </b:container>
 
@@ -116,17 +123,24 @@ add it to the shopping cart.
                 <c:forEach items="#{genrebooks}" var="gen">
                     <h3>#{msgs.otherbooksof} #{gen.getGenre()} #{msgs.genre}</h3>
                 </c:forEach>
-                <b:row>
-                    <b:column col-md="6">
-                        <b:panelGrid columns="3">
-                            <c:forEach items="#{genresJpaController.getOtherBooksOfSameGenre(book.getIsbn(), genrebooks, authorbooks, 3)}" var="samegenre">
-                                <ui:decorate template="/templates/book.xhtml">
-                                    <ui:param name="book" value="#{samegenre}"></ui:param>
-                                </ui:decorate>
-                            </c:forEach>
-                        </b:panelGrid>
-                    </b:column>
-                </b:row>
+                <c:choose>
+                    <c:when test="#{empty genresJpaController.getOtherBooksOfSameGenre(book.getIsbn(), genrebooks, authorbooks, 3)}">
+                        <div class="greentexts">#{msgs.nootherbooks_samegenre}</div>
+                    </c:when>
+                    <c:otherwise>
+                        <b:row>
+                            <b:column col-md="6">
+                                <b:panelGrid columns="3">
+                                    <c:forEach items="#{genresJpaController.getOtherBooksOfSameGenre(book.getIsbn(), genrebooks, authorbooks, 3)}" var="samegenre">
+                                        <ui:decorate template="/templates/book.xhtml">
+                                            <ui:param name="book" value="#{samegenre}"></ui:param>
+                                        </ui:decorate>
+                                    </c:forEach>
+                                </b:panelGrid>
+                            </b:column>
+                        </b:row>
+                    </c:otherwise>
+                </c:choose>
             </b:jumbotron>
         </b:container>
         <b:container>
@@ -142,7 +156,7 @@ add it to the shopping cart.
                         <c:forEach items="#{approvedReviews}" var="review">
                             <div id="apprvdRevs">
                                 <p>
-                                   #{msgs.by} : #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
+                                    #{msgs.by} : #{(usersJpaController.findUsers(review.getUserId().getUserId())).getFirstName()} #{(usersJpaController.findUsers(review.getUserId().getUserId())).getLastName()}
                                 </p>
                                 <p>
                                     #{review.getReview()}
@@ -164,18 +178,30 @@ add it to the shopping cart.
                 <c:choose>
                     <c:when test="#{userSession.loggedIn}">
                         <h:form id="addBookReview">
-                            <p:outputLabel for="bookrev">#{msgs.writeyourreview} : </p:outputLabel>
-                            <br></br> 
-                            <p:inputTextarea id="bookrev" value="#{bookReviewBackingBean.review}" rows="5" cols="40" maxlength="750" />
-                            <p:rating id="bookrate" value="#{bookReviewBackingBean.rating}" />
-                            <p:commandButton id="submitreview" value="#{msgs.submit}" action="#{bookReviewBackingBean.makeReview(bookAndGenre.isbn, userSession.loggedInUserId)}" onsuccess="PF('succeed').show()"/> 
-                            <p:dialog header="#{msgs.reviewsubmitted}" widgetVar="succeed" modal="true" minHeight="40" responsive="true"> 
-                                <h:outputText value="#{msgs.thankyoureview}" />  
-                            </p:dialog>
+                            <p:panel id="panel">
+                                <p:outputLabel for="bookrev">#{msgs.writeyourreview} : </p:outputLabel>
+                                <br></br> 
+                                <p:inputTextarea id="bookrev" value="#{bookReviewBackingBean.review}" 
+                                                 required="true" requiredMessage="#{msgs.no_empty}"
+                                                 rows="5" cols="80" maxlength="750">
+                                </p:inputTextarea>
+                                <p:message id="bookreverror" for="bookrev" class="finalize-redtexts" />
+                                <br></br>
+                                <p:rating id="bookrate" value="#{bookReviewBackingBean.rating}" 
+                                          required="true" requiredMessage="#{msgs.rate_error}">
+                                </p:rating>
+                                <p:message id="bookrateerror" for="bookrate" class="finalize-redtexts" />
+                                <br></br>
+                                <p:commandButton id="submitreview" value="#{msgs.submit}" update="panel" action="#{bookReviewBackingBean.makeReview(bookAndGenre.isbn, userSession.loggedInUserId)}" /> 
+                                <p:dialog header="#{msgs.reviewsubmitted}" widgetVar="succeed" modal="true" minHeight="40" responsive="true"> 
+                                    <h:outputText value="#{msgs.thankyoureview}" />  
+                                </p:dialog>
+                            </p:panel>
                         </h:form> 
                     </c:when>
                     <c:otherwise>
                         <p:outputLabel>#{msgs.mustbelogintoreview}  </p:outputLabel>
+                        <!-- Link if not logged in - Jeffrey Boisvert --> 
                         <b:link id="reviews-login-button" class="language-button btn btn-primary" href="#{request.contextPath}/login.xhtml" value="${msgs.login}" />
                     </c:otherwise>  
                 </c:choose>

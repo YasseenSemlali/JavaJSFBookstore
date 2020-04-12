@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-Java Server Faces page that displays the frontpage of the app
+Allows the user to search based on several criteria
 
 @author Yasseen Semlali
 -->
@@ -22,6 +22,12 @@ Java Server Faces page that displays the frontpage of the app
         <b:container fluid="true">
 
             <form class="form-horizontal" action="search.xhtml">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="isbn">${msgs.isbn_label}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="isbn" placeholder="${msgs.isbn_placeholder}"/>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="title">${msgs.title_label}</label>
                     <div class="col-sm-10">

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-Java Server Faces page that displays the frontpage of the app
+Shows all the books the user owns and allows the user to download them
 
 @author Yasseen Semlali
 -->
@@ -31,6 +31,7 @@ Java Server Faces page that displays the frontpage of the app
                     <b:column col-md="4"  style-class="align-self-center">
                         <c:forEach items="#{book.bookFilesCollection}" var="file">
                             <b:row>
+                                #{file.fileLocation}
                                 <a href="#{request.contextPath}/resources/bookfiles/#{file.fileLocation}" download="#{file.fileLocation}">#{fileFormatNameBean.getInternationalizedFormatName(file.fileFormatId.format)} ⇓</a>
 
                             </b:row>

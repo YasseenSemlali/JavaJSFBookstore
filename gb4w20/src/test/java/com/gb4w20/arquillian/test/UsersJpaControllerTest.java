@@ -1,12 +1,11 @@
 
 package com.gb4w20.arquillian.test;
 
-import com.gb4w20.arquillian.test.ArquillianTestBase;
 import com.gb4w20.arquillian.test.rules.ParameterRule;
-import com.gb4w20.gb4w20.entities.Users;
-import com.gb4w20.gb4w20.jpa.UsersJpaController;
-import com.gb4w20.gb4w20.querybeans.NameAndNumberBean;
-import com.gb4w20.gb4w20.querybeans.NameTotalAndCountBean;
+import com.gb4w20.entities.Users;
+import com.gb4w20.jpa.UsersJpaController;
+import com.gb4w20.querybeans.NameAndNumberBean;
+import com.gb4w20.querybeans.NameTotalAndCountBean;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +20,6 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import org.junit.Ignore;
 
 /**
  * Used to test various methods inside the UsersJpaController class. This does
@@ -126,9 +123,9 @@ public class UsersJpaControllerTest {
         public ParameterRule<Quartet<Long, String, String, List<NameAndNumberBean>>> rule = new ParameterRule("param", "result",
                 () -> controller.getUserPurchasedBooks(param.getValue0(), param.getValue1(), param.getValue2()),
                 Quartet.with(1l, "2020-01-31", "2020-02-10", Arrays.asList(
-                        new NameAndNumberBean("Harry Potter and the Deathly Hallows", new BigDecimal(15.00)),
-                        new NameAndNumberBean("The Burning White", new BigDecimal(16.00)),
-                        new NameAndNumberBean("Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17.00))
+                        new NameAndNumberBean("9780545010221 - Harry Potter and the Deathly Hallows", new BigDecimal(15.00)),
+                        new NameAndNumberBean("9780316251303 - The Burning White", new BigDecimal(16.00)),
+                        new NameAndNumberBean("9780000000000 - Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch", new BigDecimal(17.00))
                 )),
                 Quartet.with(2l, "2020-01-31", "2020-02-10", new ArrayList<NameAndNumberBean>()));
 

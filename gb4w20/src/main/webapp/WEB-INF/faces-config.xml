@@ -16,7 +16,7 @@
             <supported-locale>fr_CA</supported-locale>
         </locale-config>
         <resource-bundle>
-            <base-name>com.gb4w20.gb4w20.bundles.messages</base-name>
+            <base-name>com.gb4w20.bundles.messages</base-name>
             <var>msgs</var>
         </resource-bundle>
     </application>

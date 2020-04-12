@@ -1,8 +1,12 @@
 package com.gb4w20.arquillian.test;
 
-import com.gb4w20.gb4w20.entities.SurveyResponses;
-import com.gb4w20.gb4w20.jpa.SurveyResponsesJpaController;
-import com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException;
+import com.gb4w20.entities.SurveyQuestions;
+import com.gb4w20.entities.SurveyResponses;
+import com.gb4w20.jpa.SurveyQuestionsJpaController;
+import com.gb4w20.jpa.SurveyResponsesJpaController;
+import com.gb4w20.jpa.exceptions.RollbackFailureException;
+import static org.junit.Assert.assertTrue;
+import java.util.Collection;
 import javax.inject.Inject;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -29,13 +33,16 @@ public class SurveyResponsesJpaControllerTest {
 
         @Inject
         private SurveyResponsesJpaController surveyResponsesJpaController;
+        
+        @Inject
+        private SurveyQuestionsJpaController surveyQuestionsJpaController;
 
         /**
          * Used to test that when the method is called, the vote is increased by
          * one
          *
          * @author Jean Robatto
-         * @throws com.gb4w20.gb4w20.jpa.exceptions.RollbackFailureException
+         * @throws com.gb4w20.jpa.exceptions.RollbackFailureException
          */
         @Test
         public void testCorrectIncrease() throws RollbackFailureException {
@@ -46,6 +53,57 @@ public class SurveyResponsesJpaControllerTest {
             int newCount = surveyResponsesJpaController.findSurveyResponses(id).getCount();
 
             assertEquals("Did not correcty increment voting count:", currentCount + 1, newCount);
+        }
+        
+        /**
+         * Used to test if the correct number of responses are returned
+         *
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testGetResponsesFromQuestionGetsCorrectAmount() {
+            
+            int expectedResult = 3; 
+            
+            SurveyQuestions question = surveyQuestionsJpaController.findSurveyQuestions(1l);
+            
+            Collection<SurveyResponses> responses = surveyResponsesJpaController.getResponsesFromQuestion(question);
+            int currentSize = responses.size();
+
+            assertEquals("Did not correcty increment voting count:", expectedResult, currentSize);
+        }
+        
+        /**
+         * Used to test that only active responses are returned
+         *
+         * @author Jeffrey Boisvert
+         */
+        @Test
+        public void testGetResponsesFromQuestionOnlyActiveResponses() {
+            
+            SurveyQuestions question = surveyQuestionsJpaController.findSurveyQuestions(1l);
+            
+            Collection<SurveyResponses> responses = surveyResponsesJpaController.getResponsesFromQuestion(question);
+
+            assertTrue("Some of the responses were not active", areAllResponsesActive(responses));
+        }
+        
+        /**
+         * Used to test of the list of responses are all active. 
+         * @param responses given 
+         * @return true if all responses are active false otherwise
+         * @author Jeffrey Boisvert
+         */
+        private boolean areAllResponsesActive(Collection<SurveyResponses> responses){
+            
+            for(SurveyResponses response : responses){
+                if (!response.getEnabled()){
+                    return false;
+                }
+            }
+            
+            return true; 
+            
         }
 
     }
